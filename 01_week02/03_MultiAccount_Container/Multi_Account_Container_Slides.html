@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>การสร้าง Docker image สำหรับระบบหลายบัญชี · Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12305e;--teal:#0f8f8c;--teal-soft:#e2f5f4;--orange:#e87f1c;--orange-soft:#fff1e3;--red:#c92a2a;--red-soft:#fdecec;
+--green:#15803d;--green-soft:#e7f7ec;--ink:#1c2533;--muted:#5b6b80;--line:#d8e0ec;--bg:#f5f7fb;--card:#fff;--code:#0e1a2b;
+--font:'IBM Plex Sans Thai','Leelawadee UI','Noto Sans Thai','Segoe UI',sans-serif;--mono:'JetBrains Mono','Cascadia Code',Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:var(--font);color:var(--ink)}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:40px 72px 44px;display:none;flex-direction:column;overflow:hidden}
+.slide.active,.slide.measure{display:flex}
+.slide.measure{visibility:hidden}
+.slide.active{animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hd{flex:none;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+.kicker{font-size:17px;font-weight:600;color:var(--teal);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kicker code{font-size:.9em;background:none;padding:0;color:inherit}
+h2{font-size:36px;line-height:1.22;margin:3px 0 0;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:14px}
+h2 .tt{min-width:0}
+h2 code{font-size:.88em}
+.tag{flex:none;font-size:15px;font-weight:600;background:var(--orange-soft);color:#9a4d06;border:1px solid #f6d3ad;border-radius:999px;padding:3px 13px;white-space:nowrap}
+.pg{flex:none;margin-left:auto;font-size:16px;font-weight:500;color:var(--muted);white-space:nowrap}
+.slide .no{display:none;position:absolute;right:26px;bottom:12px;font-size:13px;color:#8796ab}
+.slide .dk{position:absolute;left:72px;bottom:12px;font-size:13px;color:#8796ab}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5em;font-size:calc(23px*var(--fs,1));overflow:hidden}
+.body.scroll{overflow:auto}
+.body>*{flex:none;margin:0}
+p{line-height:1.55}
+ul{padding-left:1.3em;margin:0}
+li{line-height:1.5;margin:.22em 0}
+b,strong{color:var(--navy)}
+a{color:#1d5fd0;text-decoration:none;border-bottom:1px solid rgba(29,95,208,.3)}
+.xref{color:var(--navy);font-weight:600}
+code{font-family:var(--mono);font-size:.84em;background:#e6edf7;color:#0b3b7a;padding:.08em .38em;border-radius:5px;overflow-wrap:break-word}
+pre,code{font-variant-ligatures:none}
+h3.lead{font-size:1.14em;color:var(--navy);font-weight:700;line-height:1.35;padding-left:.6em;border-left:5px solid var(--teal)}
+h3.lead span{font-weight:400;color:var(--muted);font-size:.86em}
+h3.lead span b{color:var(--muted)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9em;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.4em .62em;text-align:left;vertical-align:top;line-height:1.42;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600}
+th code{background:rgba(255,255,255,.16);color:#fff}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f9fd}
+td:first-child{font-weight:500}
+td.yes{color:#0f5132}td.no{color:#9b1c1c}
+.slide td.no{display:table-cell;position:static;font-size:inherit;color:#9b1c1c}
+table.c6,table.c7{font-size:.84em}
+.v{font-weight:700;font-size:.92em;padding:.05em .5em;border-radius:6px;white-space:nowrap}
+.v.accept{background:var(--green-soft);color:var(--green)}
+.v.reject{background:var(--red-soft);color:var(--red)}
+.note{border-left:6px solid var(--teal);background:var(--teal-soft);padding:.55em .9em;border-radius:8px;line-height:1.5}
+.note>*{margin:0}
+.note>*+*{margin-top:.4em}
+.note.ok{border-color:var(--green);background:var(--green-soft)}
+.note.warn{border-color:var(--orange);background:var(--orange-soft)}
+.note.bad{border-color:var(--red);background:var(--red-soft)}
+.note.result{border-color:var(--navy);background:#e9eff8}
+.note.eye{border-color:var(--orange);background:var(--orange-soft);display:flex;gap:.8em;align-items:baseline}
+.note.eye>*+*{margin-top:0}
+.note .lbl{flex:none;font-size:.72em;font-weight:700;letter-spacing:.04em;color:#fff;background:var(--orange);border-radius:6px;padding:.15em .6em}
+pre.code{position:relative;background:var(--code);color:#dbe7ff;font-family:var(--mono);font-size:.74em;line-height:1.5;padding:.85em 1.1em;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+pre.code.term{border-left:6px solid var(--teal)}
+pre .copy{position:absolute;top:8px;right:8px;font-family:var(--font);font-size:14px;background:#26406a;color:#fff;border:0;border-radius:7px;padding:5px 12px;cursor:pointer;opacity:.85}
+pre .copy:hover,.copy.big:hover{background:var(--teal);opacity:1}
+pre .err{color:#ff9b9b}pre .ok{color:#86e3ae}pre .dim{color:#8ea3c4}pre .cmd{color:#ffd28a}
+.tk-c{color:#7f93b5;font-style:italic}.tk-s{color:#a5e8b5}.tk-k{color:#ffb86b}.tk-n{color:#8fd3ff}
+.fig{flex:1 1 0;min-height:var(--figmin,260px);display:flex;align-items:center;justify-content:center}
+.fig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 6px 22px rgba(18,48,94,.16);background:#fff;cursor:zoom-in}
+.fig.wide{flex:none;min-height:0;display:block}
+.fig.wide img{width:100%;max-height:none}
+.body>.fig.wide:only-child{margin:auto 0}
+.figrow{flex:1 1 0;min-height:0;display:flex;gap:24px;align-items:center}
+.figrow .fig{height:100%}
+.cols{display:flex;gap:26px;align-items:flex-start}
+.cols .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:.5em}
+.cols .col>*{margin:0}
+.cmp pre.code{font-size:.72em}
+.fails{display:flex;flex-direction:column;gap:.45em}
+.fails .cardx{padding:.4em .8em}
+.slide.mid .body{justify-content:center;gap:.8em}
+.cardx h4 code{font-size:.9em}
+.fails .cardx p{font-size:.8em;font-family:var(--mono);line-height:1.45}
+/* พรอมต์ */
+.pbar{display:flex;align-items:center;gap:16px;background:var(--orange-soft);border:1px solid #f6d3ad;border-radius:10px;padding:.45em .8em;font-size:.86em}
+.pbar .how{flex:1;min-width:0}
+.pbar .plabel{flex:none;color:var(--muted);font-size:.9em}
+.copy.big{flex:none;font-family:var(--font);font-size:19px;font-weight:700;background:var(--orange);color:#fff;border:0;border-radius:9px;padding:9px 20px;cursor:pointer;box-shadow:0 3px 10px rgba(232,127,28,.35)}
+.copy.done{background:var(--green)!important}
+pre.code.prompt{font-size:.76em;line-height:1.52;border:2px solid #f08a24}
+.full{display:none}
+/* checklist */
+.checks{display:flex;flex-direction:column;gap:.45em}
+.chk{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5em .8em;cursor:pointer;line-height:1.45}
+.chk input{width:1.15em;height:1.15em;margin-top:.2em;flex:none;accent-color:var(--teal)}
+.chk:has(input:checked){background:var(--green-soft);border-color:#a7dcb8}
+/* ภาพ + ขั้นตอน */
+.fitbox{overflow:hidden}
+.ex{flex:1 1 0;min-height:0;display:flex;gap:30px;align-items:stretch}
+.ex .fig{flex:1.5 1 0;min-height:0;min-width:0}
+.ex .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.5em}
+.ex .side>*{flex:none;margin:0}
+.stp{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.5em .8em;line-height:1.45;box-shadow:0 2px 6px rgba(18,48,94,.05)}
+.stp .n{flex:none;width:1.75em;height:1.75em;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.88em;margin-top:.05em}
+.cap{color:var(--muted);line-height:1.5;text-align:center}
+.cap b{color:var(--navy)}
+/* ตัวเลขใหญ่ */
+.tiles{display:flex;gap:20px;align-items:stretch}
+.tile{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-top:7px solid var(--teal);border-radius:14px;padding:.6em .85em .7em;box-shadow:0 3px 10px rgba(18,48,94,.06)}
+.tile .k{font-size:.74em;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.tile .num{font-size:2.05em;font-weight:700;color:var(--navy);line-height:1.2;white-space:nowrap}
+.tile .num small{font-size:.5em;font-weight:600;color:var(--muted)}
+.tile .s{font-size:.8em;color:var(--muted);line-height:1.4}
+.tile.ok{border-top-color:var(--green)}.tile.ok .num{color:var(--green)}
+.tile.bad{border-top-color:var(--red)}.tile.bad .num{color:var(--red)}
+.tile.warn{border-top-color:var(--orange)}
+/* การ์ด */
+.cards{display:grid;gap:18px;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.cardx{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:14px;padding:.65em .9em;box-shadow:0 3px 10px rgba(18,48,94,.05);display:flex;flex-direction:column;gap:.3em}
+.cardx>*{margin:0}
+.cardx h4{font-size:1.02em;color:var(--navy);line-height:1.35}
+.cardx p,.cardx li{font-size:.88em;line-height:1.48;color:#2b3648}
+.cardx .n{display:inline-flex;width:1.6em;height:1.6em;border-radius:50%;background:var(--navy);color:#fff;align-items:center;justify-content:center;font-size:.85em;margin-right:.45em}
+.cardx.ok{border-left-color:var(--green)}.cardx.bad{border-left-color:var(--red)}.cardx.warn{border-left-color:var(--orange)}.cardx.navy{border-left-color:var(--navy)}
+.cardx .chips{display:flex;flex-direction:column;gap:.3em}
+.cardx .chips div{font-size:.86em;line-height:1.45}
+/* สมการ (KaTeX) */
+.katex{font-size:1.1em;font-family:KaTeX_Main,'IBM Plex Sans Thai','Leelawadee UI','Times New Roman',serif}
+.katex-display{margin:0}
+.eqbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:.3em .6em;text-align:center;box-shadow:0 4px 14px rgba(18,48,94,.06);font-size:2.2em;color:var(--ink);display:flex;flex-direction:column;gap:.12em}
+.eqbox .row+.row{border-top:1px dashed var(--line);padding-top:.12em}
+.eqbox .sub{font-size:.36em;color:var(--muted);line-height:1.4;padding-bottom:.3em}
+.eqlead{color:var(--muted);font-size:.95em;line-height:1.45}
+.parts{display:grid;gap:16px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+.part{background:#fff;border:1px solid var(--line);border-top:9px solid var(--c);border-radius:14px;padding:.55em .8em .65em;display:flex;flex-direction:column;gap:.22em;box-shadow:0 3px 10px rgba(18,48,94,.05)}
+.part>*{margin:0}
+.part .role{font-size:.64em;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.part .top{display:flex;align-items:center;gap:.5em;min-height:2.3em}
+.part .n{flex:none;display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--c);color:#fff;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.part .sym{font-size:1.3em;color:var(--c)}
+.part h4{font-size:1em;color:var(--navy);line-height:1.3}
+.part p{font-size:.86em;line-height:1.45;color:#2b3648}
+.part .lab{align-self:flex-start;font-family:var(--mono);font-size:.74em;color:#0b6b69;background:var(--teal-soft);border-radius:6px;padding:.12em .5em;margin-top:.15em}
+/* เทียบ 2 ฝั่ง */
+.vs{display:flex;gap:26px;align-items:stretch}
+.vs .sidebox{flex:1;min-width:0;border-radius:16px;padding:.8em 1em;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:.4em}
+.vs .sidebox>*{margin:0}
+.vs .bad{border-color:#f0b4b4;background:#fff8f8}.vs .good{border-color:#a7dcb8;background:#f5fcf7}
+.vs .hd2{font-size:.8em;font-weight:700;letter-spacing:.03em}
+.vs .bad .hd2{color:var(--red)}.vs .good .hd2{color:var(--green)}
+.vs .bigv{font-family:var(--mono);font-size:2.6em;font-weight:700;line-height:1.15}
+.vs .bad .bigv{color:var(--red)}.vs .good .bigv{color:var(--green)}
+.vs .calc{font-family:var(--mono);font-size:.95em;color:#2b3648}
+.callbox{background:var(--code);color:#dbe7ff;font-family:var(--mono);border-radius:12px;padding:.6em 1em;font-size:1.05em;text-align:center}
+.formula{background:#fff;border:2px solid var(--navy);border-radius:16px;padding:.7em 1em;text-align:center;font-size:1.25em;font-weight:700;color:var(--navy);line-height:1.5}
+.bigq{font-size:1.9em;font-weight:700;color:var(--navy);line-height:1.35;margin:auto 0 .2em!important}
+.bigq em{font-style:normal;color:var(--orange)}
+.bigsub{font-size:1.05em;color:var(--muted);line-height:1.6;margin-bottom:auto!important}
+/* แท่ง */
+.bars{display:flex;flex-direction:column;gap:.5em}
+.bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 7.5em;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45em .85em}
+.bar .lb{line-height:1.4}
+.bar .lb small{display:block;color:var(--muted);font-size:.8em}
+.bar .tr{height:1.15em;background:#e7edf5;border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;border-radius:999px;background:var(--green);min-width:6px}
+.bar .fl.mid{background:var(--orange)}.bar .fl.low{background:var(--red)}
+.bar .vl{font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;font-size:.92em}
+/* ตารางสี 18 Trial */
+.heat{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;align-items:stretch}
+.heat .hh{font-family:var(--mono);font-size:.74em;font-weight:600;color:var(--navy);text-align:center;padding:.2em 0}
+.heat .hr{font-size:.82em;color:var(--muted);display:flex;align-items:center;padding-right:.4em;white-space:nowrap}
+.heat .hc{border-radius:10px;text-align:center;font-family:var(--mono);font-weight:700;font-size:1.15em;padding:.55em 0;color:#12305e}
+.heat .grp{grid-column:span 4;text-align:center;font-size:.8em;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:.15em}
+.heat .grp.val{grid-column:span 2;background:var(--orange)}
+/* Input -> LAB -> Output */
+.ff{display:flex;gap:22px;align-items:center}
+.ffcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:.42em}
+.ffh{font-size:.78em;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:10px;padding:.42em .7em;font-size:.9em;line-height:1.42}
+.ffcol.out .file{border-left-color:var(--orange)}
+.ffmid{flex:none;width:8em;text-align:center;background:var(--navy);color:#fff;border-radius:18px;padding:1.1em .5em;font-weight:700;font-size:1.1em;line-height:1.3;position:relative}
+.ffmid small{display:block;font-weight:500;font-size:.62em;color:#b9d2f5;margin-top:.3em}
+.ffar{flex:none;font-size:2em;color:var(--orange);font-weight:700}
+/* กลุ่มข้อตรวจ */
+.ck{display:flex;gap:.55em;align-items:baseline;font-size:.86em;line-height:1.45}
+.ck code{flex:none}
+/* แผนของบท */
+.road{display:flex;gap:26px;align-items:stretch}
+.road .partbox{flex:1;border-radius:18px;padding:.8em 1em 1em;background:#fff;border:2px solid var(--line);display:flex;flex-direction:column;gap:.55em}
+.road .partbox>*{margin:0}
+.road .ph{font-size:1.25em;font-weight:700;color:var(--navy)}
+.road .ph small{font-size:.6em;font-weight:600;color:var(--teal);margin-left:.6em}
+.road .secbox{border-left:7px solid var(--teal);background:var(--bg);border-radius:10px;padding:.5em .8em}
+.road .secbox b{display:block;font-size:1.02em}
+.road .secbox span{font-size:.86em;color:#2b3648;line-height:1.45;display:block}
+.road .partbox.lab .secbox{border-left-color:var(--orange)}
+/* ปก และหน้าคั่น */
+.cover,.divider{padding:0;background:linear-gradient(135deg,#0d2447 0%,#163f7a 62%,#0f8f8c 140%);background-size:cover;background-position:center;color:#fff}
+.cover .shade,.divider.photo .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.96) 0%,rgba(6,13,26,.86) 46%,rgba(6,13,26,.25) 80%)}
+.inner{position:relative;height:100%;padding:90px 96px 70px;display:flex;flex-direction:column;max-width:1120px;font-size:25px}
+.divider:not(.photo) .inner{max-width:1400px}
+.inner .small{font-size:21px;font-weight:600;color:#8fe0dc;letter-spacing:.03em;min-height:28px}
+.inner .big{font-size:120px;font-weight:700;line-height:1.05;color:#fff;margin-top:8px}
+.inner h1{font-size:54px;line-height:1.2;margin:10px 0 0;color:#fff}
+.cover .inner h1{font-size:68px;margin-top:120px}
+.inner .sub{margin-top:26px;color:#d6e4fb;line-height:1.55;display:flex;flex-direction:column;gap:.55em}
+.cover .inner .sub{font-size:34px;color:#cfe0ff}
+.inner .sub p,.inner .sub ul{margin:0}
+.inner b{color:#fff}
+.inner code{background:rgba(255,255,255,.14);color:#fff}
+.inner a{color:#9fd8ff;border-bottom-color:rgba(159,216,255,.4)}
+.inner .xref{color:#fff}
+.inner .hint{margin-top:auto;font-size:19px;color:#9fb6dd}
+.inner .v.accept{background:rgba(134,227,174,.2);color:#9af0bf}.inner .v.reject{background:rgba(255,155,155,.2);color:#ffb3b3}
+.imgnote{position:absolute;right:22px;bottom:14px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:7px}
+.facts{display:flex;gap:18px;margin-top:10px}
+.facts div:last-child{flex:2}
+.facts div{flex:1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:16px 20px;font-size:26px;font-weight:600;color:#fff}
+.facts .fl{display:block;font-size:16px;font-weight:500;color:#9fd8ff;margin-bottom:4px}
+.kbd{display:inline-block;border:1px solid #9fb6dd;border-bottom-width:3px;border-radius:7px;padding:0 9px;font-family:var(--mono);font-size:.8em;margin:0 2px;background:rgba(255,255,255,.06)}
+.body .kbd{border-color:#9aa9bf;background:#fff}
+/* ส่วนควบคุม */
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--orange);transition:width .25s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:6;font-family:var(--font);opacity:.35;transition:opacity .2s}
+#hud:hover{opacity:1}
+#hud button{background:rgba(18,48,94,.85);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;height:36px;min-width:38px;font-size:16px;cursor:pointer;padding:0 10px}
+#hud button:hover{background:var(--teal)}
+#count{color:#fff;background:rgba(18,48,94,.85);border-radius:9px;padding:7px 10px;font-size:15px;min-width:80px;text-align:center}
+body.ov #stage{display:none}
+#ov{display:none;position:fixed;inset:0;overflow:auto;padding:26px 32px 60px;z-index:10;background:#0b1424;color:#dbe7ff}
+body.ov #ov{display:block}
+#ov h4{margin:22px 0 10px;font-size:19px;color:#8fe0dc;font-weight:600;border-bottom:1px solid #22324d;padding-bottom:6px}
+#ov .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+#ov .th{background:#16233a;border:2px solid transparent;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+#ov .th:hover,#ov .th.cur{border-color:var(--orange)}
+#ov .th span{color:var(--orange);font-weight:700;margin-right:6px}
+#lb{display:none;position:fixed;inset:0;z-index:20;background:rgba(4,8,16,.95);overflow:auto;padding:18px;text-align:center;cursor:zoom-out}
+#lb.on{display:block}
+#lb img{width:min(100%,2000px);height:auto;border-radius:8px;background:#fff}
+@media print{html,body{overflow:visible;height:auto;background:#fff}#hud,#bar,#ov,#lb,.copy{display:none!important}.slide .no{display:block}
+#stage{position:static;display:block}#deck{transform:none!important;height:auto}
+.slide{display:flex!important;position:relative;width:1600px;height:900px;page-break-after:always;break-after:page;animation:none}}
+@page{size:1600px 900px;margin:0}
+
+.divider .inner .big{margin-top:26px}
+.road .secbox span{font-size:.78em;display:block}
+</style>
+</head>
+<body>
+<!-- สร้างจาก README.md ด้วย tools/build_slides.py · ห้ามแก้ไฟล์นี้ด้วยมือ ให้แก้ README.md แล้วสร้างใหม่ -->
+<div id="stage"><div id="deck">
+<section class="slide cover" style="background-image:url(img/s01-cover.jpg)" data-title="ปก" data-group="เริ่มต้น"><div class="shade"></div><div class="inner"><div class="small">01_week02 · บทที่ 03</div><h1>การสร้าง Docker image สำหรับระบบหลายบัญชีจาก Dockerfile</h1><div class="sub">เขียน Dockerfile แล้ว build ครั้งเดียว ทุกครั้งที่ docker run ได้ yolo1–5 · cyolo1–5 · gyolo1–5 พร้อมใช้</div><div class="hint">กด <span class="kbd">→</span> หรือ <span class="kbd">Space</span> เพื่อไปต่อ · <span class="kbd">O</span> สารบัญ · <span class="kbd">F</span> เต็มจอ · คลิกภาพเพื่อขยาย</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ทั้งบทในภาพเดียว: สั่ง Claude Code app 3 ขั้น ได้ image, container และหลักฐานจากทุกบัญชี" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของบท</div><h2><span class="tt">ทั้งบทในภาพเดียว: สั่ง Claude Code app 3 ขั้น ได้ image, container และหลักฐานจากทุกบัญชี</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-04-lab-flow.png" alt="ทั้งบทในภาพเดียว: สั่ง Claude Code app 3 ขั้น ได้ image, container และหลักฐานจากทุกบัญชี" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>1 · build image (amd64 + arm64)</b> · Claude · ~30 นาที</span></div><div class="stp"><span class="n">2</span><span><b>2 · run container + ล็อกอิน</b> · Claude + ผู้เรียน · ~1 นาที + ล็อกอิน ~15 นาที</span></div><div class="stp"><span class="n">3</span><span><b>3 · ทดสอบ Playwright MCP</b> · Claude · ~5 นาที</span></div></div></div></div></section>
+<section class="slide mid" data-title="บทนี้มี 2 ภาค: เข้าใจองค์ประกอบก่อน แล้วสั่ง Claude Code app ทำ 3 ขั้น" data-group="เริ่มต้น" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของบท</div><h2><span class="tt">บทนี้มี 2 ภาค: เข้าใจองค์ประกอบก่อน แล้วสั่ง Claude Code app ทำ 3 ขั้น</span></h2></header><div class="body"><div class="road"><div class="partbox "><div class="ph">ภาคทฤษฎี<small>3 หัวข้อ</small></div><div class="secbox"><b>1 · เตรียมสภาพแวดล้อมได้ 3 แบบ</b></div><div class="secbox"><b>2 · องค์ประกอบของ Docker และสาม CLI</b></div><div class="secbox"><b>3 · ภาพรวมการทดลอง</b></div></div><div class="partbox lab"><div class="ph">ภาค LAB<small>3 ขั้น · พรอมต์ Copy &amp; Paste</small></div><div class="secbox"><b><b>1 · build image (amd64 + arm64)</b></b><span>Claude Code app · ~30 นาที</span></div><div class="secbox"><b><b>2 · run container + ล็อกอิน</b></b><span>Claude Code app → JupyterLab · ~1 นาที + ล็อกอิน ~15 นาที</span></div><div class="secbox"><b><b>3 · ทดสอบ Playwright MCP</b></b><span>Claude Code app · ~5 นาที</span></div></div></div><div class="note info">รายละเอียดเต็มของทุกหัวข้ออยู่ใน <a href="README.md" target="_blank" rel="noopener"><code>README.md</code></a></div></div></section>
+<section class="slide mid" data-title="วิธีใช้สไลด์นี้" data-group="เริ่มต้น" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของบท</div><h2><span class="tt">วิธีใช้สไลด์นี้</span></h2></header><div class="body"><div class="cards" style="--cols:3"><div class="cardx "><h4>ไปหน้าถัดไป / ก่อนหน้า</h4><p><span class="kbd">→</span> <span class="kbd">Space</span> / <span class="kbd">←</span> หรือปุ่มมุมขวาล่าง</p></div><div class="cardx "><h4>สารบัญทุกหน้า</h4><p><span class="kbd">O</span> แล้วคลิกหน้าที่ต้องการ · <span class="kbd">F</span> เต็มจอ</p></div><div class="cardx "><h4>ขยายภาพ</h4><p>คลิกที่ภาพ · คลิกอีกครั้งหรือกด Esc เพื่อปิด</p></div><div class="cardx warn"><h4>คัดลอกพรอมต์</h4><p>ปุ่ม <b>คัดลอกพรอมต์ทั้งหมด</b> ให้ข้อความเดียวกับ <code>README.md</code> ตรงตัวอักษร</p></div><div class="cardx warn"><h4>ตรวจผลหลังรัน</h4><p>สไลด์ <b>ตรวจผลของคุณ</b> ต่อจากพรอมต์ของแต่ละขั้น ติ๊กได้และจำค่าไว้ในเบราว์เซอร์นี้</p></div><div class="cardx "><h4>เปิดไฟล์จริง</h4><p>ลิงก์สีน้ำเงินเปิดไฟล์ในโฟลเดอร์ของบท · เปิดสไลด์จากโฟลเดอร์ <code>03_MultiAccount_Container</code></p></div></div></div></section>
+<section class="slide divider photo" style="background-image:url(img/s02-theory.jpg)" data-title="ภาคทฤษฎี · image · container · volume และสาม AI CLI" data-group="ภาคทฤษฎี"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ภาคทฤษฎี</div><h1>image · container · volume และสาม AI CLI</h1><div class="sub"><p>เตรียมสภาพแวดล้อมได้ 3 แบบ · องค์ประกอบของ Docker และสาม CLI · ภาพรวมการทดลอง</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="เมื่อลบ container มีเพียงแบบที่ 3 ที่ docker run ใหม่แล้วใช้ต่อได้ทันที" data-group="ภาคทฤษฎี · 1 · สามแบบ" data-max="1.25"><header class="hd"><div class="kicker">ภาคทฤษฎี · 1. เตรียมสภาพแวดล้อมได้ 3 แบบ</div><h2><span class="tt">เมื่อลบ container มีเพียงแบบที่ 3 ที่ docker run ใหม่แล้วใช้ต่อได้ทันที</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-01-three-approaches.png" alt="เมื่อลบ container มีเพียงแบบที่ 3 ที่ docker run ใหม่แล้วใช้ต่อได้ทันที" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>devtools</b> · AI CLI: ไม่มี · เมื่อลบ container: ได้เครื่องมือพื้นฐานชุดเดิม</span></div><div class="stp"><span class="n">2</span><span><b>ติดตั้งภายหลัง</b> · AI CLI: ติดตั้งผ่าน <code>docker exec</code> · เมื่อลบ container: ต้องติดตั้งและล็อกอินใหม่</span></div><div class="stp"><span class="n">3</span><span><b>build จาก Dockerfile (บทนี้)</b> · AI CLI: ติดตั้งไว้ใน image · เมื่อลบ container: <code>docker run</code> ใหม่ ใช้ต่อได้ทันที</span></div><div class="note info">แบบที่ 3 เก็บข้อมูลล็อกอินใน volume <code>ai-accounts</code> จึงไม่หายไปพร้อม container</div></div></div></div></section>
+<section class="slide " data-title="Dockerfile → image → container โดยมี volume เก็บข้อมูลถาวร" data-group="ภาคทฤษฎี · 2 · องค์ประกอบของ Docker" data-max="1.25"><header class="hd"><div class="kicker">ภาคทฤษฎี · 2. องค์ประกอบของ Docker</div><h2><span class="tt">Dockerfile → image → container โดยมี volume เก็บข้อมูลถาวร</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-02-docker-terms.png" alt="Dockerfile → image → container โดยมี volume เก็บข้อมูลถาวร" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Dockerfile</b> ขั้นตอนการสร้าง image ทีละคำสั่ง · <code>MultiAccountDevtool/Dockerfile</code></span></div><div class="stp"><span class="n">2</span><span><b>image</b> ต้นแบบที่อ่านได้อย่างเดียว (read-only) · <code>multi-account:1.0</code></span></div><div class="stp"><span class="n">3</span><span><b>container</b> ตัวที่ทำงานจริง สร้างจาก image ลบแล้วไฟล์ที่เขียนเพิ่มหายไปด้วย · <code>multi-account</code></span></div><div class="stp"><span class="n">4</span><span><b>volume</b> ที่เก็บข้อมูลแยกจาก container ไม่หายเมื่อลบ container · <code>ai-accounts</code> → <code>/root/ai-accounts</code></span></div></div></div></div></section>
+<section class="slide " data-title="โปรแกรมอยู่ใน image ส่วนล็อกอินอยู่ใน volume" data-group="ภาคทฤษฎี · 2 · องค์ประกอบของ Docker" data-max="1.25"><header class="hd"><div class="kicker">ภาคทฤษฎี · 2. องค์ประกอบของ Docker</div><h2><span class="tt">โปรแกรมอยู่ใน image ส่วนล็อกอินอยู่ใน volume</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-03-image-layers.png" alt="โปรแกรมอยู่ใน image ส่วนล็อกอินอยู่ใน volume" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>image</b> <code>multi-account:1.0</code> เก็บโปรแกรมทั้งหมด: Claude Code · Codex CLI · Antigravity CLI</span></div><div class="stp"><span class="n">2</span><span><b>volume</b> <code>ai-accounts</code> เก็บล็อกอิน skills และ MCP</span></div><div class="stp"><span class="n">3</span><span>image <b>ไม่มีข้อมูลล็อกอินอยู่ภายใน</b> จึงแชร์ให้ผู้อื่นได้โดยไม่เปิดเผยบัญชีของเรา</span></div><div class="stp"><span class="n">4</span><span>ทุกครั้งที่ container เริ่มทำงาน installer จะเตรียมโฟลเดอร์ใน volume โดยไม่เขียนทับของเดิม</span></div></div></div></div></section>
+<section class="slide " data-title="สาม CLI ใน container เดียว แต่ละ CLI แยกบัญชีด้วยตัวแปรของตัวเอง" data-group="ภาคทฤษฎี · 2 · องค์ประกอบของ Docker" data-max="1.25"><header class="hd"><div class="kicker">ภาคทฤษฎี · 2. องค์ประกอบของ Docker</div><h2><span class="tt">สาม CLI ใน container เดียว แต่ละ CLI แยกบัญชีด้วยตัวแปรของตัวเอง</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-05-three-clis.png" alt="สาม CLI ใน container เดียว แต่ละ CLI แยกบัญชีด้วยตัวแปรของตัวเอง" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><code>yolo1</code> … <code>yolo5</code> → <b>Claude Code</b> แยกด้วย <code>CLAUDE_CONFIG_DIR</code></span></div><div class="stp"><span class="n">2</span><span><code>cyolo1</code> … <code>cyolo5</code> → <b>Codex CLI</b> แยกด้วย <code>CODEX_HOME</code></span></div><div class="stp"><span class="n">3</span><span><code>gyolo1</code> … <code>gyolo5</code> → <b>Antigravity CLI (agy)</b> แยกด้วย <code>HOME</code> เฉพาะ process ของ agy</span></div><div class="stp"><span class="n">4</span><span>ทุก CLI ใช้ Playwright MCP + Chromium ที่ติดตั้งครั้งเดียวใน image</span></div></div></div></div></section>
+<section class="slide " data-title="gyolo แยกบัญชีด้วย HOME เฉพาะ process ของ agy" data-group="ภาคทฤษฎี · 2 · องค์ประกอบของ Docker" data-max="1.25"><header class="hd"><div class="kicker">ภาคทฤษฎี · 2. องค์ประกอบของ Docker</div><h2><span class="tt">gyolo แยกบัญชีด้วย HOME เฉพาะ process ของ agy</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/n01-home-agy.jpg" alt="gyolo แยกบัญชีด้วย HOME เฉพาะ process ของ agy" width="1448" height="1086"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>Antigravity CLI ไม่มีตัวแปรกำหนดโฟลเดอร์ config</span></div><div class="stp"><span class="n">2</span><span>คำสั่ง <code>gyoloN</code> จึงเปลี่ยน <code>HOME</code> ให้ <b>agy เท่านั้น</b> เป็น <code>/root/ai-accounts/.Gemini/gyoloN</code></span></div><div class="stp"><span class="n">3</span><span><code>HOME</code> ของระบบยังเป็น <code>/root</code> เหมือนเดิม</span></div></div></div></div></section>
+<section class="slide " data-title="ก่อนเริ่ม: เปิดโฟลเดอร์ 03_MultiAccount_Container ใน Claude Code app" data-group="ภาคทฤษฎี · 3 · ภาพรวมการทดลอง" data-max="1.30"><header class="hd"><div class="kicker">ภาคทฤษฎี · 3. ภาพรวมการทดลอง</div><h2><span class="tt">ก่อนเริ่ม: เปิดโฟลเดอร์ 03_MultiAccount_Container ใน Claude Code app</span></h2></header><div class="body"><div class="cards" style="--cols:3"><div class="cardx "><h4><span class="n">1</span>ก่อนเริ่ม</h4><p>Docker Desktop ขึ้น <b>Engine running</b></p></div><div class="cardx "><h4><span class="n">2</span>ก่อนเริ่ม</h4><p>Claude Code app ล็อกอินแล้ว</p></div><div class="cardx "><h4><span class="n">3</span>ก่อนเริ่ม</h4><p>ดิสก์ว่างอย่างน้อย ~10 GB</p></div></div><pre class="code "><button class="copy">คัดลอก</button><span class="t">03_MultiAccount_Container/
+├── 00_Devtool_Container/     ← Dockerfile มาตรฐานของ devtools (input ที่ 1)
+├── prompt_multi_account.md   ← สเปกระบบหลายบัญชี (input ที่ 2)
+└── _solution/                ← เฉลยจากการรันจริง (ถ้าอยากให้ Claude ทำเองทั้งหมด ให้ย้ายออกก่อน)</span></pre><div class="note info">เปิดโฟลเดอร์งาน: Claude Code app → <b>Code</b> → <b>New session</b> → เลือกโฟลเดอร์ <code>03_MultiAccount_Container</code></div></div></section>
+<section class="slide divider photo" style="background-image:url(img/s03-lab.jpg)" data-title="ภาค LAB · สั่ง Claude Code app ทำ 3 ขั้น" data-group="ภาค LAB"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ภาค LAB</div><h1>สั่ง Claude Code app ทำ 3 ขั้น</h1><div class="sub"><p>1 · build image (amd64 + arm64) (~30 นาที) → 2 · run container + ล็อกอิน (~1 นาที + ล็อกอิน ~15 นาที) → 3 · ทดสอบ Playwright MCP (~5 นาที)</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide divider photo" style="background-image:url(img/s04-step1.jpg)" data-title="ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)"><div class="shade"></div><div class="inner"><div class="small">ภาค LAB</div><div class="big">ขั้นที่ 1 จาก 3</div><h1>ให้ Claude สร้าง image (~30 นาที)</h1><div class="sub"><p>เขียน Dockerfile แล้ว build เป็น image <code>multi-account:1.0</code> ทั้ง amd64 และ arm64</p><div class="facts"><div><span class="fl">ทำที่ไหน</span>Claude Code app</div><div><span class="fl">ใครทำ</span>Claude</div><div><span class="fl">เวลา</span>~30 นาที</div><div><span class="fl">ผลจริง</span>0 FAIL ทั้ง 2 สถาปัตยกรรม</div></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ถ้าให้ผู้เรียนแต่ละคนติดตั้งเอง ผลจะต่างกันทุกเครื่อง" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">ถ้าให้ผู้เรียนแต่ละคนติดตั้งเอง ผลจะต่างกันทุกเครื่อง</span><span class="tag">ภาพจำลอง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/photo-04-step1-why.jpg" alt="ถ้าให้ผู้เรียนแต่ละคนติดตั้งเอง ผลจะต่างกันทุกเครื่อง" width="1600" height="900"></div><p class="cap">ถ้าให้ผู้เรียนแต่ละคนติดตั้งเอง ผลจะต่างกันทุกเครื่อง เมื่อเขียนเป็น Dockerfile แล้ว build ครั้งเดียว ทุกเครื่องจะได้ของชุดเดียวกัน</p></div></section>
+<section class="slide " data-title="image ชื่อเดียว รองรับ 2 สถาปัตยกรรม" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">image ชื่อเดียว รองรับ 2 สถาปัตยกรรม</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/n02-multiarch.jpg" alt="image ชื่อเดียว รองรับ 2 สถาปัตยกรรม" width="1448" height="1086"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>build ทั้ง <code>linux/amd64</code> (Windows / Intel) และ <code>linux/arm64</code> (Mac Apple Silicon)</span></div><div class="stp"><span class="n">2</span><span>เครื่องของผู้เรียนจะดึงแบบที่ตรงกับ CPU ของตัวเองให้อัตโนมัติ</span></div><div class="stp"><span class="n">3</span><span>ไม่ต้องรันผ่าน emulation</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 1: Claude แก้ Dockerfile, build และทดสอบ จนผ่านทั้ง 2 สถาปัตยกรรม" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">ขั้นที่ 1: Claude แก้ Dockerfile, build และทดสอบ จนผ่านทั้ง 2 สถาปัตยกรรม</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-06-step1-process.png" alt="ขั้นที่ 1: Claude แก้ Dockerfile, build และทดสอบ จนผ่านทั้ง 2 สถาปัตยกรรม" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>input</b>: <code>00_Devtool_Container</code> (Dockerfile มาตรฐาน) และ <code>prompt_multi_account.md</code> (สเปก)</span></div><div class="stp"><span class="n">2</span><span><b>Claude Code app</b> คัดลอก แก้ Dockerfile, <code>docker buildx build</code> แล้วทดสอบ ถ้าไม่ผ่านวนกลับไปแก้</span></div><div class="stp"><span class="n">3</span><span><b>output</b>: โฟลเดอร์ <code>MultiAccountDevtool</code> และ image <code>multi-account:1.0</code> แบบ linux/amd64 และ linux/arm64</span></div><div class="note info">เฉลยจากการรันจริงอยู่ที่ <a href="_solution/MultiAccountDevtool/" target="_blank" rel="noopener"><code>_solution/MultiAccountDevtool/</code></a> (ถ้าอยากให้ Claude ทำเองทั้งหมด ให้ย้ายออกก่อน)</div></div></div></div></section>
+<section class="slide " data-title="สเปก prompt_multi_account.md มี 5 หัวข้อ" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">สเปก prompt_multi_account.md มี 5 หัวข้อ</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/n03-spec.jpg" alt="สเปก prompt_multi_account.md มี 5 หัวข้อ" width="1448" height="1086"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ฐานของ image</b>: Dockerfile ในโฟลเดอร์ Input (บทนี้ใช้ <code>00_Devtool_Container</code>) + AI CLI 3 ตัว (pin เวอร์ชัน) รองรับ amd64 และ arm64</span></div><div class="stp"><span class="n">2</span><span><b>เป้าหมาย</b>: <code>yolo1–5</code>, <code>cyolo1–5</code>, <code>gyolo1–5</code> แยกโฟลเดอร์ต่อบัญชี และ <code>shared</code> สำหรับ skill และ MCP กลางของแต่ละ CLI</span></div><div class="stp"><span class="n">3</span><span><b>กติกา</b>: แยก credential ต่อบัญชี, installer รันซ้ำได้ไม่ทับของเดิม, MCP ตัวแรกคือ Playwright, skill ตัวอย่าง <code>shared-check</code></span></div><div class="stp"><span class="n">4</span><span><b>ข้อเท็จจริงจากการทดลอง</b>: ข้อควรรู้เฉพาะของแต่ละ CLI เพื่อไม่ต้องลองผิดลองถูก</span></div><div class="stp"><span class="n">5</span><span><b>ทดสอบ · รายงาน</b>: เกณฑ์ PASS/FAIL/SKIP และรายงาน 3 ไฟล์</span></div><div class="note info">อ่านฉบับเต็มได้ที่ <a href="prompt_multi_account.md" target="_blank" rel="noopener"><code>prompt_multi_account.md</code></a></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 1 · สร้าง image" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 1 · สร้าง image</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b> (อนุญาตคำสั่ง <code>docker</code> เมื่อระบบถาม)</span><span class="plabel">ส่วนที่ 1/3 · บรรทัด 1–16 จาก 53</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t"># สร้าง Docker image `multi-account:1.0` ที่เปิดมาแล้วใช้หลายบัญชี AI ได้ทันที
+
+## 1. Input · Spec · Output
+
+**Input** · `./00_Devtool_Container`
+โฟลเดอร์ที่มี Dockerfile ใช้เป็นฐานของ image (ไม่แก้ไฟล์ในโฟลเดอร์นี้)
+
+**Spec** · `./prompt_multi_account.md`
+สเปกระบบหลายบัญชี ทุกข้อต้องเป็นจริงใน image
+ส่วน "ข้อเท็จจริงจากการทดลอง" ให้ลองกับ CLI เวอร์ชันที่ติดตั้งจริงก่อนใช้ (ดู flag ด้วย `--help`)
+
+**Output** · `./MultiAccountDevtool` และ image `multi-account:1.0`
+คัดลอก Input มาเป็นโฟลเดอร์นี้ แล้วแก้ในนี้เท่านั้น (ถ้ามีอยู่แล้ว ให้เทียบกับ Spec แล้วแก้เฉพาะที่ขาด)
+
+## 2. สิ่งที่ต้องอยู่ใน image</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 1 · สร้าง image" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 1 · สร้าง image</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b> (อนุญาตคำสั่ง <code>docker</code> เมื่อระบบถาม)</span><span class="plabel">ส่วนที่ 2/3 · บรรทัด 17–37 จาก 53</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">- Claude Code, Codex CLI, Antigravity CLI และ Playwright MCP (pin เวอร์ชันทุกตัว) + Chromium + ฟอนต์ไทย
+- installer และคำสั่ง `yolo1..5` / `cyolo1..5` / `gyolo1..5` ใน `/usr/local/bin`
+  ใช้ได้ทั้งใน JupyterLab Terminal และ `docker exec`
+- ไม่มีข้อมูลล็อกอินใน image: `/root/ai-accounts` เป็น volume
+  และ installer รันทุกครั้งที่ container start โดยไม่ทับของเดิม
+- คง Docker-in-Docker และ JupyterLab ไว้
+- รองรับ `linux/amd64` และ `linux/arm64` (Mac Apple Silicon) ใน image ชื่อเดียว
+
+## 3. Build
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t multi-account:1.0 --load ./MultiAccountDevtool
+```
+
+## 4. ทดสอบ
+
+ใช้ container และ volume ทดสอบชื่อใหม่ แล้วลบทิ้งเมื่อเสร็จ รายงาน PASS / FAIL / SKIP ตามจริง
+ข้อที่ต้องล็อกอินให้เป็น SKIP ห้ามล็อกอินแทนผม
+
+**สถาปัตยกรรมของเครื่องนี้**</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 1 · สร้าง image" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 1 · สร้าง image</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b> (อนุญาตคำสั่ง <code>docker</code> เมื่อระบบถาม)</span><span class="plabel">ส่วนที่ 3/3 · บรรทัด 38–53 จาก 53</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">- `yolo1..5` / `cyolo1..5` / `gyolo1..5 --version` ครบ 15 คำสั่ง และ config root คนละโฟลเดอร์
+- skill `shared-check` ทุกบัญชีชี้ไปไฟล์เดียวกันใน shared ของ CLI นั้น
+- `cyolo1 mcp list` และ `gyolo1 mcp list` เห็น `playwright`
+- Playwright MCP ผ่าน stdio เปิด https://example.com แล้ว screenshot ได้
+- installer รอบ 2 ไม่ทับของเดิม และ `.bashrc` ไม่ถูกแก้
+- ลบ container แล้วสร้างใหม่ ของใน volume ยังอยู่
+- JupyterLab `/lab` ตอบ `200`
+
+**อีกสถาปัตยกรรมหนึ่ง** (รันผ่าน emulation ด้วย `--platform`)
+
+- `uname -m` ถูกต้อง และ 15 คำสั่ง `--version` ครบ
+
+## 5. รายงาน
+
+- เขียนรายงานตามหัวข้อ "รายงาน" ของ Spec ไว้ใน Output (`./MultiAccountDevtool`) ห้ามมี secret
+- สรุปเป็นตารางสั้น ๆ: ผลทดสอบแยกตามสถาปัตยกรรม · ขนาด image · เวลา build แล้วหยุด</span></pre></div></section>
+<section class="slide cslide" data-title="ตรวจผลของคุณ · ขั้นที่ 1 · สร้าง image" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">ตรวจผลของคุณ · ขั้นที่ 1 · สร้าง image</span><span class="tag">Checklist</span></h2></header><div class="body"><div class="checks"><label class="chk"><input type="checkbox" data-k="ขั้นที่ 1-0"><span>image <code>multi-account:1.0</code> มีทั้ง linux/amd64 และ linux/arm64</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 1-1"><span>ตารางผลทดสอบแยกตามสถาปัตยกรรม <b>ไม่มี FAIL</b> และข้อที่ต้องล็อกอินเป็น SKIP</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 1-2"><span>arm64 (ผ่าน emulation): <code>uname -m</code> ได้ <code>aarch64</code> และ 15 คำสั่ง <code>--version</code> ครบ</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 1-3"><span>โฟลเดอร์ <code>MultiAccountDevtool/</code> มี Dockerfile · start.sh · multi-account/ · docker-compose.yml และรายงาน 3 ไฟล์ (ไม่มี secret)</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 1-4"><span>container และ volume ทดสอบถูกลบแล้ว ส่วน volume <code>ai-accounts</code> ไม่ถูกแตะ</span></label></div><div class="note result">ผลของผู้สอน: <b>0 FAIL ทั้ง 2 สถาปัตยกรรม</b> (ข้อที่ต้องล็อกอิน = SKIP) amd64 ทดสอบครบทุกข้อ arm64 รันผ่าน emulation ได้ <code>aarch64</code> และ 15 คำสั่งครบ ดาวน์โหลดสถาปัตยกรรมละ ~1.3 GB ได้ Claude Code 2.1.330 · Codex CLI 0.171.0 · Antigravity CLI 1.5.15 · Playwright MCP 0.0.86</div><div class="note eye"><span class="lbl">หมายเหตุ</span><span>ผลขึ้นกับ AI และเครื่องของผู้เรียน ตัวเลข เวลา และราคาของคุณอาจต่างจากของผู้สอนได้</span></div></div></section>
+<section class="slide mid" data-title="ผลจริงของขั้นที่ 1: ไม่มี FAIL ทั้ง 2 สถาปัตยกรรม" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">ผลจริงของขั้นที่ 1: ไม่มี FAIL ทั้ง 2 สถาปัตยกรรม</span><span class="tag">ผลของรอบตัวอย่าง</span></h2></header><div class="body"><div class="tiles"><div class="tile ok"><div class="k">ผลทดสอบ</div><div class="num">0 FAIL</div><div class="s">ทั้ง 2 สถาปัตยกรรม · ข้อที่ต้องล็อกอิน = SKIP</div></div><div class="tile ok"><div class="k">arm64 ผ่าน emulation</div><div class="num"><code>aarch64</code></div><div class="s">และ 15 คำสั่ง ครบ</div></div><div class="tile "><div class="k">ขนาดดาวน์โหลด</div><div class="num">~1.3 GB</div><div class="s">ต่อสถาปัตยกรรม</div></div></div><div class="note info">เวอร์ชันที่ติดตั้ง: Claude Code 2.1.330 · Codex CLI 0.171.0 · Antigravity CLI 1.5.15 · Playwright MCP 0.0.86</div></div></section>
+<section class="slide " data-title="ตารางผลทดสอบจริง: amd64 ทดสอบครบทุกข้อ arm64 ได้ aarch64 และ 15/15" data-group="ขั้นที่ 1 · ให้ Claude สร้าง image (~30 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 1 จาก 3 · ให้ Claude สร้าง image (~30 นาที)</div><h2><span class="tt">ตารางผลทดสอบจริง: amd64 ทดสอบครบทุกข้อ arm64 ได้ aarch64 และ 15/15</span><span class="tag">ภาพหน้าจอจริง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/c01-step1-table.jpg" alt="ตารางผลทดสอบจริง: amd64 ทดสอบครบทุกข้อ arm64 ได้ aarch64 และ 15/15" width="1648" height="928"></div><p class="cap">ส่วนหนึ่งของคำตอบจริงจาก Claude · เวลา build ~19 นาที · <a href="img/desktop-step1-result.png" target="_blank" rel="noopener">ภาพเต็ม</a></p></div></section>
+<section class="slide divider photo" style="background-image:url(img/s05-step2.jpg)" data-title="ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)"><div class="shade"></div><div class="inner"><div class="small">ภาค LAB</div><div class="big">ขั้นที่ 2 จาก 3</div><h1>สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</h1><div class="sub"><p>สร้าง container <code>multi-account</code> จาก image แล้วผู้เรียนล็อกอินเอง</p><div class="facts"><div><span class="fl">ทำที่ไหน</span>Claude Code app → JupyterLab</div><div><span class="fl">ใครทำ</span>Claude + ผู้เรียน</div><div><span class="fl">เวลา</span>~1 นาที + ล็อกอิน ~15 นาที</div><div><span class="fl">ผลจริง</span>container พร้อมใน 2.4 วินาที</div></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ขั้นที่ 2: docker run สร้าง container ที่มีครบ 3 CLI และต่อกับ volume" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">ขั้นที่ 2: docker run สร้าง container ที่มีครบ 3 CLI และต่อกับ volume</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/concept-07-step2-run.png" alt="ขั้นที่ 2: docker run สร้าง container ที่มีครบ 3 CLI และต่อกับ volume" width="1600" height="900"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ถ้าไม่ได้ทำขั้นที่ 1 พรอมต์นี้จะดึง image สำเร็จรูป <code>tuchsanai/multi-account:1</code> จาก Docker Hub มาใช้แทน (มีทั้ง amd64 และ arm64 เครื่อง Mac จะได้ arm64 อัตโนมัติ)</span></div><div class="stp"><span class="n">2</span><span><code>docker run</code> สร้าง container <code>multi-account</code> · <code>PORT เริ่มที่ 8886 ถ้าชนใช้เลขว่างถัดไป</code></span></div><div class="stp"><span class="n">3</span><span><code>-v ai-accounts:/root/ai-accounts</code> เชื่อม volume เก็บล็อกอิน skills และ MCP</span></div><div class="stp"><span class="n">4</span><span>ตรวจผ่าน <code>docker exec</code>: เวอร์ชัน · <code>mcp list</code> · สถานะล็อกอินทุกบัญชี</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 2 · สร้าง container" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 2 · สร้าง container</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b></span><span class="plabel">ส่วนที่ 1/2 · บรรทัด 1–21 จาก 46</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t"># รัน container ชื่อ `multi-account` จาก image `multi-account:1.0`
+
+## 1. เตรียม image และ container
+
+ถ้ายังไม่มี image `multi-account:1.0` ให้ดึงจาก Docker Hub แล้วตั้งชื่อใหม่
+
+```bash
+docker pull tuchsanai/multi-account:1
+docker tag  tuchsanai/multi-account:1 multi-account:1.0
+```
+
+ถ้ามี container ชื่อ `multi-account` อยู่แล้ว ให้ลบออก (ห้ามลบ volume `ai-accounts`)
+
+```bash
+docker rm -f multi-account
+```
+
+## 2. สร้าง container
+
+`PORT` เริ่มที่ `8886` ถ้าชนใช้เลขว่างถัดไป</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 2 · สร้าง container" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 2 · สร้าง container</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b></span><span class="plabel">ส่วนที่ 2/2 · บรรทัด 22–46 จาก 46</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">```bash
+docker run -dit \
+  --name multi-account \
+  --privileged \
+  -p &lt;PORT&gt;:8888 \
+  -v ai-accounts:/root/ai-accounts \
+  multi-account:1.0 \
+  bash -c 'F=/etc/jupyter/jupyter_server_config.py; grep -q delete_to_trash $F || printf "c.FileContentsManager.delete_to_trash = False\nc.FileContentsManager.always_delete_dir = True\n" &gt;&gt; $F; exec /usr/local/bin/start.sh'
+```
+
+จับเวลาตั้งแต่ `docker run` จน `http://localhost:&lt;PORT&gt;/lab` ตอบ `200`
+
+## 3. ตรวจผ่าน `docker exec` แล้วสรุปเป็นตาราง
+
+- `yolo1..5`, `cyolo1..5` และ `gyolo1..5 --version`
+- `cyolo1 mcp list` และ `gyolo1 mcp list` ต้องเห็น `playwright`
+- สถานะล็อกอินทุกบัญชี (ห้ามล็อกอินแทนผม ห้ามแก้ไฟล์ใด ๆ)
+  - Claude: `yolo1` ถึง `yolo5` ใช้คำสั่ง `yoloN auth status` แล้วดูเฉพาะค่า `loggedIn`
+  - Codex: `cyolo1` ถึง `cyolo5` ใช้คำสั่ง `cyoloN login status`
+  - Antigravity: `gyolo1` ถึง `gyolo5` ใช้คำสั่ง `gyoloN models` (ขึ้น "Please sign in" = ยังไม่ล็อกอิน)
+- ตารางสรุป: image มาจากไหน (build เอง / pull) · URL ของ JupyterLab · เวลาที่ใช้
+  และตาราง บัญชี | เวอร์ชัน | ล็อกอินแล้ว/ยัง ห้ามแสดงอีเมล ชื่อองค์กร หรือ token
+- ถ้ามีบัญชีที่ยังไม่ล็อกอิน ให้บอกวิธีล็อกอินใน JupyterLab Terminal
+  (พิมพ์ `yoloN` แล้วเลือก Claude account with subscription / พิมพ์ `cyoloN login --device-auth`
+  / พิมพ์ `gyoloN` แล้วเปิดลิงก์ล็อกอิน Google และวางรหัสกลับมา)</span></pre></div></section>
+<section class="slide " data-title="option ของ docker run แต่ละตัวทำหน้าที่อะไร" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">option ของ docker run แต่ละตัวทำหน้าที่อะไร</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c2"><thead><tr><th>option</th><th>ความหมาย</th></tr></thead><tbody><tr><td><code>-dit</code></td><td>รันเบื้องหลัง (<code>-d</code>) พร้อม terminal (<code>-it</code>)</td></tr><tr><td><code>--name multi-account</code></td><td>ตั้งชื่อ container</td></tr><tr><td><code>--privileged</code></td><td>เปิดให้ใช้ Docker-in-Docker</td></tr><tr><td><code>-p &lt;PORT&gt;:8888</code></td><td>เปิด JupyterLab ที่ <code>http://localhost:&lt;PORT&gt;/lab</code></td></tr><tr><td><code>-v ai-accounts:/root/ai-accounts</code></td><td>volume เก็บล็อกอิน skill และ MCP ไม่หายเมื่อลบ container</td></tr><tr><td><code>bash -c '...'</code></td><td>ให้ JupyterLab ลบไฟล์/โฟลเดอร์ได้จริง แล้วเริ่ม <code>start.sh</code></td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span><code>--privileged</code> เปิดให้ใช้ Docker-in-Docker · <code>-v</code> ทำให้ล็อกอินไม่หายเมื่อลบ container</span></div></div></section>
+<section class="slide cslide" data-title="ตรวจผลของคุณ · ขั้นที่ 2 · สร้าง container" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">ตรวจผลของคุณ · ขั้นที่ 2 · สร้าง container</span><span class="tag">Checklist</span></h2></header><div class="body"><div class="checks"><label class="chk"><input type="checkbox" data-k="ขั้นที่ 2-0"><span><code>http://localhost:&lt;PORT&gt;/lab</code> ตอบ <code>200</code> (PORT เริ่มที่ 8886)</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 2-1"><span><code>yolo1..5</code> · <code>cyolo1..5</code> · <code>gyolo1..5 --version</code> ครบ 15 คำสั่ง</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 2-2"><span><code>cyolo1 mcp list</code> และ <code>gyolo1 mcp list</code> เห็น <code>playwright</code></span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 2-3"><span>ตาราง บัญชี | เวอร์ชัน | ล็อกอินแล้ว/ยัง โดยไม่แสดงอีเมล ชื่อองค์กร หรือ token</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 2-4"><span>Docker Desktop เห็น container <code>multi-account</code> สร้างจาก image <code>multi-account:1.0</code></span></label></div><div class="note result">ผลของผู้สอน: container พร้อมใน <b>2.4 วินาที</b> ครบ 15 คำสั่ง และ <code>cyolo1</code> / <code>gyolo1 mcp list</code> เห็น <code>playwright</code></div><div class="note eye"><span class="lbl">หมายเหตุ</span><span>เครื่องตัวอย่างใช้ volume <code>ai-accounts</code> ที่เคยล็อกอิน yolo และ cyolo ไว้แล้ว จึงขึ้น ✅ บางบัญชี ของผู้เรียนจะเป็น ❌ ทั้งหมดจนกว่าจะล็อกอิน</span></div></div></section>
+<section class="slide mid" data-title="ผลจริงของขั้นที่ 2: container พร้อมใน 2.4 วินาที" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">ผลจริงของขั้นที่ 2: container พร้อมใน 2.4 วินาที</span><span class="tag">ผลของรอบตัวอย่าง</span></h2></header><div class="body"><div class="tiles"><div class="tile ok"><div class="k">docker run → /lab ตอบ 200</div><div class="num">2.4<small> วินาที</small></div><div class="s">พร้อมใช้</div></div><div class="tile ok"><div class="k">คำสั่งที่ใช้ได้</div><div class="num">15<small> คำสั่ง</small></div><div class="s">yolo · cyolo · gyolo อย่างละ 5</div></div><div class="tile ok"><div class="k">mcp list</div><div class="num"><code>playwright</code></div><div class="s">เห็นทั้ง <code>cyolo1</code> และ <code>gyolo1</code></div></div></div></div></section>
+<section class="slide " data-title="Claude รายงานที่มาของ image, URL และเวลาที่ใช้" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">Claude รายงานที่มาของ image, URL และเวลาที่ใช้</span><span class="tag">ภาพหน้าจอจริง</span></h2></header><div class="body"><div class="fig wide"><img src="img/c02-step2-container.jpg" alt="Claude รายงานที่มาของ image, URL และเวลาที่ใช้" width="1644" height="525"></div><p class="cap">ส่วนหนึ่งของคำตอบจริงจาก Claude · image มีอยู่ในเครื่องแล้ว จึงไม่ต้อง pull ใหม่ · <a href="img/desktop-step2-result.png" target="_blank" rel="noopener">ภาพเต็ม</a></p></div></section>
+<section class="slide " data-title="ทั้ง 15 บัญชีมีเวอร์ชันครบ บัญชีที่ยังไม่ล็อกอินขึ้น ❌" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">ทั้ง 15 บัญชีมีเวอร์ชันครบ บัญชีที่ยังไม่ล็อกอินขึ้น ❌</span><span class="tag">ภาพหน้าจอจริง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/c03-step2-accounts.jpg" alt="ทั้ง 15 บัญชีมีเวอร์ชันครบ บัญชีที่ยังไม่ล็อกอินขึ้น ❌" width="1644" height="872"></div><p class="cap">ส่วนหนึ่งของคำตอบจริงจาก Claude · ของผู้เรียนจะเป็น ❌ ทั้งหมดจนกว่าจะล็อกอิน · <a href="img/desktop-step2-result.png" target="_blank" rel="noopener">ภาพเต็ม</a></p></div></section>
+<section class="slide " data-title="Docker Desktop ยืนยันว่า container ทำงานจาก image multi-account:1.0" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">Docker Desktop ยืนยันว่า container ทำงานจาก image multi-account:1.0</span><span class="tag">ภาพหน้าจอจริง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/docker-desktop-multi-account.png" alt="Docker Desktop ยืนยันว่า container ทำงานจาก image multi-account:1.0" width="1684" height="1052"></div><p class="cap">ภาพจริงจาก Docker Desktop · ค้นหา <code>multi-account</code> แล้วดูจุดสีเขียว ชื่อ image และ port</p></div></section>
+<section class="slide " data-title="ล็อกอิน 1 บัญชีต่อ 1 แท็บ Terminal" data-group="ขั้นที่ 2 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 2 จาก 3 · สร้าง container + ล็อกอิน (~1 นาที + ล็อกอิน)</div><h2><span class="tt">ล็อกอิน 1 บัญชีต่อ 1 แท็บ Terminal</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/n04-login.jpg" alt="ล็อกอิน 1 บัญชีต่อ 1 แท็บ Terminal" width="1448" height="1086"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิด JupyterLab ตาม URL ที่ Claude แจ้ง → <b>+ → Terminal</b> ล็อกอิน 1 บัญชีต่อ 1 แท็บ อย่างน้อย CLI ละ 1 บัญชี</span></div><div class="stp"><span class="n">2</span><span><code>yolo1</code> … <code>yolo5</code> → <b>Claude account with subscription</b></span></div><div class="stp"><span class="n">3</span><span><code>cyolo1</code> … <code>cyolo5</code> → <b>Sign in with ChatGPT</b></span></div><div class="stp"><span class="n">4</span><span><code>gyolo1</code> … <code>gyolo5</code> → <b>เปิดลิงก์ในเบราว์เซอร์</b></span></div><div class="note bad">ผู้เรียนต้องล็อกอินด้วยตนเองเสมอ ห้ามส่งรหัสผ่าน code หรือ URL ที่มี token ให้ AI หรือผู้อื่น</div></div></div></div></section>
+<section class="slide divider photo" style="background-image:url(img/s06-step3.jpg)" data-title="ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)"><div class="shade"></div><div class="inner"><div class="small">ภาค LAB</div><div class="big">ขั้นที่ 3 จาก 3</div><h1>ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</h1><div class="sub"><p>แต่ละบัญชีใช้ <b>Playwright MCP</b> ใน image เปิด Google Flights ค้นหา BKK → Tokyo แล้ว screenshot ทุกขั้น <b>ค้นหาอย่างเดียว ไม่จอง ไม่ชำระเงิน</b></p><div class="facts"><div><span class="fl">ทำที่ไหน</span>Claude Code app</div><div><span class="fl">ใครทำ</span>Claude</div><div><span class="fl">เวลา</span>~5 นาที</div><div><span class="fl">ผลจริง</span>อันดับ 1 คือ Vietjet THB 7,472</div></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ทุกบัญชีที่ล็อกอินแล้วค้นหาเที่ยวบินผ่าน Playwright MCP" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.25"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">ทุกบัญชีที่ล็อกอินแล้วค้นหาเที่ยวบินผ่าน Playwright MCP</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="img/n05-step3-test.jpg" alt="ทุกบัญชีที่ล็อกอินแล้วค้นหาเที่ยวบินผ่าน Playwright MCP" width="1448" height="1086"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ใช้ skill <code>shared-check</code> แล้วบอกรหัสที่ได้</span></div><div class="stp"><span class="n">2</span><span>ใช้ MCP ชื่อ <code>playwright</code> เท่านั้น ห้ามใช้ curl, python หรือ web search</span></div><div class="stp"><span class="n">3</span><span>ค้นหาเที่ยวบินเที่ยวเดียว Bangkok (BKK) ไป Tokyo ชั้นประหยัด ผู้ใหญ่ 1 คน วันที่ 15 ของเดือนถัดไป</span></div><div class="stp"><span class="n">4</span><span>screenshot ทุกขั้นตอนด้วย tool ของ playwright: เปิดหน้าเว็บ, กรอกต้นทาง-ปลายทาง, เลือกวันที่, ผลค้นหา</span></div><div class="note bad">ค้นหาอย่างเดียว ห้ามกดจอง ห้ามกรอกข้อมูลส่วนตัว ห้ามชำระเงิน ห้ามล็อกอินเว็บไซต์ใด</div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 3 · ทดสอบ Playwright MCP" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 3 · ทดสอบ Playwright MCP</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app แล้วกด Enter</b></span><span class="plabel">พรอมต์ทั้งหมด 14 บรรทัด</span><button class="copy big" data-full="prompt2">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t"># ทดสอบ Playwright MCP ในบัญชีที่ล็อกอินแล้วของ container `multi-account`
+
+ให้แต่ละบัญชีที่ล็อกอินแล้วใน container `multi-account` ทำงานต่อไปนี้ ห้ามล็อกอินแทนผม ห้ามแก้ไฟล์ตั้งค่า
+
+- ใช้ skill `shared-check` แล้วบอกรหัสที่ได้
+- ใช้ MCP ชื่อ `playwright` เท่านั้น ห้ามใช้ curl, python หรือ web search
+- เปิด https://www.google.com/travel/flights?hl=en
+- ค้นหาเที่ยวบินเที่ยวเดียว Bangkok (BKK) ไป Tokyo ชั้นประหยัด ผู้ใหญ่ 1 คน วันที่ 15 ของเดือนถัดไป
+- ค้นหาอย่างเดียว ห้ามกดจอง ห้ามกรอกข้อมูลส่วนตัว ห้ามชำระเงิน ห้ามล็อกอินเว็บไซต์ใด
+- screenshot ทุกขั้นตอนด้วย tool ของ playwright: เปิดหน้าเว็บ, กรอกต้นทาง-ปลายทาง, เลือกวันที่, ผลค้นหา
+- รายงานเที่ยวบิน 3 อันดับแรก (สายการบิน เวลาออก-ถึง ราคา) ตามที่เห็นบนหน้าเว็บ
+  ถ้าหน้าเว็บไม่แสดงผล ให้รายงานตามจริง ห้ามเดาราคา
+
+เมื่อทุกบัญชีเสร็จ ให้รวม screenshot ของแต่ละบัญชีตามลำดับขั้นตอนเป็นไฟล์ `./evidence/&lt;บัญชี&gt;.gif` บนเครื่องผม</span></pre></div></section>
+<section class="slide cslide" data-title="ตรวจผลของคุณ · ขั้นที่ 3 · ทดสอบ Playwright MCP" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">ตรวจผลของคุณ · ขั้นที่ 3 · ทดสอบ Playwright MCP</span><span class="tag">Checklist</span></h2></header><div class="body"><div class="checks"><label class="chk"><input type="checkbox" data-k="ขั้นที่ 3-0"><span>ทุกบัญชีที่ล็อกอินแล้วบอกรหัสจาก skill <code>shared-check</code></span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 3-1"><span>ทุกบัญชีใช้ MCP <code>playwright</code> เท่านั้น ไม่ใช้ curl, python หรือ web search</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 3-2"><span>มีไฟล์ <code>./evidence/&lt;บัญชี&gt;.gif</code> ของทุกบัญชี แต่ละไฟล์มี 4 ภาพ</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 3-3"><span>รายงานเที่ยวบิน 3 อันดับแรก หรือรายงานตามจริงเมื่อหน้าเว็บไม่แสดงผล โดยไม่เดาราคา</span></label><label class="chk"><input type="checkbox" data-k="ขั้นที่ 3-4"><span>ไม่มีการจอง กรอกข้อมูลส่วนตัว ชำระเงิน หรือล็อกอินเว็บไซต์</span></label></div><div class="note result">ผลของผู้สอน: ทุกบัญชีที่ล็อกอินแล้ว (<code>yolo1–3</code>, <code>cyolo1–2</code>, <code>gyolo1</code>) ใช้ skill และ Playwright MCP ได้ครบ <code>yolo3</code> และ <code>gyolo1</code> ได้ 3 อันดับแรกตรงกัน อันดับ 1 คือ Vietjet THB 7,472 ส่วนบัญชีที่เหลือ Google Flights ขึ้น "Oops, something went wrong." Claude จึงรายงานตามจริงโดยไม่เดาราคา</div><div class="note eye"><span class="lbl">หมายเหตุ</span><span>เครื่องตัวอย่างใช้ volume เดิมที่มี skill <code>shared-check</code> จากแลปก่อนหน้า <code>yolo</code> กับ <code>cyolo</code> จึงได้รหัสขึ้นต้น <code>claude</code> เหมือนกัน ใน volume ใหม่ของผู้เรียน แต่ละ CLI จะได้รหัสของตัวเอง (<code>claude</code> / <code>codex</code> / <code>agy</code>) ราคาและผลของผู้เรียนจะต่างตามวันที่ค้นหา</span></div></div></section>
+<section class="slide mid" data-title="ทุกบัญชีใช้ skill และ Playwright MCP ได้ แต่ Google Flights แสดงผลเพียง 2 บัญชี" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.40"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">ทุกบัญชีใช้ skill และ Playwright MCP ได้ แต่ Google Flights แสดงผลเพียง 2 บัญชี</span><span class="tag">ผลของรอบตัวอย่าง</span></h2></header><div class="body"><div class="tiles"><div class="tile ok"><div class="k">ใช้ skill + Playwright MCP ได้</div><div class="num">6<small> บัญชี</small></div><div class="s">yolo1–3, cyolo1–2, gyolo1</div></div><div class="tile ok"><div class="k">อันดับ 1 · yolo3 และ gyolo1</div><div class="num">THB 7,472</div><div class="s">Vietjet</div></div><div class="tile bad"><div class="k">หน้าเว็บ error</div><div class="num">4<small> บัญชี</small></div><div class="s">yolo1 yolo2 cyolo1 cyolo2 · Oops, something went wrong.</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>Claude จึงรายงานตามจริงโดยไม่เดาราคา</span></div></div></section>
+<section class="slide " data-title="Claude รายงานผลรายบัญชี และ 3 อันดับแรกที่ yolo3 และ gyolo1 ได้ตรงกัน" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">Claude รายงานผลรายบัญชี และ 3 อันดับแรกที่ yolo3 และ gyolo1 ได้ตรงกัน</span><span class="tag">ภาพหน้าจอจริง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/c04-step3-result.jpg" alt="Claude รายงานผลรายบัญชี และ 3 อันดับแรกที่ yolo3 และ gyolo1 ได้ตรงกัน" width="1648" height="985"></div><p class="cap">ส่วนหนึ่งของคำตอบจริงจาก Claude · บัญชีที่เว็บ error รายงานตามจริง ไม่เดาราคา · yolo กับ cyolo จึงได้รหัสขึ้นต้น claude เหมือนกัน ใน volume ใหม่ของผู้เรียน แต่ละ CLI จะได้รหัสของตัวเอง (claude / codex / agy) · <a href="img/desktop-step3-playwright-result.png" target="_blank" rel="noopener">ภาพเต็ม</a></p></div></section>
+<section class="slide " data-title="หลักฐานจริงจาก yolo3.gif · Claude Code" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">หลักฐานจริงจาก <code>yolo3.gif</code> · Claude Code</span><span class="tag">GIF จริงจาก ./evidence/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/step3-evidence-yolo3.gif" alt="หลักฐานจริงจาก yolo3.gif · Claude Code" width="1600" height="900"></div><p class="cap">เปิด Google Flights, กรอก Bangkok BKK ไป Tokyo, เลือก Tue Dec 15, ผลค้นหาอันดับ 1 Vietjet THB 7,472 · GIF 4 ภาพตามลำดับ: เปิดหน้าเว็บ → กรอกต้นทาง-ปลายทาง → เลือกวันที่ → ผลค้นหา</p></div></section>
+<section class="slide " data-title="หลักฐานจริงจาก gyolo1.gif · Antigravity CLI" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">หลักฐานจริงจาก <code>gyolo1.gif</code> · Antigravity CLI</span><span class="tag">GIF จริงจาก ./evidence/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/step3-evidence-gyolo1.gif" alt="หลักฐานจริงจาก gyolo1.gif · Antigravity CLI" width="1600" height="900"></div><p class="cap">เปิด Google Flights, กรอก Bangkok BKK ไป Tokyo, เลือก Tue Dec 15, ผลค้นหาอันดับ 1 Vietjet THB 7,472 · GIF 4 ภาพตามลำดับ: เปิดหน้าเว็บ → กรอกต้นทาง-ปลายทาง → เลือกวันที่ → ผลค้นหา</p></div></section>
+<section class="slide " data-title="หลักฐานจริงจาก cyolo1.gif · Codex CLI (เว็บ error)" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.10"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">หลักฐานจริงจาก <code>cyolo1.gif</code> · Codex CLI (เว็บ error)</span><span class="tag">GIF จริงจาก ./evidence/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="img/step3-evidence-cyolo1.gif" alt="หลักฐานจริงจาก cyolo1.gif · Codex CLI (เว็บ error)" width="1600" height="900"></div><p class="cap">กรอกเงื่อนไขครบ แต่หลังค้นหาหน้าเว็บขึ้น Oops, something went wrong. · GIF 4 ภาพตามลำดับ: เปิดหน้าเว็บ → กรอกต้นทาง-ปลายทาง → เลือกวันที่ → ผลค้นหา</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 3 · รันบัญชีที่เว็บ error ซ้ำ" data-group="ขั้นที่ 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)" data-max="1.45"><header class="hd"><div class="kicker">ภาค LAB · ขั้นที่ 3 จาก 3 · ทดสอบ Playwright MCP ทุกบัญชีที่ล็อกอินแล้ว (~5 นาที)</div><h2><span class="tt">พรอมต์ · ขั้นที่ 3 · รันบัญชีที่เว็บ error ซ้ำ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b> คัดลอกกล่องนี้ → Claude Code app (เปลี่ยน cyolo1 เป็นบัญชีที่ error)</b></span><span class="plabel">พรอมต์ทั้งหมด 1 บรรทัด</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">รัน cyolo1 ซ้ำอีกรอบด้วยพรอมต์เดิม แล้วอัปเดตหลักฐาน</span></pre></div></section>
+<section class="slide divider photo" style="background-image:url(img/s07-summary.jpg)" data-title="สรุป · สิ่งที่ได้จากบทนี้" data-group="สรุป"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">สรุป</div><h1>สิ่งที่ได้จากบทนี้</h1><div class="sub"><p>image ที่ build ครั้งเดียว · container ที่พร้อมใช้ · หลักฐานจากทุกบัญชี</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide mid" data-title="ทั้งบท: 0 FAIL, container พร้อมใน 2.4 วินาที และ 6 บัญชีใช้ Playwright MCP ได้" data-group="สรุป" data-max="1.40"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">ทั้งบท: 0 FAIL, container พร้อมใน 2.4 วินาที และ 6 บัญชีใช้ Playwright MCP ได้</span><span class="tag">ผลของรอบตัวอย่าง</span></h2></header><div class="body"><div class="tiles"><div class="tile ok"><div class="k">ขั้นที่ 1 · build image</div><div class="num">0 FAIL</div><div class="s">ทั้ง 2 สถาปัตยกรรม · ดาวน์โหลดสถาปัตยกรรมละ ~1.3 GB</div></div><div class="tile ok"><div class="k">ขั้นที่ 2 · run container</div><div class="num">2.4<small> วินาที</small></div><div class="s">ครบ 15 คำสั่ง</div></div><div class="tile warn"><div class="k">ขั้นที่ 3 · Playwright MCP</div><div class="num">6<small> บัญชี</small></div><div class="s">ใช้ได้ครบ · 4 บัญชีหน้าเว็บ error และรายงานตามจริง</div></div></div><div class="note info">ข้อมูลล็อกอินอยู่ใน volume ai-accounts ล็อกอินครั้งเดียว ใช้ต่อได้แม้ลบ container หรือ build image ใหม่</div></div></section>
+<section class="slide divider" data-title="จบบท · build ครั้งเดียว ใช้ได้ทุกเครื่อง" data-group="จบบท"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">จบบท</div><h1>build ครั้งเดียว ใช้ได้ทุกเครื่อง</h1><div class="sub"><p>รายละเอียดเต็มของบทนี้: <a href="README.md" target="_blank">README.md</a></p><p>สเปกระบบหลายบัญชี: <a href="prompt_multi_account.md" target="_blank">prompt_multi_account.md</a> · เฉลย: <a href="_solution/MultiAccountDevtool/" target="_blank">_solution/MultiAccountDevtool/</a></p></div></div></section>
+</div></div>
+<pre class="full" id="prompt0"># สร้าง Docker image `multi-account:1.0` ที่เปิดมาแล้วใช้หลายบัญชี AI ได้ทันที
+
+## 1. Input · Spec · Output
+
+**Input** · `./00_Devtool_Container`
+โฟลเดอร์ที่มี Dockerfile ใช้เป็นฐานของ image (ไม่แก้ไฟล์ในโฟลเดอร์นี้)
+
+**Spec** · `./prompt_multi_account.md`
+สเปกระบบหลายบัญชี ทุกข้อต้องเป็นจริงใน image
+ส่วน "ข้อเท็จจริงจากการทดลอง" ให้ลองกับ CLI เวอร์ชันที่ติดตั้งจริงก่อนใช้ (ดู flag ด้วย `--help`)
+
+**Output** · `./MultiAccountDevtool` และ image `multi-account:1.0`
+คัดลอก Input มาเป็นโฟลเดอร์นี้ แล้วแก้ในนี้เท่านั้น (ถ้ามีอยู่แล้ว ให้เทียบกับ Spec แล้วแก้เฉพาะที่ขาด)
+
+## 2. สิ่งที่ต้องอยู่ใน image
+
+- Claude Code, Codex CLI, Antigravity CLI และ Playwright MCP (pin เวอร์ชันทุกตัว) + Chromium + ฟอนต์ไทย
+- installer และคำสั่ง `yolo1..5` / `cyolo1..5` / `gyolo1..5` ใน `/usr/local/bin`
+  ใช้ได้ทั้งใน JupyterLab Terminal และ `docker exec`
+- ไม่มีข้อมูลล็อกอินใน image: `/root/ai-accounts` เป็น volume
+  และ installer รันทุกครั้งที่ container start โดยไม่ทับของเดิม
+- คง Docker-in-Docker และ JupyterLab ไว้
+- รองรับ `linux/amd64` และ `linux/arm64` (Mac Apple Silicon) ใน image ชื่อเดียว
+
+## 3. Build
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -t multi-account:1.0 --load ./MultiAccountDevtool
+```
+
+## 4. ทดสอบ
+
+ใช้ container และ volume ทดสอบชื่อใหม่ แล้วลบทิ้งเมื่อเสร็จ รายงาน PASS / FAIL / SKIP ตามจริง
+ข้อที่ต้องล็อกอินให้เป็น SKIP ห้ามล็อกอินแทนผม
+
+**สถาปัตยกรรมของเครื่องนี้**
+
+- `yolo1..5` / `cyolo1..5` / `gyolo1..5 --version` ครบ 15 คำสั่ง และ config root คนละโฟลเดอร์
+- skill `shared-check` ทุกบัญชีชี้ไปไฟล์เดียวกันใน shared ของ CLI นั้น
+- `cyolo1 mcp list` และ `gyolo1 mcp list` เห็น `playwright`
+- Playwright MCP ผ่าน stdio เปิด https://example.com แล้ว screenshot ได้
+- installer รอบ 2 ไม่ทับของเดิม และ `.bashrc` ไม่ถูกแก้
+- ลบ container แล้วสร้างใหม่ ของใน volume ยังอยู่
+- JupyterLab `/lab` ตอบ `200`
+
+**อีกสถาปัตยกรรมหนึ่ง** (รันผ่าน emulation ด้วย `--platform`)
+
+- `uname -m` ถูกต้อง และ 15 คำสั่ง `--version` ครบ
+
+## 5. รายงาน
+
+- เขียนรายงานตามหัวข้อ "รายงาน" ของ Spec ไว้ใน Output (`./MultiAccountDevtool`) ห้ามมี secret
+- สรุปเป็นตารางสั้น ๆ: ผลทดสอบแยกตามสถาปัตยกรรม · ขนาด image · เวลา build แล้วหยุด</pre>
+<pre class="full" id="prompt1"># รัน container ชื่อ `multi-account` จาก image `multi-account:1.0`
+
+## 1. เตรียม image และ container
+
+ถ้ายังไม่มี image `multi-account:1.0` ให้ดึงจาก Docker Hub แล้วตั้งชื่อใหม่
+
+```bash
+docker pull tuchsanai/multi-account:1
+docker tag  tuchsanai/multi-account:1 multi-account:1.0
+```
+
+ถ้ามี container ชื่อ `multi-account` อยู่แล้ว ให้ลบออก (ห้ามลบ volume `ai-accounts`)
+
+```bash
+docker rm -f multi-account
+```
+
+## 2. สร้าง container
+
+`PORT` เริ่มที่ `8886` ถ้าชนใช้เลขว่างถัดไป
+
+```bash
+docker run -dit \
+  --name multi-account \
+  --privileged \
+  -p &lt;PORT&gt;:8888 \
+  -v ai-accounts:/root/ai-accounts \
+  multi-account:1.0 \
+  bash -c 'F=/etc/jupyter/jupyter_server_config.py; grep -q delete_to_trash $F || printf "c.FileContentsManager.delete_to_trash = False\nc.FileContentsManager.always_delete_dir = True\n" &gt;&gt; $F; exec /usr/local/bin/start.sh'
+```
+
+จับเวลาตั้งแต่ `docker run` จน `http://localhost:&lt;PORT&gt;/lab` ตอบ `200`
+
+## 3. ตรวจผ่าน `docker exec` แล้วสรุปเป็นตาราง
+
+- `yolo1..5`, `cyolo1..5` และ `gyolo1..5 --version`
+- `cyolo1 mcp list` และ `gyolo1 mcp list` ต้องเห็น `playwright`
+- สถานะล็อกอินทุกบัญชี (ห้ามล็อกอินแทนผม ห้ามแก้ไฟล์ใด ๆ)
+  - Claude: `yolo1` ถึง `yolo5` ใช้คำสั่ง `yoloN auth status` แล้วดูเฉพาะค่า `loggedIn`
+  - Codex: `cyolo1` ถึง `cyolo5` ใช้คำสั่ง `cyoloN login status`
+  - Antigravity: `gyolo1` ถึง `gyolo5` ใช้คำสั่ง `gyoloN models` (ขึ้น "Please sign in" = ยังไม่ล็อกอิน)
+- ตารางสรุป: image มาจากไหน (build เอง / pull) · URL ของ JupyterLab · เวลาที่ใช้
+  และตาราง บัญชี | เวอร์ชัน | ล็อกอินแล้ว/ยัง ห้ามแสดงอีเมล ชื่อองค์กร หรือ token
+- ถ้ามีบัญชีที่ยังไม่ล็อกอิน ให้บอกวิธีล็อกอินใน JupyterLab Terminal
+  (พิมพ์ `yoloN` แล้วเลือก Claude account with subscription / พิมพ์ `cyoloN login --device-auth`
+  / พิมพ์ `gyoloN` แล้วเปิดลิงก์ล็อกอิน Google และวางรหัสกลับมา)</pre>
+<pre class="full" id="prompt2"># ทดสอบ Playwright MCP ในบัญชีที่ล็อกอินแล้วของ container `multi-account`
+
+ให้แต่ละบัญชีที่ล็อกอินแล้วใน container `multi-account` ทำงานต่อไปนี้ ห้ามล็อกอินแทนผม ห้ามแก้ไฟล์ตั้งค่า
+
+- ใช้ skill `shared-check` แล้วบอกรหัสที่ได้
+- ใช้ MCP ชื่อ `playwright` เท่านั้น ห้ามใช้ curl, python หรือ web search
+- เปิด https://www.google.com/travel/flights?hl=en
+- ค้นหาเที่ยวบินเที่ยวเดียว Bangkok (BKK) ไป Tokyo ชั้นประหยัด ผู้ใหญ่ 1 คน วันที่ 15 ของเดือนถัดไป
+- ค้นหาอย่างเดียว ห้ามกดจอง ห้ามกรอกข้อมูลส่วนตัว ห้ามชำระเงิน ห้ามล็อกอินเว็บไซต์ใด
+- screenshot ทุกขั้นตอนด้วย tool ของ playwright: เปิดหน้าเว็บ, กรอกต้นทาง-ปลายทาง, เลือกวันที่, ผลค้นหา
+- รายงานเที่ยวบิน 3 อันดับแรก (สายการบิน เวลาออก-ถึง ราคา) ตามที่เห็นบนหน้าเว็บ
+  ถ้าหน้าเว็บไม่แสดงผล ให้รายงานตามจริง ห้ามเดาราคา
+
+เมื่อทุกบัญชีเสร็จ ให้รวม screenshot ของแต่ละบัญชีตามลำดับขั้นตอนเป็นไฟล์ `./evidence/&lt;บัญชี&gt;.gif` บนเครื่องผม</pre>
+<pre class="full" id="prompt3">รัน cyolo1 ซ้ำอีกรอบด้วยพรอมต์เดิม แล้วอัปเดตหลักฐาน</pre>
+<div id="bar"></div>
+<div id="hud"><button id="bo" title="สารบัญ (O)">☰</button><button id="bp" title="ก่อนหน้า (←)">‹</button><span id="count"></span><button id="bn" title="ถัดไป (→)">›</button><button id="bf" title="เต็มจอ (F)">⛶</button></div>
+<div id="ov"></div>
+<div id="lb"><img alt=""></div>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const N=slides.length; let cur=0;
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const n=document.createElement('div'); n.className='no'; n.textContent=(k+1)+' / '+N; s.appendChild(n);} });
+  function fit(){ deck.style.transform='scale('+Math.min(innerWidth/1600,innerHeight/900)+')'; }
+  /* ปรับขนาดตัวอักษรของแต่ละสไลด์ให้พอดีหน้า: เริ่มที่ค่าสูงสุด แล้วลดจนไม่ล้น */
+  function fitSlide(s){
+    const body=s.querySelector('.body'); if(!body) return;
+    const on=s.classList.contains('active'); if(!on) s.classList.add('measure');
+    body.classList.remove('scroll');
+    let fs=parseFloat(s.dataset.max||'1.4');
+    const boxes=[body,...body.querySelectorAll('.fitbox')];
+    const over=()=>boxes.some(b=>b.scrollHeight>b.clientHeight+3||b.scrollWidth>b.clientWidth+1);
+    s.style.setProperty('--fs',fs);
+    while(over()&&fs>0.62){ fs=Math.round((fs-0.03)*100)/100; s.style.setProperty('--fs',fs); }
+    s.dataset.fs=fs; s.dataset.over=over()?'1':'0';
+    if(over()) body.classList.add('scroll');
+    if(!on) s.classList.remove('measure');
+  }
+  function fitAll(){ slides.forEach(fitSlide); document.documentElement.dataset.fitted='1'; }
+  function go(i,push){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+N;
+    document.getElementById('bar').style.width=((cur+1)/N*100)+'%';
+    if(push!==false){ try{ history.replaceState(null,'','#'+(cur+1)); }catch(e){} }
+    document.querySelectorAll('#ov .th').forEach((t,k)=>t.classList.toggle('cur',k===cur));
+  }
+  const next=()=>go(cur+1), prev=()=>go(cur-1);
+  function fs(){ if(!document.fullscreenElement){ const r=document.documentElement; r.requestFullscreen&&r.requestFullscreen(); } else document.exitFullscreen&&document.exitFullscreen(); }
+  const ovEl=document.getElementById('ov'); let grid=null,last=null;
+  slides.forEach((s,k)=>{
+    if(s.dataset.group!==last){ last=s.dataset.group; const h=document.createElement('h4'); h.textContent=last; ovEl.appendChild(h); grid=document.createElement('div'); grid.className='grid'; ovEl.appendChild(grid); }
+    const d=document.createElement('div'); d.className='th';
+    const n=document.createElement('span'); n.textContent=k+1; d.appendChild(n); d.appendChild(document.createTextNode(s.dataset.title||''));
+    d.onclick=()=>{ go(k); ov(false); }; grid.appendChild(d);
+  });
+  function ov(on){ const v=on===undefined?!document.body.classList.contains('ov'):on; document.body.classList.toggle('ov',v);
+    if(v){ const c=ovEl.querySelector('.th.cur'); c&&c.scrollIntoView({block:'center'}); } }
+  const lb=document.getElementById('lb'), lbi=lb.querySelector('img');
+  deck.addEventListener('click',e=>{ const im=e.target.closest('.fig img'); if(im){ lbi.src=im.src; lbi.alt=im.alt; lb.classList.add('on'); lb.scrollTop=0; } });
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey) return;
+    const k=e.key;
+    if(lb.classList.contains('on')){ if(k==='Escape'||k==='Enter'||k===' '){ e.preventDefault(); lb.classList.remove('on'); } return; }
+    if(['ArrowRight','PageDown',' ','Enter'].includes(k)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(k)){ e.preventDefault(); prev(); }
+    else if(k==='Home') go(0); else if(k==='End') go(N-1);
+    else if(k==='f'||k==='F') fs(); else if(k==='o'||k==='O') ov();
+    else if(k==='Escape'&&document.body.classList.contains('ov')) ov(false);
+  });
+  document.getElementById('bn').onclick=next; document.getElementById('bp').onclick=prev;
+  document.getElementById('bf').onclick=fs; document.getElementById('bo').onclick=()=>ov();
+  let tx=null;
+  document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>60)(dx<0?next:prev)(); });
+  function copyText(text,btn,label){
+    const done=()=>{ btn.textContent='คัดลอกแล้ว ✓'; btn.classList.add('done'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('done'); },1600); };
+    const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); done(); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback();
+  }
+  window.promptText=id=>document.getElementById(id).textContent;
+  document.querySelectorAll('.copy').forEach(b=>{
+    const label=b.textContent;
+    b.addEventListener('click',ev=>{ ev.stopPropagation();
+      const text=b.dataset.full?window.promptText(b.dataset.full):b.parentElement.querySelector('.t').textContent;
+      copyText(text,b,label); });
+  });
+  document.querySelectorAll('.chk input').forEach(c=>{
+    const key='slides:'+location.pathname+':'+c.dataset.k;
+    try{ c.checked=localStorage.getItem(key)==='1'; }catch(e){}
+    c.addEventListener('change',()=>{ try{ localStorage.setItem(key,c.checked?'1':'0'); }catch(e){} });
+  });
+  addEventListener('resize',fit);
+  addEventListener('hashchange',()=>{ const n=parseInt(location.hash.slice(1)); if(n) go(n-1,false); });
+  fit(); const start=parseInt(location.hash.slice(1)); go(start?start-1:0,false);
+  fitAll();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
+  addEventListener('load',fitAll);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{"goal": "เขียนคำคม 6 หัวข้อ ชิ้นละ 1 ประโยค (งานอิสระ ไม่ขึ้นต่อกัน)",
+ "nodes": [
+  {"id": "effort",     "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ ความพยายาม 1 ประโยค ตอบเฉพาะคำคม"},
+  {"id": "time",       "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ เวลา 1 ประโยค ตอบเฉพาะคำคม"},
+  {"id": "friendship", "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ มิตรภาพ 1 ประโยค ตอบเฉพาะคำคม"},
+  {"id": "learning",   "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ การเรียนรู้ 1 ประโยค ตอบเฉพาะคำคม"},
+  {"id": "health",     "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ สุขภาพ 1 ประโยค ตอบเฉพาะคำคม"},
+  {"id": "travel",     "account": "yolo1", "difficulty": 1, "prompt": "เขียนคำคมเกี่ยวกับ การเดินทาง 1 ประโยค ตอบเฉพาะคำคม"}
+ ]}

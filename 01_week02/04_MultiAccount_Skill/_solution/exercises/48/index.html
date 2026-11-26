@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>วิ่งเพื่อน้อง 5K — งานวิ่งการกุศล 5 กิโลเมตร</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Noto Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif;
+      color: #20372e;
+      background: #e7efdf;
+      line-height: 1.65;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: clamp(.625rem, 3vw, 2.75rem);
+    }
+
+    .poster {
+      max-width: 72rem;
+      margin-inline: auto;
+      overflow: hidden;
+      border: 1px solid #c5d4bd;
+      border-radius: clamp(1rem, 3vw, 2rem);
+      background: #fffdf4;
+      box-shadow: 0 1rem 3rem #21382e18;
+      overflow-wrap: anywhere;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      background: #143e32;
+      color: #fffdf4;
+    }
+
+    .intro {
+      display: grid;
+      align-content: center;
+      padding: clamp(1.5rem, 5vw, 4.5rem);
+    }
+
+    .label {
+      margin: 0 0 .4rem;
+      font-size: .9375rem;
+      font-weight: 700;
+    }
+
+    .intro .label { color: #ffe08a; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5.1vw, 4.5rem);
+      line-height: 1.24;
+    }
+
+    h1 span {
+      display: block;
+      color: #ffe08a;
+      font-size: .48em;
+      line-height: 1.4;
+      margin-top: .4em;
+    }
+
+    .tagline {
+      border-top: 1px solid #729084;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+    }
+
+    .tagline p,
+    .detail p,
+    .contact p { margin: 0; }
+
+    .tagline p { font-size: 1.125rem; }
+
+    .artwork {
+      display: block;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+
+    .info {
+      padding: clamp(1.25rem, 4vw, 3rem) clamp(1.25rem, 5vw, 4.5rem);
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .75rem;
+    }
+
+    .detail {
+      padding: clamp(1rem, 2vw, 1.5rem);
+      border-radius: 1rem;
+      background: #e8f0df;
+    }
+
+    .detail:nth-child(2) { background: #fbefcc; }
+
+    .detail .label { color: #325b47; }
+
+    .highlights { margin-top: 2rem; }
+
+    .section-title {
+      margin: 0 0 .65rem;
+      font-size: 1.375rem;
+      line-height: 1.4;
+    }
+
+    .highlights ul {
+      display: grid;
+      gap: .5rem;
+      margin: 0;
+      padding-inline-start: 1.35rem;
+    }
+
+    .highlights li { padding-inline-start: .25rem; }
+    .highlights li::marker { color: #477a58; }
+
+    .contact {
+      padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 5vw, 4.5rem);
+      background: #ffe08a;
+    }
+
+    a {
+      color: #154b3a;
+      font-weight: 700;
+      text-underline-offset: .18em;
+    }
+
+    a:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: .2em;
+    }
+
+    @media (max-width: 42rem) {
+      .hero, .details { grid-template-columns: minmax(0, 1fr); }
+      .artwork { height: auto; aspect-ratio: 5 / 4; }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="hero">
+      <div class="intro">
+        <p class="label">ชื่องาน</p>
+        <h1>วิ่งเพื่อน้อง 5K <span>— งานวิ่งการกุศล 5 กิโลเมตร</span></h1>
+        <section class="tagline">
+          <h2 class="label">คำโปรย</h2>
+          <p>ก้าวไปด้วยกัน 5 กิโลเมตร เพื่อมอบโอกาสทางการศึกษาให้เด็กๆ</p>
+        </section>
+      </div>
+      <img class="artwork" src="art.jpg" width="896" height="1200" alt="ภาพประกอบเด็กและผู้ใหญ่วิ่งด้วยกันในสวน">
+    </header>
+
+    <div class="info">
+      <div class="details">
+        <section class="detail">
+          <h2 class="label">วันเวลา</h2>
+          <p>วันอาทิตย์ที่ 25 มกราคม 2569 · ปล่อยตัว 06:00 น. (ลงทะเบียนเริ่ม 05:00 น.)</p>
+        </section>
+        <section class="detail">
+          <h2 class="label">สถานที่</h2>
+          <p>สวนสาธารณะเบญจกิติ กรุงเทพมหานคร (จุดปล่อยตัวบริเวณลานหน้าสวน)</p>
+        </section>
+      </div>
+      <section class="highlights">
+        <h2 class="section-title">จุดเด่น</h2>
+        <ul>
+          <li>รายได้ทั้งหมดหลังหักค่าใช้จ่ายมอบให้กองทุนการศึกษาเพื่อเด็กด้อยโอกาส</li>
+          <li>เส้นทางเรียบ ปลอดภัย เหมาะกับทุกวัย ทั้งนักวิ่งมือใหม่และครอบครัว</li>
+          <li>ผู้เข้าเส้นชัยทุกคนรับเสื้อวิ่งและเหรียญที่ระลึก พร้อมอาหารเช้าและน้ำดื่ม</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="contact">
+      <h2 class="section-title">วิธีสมัคร/ติดต่อ</h2>
+      <p>สมัครออนไลน์ที่ <a href="https://www.runforkids5k.example">www.runforkids5k.example</a> ค่าสมัคร 450 บาท หรือโทร <a href="tel:021234567">02-123-4567</a></p>
+    </footer>
+  </main>
+</body>
+</html>

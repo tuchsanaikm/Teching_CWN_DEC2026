@@ -1,0 +1,1802 @@
+[
+ {
+  "vendor": "claude",
+  "model": "haiku",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 13.0,
+   "avg_out": 2208.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 13.02,
+     "output_tokens": 2141,
+     "reasoning_tokens": 1469,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "mod 8) คือ 649\n- **C = 9**: 2026 = 2 · 1013 โดย 1013 เป็นจำนวนเฉพาะ ดังนั้น 2026² = 2² · 1013² มีตัวหาร 3 · 3 = 9 ตัว\n- **D = 166333**: จำนวนที่ ห.ร.ม. กับ 6 เป็น 1 คือ n ≡ 1 หรือ 5 (mod 6)\n  - 1..996 มี 166 บล็อก บล็อกที่ k ให้ผลรวม 12k + 6 รวมได้ 165336\n  - เพิ่ม 997 ซึ่งเป็นตัวสุดท้ายที่เหลือ ได้ D = 166333\n\nรวมผล: A×B + C×D = 505 × 649 + 9 × 166333 = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 14.8,
+     "output_tokens": 2294,
+     "reasoning_tokens": 2189,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ตรวจแล้วคำตอบเดียว: บ้านที่ 1 ถึง 5 เป็นของ ชัย, บีม, ดาว, อรุณ, เอก ตามลำดับ\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 23.0,
+     "output_tokens": 4217,
+     "reasoning_tokens": 2475,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ไม่ขยับ index เกินตัว `end`\n6. ปรับ regex เป็น `[0-9]` แทน `\\d` เพื่อไม่ให้รับตัวเลขยูนิโคดอื่น\n\nข้อที่เพิ่มเองนอกสเปก: ถ้าผลยกกำลังของฐานลบกับเลขทศนิยมได้จำนวนเชิงซ้อน (เช่น `(-8)^0.5`) จะ raise `ValueError` แทนที่จะคืนค่า complex ถ้าไม่ต้องการ ลบ 3 บรรทัดนั้นออกได้\n\nผมไม่ได้รันเทสต์ เพราะไม่ได้เรียกเครื่องมือใด ๆ ในรอบนี้ ค่าที่ตรวจด้วยการคิดตามโค้ด: `2^3^2`=512, `-2^2`=-4, `2^-1`=0.5, `7/2`=3.5"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.91,
+     "output_tokens": 1123,
+     "reasoning_tokens": 681,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "e windows longer, so drop it.\n        while dq and pj - prefix[dq[0]] >= k:\n            best = min(best, j - dq.popleft())\n        # Keep the deque increasing: a later index with a smaller or equal\n        # prefix dominates any earlier index with a larger-or-equal prefix.\n        while dq and prefix[dq[-1]] >= pj:\n            dq.pop()\n        dq.append(j)\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 7.3,
+     "output_tokens": 1267,
+     "reasoning_tokens": 876,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": ": ตั้งอัตราดอกเบี้ย 2.0% ต่อปี\n- **L1102**: เปลี่ยนอัตราเป็น 3.5% ต่อปี ซึ่งแทนที่ L0412 จึงใช้ค่านี้\n- **L1490**: ถอน 900.00 THB แต่ REVERSED ในวันเดียวกัน (void) ไม่มีผลต่อยอด จึงไม่นับ\n- **L1846**: ถอน 2,318.75 THB ยังมีผล นับเป็นยอดถอนจริง\n\nดังนั้น (ก) = 15250.00, (ข) = 0.035, (ค) = 2318.75\n\nคำนวณ: (15250.00 − 2318.75) × 1.035 = 12931.25 × 1.035 = 13383.84375 ปัดเป็น 13383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 18.5,
+   "avg_out": 3922.8,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 12.49,
+     "output_tokens": 2607,
+     "reasoning_tokens": 2123,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "≡ 51, 7^16 ≡ 101, and 7^26 = 7^16·7^8·7^2 ≡ 24 (mod 125). Solving x ≡ 24 (mod 125) and x ≡ 1 (mod 8) gives x = 649.\n- **C:** 2026 = 2 × 1013, and 1013 is prime. So 2026² = 2²·1013², which has (2+1)(2+1) = 9 divisors.\n- **D:** The numbers in 1..1000 coprime to 6 number 1000 − 500 − 333 + 166 = 333. Their sum is 1000(1001)/2 − (sum of multiples of 2 or 3) = 500500 − 334167 = 166333.\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 19.5,
+     "output_tokens": 4253,
+     "reasoning_tokens": 3198,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ฟอยู่หลัง 2 ดังนั้นชาอยู่หลัง 1 ชัยจึงเป็นเจ้าของหลัง 1 และบีมเป็นเจ้าของหลัง 2\n\nผลลัพธ์:\n\n| หลัง | เจ้าของ | สี | สัตว์ | เครื่องดื่ม |\n|---|---|---|---|---|\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nตรวจกับเงื่อนไขทั้ง 13 ข้อแล้วผ่านทุกข้อ\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 40.56,
+     "output_tokens": 9208,
+     "reasoning_tokens": 6154,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "้ 64 และ `2^-1` error เปลี่ยนเป็นแบบ right-associative โดยฝั่งขวาเรียก `unary` (ได้ `2^3^2 == 512`, `2^-1 == 0.5`)\n4. **`evaluate`**: ไม่เช็ค token ที่เหลือ ทำให้ `1 2` หรือ `2(3)` คืนค่าเงียบ ๆ เพิ่มการเช็คว่าเหลือแค่ `end` มิฉะนั้น `ValueError`\n\nส่วนที่ไม่ได้แก้เพราะสเปกไม่ได้ระบุ: ยกกำลังฐานลบกับเลขเศษส่วน เช่น `(-8)^(1/3)` ใน Python จะได้จำนวนเชิงซ้อน ถ้าต้องการให้ raise `ValueError` แจ้งมาได้"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 9.1,
+     "output_tokens": 1543,
+     "reasoning_tokens": 1121,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "later j, so drop it.\n        while dq and pj - prefix[dq[0]] >= k:\n            best = min(best, j - dq.popleft())\n\n        # If an earlier index has prefix >= pj, it is never better than j for\n        # future right endpoints (j is later and its sum is at least as large).\n        while dq and prefix[dq[-1]] >= pj:\n            dq.pop()\n\n        dq.append(j)\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 10.73,
+     "output_tokens": 2003,
+     "reasoning_tokens": 1579,
+     "real_model": "claude-haiku-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "(ก) ยอดเปิดบัญชี:** 15,250.00 THB (L0233)\n- **(ข) อัตราดอกเบี้ยล่าสุด:** 3.5% ต่อปี (L1102 แทนที่ 2.0% ใน L0412)\n- **(ค) ยอดถอนที่มีผลจริง:** 2,318.75 THB (L1846) รายการถอน 900.00 THB (L1490) ถูกยกเลิกในวันเดียวกันจึงไม่นับ\n\nคำนวณ: (15,250.00 − 2,318.75) × (1 + 0.035) = 12,931.25 × 1.035 = 13,383.84375 ปัดเป็น 13,383.84\n\nตัวเลข ACC-7713 และ ACC-7371 เป็นบัญชีอื่น จึงไม่ได้นำมาใช้\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "claude",
+  "model": "sonnet",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 8.4,
+   "avg_out": 831.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 6.06,
+     "output_tokens": 389,
+     "reasoning_tokens": 0,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "117649≡649. B=649.\n\nA×B=505·649=327,745.\n\nC: 2026=2·1013 (1013 prime). 2026²=2²·1013², divisors count 3·3=9. C=9.\n\nD: sum of n≤1000 coprime to 6. Total sum = 500500. Multiples of 2: 2·(500·501/2)=250500. Multiples of 3: 3·(333·334/2)=3·55611=166833. Multiples of 6: 6·(166·167/2)=6·13861=83166.\nD=500500−250500−166833+83166=166333.\n\nC×D=1,496,997.\n\nTotal=327,745+1,496,997=1,824,742.\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 8.22,
+     "output_tokens": 829,
+     "reasoning_tokens": 0,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "cent to fish in house 4, so yellow is not house 5. Houses 1 and 5 take blue and yellow, so yellow is house 1 and blue is house 5. House 1 is not adjacent to house 4, so this works.\n\nOrder: Chai, Beam, Dao, Arun, Ek.\n\nChecking the other case, where Dao drinks coffee and Beam drinks milk, would be needed to confirm uniqueness, but the puzzle states the answer is unique.\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 15.8,
+     "output_tokens": 2099,
+     "reasoning_tokens": 551,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ื่อให้เป็น right-associative และรับเลขชี้กำลังติดลบได้\n4. **โทเคนที่เหลือ:** `evaluate` ไม่ตรวจโทเคนที่เหลือ ผมเพิ่ม `p.take(\"end\")` เพื่อให้ raise `ValueError`\n\nผมยังแก้ `expr` เล็กน้อยด้วย โดยคำนวณ `self.term()` ครั้งเดียวแล้วเก็บไว้ใน `rhs` ซึ่งไม่ได้เปลี่ยนผลลัพธ์\n\nการหารด้วยศูนย์ raise `ZeroDivisionError` ตามสเปกอยู่แล้ว เพราะเลขทั้งหมดเป็น float และ Python raise ให้เองกับ `/` และ `0.0 ** -1`"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.11,
+     "output_tokens": 488,
+     "reasoning_tokens": 0,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": " dq and prefix[dq[-1]] >= pj:\n            dq.pop()\n        dq.append(j)\n\n    return best if best <= n else -1\n```\n\nใช้ monotonic deque บน prefix sums ทำงานแบบ O(n) ซึ่งเร็วพอสำหรับ n = 200,000\n\n- หน้าต่างด้านหน้าถูกดึงออกเมื่อผลรวมถึง k แล้ว เพราะ index ที่ใหม่กว่าจะให้ subarray ที่ยาวกว่าเท่านั้น\n- ด้านท้ายถูกตัดทิ้งเมื่อ prefix ≥ ค่าปัจจุบัน เพราะ index ปัจจุบันให้ผลลัพธ์ที่ดีกว่าหรือเท่ากันเสมอ"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 5.62,
+     "output_tokens": 351,
+     "reasoning_tokens": 0,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ACC-7371 ซึ่งเป็นบัญชีคนละเลข):\n- (ก) ยอดเปิดบัญชี = 15,250.00 (L0233)\n- (ข) อัตราดอกเบี้ยที่มีผลล่าสุด = 3.5% (L1102 แทนที่ 2.0% ที่ L0412)\n- (ค) รายการถอน:\n  - L1490: 900.00 ถูกยกเลิก (REVERSED) จึงไม่นับ\n  - L1846: 2,318.75 มีผล\n  - ผลรวม = 2,318.75 (ส่วน L1633 4,125.50 เป็นของ ACC-7713 จึงไม่นับ)\n\nคำนวณ: (15250.00 − 2318.75) × 1.035 = 12931.25 × 1.035 = 13383.84375 ≈ 13383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 13.6,
+   "avg_out": 1662.6,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 12.38,
+     "output_tokens": 1402,
+     "reasoning_tokens": 588,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ไม่ใช่ผลรวมของตัวหาร)\n\n**D:** ใช้การเพิ่ม–ตัด (inclusion–exclusion) กับผลรวมของ n ≤ 1000\n- ผลรวมทั้งหมด = 500500\n- พหุคูณของ 2: 2·(500·501/2) = 250500\n- พหุคูณของ 3: 3·(333·334/2) = 166833\n- พหุคูณของ 6: 6·(166·167/2) = 83166\n\nD = 500500 − 250500 − 166833 + 83166 = 166333\n\n**ผลลัพธ์:**\n- A×B = 505 × 649 = 327745\n- C×D = 9 × 166333 = 1496997\n- A×B + C×D = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 22.28,
+     "output_tokens": 3118,
+     "reasoning_tokens": 1475,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ต้องไม่ติดกับหลังที่ 4 (ปลา) หลังที่ 5 จึงไม่ใช่สีเหลือง ดังนั้นหลังที่ 5 เป็นสีน้ำเงินและหลังที่ 1 เป็นสีเหลือง\n\nตรวจครบทุกข้อแล้ว\n\n| หลัง | เจ้าของ | สี | สัตว์ | เครื่องดื่ม |\n|---|---|---|---|---|\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 18.72,
+     "output_tokens": 2437,
+     "reasoning_tokens": 875,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ยนเป็น `if` แล้วใช้ `v ** self.unary()` ตามกฎ `atom ('^' unary)?` ผลคือ `2^3^2 == 512` และ `2^-1 == 0.5`\n4. **`evaluate`**: เดิมไม่เช็กโทเคนที่เหลือ จึงเพิ่ม `p.take(\"end\")` เพื่อให้โยน `ValueError` เมื่อมีโทเคนเกิน เช่น `1 2` หรือ `(1))`\n5. **`expr`**: เก็บ `self.term()` ใส่ตัวแปร `rhs` ก่อนคำนวณ เพื่อให้ลำดับการอ่านโทเคนชัดเจนและเหมือน `term`\n\nส่วน `tokenize` ผมอ่านแล้วไม่พบบั๊ก จึงไม่ได้แก้อะไร"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 7.37,
+     "output_tokens": 712,
+     "reasoning_tokens": 0,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ix[j] - prefix[front] >= k` จะ pop ด้านหน้าออก เพราะ index นั้นจะไม่ให้คำตอบที่สั้นกว่านี้กับ j ที่ใหญ่กว่าอีกแล้ว\n- ด้านหลังจะ pop ค่า prefix ที่ ≥ prefix[j] เพราะ j ใหม่กว่าและมีค่าต่ำกว่าหรือเท่ากัน ให้ subarray ที่สั้นกว่าและโอกาสผ่านเงื่อนไขมากกว่าเสมอ\n- เนื่องจาก k ≥ 1 ความยาว 0 จึงไม่เกิดขึ้น และ Python int ไม่ overflow สำหรับผลรวมถึง 2×10^14\n\nตัวอย่าง: `[2,-1,2], 3` → 3 และ `[1,2], 4` → -1"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 7.19,
+     "output_tokens": 644,
+     "reasoning_tokens": 226,
+     "real_model": "claude-sonnet-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ล่าสุด:** 3.5% ต่อปี (L1102 ซึ่งแทนที่ 2.0% ที่ตั้งไว้ที่ L0412)\n- **(ค) ยอดถอนที่มีผลจริง:** 2,318.75 THB (L1846)\n  - ไม่นับรายการถอน 900.00 ที่ L1490 เพราะถูกยกเลิกและไม่มีผลต่อยอด\n  - ไม่นับ L0587 และ L1633 เพราะเป็นบัญชี ACC-7713 ส่วน L0961 เป็นบัญชี ACC-7371 ซึ่งเป็นคนละบัญชี\n\nการคำนวณ: (15,250.00 − 2,318.75) × (1 + 0.035) = 12,931.25 × 1.035 = 13,383.84375 ปัดเป็น 13,383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "claude",
+  "model": "opus",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 12.4,
+   "avg_out": 1194.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 12.97,
+     "output_tokens": 1341,
+     "reasoning_tokens": 514,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "หาร (2+1)(2+1) = **9** ตัว\n\n**D, ผลรวมของ n ที่ ห.ร.ม.(n, 6) = 1:** ใช้หลักการเพิ่มเข้า-ตัดออก\n- ผลรวม 1 ถึง 1000 = 500500\n- ผลรวมพหุคูณของ 2 = 2 × (500·501/2) = 250500\n- ผลรวมพหุคูณของ 3 = 3 × (333·334/2) = 166833\n- ผลรวมพหุคูณของ 6 = 6 × (166·167/2) = 83166\n- D = 500500 − 250500 − 166833 + 83166 = **166333**\n\n**คำตอบ:**\nA×B + C×D = 505×649 + 9×166333 = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 15.42,
+     "output_tokens": 1486,
+     "reasoning_tokens": 686,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": " left of ดาว (7). บีม's house is red, so บีม doesn't drink milk (green house). So ดาว lives in the green house and drinks milk, in house 1–3. The order is ชัย < บีม < ดาว, so ชัย is in 1, บีม in 2, ดาว in 3 and อรุณ in 4.\n7. **Checking condition 8.** อรุณ (fish) is in house 4, so yellow can't be next to it. Yellow is house 1 and blue is house 5. Every condition holds.\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 17.18,
+     "output_tokens": 1847,
+     "reasoning_tokens": 279,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 8.96,
+     "output_tokens": 808,
+     "reasoning_tokens": 18,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "nums):\n        prefix[i + 1] = prefix[i] + x\n\n    best = n + 1\n    dq = deque()\n    for j in range(n + 1):\n        pj = prefix[j]\n        while dq and pj - prefix[dq[0]] >= k:\n            length = j - dq.popleft()\n            if length < best:\n                best = length\n        while dq and prefix[dq[-1]] >= pj:\n            dq.pop()\n        dq.append(j)\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 7.3,
+     "output_tokens": 489,
+     "reasoning_tokens": 81,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": ") อัตรานี้มาแทนอัตรา 2.0% เดิมที่บรรทัด L0412\n- **(ค) ยอดถอนที่มีผลจริง:** 2,318.75 บาท (L1846)\n  - ไม่นับรายการถอน 900.00 บาทที่บรรทัด L1490 เพราะถูกยกเลิกในวันเดียวกัน\n  - ไม่นับรายการที่บรรทัด L0587, L0961 และ L1633 เพราะเป็นของบัญชีอื่น (ACC-7713 และ ACC-7371)\n\n**การคำนวณ:** (15,250.00 − 2,318.75) × 1.035 = 12,931.25 × 1.035 = 13,383.84375 ปัดเป็นทศนิยม 2 ตำแหน่งได้ 13,383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 17.3,
+   "avg_out": 1824.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 13.92,
+     "output_tokens": 1428,
+     "reasoning_tokens": 585,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "รวมของ n ที่ 1 ≤ n ≤ 1000 และ ห.ร.ม.(n, 6) = 1)**\nใช้หลักการเพิ่มเข้า–ตัดออก:\n- ผลรวม 1 ถึง 1000 = 500500\n- ผลรวมพหุคูณของ 2 = 2 × (500 × 501 / 2) = 250500\n- ผลรวมพหุคูณของ 3 = 3 × (333 × 334 / 2) = 166833\n- ผลรวมพหุคูณของ 6 = 6 × (166 × 167 / 2) = 83166\n- D = 500500 − 250500 − 166833 + 83166 = **166333**\n\n**ผลลัพธ์**\nA×B + C×D = 505 × 649 + 9 × 166333 = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 19.01,
+     "output_tokens": 2082,
+     "reasoning_tokens": 629,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ีเหลืองต้องไม่อยู่ติดกับบ้านอรุณที่เลี้ยงปลา (ข้อ 8) จึงได้ หลังที่ 1 = เหลือง และหลังที่ 5 = น้ำเงิน เอกที่เหลืออยู่เลี้ยงนก\n\n| บ้าน | เจ้าของ | สี | สัตว์เลี้ยง | เครื่องดื่ม |\n|---|---|---|---|---|\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 38.33,
+     "output_tokens": 4371,
+     "reasoning_tokens": 1181,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 8.24,
+     "output_tokens": 724,
+     "reasoning_tokens": 272,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "e longer lengths, so drop that start.\n        while dq and pj - prefix[dq[0]] >= k:\n            length = j - dq.popleft()\n            if length < best:\n                best = length\n        # Drop starts whose prefix >= current prefix: j is always a better start than them.\n        while dq and prefix[dq[-1]] >= pj:\n            dq.pop()\n        dq.append(j)\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 6.81,
+     "output_tokens": 517,
+     "reasoning_tokens": 167,
+     "real_model": "claude-opus-5-5",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "thdrawal that was reversed the same day, so it doesn't count.\n  - L1846 is a 2,318.75 THB withdrawal that took effect.\n  - Total: **2,318.75 THB**\n\nThree similar rows belong to other accounts and are left out: ACC-7713 at L0587 and L1633, and ACC-7371 at L0961.\n\n**Calculation:**\n(15,250.00 − 2,318.75) × (1 + 0.035) = 12,931.25 × 1.035 = 13,383.84375, which rounds to **13,383.84**\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "claude",
+  "model": "fable",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 12.7,
+   "avg_out": 1178.8,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 11.21,
+     "output_tokens": 984,
+     "reasoning_tokens": 442,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": " — 2026 = 2 × 1013 (1013 เป็นจำนวนเฉพาะ) ดังนั้น 2026² = 2² × 1013² มีตัวหาร (2+1)(2+1) = 9 ตัว\n\n**D** — n ที่ ห.ร.ม.(n, 6) = 1 คือ n ≡ 1 หรือ 5 (mod 6)\n- 1, 7, …, 997: 167 พจน์ ผลรวม = 167 × 998 / 2 = 83333\n- 5, 11, …, 995: 166 พจน์ ผลรวม = 166 × 1000 / 2 = 83000\n- D = 166333\n\n**รวม** — A×B = 505 × 649 = 327745 และ C×D = 9 × 166333 = 1496997\nA×B + C×D = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 16.3,
+     "output_tokens": 1704,
+     "reasoning_tokens": 513,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ง บ้าน 5 ติดกับบ้านเลี้ยงปลา (บ้าน 4) จึงเป็นเหลืองไม่ได้ เอกจึงอยู่บ้านน้ำเงิน ชัยอยู่บ้านเหลือง ซึ่งไม่ขัดกับเงื่อนไขใด\n\n**สรุป**\n\n| บ้าน | เจ้าของ | สี | สัตว์ | เครื่องดื่ม |\n|---|---|---|---|---|\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 23.9,
+     "output_tokens": 2479,
+     "reasoning_tokens": 823,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "้เป็น `atom ('^' unary)?` จึงได้ 512 และ 0.5\n4. **`evaluate`**: ไม่เช็กโทเคนที่เหลือ เช่น `1 2` หรือ `(1))` ผ่านเงียบ ๆ แก้ให้โยน `ValueError`\n\nจุดที่แก้เพิ่มเพื่อกันพลาด (ไม่ใช่บั๊กตามสเปกโดยตรง):\n- **`expr`**: ดึง `rhs` ออกมาคำนวณก่อน ให้อ่านง่ายขึ้น ผลลัพธ์เท่าเดิม\n- **`take`**: เปลี่ยนเป็นเทียบกับ `None` แทนการเช็ก truthiness\n- **`TOKEN`**: เพิ่ม `re.S` ให้ `.` ครอบคลุมอักขระขึ้นบรรทัดใหม่ด้วย"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.23,
+     "output_tokens": 413,
+     "reasoning_tokens": 0,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "        target = prefix - k\n        while dq and dq[0][0] <= target:\n            length = i - dq.popleft()[1]\n            if length < best:\n                best = length\n        # รักษาความเป็น monotonic: prefix ที่มากกว่าหรือเท่ากับและอยู่ก่อนหน้า ไม่มีประโยชน์อีก\n        while dq and dq[-1][0] >= prefix:\n            dq.pop()\n        dq.append((prefix, i))\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 5.66,
+     "output_tokens": 314,
+     "reasoning_tokens": 0,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "low",
+     "note": null,
+     "raw_tail": "ข้อมูลของ ACC-7731 (ไม่นับ ACC-7713 และ ACC-7371 ซึ่งเป็นบัญชีอื่นที่เลขคล้ายกัน):\n\n- (ก) ยอดเปิดบัญชี: 15,250.00 บาท (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุด: 3.5% ต่อปี (L1102 แทนที่ 2.0% จาก L0412)\n- (ค) ยอดถอนที่มีผลจริง: 2,318.75 บาท (L1846) — รายการ 900.00 ที่ L1490 ถูกยกเลิก จึงไม่นับ\n\nคำนวณ: (15250.00 − 2318.75) × 1.035 = 12931.25 × 1.035 = 13383.84375 ≈ 13383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 21.0,
+   "avg_out": 2127.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 13.12,
+     "output_tokens": 1306,
+     "reasoning_tokens": 594,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ก:\n- ผลรวมทั้งหมด = 500500\n- พหุคูณของ 2: 2 × (500×501/2) = 250500\n- พหุคูณของ 3: 3 × (333×334/2) = 166833\n- พหุคูณของ 6: 6 × (166×167/2) = 83166\n\nD = 500500 − 250500 − 166833 + 83166 = 166333\n(ตรวจซ้ำด้วยการจับคู่ (6k+1, 6k+5) สำหรับ k = 0..165 ได้ 165336 บวก 997 ได้ 166333 ตรงกัน)\n\n**รวม**\nA×B = 505 × 649 = 327745\nC×D = 9 × 166333 = 1496997\nA×B + C×D = 327745 + 1496997 = 1824742\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 16.8,
+     "output_tokens": 1766,
+     "reasoning_tokens": 745,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "รุณ = 4 (บ้านขาว เลี้ยงปลา ดื่มน้ำเปล่า)\n6. ข้อ 8: สีเหลืองต้องไม่ติดกับบ้าน 4 จึงเป็นบ้าน 1 และบ้าน 5 เป็นสีน้ำเงิน ครบทุกเงื่อนไข\n\n| บ้าน | เจ้าของ | สี | สัตว์ | เครื่องดื่ม |\n|---|---|---|---|---|\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 53.25,
+     "output_tokens": 5709,
+     "reasoning_tokens": 2855,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "er()` แทน `unary()` ทำให้ `--2` พัง\n3. **`power`**: วนลูปแบบ left-associative และรับเลขชี้กำลังด้วย `atom()` ทำให้ `2^3^2` ได้ 64 แทน 512 และ `2^-1` พัง แก้เป็น `if` แล้วเรียก `unary()`\n4. **`evaluate`**: ไม่ตรวจโทเคนที่เหลือ ทำให้ `1 2` หรือ `(1))` ไม่ยก `ValueError` แก้โดยเพิ่ม `p.take(\"end\")`\n\n`tokenize` ไม่พบบั๊ก จึงไม่ได้แก้ ส่วนใน `expr` แค่แยกตัวแปร `rhs` ออกมาให้อ่านง่าย พฤติกรรมเหมือนเดิม"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 12.85,
+     "output_tokens": 1136,
+     "reasoning_tokens": 533,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "ile dq and p - pre[dq[0]] >= k:\n            d = j - dq.popleft()\n            if d < best:\n                best = d\n        # จุดเริ่มที่ pre มากกว่าหรือเท่ากับ p ด้อยกว่า j เสมอ (ทั้งอยู่ก่อนและผลรวมไม่ดีกว่า)\n        while dq and pre[dq[-1]] >= p:\n            dq.pop()\n        dq.append(j)\n        if best == 1:  # สั้นกว่านี้ไม่ได้แล้ว\n            return 1\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 9.22,
+     "output_tokens": 720,
+     "reasoning_tokens": 315,
+     "real_model": "claude-fable-5-2",
+     "effort_used": "high",
+     "note": null,
+     "raw_tail": "าสุด:** 3.5% ต่อปี (L1102 ซึ่งแทนที่อัตรา 2.0% ที่ L0412)\n- **(ค) ยอดถอนที่มีผลจริง:** 2,318.75 บาท (L1846) ส่วนรายการถอน 900.00 บาทที่ L1490 ถูกยกเลิกในวันเดียวกัน จึงไม่นับ\n\nบรรทัดที่ไม่นับเพราะเป็นบัญชีอื่นที่เลขคล้ายกัน: L0587 และ L1633 เป็นของ ACC-7713 และ L0961 เป็นของ ACC-7371\n\nคำนวณ: (15,250.00 − 2,318.75) × (1 + 0.035) = 12,931.25 × 1.035 = 13,383.84375 ปัดเป็น 13,383.84\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.2-sol",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 12.0,
+   "avg_out": 339.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 16.68,
+     "output_tokens": 550,
+     "reasoning_tokens": 214,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "\\]\n\n\\(2026=2\\cdot1013\\) โดย \\(1013\\) เป็นจำนวนเฉพาะ ดังนั้น \\(2026^2=2^2\\cdot1013^2\\) มีตัวหารบวก \\(C=(2+1)(2+1)=9\\) ตัว\n\nจำนวนที่เป็นจำนวนเฉพาะสัมพัทธ์กับ \\(6\\) อยู่ในรูป \\(6k+1\\) หรือ \\(6k+5\\) จับคู่ได้ตั้งแต่ \\(k=0\\) ถึง \\(165\\) และเหลือ \\(997\\) อีกหนึ่งจำนวน จึงได้\n\\[\nD=\\sum_{k=0}^{165}(12k+6)+997=6\\cdot166^2+997=166333.\n\\]\n\nดังนั้น \\(A B+C D=505\\cdot649+9\\cdot166333=1824742\\)\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 11.02,
+     "output_tokens": 163,
+     "reasoning_tokens": 140,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "ANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 18.87,
+     "output_tokens": 656,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "m()\n        if self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        if self.peek()[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.45,
+     "output_tokens": 162,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "um += num\n\n        while candidates and prefix_sum - candidates[0][1] >= k:\n            start, _ = candidates.popleft()\n            best = min(best, end - start)\n            if best == 1:\n                return 1\n\n        while candidates and candidates[-1][1] >= prefix_sum:\n            candidates.pop()\n\n        candidates.append((end, prefix_sum))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 7.04,
+     "output_tokens": 165,
+     "reasoning_tokens": 20,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "บัญชี ACC-7731\n\n- (ก) ยอดเปิดบัญชี 15,250.00 บาท (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุด 3.5% ต่อปี (L1102)\n- (ค) ยอดถอนที่มีผลจริง 2,318.75 บาท (L1846) โดยตัดรายการถอน 900.00 บาทที่ถูกยกเลิก (L1490) ออกจากการคำนวณ\n\n(15,250.00 − 2,318.75) × 1.035 = 13,383.84375 บาท\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 12.8,
+   "avg_out": 420.6,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 11.49,
+     "output_tokens": 371,
+     "reasoning_tokens": 359,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 10.72,
+     "output_tokens": 296,
+     "reasoning_tokens": 273,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 24.16,
+     "output_tokens": 982,
+     "reasoning_tokens": 330,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "\n            self.take()\n            return value ** self.unary()\n        return value\n\n    def atom(self):\n        if self.peek()[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        value = self.expr()\n        self.take(\"op\", \")\")\n        return value\n\n\ndef evaluate(src):\n    parser = Parser(src)\n    value = parser.expr()\n    parser.take(\"end\")\n    return value\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 9.03,
+     "output_tokens": 261,
+     "reasoning_tokens": 89,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "candidates[0][1] >= k:\n            start, _ = candidates.popleft()\n            length = end - start\n            if length == 1:\n                return 1\n            if length < best:\n                best = length\n\n        while candidates and candidates[-1][1] >= prefix_sum:\n            candidates.pop()\n\n        candidates.append((end, prefix_sum))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 8.42,
+     "output_tokens": 193,
+     "reasoning_tokens": 51,
+     "real_model": "gpt-6.2-sol",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "- (ก) ยอดเปิดบัญชี **15,250.00 บาท** (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุด **3.5% ต่อปี** (L1102)\n- (ค) ยอดถอนที่มีผลจริงรวม **2,318.75 บาท** (L1846) โดยตัดรายการถอน 900.00 บาทที่ถูกยกเลิก (L1490) ออกจากการคำนวณ\n\n(15,250.00 − 2,318.75) × 1.035 = 13,383.84375 บาท\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.2-astra",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 13.4,
+   "avg_out": 309.6,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 17.78,
+     "output_tokens": 458,
+     "reasoning_tokens": 113,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "2+1)=9\\)\n\nจำนวนที่เป็นจำนวนเฉพาะสัมพัทธ์กับ \\(6\\) ในช่วง \\(1\\) ถึง \\(996\\) จับคู่ได้เป็น \\((1,995),(5,991),\\ldots\\) แต่ละคู่มีผลรวม \\(996\\) ทุกช่วง \\(6\\) จำนวนมีจำนวนที่เข้าเงื่อนไข \\(2\\) ตัว จึงมีทั้งหมด \\(166\\) คู่ ส่วนช่วง \\(997\\) ถึง \\(1000\\) มีเพียง \\(997\\) ที่เข้าเงื่อนไข ดังนั้น \\(D=166\\times996+997=166333\\)\n\nจึงได้ \\(A\\times B+C\\times D=505\\times649+9\\times166333=1824742\\)\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 13.22,
+     "output_tokens": 113,
+     "reasoning_tokens": 90,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "ANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 19.15,
+     "output_tokens": 646,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "m()\n        if self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        if self.peek()[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 8.04,
+     "output_tokens": 150,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "lue in enumerate(nums, start=1):\n        prefix_sum += value\n\n        while candidates and prefix_sum - candidates[0][1] >= k:\n            start, _ = candidates.popleft()\n            best = min(best, end - start)\n\n        while candidates and candidates[-1][1] >= prefix_sum:\n            candidates.pop()\n\n        candidates.append((end, prefix_sum))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 8.64,
+     "output_tokens": 181,
+     "reasoning_tokens": 22,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "บัญชี ACC-7731\n\n- (ก) ยอดเปิดบัญชี 15,250.00 บาท (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุด 3.5% ต่อปี ตาม L1102 ซึ่งแทนอัตราเดิม 2.0% ใน L0412\n- (ค) ยอดถอนที่มีผลจริงรวม 2,318.75 บาท (L1846) ส่วนรายการถอน 900.00 บาทใน L1490 ถูกยกเลิกในวันเดียวกัน\n\n(15,250.00 − 2,318.75) × (1 + 0.035) = 13,383.84375 บาท\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 14.4,
+   "avg_out": 345.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 13.32,
+     "output_tokens": 301,
+     "reasoning_tokens": 289,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 12.96,
+     "output_tokens": 226,
+     "reasoning_tokens": 203,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 25.62,
+     "output_tokens": 865,
+     "reasoning_tokens": 193,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "\n        if self.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        if self.peek()[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 9.06,
+     "output_tokens": 150,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "lue in enumerate(nums, start=1):\n        prefix_sum += value\n\n        while candidates and prefix_sum - candidates[0][1] >= k:\n            start, _ = candidates.popleft()\n            best = min(best, end - start)\n\n        while candidates and candidates[-1][1] >= prefix_sum:\n            candidates.pop()\n\n        candidates.append((end, prefix_sum))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 11.22,
+     "output_tokens": 185,
+     "reasoning_tokens": 26,
+     "real_model": "gpt-6.2-astra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "- (ก) ยอดเปิดบัญชี ACC-7731 คือ 15,250.00 บาท (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุดคือ 3.5% ต่อปี (L1102) แทนอัตราเดิม 2.0% (L0412)\n- (ค) ยอดถอนที่มีผลจริงรวม 2,318.75 บาท (L1846) ส่วนรายการถอน 900.00 บาทถูกยกเลิกในวันเดียวกัน (L1490)\n\n(15,250.00 − 2,318.75) × (1 + 0.035) = 13,383.84375 บาท\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.1-terra",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 11.3,
+   "avg_out": 420.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 13.59,
+     "output_tokens": 544,
+     "reasoning_tokens": 266,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "\\rfloor=505\\)\n- \\(7^{10}\\equiv249\\pmod{1000}\\) และ \\(7^{20}\\equiv1\\pmod{1000}\\) ดังนั้น \\(B\\equiv7^6\\equiv649\\pmod{1000}\\)\n- \\(2026=2\\cdot1013\\) โดย 1013 เป็นจำนวนเฉพาะ จึงได้ \\(C=(2+1)(2+1)=9\\)\n- จำนวนที่เป็นจำนวนเฉพาะสัมพัทธ์กับ 6 มีรูป \\(6k+1\\) หรือ \\(6k+5\\) ดังนั้น\n  \\[\n  D=\\sum_{k=0}^{165}\\bigl((6k+1)+(6k+5)\\bigr)+997=166333\n  \\]\n\nจึงได้ \\(A B+C D=505(649)+9(166333)=1824742\\)\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 15.14,
+     "output_tokens": 612,
+     "reasoning_tokens": 438,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "กและดื่มน้ำส้ม จึงมีบ้านสีขาวอยู่หลังที่ 4 จากเงื่อนไขเรื่องแมว บ้านสีเขียว และกาแฟ เมื่อไล่ตำแหน่งที่เป็นไปได้ จะได้ว่าแมวอยู่หลังที่ 1 บ้านสีแดงอยู่หลังที่ 2 และบ้านสีเขียวอยู่หลังที่ 3\n\nดังนั้นปลาและน้ำเปล่าต้องอยู่หลังที่ 4 ซึ่งเป็นบ้านของอรุณ ส่วนหมาต้องอยู่หลังที่ 3 ซึ่งเป็นบ้านของดาว เครื่องดื่มที่เหลือสำหรับหลังที่ 1 คือชา จึงเป็นบ้านของชัย และบีมอยู่หลังที่ 2\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 15.24,
+     "output_tokens": 656,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.01,
+     "output_tokens": 139,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " deque([(0, 0)])\n    best = len(nums) + 1\n\n    for i, num in enumerate(nums, 1):\n        prefix += num\n\n        while candidates and prefix - candidates[0][1] >= k:\n            best = min(best, i - candidates.popleft()[0])\n\n        while candidates and candidates[-1][1] >= prefix:\n            candidates.pop()\n\n        candidates.append((i, prefix))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 6.55,
+     "output_tokens": 150,
+     "reasoning_tokens": 28,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "- ยอดเปิดบัญชี: 15,250.00 บาท (L0233)\n- อัตราดอกเบี้ยล่าสุด: 3.5% ต่อปี (L1102)\n- ยอดถอนที่มีผลจริง: 2,318.75 บาท (L1846) โดยไม่นับ 900.00 บาทที่ถูกยกเลิก (L1490)\n\n(15,250.00 − 2,318.75) × 1.035 = 13,383.84375\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 12.2,
+   "avg_out": 472.0,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 14.9,
+     "output_tokens": 631,
+     "reasoning_tokens": 377,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "(2026\\equiv6\\pmod{20}\\) ดังนั้น \\(B\\equiv7^6\\equiv649\\pmod{1000}\\)\n- \\(2026=2\\cdot1013\\) โดยทั้งสองเป็นจำนวนเฉพาะ จึงได้ \\(C=(2+1)(2+1)=9\\)\n- จำนวนที่เป็นไปตามเงื่อนไขของ \\(D\\) คือจำนวนที่เหลือเศษ \\(1\\) หรือ \\(5\\) เมื่อหารด้วย \\(6\\) ผลรวมตั้งแต่ \\(1\\) ถึง \\(996\\) เท่ากับ \\(165336\\) และมี \\(997\\) เพิ่มอีกหนึ่งจำนวน จึงได้ \\(D=166333\\)\n\nดังนั้น \\(A B+C D=505(649)+9(166333)=1824742\\)\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 16.15,
+     "output_tokens": 676,
+     "reasoning_tokens": 388,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "** และดื่มนม\n\nคนเลี้ยงแมวต้องอยู่หลังที่ 1 หรือ 2 แต่ถ้าอยู่หลังที่ 2 จะไม่มีตำแหน่งที่เป็นไปได้สำหรับคนเลี้ยงปลา จึงเลี้ยงแมวอยู่ **หลังที่ 1** ทำให้บ้านสีแดงและกระต่ายอยู่หลังที่ 2\n\nปลาจึงต้องอยู่หลังที่ 4 ซึ่งเป็นบ้านของอรุณผู้ดื่มน้ำเปล่า ส่วนดาวผู้เลี้ยงหมาต้องอยู่หลังที่ 3 กาแฟอยู่หลังที่ 2 ชาจึงอยู่หลังที่ 1 ซึ่งเป็นบ้านของชัย และชื่อที่เหลือคือบีมอยู่หลังที่ 2\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 16.89,
+     "output_tokens": 751,
+     "reasoning_tokens": 93,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 6.06,
+     "output_tokens": 139,
+     "reasoning_tokens": 0,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": ")\n    prefix = 0\n    best = len(nums) + 1\n\n    for i, num in enumerate(nums, 1):\n        prefix += num\n\n        while candidates and prefix - candidates[0][1] >= k:\n            best = min(best, i - candidates.popleft()[0])\n\n        while candidates and candidates[-1][1] >= prefix:\n            candidates.pop()\n\n        candidates.append((i, prefix))\n\n    return best if best <= len(nums) else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 6.92,
+     "output_tokens": 163,
+     "reasoning_tokens": 32,
+     "real_model": "gpt-6.1-terra",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "- (ก) ยอดเปิดบัญชี: 15,250.00 บาท (L0233)\n- (ข) อัตราดอกเบี้ยล่าสุด: 3.5% ต่อปี (L1102)\n- (ค) ยอดถอนที่มีผลจริง: 2,318.75 บาท (L1846) โดยไม่นับ 900.00 บาทที่ถูกยกเลิก (L1490)\n\n(15,250.00 − 2,318.75) × 1.035 = 13,383.84375\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-3.8-flash",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 63.9,
+   "avg_out": 6522.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 21.55,
+     "output_tokens": 2242,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-3.8-flash-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "\n- $A = 505$\n- $B = 649$\n- $C = 9$\n- $D = 166333$\n\n**คำนวณ $A \\times B$:**\n$$505 \\times 649 = (500 + 5) \\times 649 = 5 \\times 101 \\times 649$$\n$$500 \\times 649 = 324500$$\n$$5 \\times 649 = 3245$$\n$$A \\times B = 324500 + 3245 = 327745$$\n\n**คำนวณ $C \\times D$:**\n$$9 \\times 166333 = 9 \\times (166333) = 1496997$$\n\n**รวมผลลัพธ์:**\n$$A \\times B + C \\times D = 327745 + 1496997 = 1824742$$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 39.05,
+     "output_tokens": 3623,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-3.8-flash-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": ") อยู่ทางซ้ายของทั้งบีมและดาว ทำให้ได้ลำดับ: ชัย < บีม < ดาว\n10. เนื่องจากบ้านหลังที่ 4 คือสีขาว (ดาวอยู่ไม่ได้เพราะดาวอยู่บ้านสีเขียว) ทำให้ ดาว ต้องอยู่บ้านหลังที่ 3, บีม อยู่บ้านหลังที่ 2, และ ชัย อยู่บ้านหลังที่ 1\n11. บ้านหลังที่ 4 จึงเป็น **อรุณ** (เลี้ยงปลา, สีขาว) และบ้านหลังที่ 1 คือสีเหลือง (ไม่ติดกับบ้านหลังที่ 4 ตามเงื่อนไข 8) ส่วนบ้านหลังที่ 5 คือสีน้ำเงิน\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 228.36,
+     "output_tokens": 25502,
+     "reasoning_tokens": 21008,
+     "real_model": "gemini-3.8-flash-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 12.1,
+     "output_tokens": 456,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-3.8-flash-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": ")\n\n        # 2. รักษาสมบัติ monotonic increasing ของ deque\n        # ถ้า prefix[i] <= prefix[dq[-1]] หมายความว่า index dq[-1] มีค่า prefix sum มากกว่าหรือเท่ากับ\n        # แต่อยู่ไกลกว่า i ดังนั้น dq[-1] จะไม่มีทางเป็นจุดเริ่มต้นที่ดีกว่า i ได้ จึง pop ออก\n        while dq and prefix[i] <= prefix[dq[-1]]:\n            dq.pop()\n\n        dq.append(i)\n\n    return ans if ans != float(\"inf\") else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 18.47,
+     "output_tokens": 789,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-3.8-flash-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "ัด L1102 ซึ่งเปลี่ยนแปลงและมีผลแทนที่ 2.0% ที่ L0412)\n- **(ค) ผลรวมยอดถอนที่มีผลจริง:** 2,318.75 บาท (บรรทัด L1846 ทั้งนี้ไม่นับรายการ 900.00 บาท ที่บรรทัด L1490 เนื่องจากถูกยกเลิก/REVERSED)\n\n**การคำนวณ:**\n$$(\\text{ก} - \\text{ค}) \\times (1 + \\text{ข}) = (15,250.00 - 2,318.75) \\times (1 + 0.035)$$\n$$= 12,931.25 \\times 1.035 = 13,383.84375$$\n\nปัดเป็นทศนิยม 2 ตำแหน่งได้ **13383.84**\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 109.9,
+   "avg_out": 12032.8,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 104.16,
+     "output_tokens": 14723,
+     "reasoning_tokens": 13432,
+     "real_model": "gemini-3.8-flash-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "3 \\times 334}{2} = 3 \\times 55611 = 166833$\n- $S_6 = 6 \\times \\frac{166 \\times 167}{2} = 3 \\times 27722 = 83166$\n\n$$D = 500500 - 250500 - 166833 + 83166 = 166333$$\n\nดังนั้น **$D = 166333$**\n\n---\n\n### **5. คำนวณค่า $A \\times B + C \\times D$**\n$$A \\times B = 505 \\times 649 = 327745$$\n$$C \\times D = 9 \\times 166333 = 1496997$$\n\n$$A \\times B + C \\times D = 327745 + 1496997 = 1824742$$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 68.16,
+     "output_tokens": 7884,
+     "reasoning_tokens": 6816,
+     "real_model": "gemini-3.8-flash-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ได้แบบเดียวคือ:\n     - **หลังที่ 1:** ชัย (สีเหลือง, ชา, แมว)\n     - **หลังที่ 2:** บีม (สีแดง, กาแฟ, กระต่าย)\n     - **หลังที่ 3:** ดาว (สีเขียว, นม, หมา)\n   - บ้านหลังที่ 4 จึงต้องเป็น **อรุณ** (สีขาว, น้ำเปล่า, ปลา)\n   - บ้านหลังที่ 5 คือ **เอก** (สีน้ำเงิน, น้ำส้ม, นก)\n\n*(ตรวจสอบเงื่อนไข 8: บ้านสีเหลือง (หลังที่ 1) ไม่ติดกับคนเลี้ยงปลา (หลังที่ 4) ถูกต้องสมบูรณ์)*\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 262.18,
+     "output_tokens": 28498,
+     "reasoning_tokens": 23824,
+     "real_model": "gemini-3.8-flash-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 63.85,
+     "output_tokens": 4997,
+     "reasoning_tokens": 2662,
+     "real_model": "gemini-3.8-flash-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": " min_len = length\n\n        # 2. รักษาคุณสมบัติเพิ่มขึ้นแบบทางเดียวใน deque:\n        # หาก prefix[q[-1]] >= cur ตัว q[-1] จะไม่มีทางเป็นจุดเริ่มต้นที่ดีกว่า i ได้เลย\n        # เพราะ i มี prefix sum ที่น้อยกว่าหรือเท่ากัน และอยู่ทางขวามากกว่า (ทำให้ได้ subarray สั้นกว่า)\n        while q and prefix[q[-1]] >= cur:\n            q.pop()\n\n        q.append(i)\n\n    return min_len if min_len <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 51.29,
+     "output_tokens": 4062,
+     "reasoning_tokens": 2788,
+     "real_model": "gemini-3.8-flash-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "90`: ถอน 900.00 THB แต่ถูกยกเลิก (`REVERSED same day, void, no effect on balance`) จึงไม่นับ  \n   - บรรทัด `L1846`: `NOTE ACC-7731 withdrawal 2,318.75 THB`  \n   - **(ค) = 2,318.75**\n\n---\n\n### การคำนวณ:\n$$\\text{(ก} - \\text{ค)} \\times (1 + \\text{ข)}$$\n$$= (15,250.00 - 2,318.75) \\times (1 + 0.035)$$\n$$= 12,931.25 \\times 1.035 = 13,383.84375$$\n\nปัดเศษทศนิยม 2 ตำแหน่ง ได้ **13383.84**\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-hydrogen",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 16.1,
+   "avg_out": 2070.8,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 18.28,
+     "output_tokens": 2868,
+     "reasoning_tokens": 2067,
+     "real_model": "gemini-4-hydrogen-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " = 250500$\n   - ผลรวมของพหุคูณของ $3$: $3 \\times \\frac{333 \\times 334}{2} = 166833$\n   - ผลรวมของพหุคูณของ $6$: $6 \\times \\frac{166 \\times 167}{2} = 83166$\n   \n   โดยหลักการเพิ่มเข้า-ตัดออก:\n   $$D = 500500 - 250500 - 166833 + 83166 = 166333$$\n\n5. **หาค่า $A \\times B + C \\times D$:**\n   $$A \\times B + C \\times D = (505 \\times 649) + (9 \\times 166333) = 327745 + 1496997 = 1824742$$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 27.63,
+     "output_tokens": 3852,
+     "reasoning_tokens": 3700,
+     "real_model": "gemini-4-hydrogen-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "จากเงื่อนไขทั้งหมด สามารถสรุปข้อมูลของบ้านทั้ง 5 หลังได้ดังนี้:\n- บ้านหลังที่ 1: **ชัย** (สีเหลือง, แมว, ชา)\n- บ้านหลังที่ 2: **บีม** (สีแดง, กระต่าย, กาแฟ)\n- บ้านหลังที่ 3: **ดาว** (สีเขียว, หมา, นม)\n- บ้านหลังที่ 4: **อรุณ** (สีขาว, ปลา, น้ำเปล่า)\n- บ้านหลังที่ 5: **เอก** (สีน้ำเงิน, นก, น้ำส้ม)\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 14.05,
+     "output_tokens": 1917,
+     "reasoning_tokens": 1177,
+     "real_model": "gemini-4-hydrogen-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 11.95,
+     "output_tokens": 847,
+     "reasoning_tokens": 658,
+     "real_model": "gemini-4-hydrogen-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "te(nums):\n        prefix[i + 1] = prefix[i] + x\n\n    ans = n + 1\n    dq: deque[int] = deque()\n\n    for j, cur in enumerate(prefix):\n        while dq and cur - prefix[dq[0]] >= k:\n            length = j - dq.popleft()\n            if length < ans:\n                ans = length\n        while dq and cur <= prefix[dq[-1]]:\n            dq.pop()\n        dq.append(j)\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 8.41,
+     "output_tokens": 870,
+     "reasoning_tokens": 625,
+     "real_model": "gemini-4-hydrogen-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " `ACC-7731`:\n- **(ก) ยอดเปิดบัญชี** (จาก `L0233`): `15,250.00` THB\n- **(ข) อัตราดอกเบี้ยต่อปีที่มีผลล่าสุด** (จาก `L1102` ซึ่งยกเลิกอัตราเดิมที่ `L0412`): `3.5%` (`0.035`)\n- **(ค) ผลรวมยอดถอนที่มีผลจริง**: `2,318.75` THB (จาก `L1846`; รายการที่ `L1490` ถูกยกเลิกจึงไม่นับ)\n\nการคำนวณ:\n$$(15250.00 - 2318.75) \\times (1 + 0.035) = 12931.25 \\times 1.035 = 13383.84375 \\approx 13383.84$$\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 33.4,
+   "avg_out": 5676.8,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 36.45,
+     "output_tokens": 7841,
+     "reasoning_tokens": 6885,
+     "real_model": "gemini-4-hydrogen-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "9$): $3 \\times \\frac{333 \\times 334}{2} = 166833$\n   - ผลรวมพหุคูณของ $6$ ($6, 12, \\dots, 996$): $6 \\times \\frac{166 \\times 167}{2} = 83166$\n   $$D = 500500 - 250500 - 166833 + 83166 = 166333$$\n\n5. **คำนวณ $A \\times B + C \\times D$**\n   - $A \\times B = 505 \\times 649 = 327745$\n   - $C \\times D = 9 \\times 166333 = 1496997$\n   - $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 38.14,
+     "output_tokens": 6981,
+     "reasoning_tokens": 6014,
+     "real_model": "gemini-4-hydrogen-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ื่อนไข 8 บ้านสี **เหลือง** ไม่ติดกับบ้านเลี้ยง **ปลา** (หลังที่ 4) ดังนั้นหลังที่ 1 จึงมีสี **เหลือง** และหลังที่ 5 มีสี **น้ำเงิน**\n\nสรุปเจ้าของบ้านหลังที่ 1 ถึง 5:\n- **หลังที่ 1:** ชัย (เหลือง, แมว, ชา)\n- **หลังที่ 2:** บีม (แดง, กระต่าย, กาแฟ)\n- **หลังที่ 3:** ดาว (เขียว, หมา, นม)\n- **หลังที่ 4:** อรุณ (ขาว, ปลา, น้ำเปล่า)\n- **หลังที่ 5:** เอก (น้ำเงิน, นก, น้ำส้ม)\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 44.61,
+     "output_tokens": 7859,
+     "reasoning_tokens": 5908,
+     "real_model": "gemini-4-hydrogen-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 26.11,
+     "output_tokens": 3108,
+     "reasoning_tokens": 1904,
+     "real_model": "gemini-4-hydrogen-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "dq: deque[int] = deque()\n    popleft = dq.popleft\n    pop = dq.pop\n    append = dq.append\n\n    for i, cur in enumerate(prefix):\n        target = cur - k\n        while dq and prefix[dq[0]] <= target:\n            j = popleft()\n            if i - j < ans:\n                ans = i - j\n        while dq and prefix[dq[-1]] >= cur:\n            pop()\n        append(i)\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 21.88,
+     "output_tokens": 2595,
+     "reasoning_tokens": 2165,
+     "real_model": "gemini-4-hydrogen-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "่มีผลล่าสุด:** `3.5%` หรือ `0.035` (จากบรรทัด `L1102` ซึ่งยกเลิกอัตราเดิม `2.0%` ที่ `L0412`)\n- **(ค) ผลรวมยอดถอนที่มีผลจริง:** `2318.75` (จากบรรทัด `L1846`; รายการที่ `L1490` จำนวน `900.00` ถูกยกเลิก/void จึงไม่นับ และรายการที่ `L0587`, `L0961`, `L1633` เป็นของบัญชีอื่น)\n\nการคำนวณ:\n$$(15250.00 - 2318.75) \\times (1 + 0.035) = 12931.25 \\times 1.035 = 13383.84375 \\approx 13383.84$$\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-argon",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 21.1,
+   "avg_out": 947.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 26.93,
+     "output_tokens": 1678,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-argon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "00$:\n  - $997 = 6(166) + 1 \\implies \\gcd(997, 6) = 1$\n  - $998, 999, 1000$ มีตัวประกอบร่วมกับ $6$ ทั้งหมด\n\nดังนั้น:\n$$D = 165336 + 997 = 166333$$\n\n---\n\n### 5. คำนวณ $A \\times B + C \\times D$\n- $A \\times B = 505 \\times 649 = (500 + 5) \\times 649 = 324500 + 3245 = 327745$\n- $C \\times D = 9 \\times 166333 = 1496997$\n\nนำมารวมกัน:\n$$A \\times B + C \\times D = 327745 + 1496997 = 1824742$$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 30.57,
+     "output_tokens": 1668,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-argon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "บเดียวคือ: **หลังที่ 1 ชัย**, **หลังที่ 2 บีม**, **หลังที่ 3 ดาว**\n     - (ตรวจสอบเงื่อนไข 8: ชัยอยู่บ้านสีเหลืองที่หลังที่ 1 ซึ่งไม่ติดกับอรุณที่อยู่หลังที่ 4 — ถูกต้องครบถ้วน)\n\n**สรุปลำดับบ้าน 1 ถึง 5:**\n1. **ชัย** (สีเหลือง, แมว, ชา)\n2. **บีม** (สีแดง, กระต่าย, กาแฟ)\n3. **ดาว** (สีเขียว, หมา, นม)\n4. **อรุณ** (สีขาว, ปลา, น้ำเปล่า)\n5. **เอก** (สีน้ำเงิน, นก, น้ำส้ม)\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 19.48,
+     "output_tokens": 749,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-argon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 14.03,
+     "output_tokens": 163,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-argon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "st_subarray(nums: list[int], k: int) -> int:\n    n = len(nums)\n    ans = n + 1\n    q = deque([(-1, 0)])\n\n    for i, s in enumerate(accumulate(nums)):\n        while q and s - q[0][1] >= k:\n            idx, _ = q.popleft()\n            if i - idx < ans:\n                ans = i - idx\n        while q and q[-1][1] >= s:\n            q.pop()\n        q.append((i, s))\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 14.26,
+     "output_tokens": 478,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-argon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "คิด)*\n\n### สรุปค่าตัวแปร\n- **(ก) ยอดเปิดบัญชี:** $15,250.00$ บาท\n- **(ข) อัตราดอกเบี้ยต่อปีที่มีผลล่าสุด:** $3.5\\% = 0.035$\n- **(ค) ผลรวมยอดถอนที่มีผลจริง:** $2,318.75$ บาท (ไม่นับรายการ 900.00 บาท ที่ถูกยกเลิกใน L1490)\n\n### การคำนวณ\n$$(\\text{ก} - \\text{ค}) \\times (1 + \\text{ข}) = (15250.00 - 2318.75) \\times (1 + 0.035)$$\n$$= 12931.25 \\times 1.035 = 13383.84375 \\approx 13383.84$$\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 57.4,
+   "avg_out": 4601.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 75.81,
+     "output_tokens": 7062,
+     "reasoning_tokens": 5965,
+     "real_model": "gemini-4-argon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "$ ลงตัวในช่วง $1$ ถึง $1000$ คือ $3 \\times (1 + 3 + 5 + \\dots + 333)$ (มี $167$ ตัว):\n  $$S_{\\text{odd, } 3} = 3 \\times 167^2 = 3 \\times 27889 = 83667$$\n\nดังนั้น:\n$$D = 250000 - 83667 = 166333$$\n\n---\n\n### 5. คำนวณค่า $A \\times B + C \\times D$\n- $A \\times B = 505 \\times 649 = 327745$\n- $C \\times D = 9 \\times 166333 = 1496997$\n- $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 52.28,
+     "output_tokens": 3861,
+     "reasoning_tokens": 3114,
+     "real_model": "gemini-4-argon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ืองไม่ได้อยู่ติดกับบ้านคนเลี้ยงปลา (อรุณ บ้าน 4) ดังนั้นบ้านหลังที่ 1 (ชัย) คือสีเหลือง และบ้านหลังที่ 5 (เอก) คือสีน้ำเงิน\n\n**สรุปข้อมูลบ้านทั้ง 5 หลัง:**\n- **หลังที่ 1:** ชัย (สีเหลือง, แมว, ชา)\n- **หลังที่ 2:** บีม (สีแดง, กระต่าย, กาแฟ)\n- **หลังที่ 3:** ดาว (สีเขียว, หมา, นม)\n- **หลังที่ 4:** อรุณ (สีขาว, ปลา, น้ำเปล่า)\n- **หลังที่ 5:** เอก (สีน้ำเงิน, นก, น้ำส้ม)\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 84.95,
+     "output_tokens": 6685,
+     "reasoning_tokens": 5945,
+     "real_model": "gemini-4-argon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 34.24,
+     "output_tokens": 2451,
+     "reasoning_tokens": 2272,
+     "real_model": "gemini-4-argon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "k: int) -> int:\n  n = len(nums)\n  prefix = list(accumulate(nums, initial=0))\n  ans = n + 1\n\n  dq = deque()\n  popleft = dq.popleft\n  pop = dq.pop\n  append = dq.append\n\n  for i, p in enumerate(prefix):\n    while dq and p - prefix[dq[0]] >= k:\n      d = i - popleft()\n      if d < ans:\n        ans = d\n    while dq and p <= prefix[dq[-1]]:\n      pop()\n    append(i)\n\n  return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 39.61,
+     "output_tokens": 2948,
+     "reasoning_tokens": 2490,
+     "real_model": "gemini-4-argon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ือ ACC-7713 และ ACC-7371)*\n\n* **สรุปค่าตัวแปร:**\n  * **(ก) ยอดเปิดบัญชี** = `15250.00`\n  * **(ข) อัตราดอกเบี้ยต่อปีที่มีผลล่าสุด** = `3.5%` = `0.035`\n  * **(ค) ผลรวมยอดถอนที่มีผลจริง** = `2318.75`\n\n* **การคำนวณ:**\n  $$\\text{(ก} - \\text{ค)} \\times (1 + \\text{ข}) = (15250.00 - 2318.75) \\times (1 + 0.035) = 12931.25 \\times 1.035 = 13383.84375$$\n\nปัดเป็นทศนิยม 2 ตำแหน่งได้ `13383.84`\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-carbon",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 18.5,
+   "avg_out": 916.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 24.19,
+     "output_tokens": 1696,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-carbon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "ที่เหลือ $997, 998, 999, 1000$:\n- $\\gcd(997, 6) = 1$ (เพราะ $997 = 6(166) + 1$)\n- $998, 999, 1000$ มีตัวประกอบร่วมกับ $6$\n\nดังนั้น $D = 165336 + 997 = 166333$\n\n---\n\n**5. คำนวณ $A \\times B + C \\times D$**\n- $A \\times B = 505 \\times 649 = (500 + 5) \\times 649 = 324500 + 3245 = 327745$\n- $C \\times D = 9 \\times 166333 = 1496997$\n- $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 28.52,
+     "output_tokens": 1513,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-carbon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "*\n   - อรุณ (ปลา) อยู่หลังที่ 4 เงื่อนไข 8 บอกว่าบ้านสีเหลืองไม่ได้อยู่ติดกับคนเลี้ยงปลา ดังนั้นหลังที่ 3 (สีเขียวไปแล้ว) และ **หลังที่ 5 จะเป็นสีเหลืองไม่ได้**\n   - ทำให้ **หลังที่ 1 (ชัย) ต้องเป็นสีเหลือง** และ **หลังที่ 5 (เอก) เป็นสีน้ำเงิน** ซึ่งสอดคล้องกับทุกเงื่อนไขทั้งหมดอย่างสมบูรณ์\n\nสรุปลำดับเจ้าของบ้านตั้งแต่หลังที่ 1 ถึง 5 คือ: **ชัย, บีม, ดาว, อรุณ, เอก**\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 14.47,
+     "output_tokens": 762,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-carbon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 9.9,
+     "output_tokens": 201,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-carbon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "   append = q.append\n\n    prefix = [0]\n    prefix.extend(accumulate(nums))\n\n    for i in range(1, n + 1):\n        pi = prefix[i]\n        target = pi - k\n        while q and prefix[q[0]] <= target:\n            cand = i - popleft()\n            if cand < ans:\n                ans = cand\n        while q and prefix[q[-1]] >= pi:\n            pop()\n        append(i)\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 15.42,
+     "output_tokens": 410,
+     "reasoning_tokens": 0,
+     "real_model": "gemini-4-carbon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "บ)\n- **L1846:** `NOTE ACC-7731 withdrawal 2,318.75 THB`\n\nสรุปค่าตัวแปร:\n- **(ก) ยอดเปิดบัญชี:** `15250.00` บาท\n- **(ข) อัตราดอกเบี้ยต่อปีที่มีผลล่าสุด:** `3.5%` = `0.035`\n- **(ค) ผลรวมยอดถอนที่มีผลจริง:** `2318.75` บาท\n\n**การคำนวณ:**\n$$\\text{(ก} - \\text{ค)} \\times (1 + \\text{ข}) = (15250.00 - 2318.75) \\times (1 + 0.035)$$\n$$= 12931.25 \\times 1.035 = 13383.84375 \\approx 13383.84$$\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 284.8,
+   "avg_out": 23162.4,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 173.08,
+     "output_tokens": 15534,
+     "reasoning_tokens": 14328,
+     "real_model": "gemini-4-carbon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "997, 998, 999, 1000$ มีเพียง $997$ เท่านั้นที่ $\\gcd(n, 6) = 1$\n   ดังนั้น\n   $$D = 165336 + 997 = 166333$$\n\n5. **คำนวณค่า $A \\times B + C \\times D$**\n   - $A \\times B = 505 \\times 649 = (500 + 5) \\times 649 = 324500 + 3245 = 327745$\n   - $C \\times D = 9 \\times 166333 = (10 - 1) \\times 166333 = 1663330 - 166333 = 1496997$\n   - $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 152.03,
+     "output_tokens": 11729,
+     "reasoning_tokens": 10778,
+     "real_model": "gemini-4-carbon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "หลืองไม่ได้อยู่ติดกับบ้านคนเลี้ยงปลา (หลังที่ 4) ดังนั้นหลังที่ 5 จึงเป็นสีน้ำเงิน และหลังที่ 1 เป็นสีเหลือง\n\n**สรุปข้อมูลบ้านทั้ง 5 หลัง:**\n1. **หลังที่ 1:** ชัย · สีเหลือง · แมว · ชา\n2. **หลังที่ 2:** บีม · สีแดง · กระต่าย · กาแฟ\n3. **หลังที่ 3:** ดาว · สีเขียว · หมา · นม\n4. **หลังที่ 4:** อรุณ · สีขาว · ปลา · น้ำเปล่า\n5. **หลังที่ 5:** เอก · สีน้ำเงิน · นก · น้ำส้ม\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 522.73,
+     "output_tokens": 41226,
+     "reasoning_tokens": 34590,
+     "real_model": "gemini-4-carbon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 159.26,
+     "output_tokens": 11613,
+     "reasoning_tokens": 10041,
+     "real_model": "gemini-4-carbon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "opleft\n    pop = q.pop\n    append = q.append\n    best = n + 1\n\n    for i, cur in enumerate(prefix):\n        while q and cur - prefix[q[0]] >= k:\n            d = i - popleft()\n            if d < best:\n                if d == 2:\n                    return 2\n                best = d\n        while q and prefix[q[-1]] >= cur:\n            pop()\n        append(i)\n\n    return best if best <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 416.82,
+     "output_tokens": 35710,
+     "reasoning_tokens": 35124,
+     "real_model": "gemini-4-carbon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "ด L0412)\n- **(ค) ผลรวมยอดถอนที่มีผลจริง:** `2,318.75` บาท (บรรทัด L1846 เท่านั้น ส่วนยอดถอน 900.00 บาท ที่บรรทัด L1490 ถูกยกเลิกในวันเดียวกันจึงไม่นับรวม)\n\n**การคำนวณ:**\n- $\\text{ก} - \\text{ค} = 15250.00 - 2318.75 = 12931.25$\n- $(\\text{ก} - \\text{ค}) \\times (1 + \\text{ข}) = 12931.25 \\times (1 + 0.035) = 12931.25 \\times 1.035 = 13383.84375$\n- ปัดเป็นทศนิยม 2 ตำแหน่ง ได้ `13383.84`\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-neon",
+  "low": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 28.1,
+   "avg_out": 2467.2,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 39.53,
+     "output_tokens": 4028,
+     "reasoning_tokens": 3090,
+     "real_model": "gemini-4-neon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "rac{333 \\times 334}{2} = 166833$\n   - ผลรวมพหุคูณของ $6$ ($6, 12, \\dots, 996$): $6 \\times \\frac{166 \\times 167}{2} = 83166$\n   \n   ดังนั้น:\n   $$D = 500500 - 250500 - 166833 + 83166 = 166333$$\n\n5. **หาค่า $A \\times B + C \\times D$:**\n   - $A \\times B = 505 \\times 649 = 327745$\n   - $C \\times D = 9 \\times 166333 = 1496997$\n   - $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 37.3,
+     "output_tokens": 2877,
+     "reasoning_tokens": 2476,
+     "real_model": "gemini-4-neon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "งหมา และดื่มนม\n   - จากเงื่อนไข 7, 9, 11 จะได้ลำดับ **ชัย (1) < บีม (2) < ดาว (3)** และบ้านสีเหลืองคือหลังที่ 1 (ไม่ติดกับปลาที่หลังที่ 4)\n\nสรุปตารางคำตอบ:\n- หลังที่ 1: **ชัย** · เหลือง · แมว · ชา\n- หลังที่ 2: **บีม** · แดง · กระต่าย · กาแฟ\n- หลังที่ 3: **ดาว** · เขียว · หมา · นม\n- หลังที่ 4: **อรุณ** · ขาว · ปลา · น้ำเปล่า\n- หลังที่ 5: **เอก** · น้ำเงิน · นก · น้ำส้ม\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 25.89,
+     "output_tokens": 2757,
+     "reasoning_tokens": 2020,
+     "real_model": "gemini-4-neon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "lf.peek() == (\"op\", \"^\"):\n            self.take()\n            return v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 16.75,
+     "output_tokens": 1121,
+     "reasoning_tokens": 934,
+     "real_model": "gemini-4-neon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "numerate(nums):\n        prefix[i + 1] = prefix[i] + x\n\n    ans = n + 1\n    dq: deque[int] = deque()\n\n    for i, p in enumerate(prefix):\n        while dq and p - prefix[dq[0]] >= k:\n            length = i - dq.popleft()\n            if length < ans:\n                ans = length\n        while dq and prefix[dq[-1]] >= p:\n            dq.pop()\n        dq.append(i)\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 21.24,
+     "output_tokens": 1553,
+     "reasoning_tokens": 1162,
+     "real_model": "gemini-4-neon-low",
+     "effort_used": "low",
+     "note": "",
+     "raw_tail": "ED / void) จึงไม่นำมานับ\n- **L1846**: รายการถอน 2,318.75 บาท ดังนั้นผลรวมยอดถอนที่มีผลจริง **(ค)** = `2,318.75` บาท\n\n*(หมายเหตุ: รายการของ ACC-7713 ที่ L0587, L1633 และ ACC-7371 ที่ L0961 เป็นคนละบัญชีจึงไม่นำมาคำนวณ)*\n\n**การคำนวณ:**\n$$(\\text{ก} - \\text{ค}) \\times (1 + \\text{ข}) = (15250.00 - 2318.75) \\times (1 + 0.035)$$\n$$= 12931.25 \\times 1.035 = 13383.84375 \\approx 13383.84$$\n\nANSWER: 13383.84"
+    }
+   ]
+  },
+  "high": {
+   "correct": 5,
+   "n_ok": 5,
+   "avg_time": 56.1,
+   "avg_out": 6532.6,
+   "tasks": [
+    {
+     "task": "h1_math",
+     "correct": true,
+     "got": "1824742",
+     "status": "ok",
+     "duration_s": 81.4,
+     "output_tokens": 10955,
+     "reasoning_tokens": 9992,
+     "real_model": "gemini-4-neon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "\\frac{333 \\times 334}{2} = 999 \\times 167 = 166833$\n   - ผลรวมพหุคูณของ $6$: $6 \\times \\frac{166 \\times 167}{2} = 498 \\times 167 = 83166$\n   $$D = 500500 - 250500 - 166833 + 83166 = 166333$$\n\n5. **คำนวณค่า $A \\times B + C \\times D$**\n   - $A \\times B = 505 \\times 649 = 327745$\n   - $C \\times D = 9 \\times 166333 = 1496997$\n   - $A \\times B + C \\times D = 327745 + 1496997 = 1824742$\n\nANSWER: 1824742"
+    },
+    {
+     "task": "h2_logic",
+     "correct": true,
+     "got": "ชัย,บีม,ดาว,อรุณ,เอก",
+     "status": "ok",
+     "duration_s": 35.77,
+     "output_tokens": 3635,
+     "reasoning_tokens": 2965,
+     "real_model": "gemini-4-neon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "าว\n8. จากข้อ 8 บ้านสีเหลืองไม่ติดกับปลา (บ้าน 4) จึงเป็นบ้าน 1 (ชัย) และบ้าน 5 (เอก) เป็นสีน้ำเงิน\n\n| หลังที่ | เจ้าของ | สีบ้าน | สัตว์เลี้ยง | เครื่องดื่ม |\n| :---: | :---: | :---: | :---: | :---: |\n| 1 | ชัย | เหลือง | แมว | ชา |\n| 2 | บีม | แดง | กระต่าย | กาแฟ |\n| 3 | ดาว | เขียว | หมา | นม |\n| 4 | อรุณ | ขาว | ปลา | น้ำเปล่า |\n| 5 | เอก | น้ำเงิน | นก | น้ำส้ม |\n\nANSWER: ชัย,บีม,ดาว,อรุณ,เอก"
+    },
+    {
+     "task": "h3_bug",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 99.08,
+     "output_tokens": 11053,
+     "reasoning_tokens": 9004,
+     "real_model": "gemini-4-neon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": " self.peek() == (\"op\", \"^\"):\n            self.take()\n            v = v ** self.unary()\n        return v\n\n    def atom(self):\n        t = self.peek()\n        if t[0] == \"num\":\n            return self.take()[1]\n        self.take(\"op\", \"(\")\n        v = self.expr()\n        self.take(\"op\", \")\")\n        return v\n\n\ndef evaluate(src):\n    p = Parser(src)\n    v = p.expr()\n    p.take(\"end\")\n    return v\n```"
+    },
+    {
+     "task": "h4_algo",
+     "correct": true,
+     "got": "hidden tests PASS",
+     "status": "ok",
+     "duration_s": 37.18,
+     "output_tokens": 3839,
+     "reasoning_tokens": 3639,
+     "real_model": "gemini-4-neon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "  append = dq.append\n\n    for i, cur in enumerate(prefix):\n        target = cur - k\n        while dq and prefix[dq[0]] <= target:\n            length = i - popleft()\n            if length < ans:\n                ans = length\n                if ans == 1:\n                    return 1\n        while dq and prefix[dq[-1]] >= cur:\n            pop()\n        append(i)\n\n    return ans if ans <= n else -1\n```"
+    },
+    {
+     "task": "h5_doc",
+     "correct": true,
+     "got": "13383.84",
+     "status": "ok",
+     "duration_s": 27.08,
+     "output_tokens": 3181,
+     "reasoning_tokens": 2789,
+     "real_model": "gemini-4-neon-high",
+     "effort_used": "high",
+     "note": "",
+     "raw_tail": "เดียวกัน (REVERSED, void) จึงไม่นับรวม\n- **L1846**: ถอนเงิน `2,318.75` บาท → **(ค) = 2318.75**\n\n*(รายการใน L0587, L0961 และ L1633 เป็นของบัญชี ACC-7713 และ ACC-7371 จึงไม่เกี่ยวข้อง)*\n\n**การคำนวณ:**\n$$\\begin{aligned}\n(\\text{ก} - \\text{ค}) \\times (1 + \\text{ข}) &= (15250.00 - 2318.75) \\times (1 + 0.035) \\\\\n&= 12931.25 \\times 1.035 \\\\\n&= 13383.84375 \\approx 13383.84\n\\end{aligned}$$\n\nANSWER: 13383.84"
+    }
+   ]
+  }
+ }
+]

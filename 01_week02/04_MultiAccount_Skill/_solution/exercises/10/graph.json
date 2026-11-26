@@ -1,0 +1,12 @@
+{"goal": "cyolo1 สร้าง products.csv 200 รายการ → gyolo1 หาสินค้าแพงสุด และ yolo1 หาสินค้าถูกสุด พร้อมกัน (ส่งข้อมูลยาวด้วยไฟล์)",
+ "nodes": [
+  {"id": "make_csv", "account": "cyolo1", "difficulty": 2, "cwd": "/workspace/ex/10",
+   "expect": "contains:/workspace/ex/10/products.csv",
+   "prompt": "สร้างไฟล์ /workspace/ex/10/products.csv (UTF-8) มีหัวตารางบรรทัดแรกว่า code,name,category,price แล้วตามด้วยสินค้า 200 รายการพอดี: code เป็น P001 ถึง P200 ไม่ซ้ำ, name เป็นชื่อสินค้าภาษาอังกฤษที่ไม่มีเครื่องหมายจุลภาค, category เลือกจาก Electronics, Food, Clothing, Home, Toys, Books, price เป็นจำนวนเต็มระหว่าง 10 ถึง 99999 ห้ามซ้ำกันเลย และสลับลำดับราคาให้สุ่ม (ไม่เรียงจากน้อยไปมาก) เขียนไฟล์ด้วยสคริปต์ แล้วตรวจว่ามี 200 แถว ราคาไม่ซ้ำ ตอบเพียง absolute path ของไฟล์บรรทัดเดียว"},
+  {"id": "max_price", "account": "gyolo1", "difficulty": 2, "cwd": "/workspace/ex/10",
+   "depends_on": ["make_csv"], "expect": "regex:^\\s*P\\d{3}\\s*$",
+   "prompt": "อ่านไฟล์ CSV /workspace/ex/10/products.csv (คอลัมน์ code,name,category,price มี 200 รายการ) แล้วหาสินค้าที่ราคา (price) สูงที่สุด ตอบเพียงรหัสสินค้า (code) เช่น P123 ห้ามมีข้อความอื่น"},
+  {"id": "min_price", "account": "yolo1", "difficulty": 2, "cwd": "/workspace/ex/10",
+   "depends_on": ["make_csv"], "expect": "regex:^\\s*P\\d{3}\\s*$",
+   "prompt": "อ่านไฟล์ CSV /workspace/ex/10/products.csv (คอลัมน์ code,name,category,price มี 200 รายการ) แล้วหาสินค้าที่ราคา (price) ต่ำที่สุด ตอบเพียงรหัสสินค้า (code) เช่น P123 ห้ามมีข้อความอื่น"}
+ ]}

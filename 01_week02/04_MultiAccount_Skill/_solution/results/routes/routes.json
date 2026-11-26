@@ -1,0 +1,59 @@
+{
+ "sign_number": "482",
+ "routes": [
+  {
+   "route": "yy",
+   "sender": "yolo1",
+   "receiver": "yolo2",
+   "dir": "/workspace/routes/yy"
+  },
+  {
+   "route": "yc",
+   "sender": "yolo1",
+   "receiver": "cyolo2",
+   "dir": "/workspace/routes/yc"
+  },
+  {
+   "route": "yg",
+   "sender": "yolo1",
+   "receiver": "gyolo2",
+   "dir": "/workspace/routes/yg"
+  },
+  {
+   "route": "cy",
+   "sender": "cyolo1",
+   "receiver": "yolo2",
+   "dir": "/workspace/routes/cy"
+  },
+  {
+   "route": "cc",
+   "sender": "cyolo1",
+   "receiver": "cyolo2",
+   "dir": "/workspace/routes/cc"
+  },
+  {
+   "route": "cg",
+   "sender": "cyolo1",
+   "receiver": "gyolo2",
+   "dir": "/workspace/routes/cg"
+  },
+  {
+   "route": "gy",
+   "sender": "gyolo1",
+   "receiver": "yolo2",
+   "dir": "/workspace/routes/gy"
+  },
+  {
+   "route": "gc",
+   "sender": "gyolo1",
+   "receiver": "cyolo2",
+   "dir": "/workspace/routes/gc"
+  },
+  {
+   "route": "gg",
+   "sender": "gyolo1",
+   "receiver": "gyolo2",
+   "dir": "/workspace/routes/gg"
+  }
+ ]
+}

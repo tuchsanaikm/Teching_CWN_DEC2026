@@ -1,0 +1,41 @@
+{
+ "goal": "ex/35: เขียนประกาศปิดร้าน -> ตรวจคำสะกด -> (รออนุมัติ) คัดลอกไป publish",
+ "nodes": [
+  {
+   "id": "write",
+   "account": "yolo1",
+   "difficulty": 1,
+   "cwd": "/workspace/ex/35",
+   "prompt": "เขียนประกาศภาษาไทยสั้น ๆ แจ้งลูกค้าว่าร้านจะปิด 1 วันเพื่อซ่อมแซม บันทึกเป็นไฟล์ /workspace/ex/35/notice.md (Markdown) แล้วตอบว่า saved",
+   "type": "task",
+   "depends_on": [],
+   "board": true
+  },
+  {
+   "id": "check",
+   "account": "cyolo1",
+   "difficulty": 1,
+   "cwd": "/workspace/ex/35",
+   "depends_on": [
+    "write"
+   ],
+   "expect": "regex:(ผ่าน|ไม่ผ่าน)",
+   "prompt": "ตรวจคำสะกดภาษาไทยในไฟล์ /workspace/ex/35/notice.md (ห้ามแก้ไฟล์) ตอบคำเดียวเท่านั้น: ผ่าน หรือ ไม่ผ่าน",
+   "type": "task",
+   "board": true
+  },
+  {
+   "id": "publish",
+   "account": "yolo1",
+   "difficulty": 1,
+   "cwd": "/workspace/ex/35",
+   "depends_on": [
+    "check"
+   ],
+   "approve": true,
+   "prompt": "สร้างโฟลเดอร์ /workspace/ex/35/publish (ถ้ายังไม่มี) แล้วคัดลอก /workspace/ex/35/notice.md ไปไว้เป็น /workspace/ex/35/publish/notice.md โดยไม่แก้เนื้อหา แล้วตอบว่า copied",
+   "type": "task",
+   "board": true
+  }
+ ]
+}

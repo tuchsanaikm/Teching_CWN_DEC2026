@@ -1,0 +1,21 @@
+▶ run 20261124-053524-oczp · run directory /workspace/.agent-team/20261124-053524-oczp
+· บัญชีที่อนุญาต: yolo1, cyolo1
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:35:10, cyolo1=พร้อม@05:35:12
+· แผน: coupon→yolo1, notice→cyolo1
+▶ coupon → yolo1 (haiku/low)
+✔ coupon ← yolo1 4.1s in=2 out=152 
+✘ coupon: ไม่ตรง regex:^CP-\d{4}$ (คำตอบเก็บไว้ที่ /workspace/.agent-team/20261124-053524-oczp/out/coupon.md)
+⛔ notice ถูกบล็อกเพราะ coupon
+
+## สรุป run 20261124-053524-oczp
+run directory: /workspace/.agent-team/20261124-053524-oczp
+
+| งาน | บัญชี | รุ่น/effort | เวลา s | input tokens | output tokens | สถานะ |
+|---|---|---|---|---|---|---|
+| coupon | yolo1 | haiku/low | 4.1 | 2 | 152 | bad_output: ไม่ตรง regex:^CP-\d{4}$ (คำตอบเก็บไว้ที่ /workspace/.agent-team/20261… |
+| notice | cyolo1 | - | 0 | 0 | 0 | blocked: งานที่ต้องรอ coupon ล้ม/ไม่ผ่าน จึงไม่รัน |
+
+โควตาของบัญชีที่ใช้:
+| บัญชี | โควตาล่าสุด |
+|---|---|
+| yolo1 | week 29% (ข้อมูล 2026-11-24 05:35) |

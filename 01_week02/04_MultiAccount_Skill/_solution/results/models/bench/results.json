@@ -1,0 +1,1047 @@
+[
+ {
+  "vendor": "claude",
+  "model": "haiku",
+  "real_model": "claude-haiku-5-5",
+  "correct": 4,
+  "avg_time": 6.26,
+  "avg_out": 758.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.26,
+    "output_tokens": 809,
+    "reasoning_tokens": 433,
+    "real_model": "claude-haiku-5-5",
+    "raw": "ขั้นตอนการคำนวณ:\n\n1. จำนวนชิ้นทั้งหมด: 487 × 36 = 17,532 ชิ้น\n2. หลังทิ้งชิ้นเสีย: 17,532 − 2,958 = 14,574 ชิ้น\n3. แบ่งให้ 7 สาขา: 14,574 ÷ 7 = 2,082 ชิ้นต่อสาขา\n4. รับเพิ่มจากโกดัง: 1,234 × 3 = 3,702 ชิ้นต่อสาขา ได้รวม 2,082 + 3,702 = 5,784 ชิ้นต่อสาขา\n5. ขายออก: 17² = 289 ชิ้นต่อสาขา เหลือ 5,784 − 289 = 5,495 ชิ้นต่อสาขา\n6. รวม 7 สาขา: 5,495 × 7 = 38,465 ชิ้น\n7. มูลค่า: 38,465 × 12.75 = 490,428.75 บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 9.62,
+    "output_tokens": 1565,
+    "reasoning_tokens": 1110,
+    "real_model": "claude-haiku-5-5",
+    "raw": "argest:\n            continue\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif second is None or n > second:\n            second = n\n    return second\n```\n\nบั๊กมี 2 จุด จุดแรกคือ `elif n > second` เปรียบเทียบกับ `None` ตอนที่ยังไม่มีค่าที่สองจะเกิด `TypeError` เช่น `[5, 5, 4]` จุดที่สองคือไม่ได้กันค่าที่ซ้ำกับ `largest` ทำให้ `[1, 2, 2, 3, 3]` ได้ `3` แทน `2` แก้โดยข้ามค่าที่เท่ากับ `largest` และเช็ก `second is None` ก่อนเปรียบเทียบ\n\nฟังก์ชันนี้ไม่ได้รันจริง ผมตรวจทั้ง 7 เคสในเทสต์ด้วยการไล่ตรรกะทีละขั้นแล้ว ผลได้ตรงตามที่เทสต์คาดทุกข้อ"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.54,
+    "output_tokens": 400,
+    "reasoning_tokens": 264,
+    "real_model": "claude-haiku-5-5",
+    "raw": "พบบันทึกสองรายการเกี่ยวกับรหัสลับ ที่ L0412 ระบุว่า VX-2049-SIGMA ถูกเพิกถอนแล้ว ส่วนที่ L1374 ระบุว่า VX-7318-KAPPA เป็นรหัสปัจจุบัน\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.63,
+    "output_tokens": 261,
+    "reasoning_tokens": 140,
+    "real_model": "claude-haiku-5-5",
+    "raw": "ป้ายเขียนว่า \"PARKING ZONE\" และตัวเลขตัวใหญ่คือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "claude",
+  "model": "sonnet",
+  "real_model": "claude-sonnet-5-5",
+  "correct": 4,
+  "avg_time": 4.59,
+  "avg_out": 201.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 4.37,
+    "output_tokens": 230,
+    "reasoning_tokens": 0,
+    "real_model": "claude-sonnet-5-5",
+    "raw": "487×36 = 17,532\n17,532 − 2,958 = 14,574\n14,574 ÷ 7 = 2,082 ต่อสาขา\nเพิ่ม 1,234×3 = 3,702 → 2,082 + 3,702 = 5,784\nขาย 17² = 289 → 5,784 − 289 = 5,495 ต่อสาขา\nรวม 7 สาขา: 5,495 × 7 = 38,465 ชิ้น\nมูลค่า: 38,465 × 12.75 = 38,465×12 + 38,465×0.75 = 461,580 + 28,848.75 = 490,428.75\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 4.55,
+    "output_tokens": 309,
+    "reasoning_tokens": 0,
+    "real_model": "claude-sonnet-5-5",
+    "raw": "eturn the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```\n\n**บั๊กที่แก้:** เงื่อนไข `elif n > second` เทียบกับ `None` เมื่อ `second` ยังไม่มีค่า (เช่น `[5, 5, 4]`) ซึ่งเกิด TypeError แก้โดยเช็ก `second is None` ก่อน และเพิ่ม `n != largest` เพื่อไม่ให้ค่าซ้ำของตัวใหญ่สุดถูกนับเป็นอันดับสอง (เช่น `[5, 5]`)"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.38,
+    "output_tokens": 131,
+    "reasoning_tokens": 0,
+    "real_model": "claude-sonnet-5-5",
+    "raw": "รหัสลับที่ยังใช้ได้คือรหัสที่บรรทัด L1374 (`NOTE current secret code is VX-7318-KAPPA`) ส่วนรหัสที่บรรทัด L0412 (`VX-2049-SIGMA`) ถูกเพิกถอนแล้ว\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 5.08,
+    "output_tokens": 134,
+    "reasoning_tokens": 0,
+    "real_model": "claude-sonnet-5-5",
+    "raw": "ป้ายเขียนว่า \"PARKING ZONE\" และตัวเลขตัวใหญ่ใต้ข้อความนั้นคือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "claude",
+  "model": "opus",
+  "real_model": "claude-opus-5-5",
+  "correct": 4,
+  "avg_time": 5.09,
+  "avg_out": 247.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.11,
+    "output_tokens": 495,
+    "reasoning_tokens": 96,
+    "real_model": "claude-opus-5-5",
+    "raw": "ร้านมีสินค้าเหลือรวม 38,465 ชิ้น มูลค่ารวม **490,428.75 บาท**\n\n1. สินค้าทั้งหมด: 487 × 36 = 17,532 ชิ้น\n2. หักชิ้นเสีย: 17,532 − 2,958 = 14,574 ชิ้น\n3. แบ่งให้ 7 สาขา: 14,574 ÷ 7 = 2,082 ชิ้นต่อสาขา\n4. รับเพิ่มจากโกดัง: 1,234 × 3 = 3,702 ชิ้น ทำให้แต่ละสาขามี 2,082 + 3,702 = 5,784 ชิ้น\n5. ขายไป 17² = 289 ชิ้น เหลือ 5,784 − 289 = 5,495 ชิ้นต่อสาขา\n6. รวม 7 สาขา: 5,495 × 7 = 38,465 ชิ้น\n7. มูลค่า: 38,465 × 12.75 = 461,580 + 28,848.75 = 490,428.75 บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 3.93,
+    "output_tokens": 122,
+    "reasoning_tokens": 0,
+    "real_model": "claude-opus-5-5",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 5.39,
+    "output_tokens": 238,
+    "reasoning_tokens": 54,
+    "real_model": "claude-opus-5-5",
+    "raw": "ในเอกสารมีบรรทัดที่พูดถึงรหัสลับอยู่สองบรรทัด:\n\n- **L0412** บอกว่ารหัสเก่า `VX-2049-SIGMA` ถูกยกเลิกแล้ว (REVOKED) จึงห้ามใช้\n- **L1374** บอกว่ารหัสลับที่ใช้อยู่ตอนนี้ (current) คือ `VX-7318-KAPPA`\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.92,
+    "output_tokens": 136,
+    "reasoning_tokens": 0,
+    "real_model": "claude-opus-5-5",
+    "raw": "ป้ายสีเขียวเขียนว่า \"PARKING ZONE\" และตัวเลขตัวใหญ่ใต้ข้อความคือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "claude",
+  "model": "fable",
+  "real_model": "claude-fable-5-2",
+  "correct": 4,
+  "avg_time": 4.99,
+  "avg_out": 281.2,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 5.54,
+    "output_tokens": 387,
+    "reasoning_tokens": 97,
+    "real_model": "claude-fable-5-2",
+    "raw": "- 487 × 36 = 17,532 ชิ้น\n- หักชิ้นเสีย: 17,532 − 2,958 = 14,574 ชิ้น\n- แบ่ง 7 สาขา: 14,574 ÷ 7 = 2,082 ชิ้นต่อสาขา\n- รับเพิ่ม 1,234 × 3 = 3,702 → 2,082 + 3,702 = 5,784 ชิ้น\n- ขายไป 17² = 289 → 5,784 − 289 = 5,495 ชิ้นต่อสาขา\n- รวม 7 สาขา: 5,495 × 7 = 38,465 ชิ้น\n- มูลค่า: 38,465 × 12.75 = 461,580 + 28,848.75 = 490,428.75 บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 6.05,
+    "output_tokens": 460,
+    "reasoning_tokens": 0,
+    "real_model": "claude-fable-5-2",
+    "raw": "n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```\n\nบั๊กมีสองจุดในบรรทัด `elif n > second`:\n\n- **ค่าซ้ำกับค่ามากสุด**: เมื่อ `n == largest` โค้ดเดิมยังนำ `n` ไปเทียบกับ `second` ทำให้ `[7, 3, 9, 9, 8]` ได้ 9 แทน 8 จึงเพิ่มเงื่อนไข `n != largest`\n- **`second` ยังเป็น `None`**: การเทียบ `n > None` ทำให้เกิด `TypeError` เช่นใน `[3, 1, 2]`, `[5, 5]` และ `[-1, -2, -3]` จึงเพิ่มการเช็ก `second is None` ก่อนเทียบ\n\nไล่ตรวจกับเทสต์ทั้ง 7 ข้อด้วยมือแล้วผ่านทุกข้อ แต่ไม่ได้รันโค้ดจริง"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.32,
+    "output_tokens": 151,
+    "reasoning_tokens": 0,
+    "real_model": "claude-fable-5-2",
+    "raw": "รหัสลับที่ยังใช้งานได้อยู่ที่บรรทัด L1374 (`NOTE current secret code is VX-7318-KAPPA`) ส่วนรหัส VX-2049-SIGMA ที่บรรทัด L0412 ถูกเพิกถอนแล้ว (REVOKED) จึงไม่ใช่คำตอบ\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.05,
+    "output_tokens": 127,
+    "reasoning_tokens": 0,
+    "real_model": "claude-fable-5-2",
+    "raw": "ป้ายสีเขียวเขียนว่า \"PARKING ZONE\" และตัวเลขตัวใหญ่คือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.2-sol",
+  "real_model": "gpt-6.2-sol",
+  "correct": 4,
+  "avg_time": 4.94,
+  "avg_out": 51.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.05,
+    "output_tokens": 97,
+    "reasoning_tokens": 84,
+    "real_model": "gpt-6.2-sol",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.54,
+    "output_tokens": 88,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-sol",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value, or None if fewer than two exist.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n < largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 3.77,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-sol",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.39,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-sol",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.2-astra",
+  "real_model": "gpt-6.2-astra",
+  "correct": 4,
+  "avg_time": 5.78,
+  "avg_out": 46.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.19,
+    "output_tokens": 78,
+    "reasoning_tokens": 65,
+    "real_model": "gpt-6.2-astra",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 6.52,
+    "output_tokens": 87,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-astra",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest distinct value, or None if it doesn't exist.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n < largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.51,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-astra",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 5.9,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.2-astra",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.1-terra",
+  "real_model": "gpt-6.1-terra",
+  "correct": 4,
+  "avg_time": 4.87,
+  "avg_out": 72.2,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.84,
+    "output_tokens": 173,
+    "reasoning_tokens": 81,
+    "real_model": "gpt-6.1-terra",
+    "raw": "สินค้าเหลือรวม 7 สาขา เท่ากับ \\((487 \\times 36 - 2958) + 7(1234 \\times 3 - 17^2) = 38465\\) ชิ้น\n\nมูลค่ารวมเท่ากับ \\(38465 \\times 12.75 = 490428.75\\) บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.07,
+    "output_tokens": 94,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-terra",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 3.98,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-terra",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 3.6,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-terra",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6.1-sol",
+  "real_model": "gpt-6.1-sol",
+  "correct": 4,
+  "avg_time": 4.74,
+  "avg_out": 55.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 5.49,
+    "output_tokens": 104,
+    "reasoning_tokens": 91,
+    "real_model": "gpt-6.1-sol",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.35,
+    "output_tokens": 94,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-sol",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.05,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-sol",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.07,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6.1-sol",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6-astra",
+  "real_model": "gpt-6-astra",
+  "correct": 4,
+  "avg_time": 5.48,
+  "avg_out": 52.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 7.24,
+    "output_tokens": 92,
+    "reasoning_tokens": 79,
+    "real_model": "gpt-6-astra",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.57,
+    "output_tokens": 94,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-astra",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n < largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.9,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-astra",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.2,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-astra",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6-sol",
+  "real_model": "gpt-6-sol",
+  "correct": 4,
+  "avg_time": 5.37,
+  "avg_out": 93.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 7.18,
+    "output_tokens": 214,
+    "reasoning_tokens": 168,
+    "real_model": "gpt-6-sol",
+    "raw": "สินค้าที่เหลือรวม 7 สาขามี 38,465 ชิ้น คิดเป็นมูลค่า 490,428.75 บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 6.09,
+    "output_tokens": 119,
+    "reasoning_tokens": 29,
+    "real_model": "gpt-6-sol",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value, or None if it does not exist.\"\"\"\n    largest = second = None\n\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.45,
+    "output_tokens": 33,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-sol",
+    "raw": "รหัสลับที่ยังใช้ได้ระบุไว้ที่บรรทัด L1374\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 3.74,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-sol",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-6-luna",
+  "real_model": "gpt-6-luna",
+  "correct": 4,
+  "avg_time": 4.97,
+  "avg_out": 87.5,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.77,
+    "output_tokens": 216,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-luna",
+    "raw": "ซื้อมา \\(487 \\times 36 = 17{,}532\\) ชิ้น  \nหลังทิ้งของเสีย เหลือ \\(17{,}532 - 2{,}958 = 14{,}574\\) ชิ้น แบ่ง 7 สาขาได้สาขาละ \\(2{,}082\\) ชิ้น  \nแต่ละสาขาได้รับเพิ่ม \\(1{,}234 \\times 3 = 3{,}702\\) ชิ้น และขายไป \\(17^2 = 289\\) ชิ้น  \nจึงเหลือสาขาละ \\(2{,}082 + 3{,}702 - 289 = 5{,}495\\) ชิ้น หรือรวม \\(38{,}465\\) ชิ้น\n\nมูลค่ารวม \\(38{,}465 \\times 12.75 = 490{,}428.75\\) บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.77,
+    "output_tokens": 100,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-luna",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            if n != largest:\n                second = largest\n                largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 3.95,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-luna",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 3.39,
+    "output_tokens": 21,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-6-luna",
+    "raw": "ตัวเลขตัวใหญ่บนป้ายคือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-5.6-sol",
+  "real_model": "gpt-5.6-sol",
+  "correct": 4,
+  "avg_time": 18.02,
+  "avg_out": 103.8,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 33.91,
+    "output_tokens": 253,
+    "reasoning_tokens": 105,
+    "real_model": "gpt-5.6-sol",
+    "raw": "487 × 36 = 17,532  \n17,532 − 2,958 = 14,574  \n14,574 ÷ 7 = 2,082  \n1,234 × 3 = 3,702  \n17² = 289  \nสินค้าคงเหลือต่อสาขา = 2,082 + 3,702 − 289 = 5,495 ชิ้น  \nรวม 7 สาขา = 5,495 × 7 = 38,465 ชิ้น  \nมูลค่ารวม = 38,465 × 12.75 = 490,428.75 บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 30.34,
+    "output_tokens": 94,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-sol",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.05,
+    "output_tokens": 47,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-sol",
+    "raw": "พบที่บรรทัด L1374 ระบุว่าเป็นรหัสปัจจุบัน ส่วน VX-2049-SIGMA ถูกยกเลิกแล้ว\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 3.79,
+    "output_tokens": 21,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-sol",
+    "raw": "ตัวเลขตัวใหญ่บนป้ายคือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-5.6-terra",
+  "real_model": "gpt-5.6-terra",
+  "correct": 4,
+  "avg_time": 5.16,
+  "avg_out": 70.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.81,
+    "output_tokens": 130,
+    "reasoning_tokens": 117,
+    "real_model": "gpt-5.6-terra",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.83,
+    "output_tokens": 94,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-terra",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 4.31,
+    "output_tokens": 47,
+    "reasoning_tokens": 32,
+    "real_model": "gpt-5.6-terra",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 3.69,
+    "output_tokens": 9,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-terra",
+    "raw": "ANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "codex",
+  "model": "gpt-5.6-luna",
+  "real_model": "gpt-5.6-luna",
+  "correct": 4,
+  "avg_time": 4.86,
+  "avg_out": 97.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 6.41,
+    "output_tokens": 181,
+    "reasoning_tokens": 168,
+    "real_model": "gpt-5.6-luna",
+    "raw": "ANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 5.44,
+    "output_tokens": 142,
+    "reasoning_tokens": 46,
+    "real_model": "gpt-5.6-luna",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 3.21,
+    "output_tokens": 13,
+    "reasoning_tokens": 0,
+    "real_model": "gpt-5.6-luna",
+    "raw": "ANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 4.37,
+    "output_tokens": 52,
+    "reasoning_tokens": 29,
+    "real_model": "gpt-5.6-luna",
+    "raw": "ตัวเลขตัวใหญ่บนป้ายคือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-3.8-flash-medium",
+  "real_model": "gemini-3.8-flash-medium",
+  "correct": 4,
+  "avg_time": 16.2,
+  "avg_out": 1142.5,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 26.12,
+    "output_tokens": 2692,
+    "reasoning_tokens": 2335,
+    "real_model": "gemini-3.8-flash-medium",
+    "raw": " = 17,532 \\text{ ชิ้น}$$\n\n2. **หักสินค้าที่ชำรุดเสียหาย:**\n   $$17,532 - 2,958 = 14,574 \\text{ ชิ้น}$$\n\n3. **แบ่งเท่า ๆ กันให้ 7 สาขา:**\n   $$14,574 \\div 7 = 2,082 \\text{ ชิ้นต่อสาขา}$$\n\n4. **แต่ละสาขาได้รับเพิ่มจากโกดัง ($1,234 \\times 3 = 3,702$ ชิ้น):**\n   $$2,082 + 3,702 = 5,784 \\text{ ชิ้น}$$\n\n5. **แต่ละสาขาขายไป ($17^2 = 289$ ชิ้น):**\n   $$5,784 - 289 = 5,495 \\text{ ชิ้นต่อสาขา}$$\n\n6. **จำนวนสินค้าคงเหลือรวมทั้ง 7 สาขา:**\n   $$5,495 \\times 7 = 38,465 \\text{ ชิ้น}$$\n\n7. **คิดมูลค่าสินค้าที่เหลือรวม (ชิ้นละ 12.75 บาท):**\n   $$38,465 \\times 12.75 = 490,428.75 \\text{ บาท}$$\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 14.41,
+    "output_tokens": 1210,
+    "reasoning_tokens": 1114,
+    "real_model": "gemini-3.8-flash-medium",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n < largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 8.81,
+    "output_tokens": 242,
+    "reasoning_tokens": 212,
+    "real_model": "gemini-3.8-flash-medium",
+    "raw": "รหัสลับที่ยังใช้งานได้อยู่คือ VX-7318-KAPPA\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 15.44,
+    "output_tokens": 426,
+    "reasoning_tokens": 338,
+    "real_model": "gemini-3.8-flash-medium",
+    "raw": "จากภาพป้าย [t4_sign.png](file:///workspace/bench/tasks/t4_sign.png) เป็นป้ายสีเขียวระบุข้อความ \"PARKING ZONE\" และมีตัวเลขตัวใหญ่ปรากฏอยู่\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-hydrogen-medium",
+  "real_model": "gemini-4-hydrogen-medium",
+  "correct": 4,
+  "avg_time": 11.49,
+  "avg_out": 1024.5,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 16.15,
+    "output_tokens": 2352,
+    "reasoning_tokens": 1986,
+    "real_model": "gemini-4-hydrogen-medium",
+    "raw": "$487 \\times 36 = 17,532$ ชิ้น\n2. **หักชิ้นเสียออก:**\n   $17,532 - 2,958 = 14,574$ ชิ้น\n3. **แบ่งเท่า ๆ กันให้ 7 สาขา:**\n   $14,574 \\div 7 = 2,082$ ชิ้นต่อสาขา\n4. **ได้รับเพิ่มจากโกดังสาขาละ $1,234 \\times 3$ ชิ้น:**\n   $1,234 \\times 3 = 3,702$ ชิ้น\n   แต่ละสาขามีสินค้า $2,082 + 3,702 = 5,784$ ชิ้น\n5. **ขายไปสาขาละ $17^2$ ชิ้น:**\n   $17^2 = 289$ ชิ้น\n   แต่ละสาขาเหลือสินค้า $5,784 - 289 = 5,495$ ชิ้น\n6. **จำนวนสินค้าที่เหลือรวมทั้ง 7 สาขา:**\n   $5,495 \\times 7 = 38,465$ ชิ้น\n7. **มูลค่าสินค้าที่เหลือรวมทั้ง 7 สาขา (ชิ้นละ 12.75 บาท):**\n   $38,465 \\times 12.75 = 490,428.75$ บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 11.23,
+    "output_tokens": 1059,
+    "reasoning_tokens": 959,
+    "real_model": "gemini-4-hydrogen-medium",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n < largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 9.79,
+    "output_tokens": 451,
+    "reasoning_tokens": 367,
+    "real_model": "gemini-4-hydrogen-medium",
+    "raw": "จากเอกสาร บรรทัด `L1374` ระบุไว้ว่า `NOTE current secret code is VX-7318-KAPPA` (ส่วนบรรทัด `L0412` เป็นรหัสเก่า `VX-2049-SIGMA` ที่ถูกเพิกถอนแล้ว)\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 8.8,
+    "output_tokens": 236,
+    "reasoning_tokens": 145,
+    "real_model": "gemini-4-hydrogen-medium",
+    "raw": "จากภาพป้าย [t4_sign.png](file:///workspace/bench/tasks/t4_sign.png) ตัวเลขตัวใหญ่ที่เขียนบนป้ายคือ `73915`\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-argon-medium",
+  "real_model": "gemini-4-argon-medium",
+  "correct": 4,
+  "avg_time": 12.84,
+  "avg_out": 193.5,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 12.76,
+    "output_tokens": 491,
+    "reasoning_tokens": 0,
+    "real_model": "gemini-4-argon-medium",
+    "raw": "บเพิ่มจากโกดัง:**\n   $$1,234 \\times 3 = 3,702 \\text{ ชิ้น/สาขา}$$\n   รวมแต่ละสาขามีสินค้า:\n   $$2,082 + 3,702 = 5,784 \\text{ ชิ้น/สาขา}$$\n\n5. **แต่ละสาขาขายไป $17^2$ ชิ้น ($17^2 = 289$):**\n   $$5,784 - 289 = 5,495 \\text{ ชิ้น/สาขา}$$\n\n6. **จำนวนสินค้าที่เหลือรวมทั้ง 7 สาขา:**\n   $$5,495 \\times 7 = 38,465 \\text{ ชิ้น}$$\n\n7. **มูลค่าสินค้าที่เหลือทั้งหมด (ชิ้นละ 12.75 บาท):**\n   $$38,465 \\times 12.75 = 38,465 \\times \\left(12 + \\frac{3}{4}\\right)$$\n   - $38,465 \\times 12 = 461,580$\n   - $38,465 \\times 0.75 = 28,848.75$\n   - รวมเป็น $461,580 + 28,848.75 = 490,428.75 \\text{ บาท}$\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 9.02,
+    "output_tokens": 100,
+    "reasoning_tokens": 0,
+    "real_model": "gemini-4-argon-medium",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 13.45,
+    "output_tokens": 97,
+    "reasoning_tokens": 0,
+    "real_model": "gemini-4-argon-medium",
+    "raw": "จากเอกสาร รหัสลับที่ยังใช้งานได้อยู่ (current) ปรากฏอยู่ที่บรรทัด `L1374`:\n`L1374 NOTE current secret code is VX-7318-KAPPA` (ส่วนรหัสที่บรรทัด `L0412` คือ `VX-2049-SIGMA` ถูกยกเลิกไปแล้ว)\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 16.13,
+    "output_tokens": 86,
+    "reasoning_tokens": 0,
+    "real_model": "gemini-4-argon-medium",
+    "raw": "ตัวเลขตัวใหญ่บนป้ายในภาพ [t4_sign.png](file:///workspace/bench/tasks/t4_sign.png) คือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-carbon-medium",
+  "real_model": "gemini-4-carbon-medium",
+  "correct": 4,
+  "avg_time": 17.45,
+  "avg_out": 747.5,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 23.5,
+    "output_tokens": 1356,
+    "reasoning_tokens": 992,
+    "real_model": "gemini-4-carbon-medium",
+    "raw": " 36 = 17,532$ ชิ้น\n\n2. **หักสินค้าที่เสียออก:**\n   $17,532 - 2,958 = 14,574$ ชิ้น\n\n3. **แบ่งให้ 7 สาขาเท่า ๆ กัน (จำนวนต่อสาขา):**\n   $14,574 \\div 7 = 2,082$ ชิ้น\n\n4. **แต่ละสาขาได้รับเพิ่มจากโกดัง:**\n   ได้รับเพิ่มสาขาละ $1,234 \\times 3 = 3,702$ ชิ้น\n   รวมแต่ละสาขามีสินค้า $2,082 + 3,702 = 5,784$ ชิ้น\n\n5. **หักจำนวนที่ขายไปในแต่ละสาขา:**\n   ขายไปสาขาละ $17^2 = 289$ ชิ้น\n   เหลือสินค้าสาขาละ $5,784 - 289 = 5,495$ ชิ้น\n\n6. **รวมสินค้าที่เหลือทั้ง 7 สาขา:**\n   $5,495 \\times 7 = 38,465$ ชิ้น\n\n7. **คิดเป็นมูลค่ารวม (ชิ้นละ 12.75 บาท):**\n   $38,465 \\times 12.75 = 490,428.75$ บาท\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 17.08,
+    "output_tokens": 1070,
+    "reasoning_tokens": 970,
+    "real_model": "gemini-4-carbon-medium",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 12.96,
+    "output_tokens": 287,
+    "reasoning_tokens": 201,
+    "real_model": "gemini-4-carbon-medium",
+    "raw": "รหัสลับที่ยังใช้งานได้อยู่ (current) พบในบรรทัดที่ `L1374` คือ `VX-7318-KAPPA` (ส่วนรหัสในบรรทัดที่ `L0412` คือ `VX-2049-SIGMA` ถูกยกเลิกแล้ว)\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 16.27,
+    "output_tokens": 277,
+    "reasoning_tokens": 181,
+    "real_model": "gemini-4-carbon-medium",
+    "raw": "จากภาพป้าย [t4_sign.png](file:///workspace/bench/tasks/t4_sign.png) ตัวเลขตัวใหญ่ที่เขียนอยู่บนป้าย (PARKING ZONE) คือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ },
+ {
+  "vendor": "gemini",
+  "model": "gemini-4-neon-medium",
+  "real_model": "gemini-4-neon-medium",
+  "correct": 4,
+  "avg_time": 18.7,
+  "avg_out": 1166.0,
+  "n_ok": 4,
+  "tasks": [
+   {
+    "task": "t1_math",
+    "correct": true,
+    "got": "490428.75",
+    "status": "ok",
+    "duration_s": 27.64,
+    "output_tokens": 3036,
+    "reasoning_tokens": 2587,
+    "real_model": "gemini-4-neon-medium",
+    "raw": "2 \\text{ ชิ้น/สาขา}$$\n\n4. **แต่ละสาขาได้รับเพิ่มจากโกดัง**\n   $$1,234 \\times 3 = 3,702 \\text{ ชิ้น/สาขา}$$\n   รวมแต่ละสาขามีสินค้า:\n   $$2,082 + 3,702 = 5,784 \\text{ ชิ้น/สาขา}$$\n\n5. **แต่ละสาขาขายไป $17^2$ ชิ้น**\n   $$17^2 = 289 \\text{ ชิ้น/สาขา}$$\n   แต่ละสาขาเหลือสินค้า:\n   $$5,784 - 289 = 5,495 \\text{ ชิ้น/สาขา}$$\n\n6. **จำนวนสินค้าที่เหลือรวมทั้ง 7 สาขา**\n   $$5,495 \\times 7 = 38,465 \\text{ ชิ้น}$$\n\n7. **มูลค่าสินค้าที่เหลือรวมทั้งหมด (ชิ้นละ 12.75 บาท)**\n   $$38,465 \\times 12.75 = (38,465 \\times 12) + (38,465 \\times 0.75) = 461,580 + 28,848.75 = 490,428.75 \\text{ บาท}$$\n\nANSWER: 490428.75"
+   },
+   {
+    "task": "t2_bugfix",
+    "correct": true,
+    "got": "tests PASS",
+    "status": "ok",
+    "duration_s": 17.59,
+    "output_tokens": 1063,
+    "reasoning_tokens": 966,
+    "real_model": "gemini-4-neon-medium",
+    "raw": "```python\ndef second_largest(nums):\n    \"\"\"Return the second largest DISTINCT value in nums, or None if there are fewer than 2 distinct values.\"\"\"\n    largest = second = None\n    for n in nums:\n        if largest is None or n > largest:\n            second = largest\n            largest = n\n        elif n != largest and (second is None or n > second):\n            second = n\n    return second\n```"
+   },
+   {
+    "task": "t3_needle",
+    "correct": true,
+    "got": "VX-7318-KAPPA",
+    "status": "ok",
+    "duration_s": 14.4,
+    "output_tokens": 337,
+    "reasoning_tokens": 244,
+    "real_model": "gemini-4-neon-medium",
+    "raw": "จากเอกสาร บรรทัด `L0412` เป็นรหัสเก่าที่ถูกยกเลิกแล้ว (`VX-2049-SIGMA`) ส่วนรหัสลับที่ยังใช้งานได้อยู่ (current) ปรากฏที่บรรทัด `L1374`:\n\n`L1374 NOTE current secret code is VX-7318-KAPPA`\n\nANSWER: VX-7318-KAPPA"
+   },
+   {
+    "task": "t4_sign",
+    "correct": true,
+    "got": "73915",
+    "status": "ok",
+    "duration_s": 15.17,
+    "output_tokens": 228,
+    "reasoning_tokens": 144,
+    "real_model": "gemini-4-neon-medium",
+    "raw": "จากภาพ [t4_sign.png](file:///workspace/bench/tasks/t4_sign.png) ตัวเลขตัวใหญ่ที่เขียนบนป้าย PARKING ZONE คือ 73915\n\nANSWER: 73915"
+   }
+  ]
+ }
+]

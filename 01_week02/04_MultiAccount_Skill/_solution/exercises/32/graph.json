@@ -1,0 +1,23 @@
+{
+  "goal": "Failover demo: 3 coding tasks (no account specified, difficulty 1) while cyolo1 is simulated as out of quota",
+  "nodes": [
+    {
+      "id": "find_max",
+      "kind": "code",
+      "difficulty": 1,
+      "prompt": "Write one Python function find_max(numbers) that returns the largest value in a list of numbers (raise ValueError on an empty list). Do not use the built-in max(). Reply with only the code in one ```python block, no file writes, no BOARD line."
+    },
+    {
+      "id": "find_min",
+      "kind": "code",
+      "difficulty": 1,
+      "prompt": "Write one Python function find_min(numbers) that returns the smallest value in a list of numbers (raise ValueError on an empty list). Do not use the built-in min(). Reply with only the code in one ```python block, no file writes, no BOARD line."
+    },
+    {
+      "id": "find_mean",
+      "kind": "code",
+      "difficulty": 1,
+      "prompt": "Write one Python function find_mean(numbers) that returns the arithmetic mean of a list of numbers as a float (raise ValueError on an empty list). Reply with only the code in one ```python block, no file writes, no BOARD line."
+    }
+  ]
+}

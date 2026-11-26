@@ -1,0 +1,11 @@
+{"goal": "เขียน slug.py → ตรวจ → แก้ → ตรวจซ้ำ (คนละค่ายในแต่ละขั้น)",
+ "nodes": [
+  {"id": "write", "account": "yolo1", "cwd": "/workspace/ex/23", "difficulty": 2,
+   "prompt": "เขียนไฟล์ /workspace/ex/23/slug.py มีฟังก์ชัน slugify(title: str) -> str แปลงชื่อบทความภาษาอังกฤษเป็นชื่อไฟล์: เป็นตัวพิมพ์เล็ก เว้นวรรคเป็นขีดกลาง ตัดอักขระพิเศษ ตอบสั้น ๆ ว่าเขียนอะไรไปบ้าง"},
+  {"id": "review", "account": "cyolo1", "depends_on": ["write"], "cwd": "/workspace/ex/23", "difficulty": 2,
+   "prompt": "ตรวจโค้ด /workspace/ex/23/slug.py (ฟังก์ชันแปลงชื่อบทความภาษาอังกฤษเป็นชื่อไฟล์: ตัวพิมพ์เล็ก เว้นวรรคเป็นขีดกลาง ตัดอักขระพิเศษ) ห้ามแก้โค้ดเอง ให้ลองรันกรณีขอบ (เว้นวรรคซ้อน ขีดซ้อน ขีดหัวท้าย สตริงว่าง อักขระพิเศษล้วน ตัวเลข อักษรมีเครื่องหมายเช่น café ขีดล่าง แท็บ/ขึ้นบรรทัด) แล้วเขียนรายการปัญหาที่ต้องแก้ เป็นข้อ ๆ ลงไฟล์ /workspace/ex/23/review.md และตอบด้วยรายการเดียวกัน"},
+  {"id": "fix", "account": "gyolo1", "depends_on": ["review"], "cwd": "/workspace/ex/23", "difficulty": 2,
+   "prompt": "แก้ /workspace/ex/23/slug.py ตามรายการปัญหาใน {{file:review}} (สำเนาที่ /workspace/ex/23/review.md) ทุกข้อ แล้วรันทดสอบด้วย python3 ว่าแก้ได้จริง เขียนสรุปสิ่งที่แก้แต่ละข้อลง /workspace/ex/23/fixes.md และตอบด้วยสรุปเดียวกัน"},
+  {"id": "recheck", "account": "cyolo1", "depends_on": ["fix"], "cwd": "/workspace/ex/23", "difficulty": 2, "expect": "regex:ผ่าน",
+   "prompt": "ตรวจซ้ำ /workspace/ex/23/slug.py ว่าแก้ครบตามรายการปัญหาใน /workspace/ex/23/review.md หรือไม่ (ดูสิ่งที่แก้ใน /workspace/ex/23/fixes.md) ห้ามแก้โค้ดเอง ให้รันทดสอบจริง เขียนผลลง /workspace/ex/23/recheck.md บรรทัดแรกของคำตอบต้องเป็นคำว่า ผ่าน หรือ ไม่ผ่าน คำเดียว ตามด้วยเหตุผลสั้น ๆ รายข้อ"}
+ ]}

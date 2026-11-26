@@ -1,0 +1,12 @@
+{"goal": "cyolo1 สร้างภาพใบเสร็จร้านกาแฟ แล้วให้ 3 ค่ายอ่านยอดรวมจากภาพเดียวกัน",
+ "nodes": [
+  {"id": "receipt", "type": "image", "account": "cyolo1", "difficulty": 2,
+   "path": "/workspace/out/ex30_receipt.png",
+   "prompt": "ภาพใบเสร็จร้านกาแฟบนกระดาษสีขาว ตัวอักษรอ่านชัด มี 3 รายการ: ลาเต้ 65 บาท, มัทฉะ 85 บาท, บราวนี่ 60 บาท และบรรทัดรวม 210 บาท"},
+  {"id": "read_yolo1", "account": "yolo1", "kind": "vision", "difficulty": 2, "depends_on": ["receipt"], "expect": "number",
+   "prompt": "เปิดดูภาพใบเสร็จที่ {{receipt}} แล้วตอบยอดรวมเป็นตัวเลขตัวเดียวเท่านั้น ไม่มีหน่วยหรือข้อความอื่น"},
+  {"id": "read_cyolo1", "account": "cyolo1", "kind": "vision", "difficulty": 2, "depends_on": ["receipt"], "expect": "number",
+   "prompt": "เปิดดูภาพใบเสร็จที่ {{receipt}} แล้วตอบยอดรวมเป็นตัวเลขตัวเดียวเท่านั้น ไม่มีหน่วยหรือข้อความอื่น"},
+  {"id": "read_gyolo1", "account": "gyolo1", "kind": "vision", "difficulty": 2, "depends_on": ["receipt"], "expect": "number",
+   "prompt": "เปิดดูภาพใบเสร็จที่ {{receipt}} แล้วตอบยอดรวมเป็นตัวเลขตัวเดียวเท่านั้น ไม่มีหน่วยหรือข้อความอื่น"}
+ ]}

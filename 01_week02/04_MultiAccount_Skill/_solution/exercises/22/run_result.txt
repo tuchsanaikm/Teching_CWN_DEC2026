@@ -1,0 +1,29 @@
+▶ run 20261124-053025-kwyc · run directory /workspace/.agent-team/20261124-053025-kwyc
+· บัญชีที่อนุญาต: yolo1, cyolo1, gyolo1
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:23:57, cyolo1=พร้อม@05:23:58, gyolo1=พร้อม@05:21:17
+· แผน: ans_yolo1→yolo1, ans_cyolo1→cyolo1, ans_gyolo1→gyolo1, compare→gyolo1
+▶ ans_yolo1 → yolo1 (sonnet/medium)
+▶ ans_gyolo1 → gyolo1 (gemini-3.8-flash-medium/medium)
+▶ ans_cyolo1 → cyolo1 (gpt-6.2-sol/medium)
+✔ ans_yolo1 ← yolo1 3.4s in=2 out=6 
+✔ ans_cyolo1 ← cyolo1 4.1s in=26117 out=8 
+✔ ans_gyolo1 ← gyolo1 6.8s in=10243 out=371 
+▶ compare → gyolo1 (gemini-3.8-flash-medium/medium)
+✔ compare ← gyolo1 13.8s in=12949 out=643 
+
+## สรุป run 20261124-053025-kwyc
+run directory: /workspace/.agent-team/20261124-053025-kwyc
+
+| งาน | บัญชี | รุ่น/effort | เวลา s | input tokens | output tokens | สถานะ |
+|---|---|---|---|---|---|---|
+| ans_yolo1 | yolo1 | sonnet/medium | 3.4 | 2 | 6 | ok |
+| ans_cyolo1 | cyolo1 | gpt-6.2-sol/medium | 4.1 | 26117 | 8 | ok |
+| ans_gyolo1 | gyolo1 | gemini-3.8-flash-medium/medium | 6.8 | 10243 | 371 | ok |
+| compare | gyolo1 | gemini-3.8-flash-medium/medium | 13.8 | 12949 | 643 | ok |
+
+โควตาของบัญชีที่ใช้:
+| บัญชี | โควตาล่าสุด |
+|---|---|
+| cyolo1 | week 10% (ข้อมูล 2026-11-24 00:36) |
+| gyolo1 | session 2% · week 1% (ข้อมูล 2026-11-24 05:30) |
+| yolo1 | week 29% (ข้อมูล 2026-11-24 05:30) |

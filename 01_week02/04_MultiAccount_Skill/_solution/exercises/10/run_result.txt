@@ -1,0 +1,26 @@
+▶ run 20261124-052342-ponq · run directory /workspace/.agent-team/20261124-052342-ponq
+· บัญชีที่อนุญาต: yolo1, cyolo1, gyolo1
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:21:14, cyolo1=พร้อม@05:21:16, gyolo1=พร้อม@05:21:17
+· แผน: make_csv→cyolo1, max_price→gyolo1, min_price→yolo1
+▶ make_csv → cyolo1 (gpt-6.2-sol/medium)
+✔ make_csv ← cyolo1 28.3s in=84949 out=1098 
+▶ max_price → gyolo1 (gemini-3.8-flash-medium/medium)
+▶ min_price → yolo1 (sonnet/medium)
+✔ min_price ← yolo1 5.0s in=4 out=180 
+✔ max_price ← gyolo1 15.4s in=17736 out=767 
+
+## สรุป run 20261124-052342-ponq
+run directory: /workspace/.agent-team/20261124-052342-ponq
+
+| งาน | บัญชี | รุ่น/effort | เวลา s | input tokens | output tokens | สถานะ |
+|---|---|---|---|---|---|---|
+| make_csv | cyolo1 | gpt-6.2-sol/medium | 28.3 | 84949 | 1098 | ok |
+| max_price | gyolo1 | gemini-3.8-flash-medium/medium | 15.4 | 17736 | 767 | ok |
+| min_price | yolo1 | sonnet/medium | 5.0 | 4 | 180 | ok |
+
+โควตาของบัญชีที่ใช้:
+| บัญชี | โควตาล่าสุด |
+|---|---|
+| cyolo1 | week 10% (ข้อมูล 2026-11-24 00:36) |
+| gyolo1 | session 2% · week 0% (ข้อมูล 2026-11-24 05:24) |
+| yolo1 | week 28% (ข้อมูล 2026-11-24 05:24) |

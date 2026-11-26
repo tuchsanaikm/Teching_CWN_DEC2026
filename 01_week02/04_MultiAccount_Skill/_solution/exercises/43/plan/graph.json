@@ -1,0 +1,52 @@
+{
+ "goal": "เว็บหารค่าอาหารไฟล์เดียว: spec → code → review → fix → README",
+ "nodes": [
+  {
+   "id": "spec",
+   "account": "yolo1",
+   "difficulty": 3,
+   "cwd": "/workspace/ex/43",
+   "prompt": "เขียนข้อกำหนดสั้น ๆ (ไม่เกิน 25 บรรทัด) ของเว็บหารค่าอาหาร: ผู้ใช้กรอกยอดรวม (บาท), จำนวนคน, และค่าบริการเป็นเปอร์เซ็นต์ แล้วแสดงยอดต่อคน = ceil(ยอดรวม × (1 + ค่าบริการ/100) / จำนวนคน) ปัดขึ้นเป็นบาทเต็ม ระบุสูตร การตรวจค่าที่กรอก (ยอดรวม ≥ 0, จำนวนคนเป็นจำนวนเต็ม ≥ 1, ค่าบริการ ≥ 0) และตัวอย่างอย่างน้อย 2 ชุดพร้อมคำตอบ บันทึกเป็นไฟล์ /workspace/ex/43/spec.md ตอบเพียง path ของไฟล์"
+  },
+  {
+   "id": "code",
+   "account": "cyolo1",
+   "difficulty": 3,
+   "depends_on": [
+    "spec"
+   ],
+   "cwd": "/workspace/ex/43",
+   "prompt": "อ่านข้อกำหนดที่ /workspace/ex/43/spec.md แล้วเขียน /workspace/ex/43/split.html ตามข้อกำหนด โดยรวม HTML, CSS และ JavaScript ไว้ในไฟล์เดียว ไม่ใช้ไลบรารีภายนอก ตอบเพียง path ของไฟล์"
+  },
+  {
+   "id": "review",
+   "account": "gyolo1",
+   "difficulty": 3,
+   "depends_on": [
+    "code"
+   ],
+   "cwd": "/workspace/ex/43",
+   "prompt": "ตรวจโค้ด /workspace/ex/43/split.html เทียบกับข้อกำหนด /workspace/ex/43/spec.md ทดสอบสูตรด้วยตัวอย่าง 3 ชุด (คำนวณคำตอบที่ถูกเองแล้วเทียบกับผลจากโค้ด เช่น ดึงฟังก์ชันคำนวณมารันด้วย node ถ้ามี) รวมกรณีที่ต้องปัดขึ้นและกรณีค่าบริการ 0% แล้วเขียนรายการปัญหาที่ต้องแก้ (มีหมายเลข ระบุความรุนแรง) บันทึกเป็น /workspace/ex/43/issues.md ถ้าไม่พบปัญหาให้เขียนว่า 'ไม่พบปัญหา' พร้อมผลทดสอบ 3 ชุด ในคำตอบให้ใส่รายการปัญหาโดยย่อด้วย"
+  },
+  {
+   "id": "fix",
+   "account": "cyolo1",
+   "difficulty": 3,
+   "depends_on": [
+    "review"
+   ],
+   "cwd": "/workspace/ex/43",
+   "prompt": "แก้ /workspace/ex/43/split.html ตามรายการปัญหาใน /workspace/ex/43/issues.md (ดูผลตรวจเพิ่มที่ {{file:review}}) ให้ยังเป็นไฟล์เดียวและตรงตาม /workspace/ex/43/spec.md แล้วตอบสรุปสั้น ๆ ว่าแก้ข้อใดอย่างไร"
+  },
+  {
+   "id": "readme",
+   "account": "yolo1",
+   "difficulty": 3,
+   "depends_on": [
+    "fix"
+   ],
+   "cwd": "/workspace/ex/43",
+   "prompt": "อ่าน /workspace/ex/43/split.html และ /workspace/ex/43/spec.md แล้วเขียนวิธีใช้ภาษาไทยจำนวน 5 บรรทัดพอดี (ไม่มีหัวเรื่อง ไม่มีบรรทัดว่าง) บันทึกเป็น /workspace/ex/43/README.md ตอบเพียง path ของไฟล์"
+  }
+ ]
+}

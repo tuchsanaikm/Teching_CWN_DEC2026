@@ -1,0 +1,10 @@
+{"goal": "ex15: ฟังก์ชันคิดราคาหลังหักส่วนลด — เขียนโค้ดและชุดทดสอบพร้อมกัน แล้วรันทดสอบ/แก้จนผ่าน",
+ "nodes": [
+  {"id": "code", "account": "yolo1", "difficulty": 2, "cwd": "/workspace/ex/15",
+   "prompt": "เขียนไฟล์ discount.py ใน /workspace/ex/15 มีฟังก์ชัน final_price(amount) คืนราคาหลังหักส่วนลด ข้อกำหนด: ซื้อครบ 500 บาท (amount >= 500) ลด 5%, ซื้อครบ 1,000 บาท (amount >= 1000) ลด 10%, ต่ำกว่า 500 ไม่ลด, ยอดซื้อติดลบ raise ValueError (ยอด 0 ถือว่าถูกต้อง คืน 0) ห้ามเขียนไฟล์ทดสอบ ตอบชื่อไฟล์ที่สร้าง"},
+  {"id": "test", "account": "cyolo1", "difficulty": 2, "cwd": "/workspace/ex/15",
+   "prompt": "เขียนชุดทดสอบ unittest ชื่อ test_discount.py ใน /workspace/ex/15 สำหรับ `from discount import final_price` (final_price(amount) คืนราคาหลังหักส่วนลด) จากข้อกำหนด: ซื้อครบ 500 บาท (>= 500) ลด 5%, ครบ 1,000 บาท (>= 1000) ลด 10%, ต่ำกว่า 500 ไม่ลด, ยอดติดลบ raise ValueError, ยอด 0 คืน 0 ทดสอบค่าขอบ 0, 499.99, 500, 999.99, 1000, ค่ามาก และค่าติดลบ ใช้ assertAlmostEqual กับทศนิยม ห้ามเขียน discount.py ตอบชื่อไฟล์ที่สร้าง"},
+  {"id": "verify", "account": "gyolo1", "difficulty": 2, "depends_on": ["code", "test"], "cwd": "/workspace/ex/15",
+   "expect": "regex:OK",
+   "prompt": "ใน /workspace/ex/15 รัน python3 -m unittest -v test_discount ถ้าไม่ผ่านให้แก้ discount.py (หรือแก้ test ถ้า test ผิดข้อกำหนด: ครบ 500 ลด 5%, ครบ 1,000 ลด 10%, ติดลบ raise ValueError) แล้วรันซ้ำจนผ่าน ตอบบรรทัดสรุปผลการทดสอบ เช่น 'Ran N tests ... OK'"}
+ ]}

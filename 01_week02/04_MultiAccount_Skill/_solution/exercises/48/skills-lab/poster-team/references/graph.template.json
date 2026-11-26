@@ -1,0 +1,13 @@
+{"goal": "โปสเตอร์งาน {TOPIC}: ข้อความ + ภาพตรวจข้ามค่าย + หน้าเว็บ 1 หน้า ใน {OUT}",
+ "nodes": [
+  {"id": "text", "account": "yolo", "kind": "doc", "cwd": "{OUT}", "expect": "contains:saved text.md",
+   "prompt": "เขียนข้อความโปสเตอร์ภาษาไทยสำหรับงาน \"{TOPIC}\" บันทึกเป็นไฟล์ {OUT}/text.md (Markdown) มีหัวข้อ: ชื่องาน, คำโปรย 1 บรรทัด, วันเวลา, สถานที่, จุดเด่น 3 ข้อ (bullet 3 ข้อพอดี), วิธีสมัคร/ติดต่อ 1 บรรทัด{DETAILS} เขียนกระชับ เมื่อเสร็จตอบบรรทัดสุดท้ายว่า saved text.md"},
+  {"id": "art", "type": "image", "account": "gyolo", "path": "{OUT}/art.png", "max_rounds": 3,
+   "criteria": "ภาพประกอบโปสเตอร์ที่สื่อถึงงาน \"{TOPIC}\" ได้ชัดเจนในแวบแรก องค์ประกอบสะอาด เว้นพื้นที่ว่างพอวางข้อความ และต้องไม่มีตัวอักษร ตัวเลข ป้าย หรือข้อความใด ๆ ในภาพเลย",
+   "prompt": "A vibrant poster illustration for an event: \"{TOPIC}\" (translate the Thai topic and depict it literally). Clean composition with open space at the top for a headline, bright friendly colors. Absolutely no text, letters, numbers, signs, logos or writing anywhere in the image."},
+  {"id": "page", "account": "cyolo", "kind": "code", "cwd": "{OUT}", "depends_on": ["text", "art"],
+   "expect": "contains:saved index.html",
+   "prompt": "อ่าน {OUT}/text.md แล้วเขียน {OUT}/index.html เป็นโปสเตอร์หน้าเว็บ 1 หน้า (HTML+CSS ในไฟล์เดียว ไม่โหลดไฟล์ภายนอกนอกจากภาพ) ใช้ภาพ art.png ด้วย path สัมพัทธ์ ใส่ข้อความจาก text.md ให้ครบและตรงทุกคำ ห้ามแต่งข้อมูลเพิ่ม รองรับจอมือถือ ภาษาไทยอ่านง่าย (lang=th) เมื่อเสร็จตอบบรรทัดสุดท้ายว่า saved index.html"},
+  {"id": "check", "account": "gyolo", "cwd": "{OUT}", "depends_on": ["page"], "expect": "regex:^(ผ่าน|ไม่ผ่าน)",
+   "prompt": "ตรวจ {OUT}/index.html เทียบกับ {OUT}/text.md: ข้อมูลทุกหัวข้อครบและตรงกัน (ชื่องาน คำโปรย วันเวลา สถานที่ จุดเด่น 3 ข้อ วิธีสมัคร) และ index.html อ้างถึง art.png ห้ามแก้ไฟล์ใด ๆ ตอบบรรทัดแรกเป็นคำเดียว: ผ่าน หรือ ไม่ผ่าน แล้วตามด้วยรายการตรวจแต่ละหัวข้อสั้น ๆ (ตรง/ไม่ตรง)"}
+ ]}

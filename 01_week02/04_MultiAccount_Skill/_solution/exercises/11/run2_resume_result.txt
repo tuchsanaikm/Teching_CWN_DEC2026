@@ -1,0 +1,20 @@
+▶ resume 20261124-053524-oczp: รันใหม่เฉพาะ coupon, notice (งานที่สำเร็จแล้วไม่รันซ้ำ)
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:35:10, cyolo1=พร้อม@05:35:12
+▶ coupon → yolo1 (haiku/low)
+✔ coupon ← yolo1 2.5s in=2 out=7 
+▶ notice → cyolo1 (gpt-6.2-sol/low)
+✔ notice ← cyolo1 6.9s in=52429 out=67 
+
+## สรุป run 20261124-053524-oczp
+run directory: /workspace/.agent-team/20261124-053524-oczp
+
+| งาน | บัญชี | รุ่น/effort | เวลา s | input tokens | output tokens | สถานะ |
+|---|---|---|---|---|---|---|
+| coupon | yolo1 | haiku/low | 2.6 | 4 | 159 | ok |
+| notice | cyolo1 | gpt-6.2-sol/low | 6.9 | 52429 | 67 | ok |
+
+โควตาของบัญชีที่ใช้:
+| บัญชี | โควตาล่าสุด |
+|---|---|
+| cyolo1 | week 10% (ข้อมูล 2026-11-24 00:36) |
+| yolo1 | week 29% (ข้อมูล 2026-11-24 05:35) |

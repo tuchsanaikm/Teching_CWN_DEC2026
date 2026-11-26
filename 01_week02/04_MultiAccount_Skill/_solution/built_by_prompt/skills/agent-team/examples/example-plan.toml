@@ -1,0 +1,75 @@
+# ตัวอย่างแผนงาน agent-team — คัดลอกไปแก้ prompt / who / accounts ได้ทันที
+# รัน:  python skills/agent-team/scripts/agent-team.py run skills/agent-team/examples/example-plan.toml --dry-run
+#       (ตรวจแผนและดูว่าใครจะทำอะไร โดยไม่เรียกโมเดล) แล้วเอา --dry-run ออกเพื่อรันจริง
+
+[team]
+name = "coldbrew"                          # ชื่อทีม: ใช้ตั้งชื่อ run และเป็นชื่อกระดานความรู้ของทีม
+accounts = ["yolo", "cyolo1", "gyolo"]     # บัญชีที่อนุญาต (ชื่อค่าย = ทุกบัญชีของค่ายนั้น) ลบทิ้ง = ใช้ได้ทุกบัญชี
+max_parallel = 4                           # จำนวนงานที่ทำพร้อมกันได้มากสุด
+difficulty = 2                             # ความยาก 1–6 ที่ใช้เมื่องานไม่ได้ระบุ
+leader = "yolo"                            # หัวหน้าทีม: ตัดสินผลแข่ง/ภาพ ทำงาน who="leader" เขียนสรุป
+quota_limit = 80                           # บัญชีที่ใช้โควตาถึง 80% หยุดรับงานใหม่ (งานในคิวย้ายไปคนอื่น)
+budget_tokens = 400000                     # งบโทเค็นต่อบัญชีใน run นี้ (0 = ไม่จำกัด)
+final_summary = true                       # หัวหน้าเขียนสรุปท้าย run จากไฟล์ handover
+
+# งานแรก: ไม่มี needs จึงเริ่มทันที
+[[task]]
+id = "facts"
+who = "gyolo"
+prompt = "List 5 short facts about cold brew coffee, one per line."
+
+# สองงานนี้รอ facts แล้วทำพร้อมกัน
+[[task]]
+id = "draft_th"
+needs = ["facts"]
+kind = "doc"                               # ไม่ระบุ who: งานเอกสารยาวจะส่งไป Claude
+prompt = "Using these facts:\n{{facts}}\nWrite a 120-word Thai product description for a cold brew coffee."
+
+[[task]]
+id = "draft_en"
+needs = ["facts"]                          # ไม่ระบุ who และ kind: เลือกบัญชีที่โควตาเหลือมากที่สุด
+prompt = "Using these facts:\n{{facts}}\nWrite an 80-word English product description for a cold brew coffee."
+
+# รวมผลแล้วให้คนทำกับคนตรวจวนจนผ่าน (kind=code: เขียนและตรวจโดย Codex)
+[[task]]
+id = "landing"
+type = "review"
+kind = "code"
+needs = ["draft_th", "draft_en"]
+max_rounds = 3
+prompt = """Write one self-contained HTML file (inline CSS, no JavaScript) for a landing page with two sections:
+Thai text: {{draft_th}}
+English text: {{draft_en}}
+Reply with only the HTML."""
+criteria = "Valid HTML5; both texts present unchanged; no JavaScript; no external resources."
+
+# ภาพที่ต้องผ่านการตรวจ: Codex สร้าง → Gemini ตรวจ → สร้างใหม่ตามคำแนะนำ → Claude ตัดสินรับหรือไม่รับ
+[[task]]
+id = "hero"
+type = "image"
+max_rounds = 3
+prompt = "A minimal flat illustration of a glass of cold brew coffee with ice, beige background, no text."
+criteria = "1) a glass of dark coffee with ice cubes; 2) plain beige background; 3) no text or logos; 4) flat minimal style."
+
+# งานที่ใช้ภาพจากงานก่อน: {{hero}} จะกลายเป็น path และแนบภาพให้อัตโนมัติ
+[[task]]
+id = "alt_text"
+needs = ["hero"]
+kind = "image-review"                      # อ่านภาพ: ส่งไป Gemini
+prompt = "Write a one-sentence alt text for the image {{hero}}."
+
+# แข่งกัน: ทุกค่ายเขียน แล้วหัวหน้าเลือกอันที่ดีที่สุดพร้อมเหตุผล (type = "debate" = ถกกันแล้วสังเคราะห์)
+[[task]]
+id = "tagline"
+type = "compete"
+needs = ["facts"]
+prompt = "Using these facts:\n{{facts}}\nWrite a tagline of at most 6 words for a cold brew coffee."
+criteria = "concrete, at most 6 words, no clichés"
+
+# รอคุณอนุมัติก่อนเริ่ม: agent-team.py approve <run-id> publish
+[[task]]
+id = "publish"
+who = "leader"
+approve = true
+needs = ["landing", "alt_text", "tagline"]
+prompt = "Write a 3-line launch announcement using the tagline {{tagline}} and mention that the landing page is ready."

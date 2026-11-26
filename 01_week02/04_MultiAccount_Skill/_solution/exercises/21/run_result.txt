@@ -1,0 +1,44 @@
+▶ run 20261124-052954-argq · run directory /workspace/.agent-team/20261124-052954-argq
+· บัญชีที่อนุญาต: yolo1, cyolo1, gyolo1
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:23:57, cyolo1=พร้อม@05:23:58, gyolo1=พร้อม@05:21:17
+· แผน: round1_judge_yolo1→yolo1/cyolo1/gyolo1/yolo1, round2_judge_cyolo1→yolo1/cyolo1/gyolo1/cyolo1, round3_judge_gyolo1→yolo1/cyolo1/gyolo1/gyolo1
+▶ round1_judge_yolo1#A → yolo1 (sonnet/medium)
+▶ round2_judge_cyolo1#A → yolo1 (sonnet/medium)
+▶ round3_judge_gyolo1#A → yolo1 (sonnet/medium)
+▶ round1_judge_yolo1#B → cyolo1 (gpt-6.2-sol/medium)
+▶ round2_judge_cyolo1#B → cyolo1 (gpt-6.2-sol/medium)
+▶ round3_judge_gyolo1#B → cyolo1 (gpt-6.2-sol/medium)
+▶ round1_judge_yolo1#C → gyolo1 (gemini-3.8-flash-medium/medium)
+▶ round2_judge_cyolo1#C → gyolo1 (gemini-3.8-flash-medium/medium)
+✔ round2_judge_cyolo1#A ← yolo1 4.9s in=2 out=177 
+▶ round3_judge_gyolo1#C → gyolo1 (gemini-3.8-flash-medium/medium)
+✔ round1_judge_yolo1#A ← yolo1 5.2s in=2 out=212 
+✔ round3_judge_gyolo1#A ← yolo1 5.3s in=2 out=226 
+✔ round3_judge_gyolo1#B ← cyolo1 7.6s in=52478 out=98 
+✔ round2_judge_cyolo1#B ← cyolo1 7.8s in=52478 out=98 
+✔ round1_judge_yolo1#B ← cyolo1 7.9s in=52494 out=131 
+✔ round1_judge_yolo1#C ← gyolo1 11.4s in=12691 out=641 
+▶ round1_judge_yolo1#judge → yolo1 (sonnet/medium)
+✔ round2_judge_cyolo1#C ← gyolo1 11.7s in=12794 out=780 
+▶ round2_judge_cyolo1#judge → cyolo1 (gpt-6.2-sol/medium)
+✔ round3_judge_gyolo1#C ← gyolo1 11.1s in=12635 out=601 
+▶ round3_judge_gyolo1#judge → gyolo1 (gemini-3.8-flash-medium/medium)
+✔ round1_judge_yolo1#judge ← yolo1 8.3s in=4 out=564 
+✔ round2_judge_cyolo1#judge ← cyolo1 11.8s in=79969 out=257 
+✔ round3_judge_gyolo1#judge ← gyolo1 26.5s in=13933 out=2567 
+
+## สรุป run 20261124-052954-argq
+run directory: /workspace/.agent-team/20261124-052954-argq
+
+| งาน | บัญชี | รุ่น/effort | เวลา s | input tokens | output tokens | สถานะ |
+|---|---|---|---|---|---|---|
+| round1_judge_yolo1 | cyolo1,gyolo1,yolo1 | gemini-3.8-flash-medium/medium,gpt-6.2-sol/medium,sonnet/medium | 19.7 | 65191 | 1548 | ok |
+| round2_judge_cyolo1 | cyolo1,gyolo1,yolo1 | gemini-3.8-flash-medium/medium,gpt-6.2-sol/medium,sonnet/medium | 23.5 | 145243 | 1312 | ok |
+| round3_judge_gyolo1 | cyolo1,gyolo1,yolo1 | gemini-3.8-flash-medium/medium,gpt-6.2-sol/medium,sonnet/medium | 42.7 | 79048 | 3492 | ok |
+
+โควตาของบัญชีที่ใช้:
+| บัญชี | โควตาล่าสุด |
+|---|---|
+| cyolo1 | week 10% (ข้อมูล 2026-11-24 00:36) |
+| gyolo1 | session 2% · week 1% (ข้อมูล 2026-11-24 05:30) |
+| yolo1 | week 29% (ข้อมูล 2026-11-24 05:30) |

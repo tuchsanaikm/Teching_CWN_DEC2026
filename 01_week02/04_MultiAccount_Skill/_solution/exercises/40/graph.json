@@ -1,0 +1,19 @@
+{"goal": "โปสเตอร์งาน ตลาดนัดหนังสือมือสอง เป็นหน้าเว็บ 1 หน้า ใน /workspace/ex/40",
+ "nodes": [
+  {"id": "text", "account": "yolo1", "difficulty": 2, "cwd": "/workspace/ex/40",
+   "expect": "contains:text.md",
+   "prompt": "เขียนข้อความโปสเตอร์ภาษาไทยสำหรับงาน \"ตลาดนัดหนังสือมือสอง\" บันทึกเป็นไฟล์ /workspace/ex/40/text.md ประกอบด้วยหัวข้อ: ชื่องาน, วันเวลา (ระบุวันที่และช่วงเวลาชัดเจน), สถานที่, และจุดเด่น 3 ข้อ (bullet 3 ข้อพอดี) เขียนให้กระชับ เมื่อเสร็จตอบบรรทัดสุดท้ายว่า saved text.md"},
+  {"id": "cover", "type": "image", "account": "gyolo", "difficulty": 2,
+   "path": "/workspace/ex/40/cover.png", "max_rounds": 3,
+   "criteria": "ภาพแผงหนังสือมือสองกลางแจ้งยามเย็น แสงอาทิตย์อัสดงโทนอุ่น เห็นกองหนังสือบนโต๊ะแผงชัดเจน ต้องไม่มีตัวอักษร ตัวเลข ป้าย หรือข้อความใด ๆ ในภาพเลย",
+   "prompt": "An outdoor second-hand book market stall at dusk: wooden tables piled with old used books, warm golden sunset light, string lights, cozy atmosphere, a few blurred browsers in background. Absolutely no text, letters, numbers, signs or writing anywhere in the image."},
+  {"id": "poster", "account": "cyolo1", "difficulty": 2, "cwd": "/workspace/ex/40",
+   "depends_on": ["text", "cover"], "expect": "contains:poster.html",
+   "prompt": "อ่าน /workspace/ex/40/text.md แล้วเขียน /workspace/ex/40/poster.html เป็นโปสเตอร์หน้าเว็บ 1 หน้า (HTML+CSS ในไฟล์เดียว ไม่ใช้ไฟล์ภายนอกนอกจากภาพ) ใช้ภาพ cover.png ด้วย path สัมพัทธ์ <img src=\"cover.png\"> หรือ background ใส่ข้อความทั้งหมดจาก text.md ให้ครบและตรงทุกคำ: ชื่องาน วันเวลา สถานที่ จุดเด่น 3 ข้อ ห้ามแต่งข้อมูลเพิ่ม (วัน เวลา สถานที่ต้องตรง) รองรับจอมือถือ เมื่อเสร็จตอบบรรทัดสุดท้ายว่า saved poster.html"},
+  {"id": "verify", "account": "gyolo1", "difficulty": 2, "cwd": "/workspace/ex/40",
+   "depends_on": ["poster"], "expect": "regex:(ผ่าน|ไม่ผ่าน)",
+   "prompt": "ตรวจ /workspace/ex/40/poster.html เทียบกับ /workspace/ex/40/text.md ว่าข้อมูลครบและตรงกันหรือไม่: ชื่องาน วันเวลา สถานที่ จุดเด่น 3 ข้อ และ poster.html อ้างถึงภาพ cover.png ห้ามแก้ไฟล์ใด ๆ ให้ตอบบรรทัดแรกเป็นคำเดียว: ผ่าน หรือ ไม่ผ่าน จากนั้นแสดงรายการตรวจแต่ละหัวข้อสั้น ๆ (ตรง/ไม่ตรง)"},
+  {"id": "publish", "account": "yolo1", "difficulty": 2, "cwd": "/workspace/ex/40",
+   "depends_on": ["verify"], "approve": true, "expect": "contains:published",
+   "prompt": "ผลตรวจก่อนหน้า: {{verify}} ถ้าบรรทัดแรกคือ ผ่าน ให้คัดลอก text.md, cover.png, poster.html จาก /workspace/ex/40 ไปไว้ที่ /workspace/ex/40/publish/ (สร้างโฟลเดอร์ถ้ายังไม่มี) แล้วรัน ls -l /workspace/ex/40/publish ตอบรายการไฟล์และบรรทัดสุดท้ายว่า published · ถ้าไม่ผ่าน ห้ามคัดลอก ตอบว่า not published"}
+ ]}

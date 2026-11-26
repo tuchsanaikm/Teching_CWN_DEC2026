@@ -1,0 +1,508 @@
+{
+ "run_id": "20261123-230342-efed",
+ "mode": "lead",
+ "goal": "เขียนเมนูร้าน \"ดอยหมอก\" 6 หมวด: กาแฟร้อน, กาแฟเย็น, ชา, ขนมอบ, อาหารเช้า, ของฝาก หมวดละ 3 รายการพร้อมราคา (บาท) แบ่งให้ลูกทีมทำคนละหมวด (dispatch 6 งาน งานละหมวด difficulty 1 ทุกงาน) แล้วหัวหน้ารวมผลเองเป็นไฟล์ markdown เดียวที่ /workspace/cafe/menu.md มีหัวข้อหมวดครบทั้ง 6 หมวด หมวดละ 3 รายการพร้อมราคา",
+ "created": "2026-11-23T23:03:42+07:00",
+ "done": true,
+ "options": {
+  "per_account": 1,
+  "max_total": 8,
+  "timeout": 900,
+  "threshold": 80,
+  "gate_timeout": 1800,
+  "worker_budget": {
+   "cyolo1": 1
+  },
+  "simulate_limit": [
+   "gyolo1"
+  ],
+  "lead_budget": {
+   "yolo2": 1
+  },
+  "simulate_crash": [
+   "yolo1"
+  ],
+  "demo": false,
+  "leader_difficulty": 2,
+  "episode_timeout": 1800,
+  "heartbeat_timeout": 900,
+  "succession_explicit": true
+ },
+ "nodes": {
+  "cat1": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat1",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"กาแฟร้อน\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## กาแฟร้อน' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "cyolo1",
+   "spawned": 1795449848.3814363,
+   "exec_pid": 93756,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "cyolo1",
+   "model": "gpt-6.2-sol",
+   "effort": "low",
+   "value": "## กาแฟร้อน\n- เอสเปรสโซ — 60 บาท\n- อเมริกาโน — 65 บาท\n- ลาเต้ — 80 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat1.md",
+   "ended": "2026-11-23T23:04:19+07:00",
+   "duration_s": 10.6,
+   "review": null
+  },
+  "cat2": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat2",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"กาแฟเย็น\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## กาแฟเย็น' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "cyolo2",
+   "spawned": 1795449848.424511,
+   "exec_pid": 93759,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "cyolo2",
+   "model": "gpt-6.2-sol",
+   "effort": "low",
+   "value": "## กาแฟเย็น\n\n- อเมริกาโน่เย็น — 65 บาท\n- ลาเต้เย็น — 75 บาท\n- มอคค่าเย็น — 80 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat2.md",
+   "ended": "2026-11-23T23:04:18+07:00",
+   "duration_s": 10.0,
+   "review": null
+  },
+  "cat3": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat3",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"ชา\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## ชา' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "gyolo1",
+   "spawned": 1795449848.4691064,
+   "exec_pid": 93773,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "gyolo2",
+   "model": "gemini-3.8-flash-low",
+   "effort": "low",
+   "value": "## ชา\n- ชาเขียวมัทฉะดอยหมอก — 65 บาท\n- ชาไทยโบราณ — 55 บาท\n- ชาอู่หลงยอดน้ำค้าง — 70 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat3.md",
+   "ended": "2026-11-23T23:04:33+07:00",
+   "duration_s": 25.3,
+   "review": null
+  },
+  "cat4": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat4",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"ขนมอบ\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## ขนมอบ' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "gyolo2",
+   "spawned": 1795449848.5165284,
+   "exec_pid": 93853,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "gyolo2",
+   "model": "gemini-3.8-flash-low",
+   "effort": "low",
+   "value": "## ขนมอบ\n- ครัวซองต์เนยสดอัลมอนด์ — 85 บาท\n- สโคนชาเขียวมัทฉะพร้อมแยมสตรอว์เบอร์รี — 75 บาท\n- เค้กช็อกโกแลตฟัดจ์หน้านิ่ม — 95 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat4.md",
+   "ended": "2026-11-23T23:04:20+07:00",
+   "duration_s": 12.1,
+   "review": null
+  },
+  "cat5": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat5",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"อาหารเช้า\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## อาหารเช้า' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "cyolo1",
+   "spawned": 1795449848.5656912,
+   "exec_pid": 93868,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "cyolo2",
+   "model": "gpt-6.2-sol",
+   "effort": "low",
+   "value": "## อาหารเช้า\n\n- ข้าวต้มเห็ดหอมหมูสับ — 95 บาท\n- ไข่กระทะเสิร์ฟพร้อมขนมปังปิ้ง — 115 บาท\n- โยเกิร์ตกราโนลากับผลไม้ตามฤดูกาล — 135 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat5.md",
+   "ended": "2026-11-23T23:04:42+07:00",
+   "duration_s": 33.7,
+   "review": null
+  },
+  "cat6": {
+   "status": "ok",
+   "spec": "any",
+   "kind": null,
+   "type": "task",
+   "pinned": false,
+   "difficulty": 1,
+   "spec_node": {
+    "id": "cat6",
+    "prompt": "ร้านคาเฟ่ชื่อ \"ดอยหมอก\" เขียนเมนูหมวด \"ของฝาก\" จำนวน 3 รายการ พร้อมราคาเป็นบาท ตอบเป็น markdown เท่านั้น รูปแบบ: บรรทัดหัวข้อ '## ของฝาก' ตามด้วยรายการ '- ชื่อเมนู — ราคา บาท' 3 บรรทัดพอ ไม่ต้องอธิบายเพิ่ม",
+    "account": "any",
+    "difficulty": 1,
+    "depends_on": [],
+    "type": "task",
+    "board": true
+   },
+   "depends_on": [],
+   "planned": "cyolo2",
+   "spawned": 1795449848.6153114,
+   "exec_pid": 93953,
+   "started": "2026-11-23T23:04:08+07:00",
+   "account": "cyolo2",
+   "model": "gpt-6.2-sol",
+   "effort": "low",
+   "value": "## ของฝาก\n- เมล็ดกาแฟคั่วดอยหมอก — 250 บาท\n- คุกกี้แมคคาเดเมีย — 150 บาท\n- แยมสตรอว์เบอร์รี — 120 บาท",
+   "error": "",
+   "out": "/workspace/.agent-team/20261123-230342-efed/out/cat6.md",
+   "ended": "2026-11-23T23:04:27+07:00",
+   "duration_s": 19.0,
+   "review": null
+  }
+ },
+ "accounts": {
+  "cyolo1": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 6.7s",
+   "role": "ลูกทีม",
+   "stopped": true,
+   "quota": {
+    "account": "cyolo1",
+    "source": "sessions rollout",
+    "as_of": "2026-11-23T21:10:48+07:00",
+    "primary": {
+     "used_percent": 8.0,
+     "window_minutes": 10080,
+     "resets": "2026-11-28 14:00"
+    },
+    "week_pct": 8,
+    "plan": "prolite"
+   },
+   "stop_reason": "เกินงบโทเค็นลูกทีม (1544 > 1)"
+  },
+  "cyolo2": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 7.3s",
+   "role": "ลูกทีม",
+   "stopped": false,
+   "quota": {
+    "account": "cyolo2",
+    "source": "sessions rollout",
+    "as_of": "2026-11-23T16:02:29+07:00",
+    "primary": {
+     "used_percent": 8.0,
+     "window_minutes": 10080,
+     "resets": "2026-11-28 14:00"
+    },
+    "week_pct": 8,
+    "plan": "prolite"
+   }
+  },
+  "gyolo1": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 6.3s",
+   "role": "ลูกทีม",
+   "stopped": false,
+   "quota": {
+    "account": "gyolo1",
+    "as_of": "2026-11-23T23:03:42+07:00",
+    "source": "/usage (remaining → used)",
+    "session_pct": 23,
+    "session_resets": "2026-11-24 02:07",
+    "week_pct": 8,
+    "week_resets": "2026-11-30 11:07",
+    "groups": {
+     "Gemini Models": {
+      "week": {
+       "remaining_pct": 92,
+       "used_pct": 8,
+       "resets": "2026-11-30 11:07"
+      },
+      "session": {
+       "remaining_pct": 77,
+       "used_pct": 23,
+       "resets": "2026-11-24 02:07"
+      }
+     },
+     "Claude and GPT models": {
+      "week": {
+       "remaining_pct": 100,
+       "used_pct": 0,
+       "resets": "2026-11-30 23:03"
+      },
+      "session": {
+       "remaining_pct": 100,
+       "used_pct": 0,
+       "resets": "2026-11-24 04:03"
+      }
+     }
+    },
+    "week_other": {
+     "Claude and GPT models": 0
+    }
+   },
+   "unusable": "ล้ม: simulated: usage limit reached (MA_SIMULATE_LIMIT)"
+  },
+  "gyolo2": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 7.1s",
+   "role": "ลูกทีม",
+   "stopped": false,
+   "quota": {
+    "account": "gyolo2",
+    "as_of": "2026-11-23T23:03:46+07:00",
+    "source": "/usage (remaining → used)",
+    "session_pct": 23,
+    "session_resets": "2026-11-24 02:07",
+    "week_pct": 8,
+    "week_resets": "2026-11-30 11:07",
+    "groups": {
+     "Gemini Models": {
+      "week": {
+       "remaining_pct": 92,
+       "used_pct": 8,
+       "resets": "2026-11-30 11:07"
+      },
+      "session": {
+       "remaining_pct": 77,
+       "used_pct": 23,
+       "resets": "2026-11-24 02:07"
+      }
+     },
+     "Claude and GPT models": {
+      "week": {
+       "remaining_pct": 100,
+       "used_pct": 0,
+       "resets": "2026-11-30 23:03"
+      },
+      "session": {
+       "remaining_pct": 100,
+       "used_pct": 0,
+       "resets": "2026-11-24 04:03"
+      }
+     }
+    },
+    "week_other": {
+     "Claude and GPT models": 0
+    }
+   }
+  },
+  "yolo1": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 4.1s",
+   "role": "หัวหน้าเดิม",
+   "stopped": false,
+   "quota": {
+    "account": "yolo1",
+    "as_of": "2026-11-23T23:03:51+07:00",
+    "source": "/usage",
+    "week_pct": 24,
+    "week_resets": "Nov 26, 6am (Asia/Bangkok)",
+    "week_other": {
+     "Fable": 18
+    },
+    "note": "/usage ไม่มีบรรทัด Current session (ยังไม่มี session ที่เปิดอยู่)"
+   },
+   "lead_failed": "หัวหน้าหยุดกะทันหัน (จำลอง --simulate-crash)"
+  },
+  "yolo2": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 3.8s",
+   "role": "หัวหน้าเดิม",
+   "stopped": false,
+   "quota": {
+    "account": "yolo2",
+    "as_of": "2026-11-23T23:03:55+07:00",
+    "source": "/usage",
+    "session_pct": 3,
+    "session_resets": "Nov 24, 2am (Asia/Bangkok)",
+    "week_pct": 0,
+    "week_resets": "Nov 30, 1pm (Asia/Bangkok)",
+    "week_other": {
+     "Fable": 0
+    }
+   }
+  },
+  "yolo3": {
+   "check": "ready",
+   "check_detail": "ตอบ OK ใน 3.8s",
+   "role": "หัวหน้า",
+   "stopped": false,
+   "quota": {
+    "account": "yolo3",
+    "as_of": "2026-11-23T23:03:59+07:00",
+    "source": "/usage",
+    "session_pct": 0,
+    "session_resets": "Nov 24, 2:29am (Asia/Bangkok)",
+    "week_pct": 47,
+    "week_resets": "Nov 24, 12:59pm (Asia/Bangkok)",
+    "week_other": {
+     "Fable": 76
+    }
+   }
+  }
+ },
+ "running": [],
+ "switches": [
+  {
+   "node": "cat3",
+   "from": "gyolo1",
+   "to": "gyolo2",
+   "reason": "gyolo1 ล้มเพราะ limit",
+   "ts": "2026-11-23T23:04:08+07:00"
+  },
+  {
+   "node": "cat5",
+   "from": "cyolo1",
+   "to": "cyolo2",
+   "reason": "บัญชี cyolo1 หยุดรับงาน: เกินงบโทเค็นลูกทีม (1544 > 1)",
+   "ts": "2026-11-23T23:04:19+07:00"
+  }
+ ],
+ "lead_history": [
+  {
+   "from": "yolo1",
+   "to": "yolo2",
+   "type": "เชิงรับ",
+   "reason": "หัวหน้าหยุดกะทันหัน (จำลอง --simulate-crash)",
+   "ts": "2026-11-23T23:04:09+07:00"
+  },
+  {
+   "from": "yolo2",
+   "to": "yolo3",
+   "type": "เชิงรุก",
+   "reason": "หัวหน้าใช้ tokens 20311 เกินงบ 1",
+   "ts": "2026-11-23T23:04:49+07:00"
+  }
+ ],
+ "events": [
+  {
+   "node": "cat3",
+   "to": "gyolo2",
+   "reason": "gyolo1 ล้มเพราะ limit",
+   "from": "gyolo1",
+   "ts": "2026-11-23T23:04:08+07:00",
+   "event": "worker_switch"
+  },
+  {
+   "account": "yolo2",
+   "to": "yolo2",
+   "reason": "หัวหน้าหยุดกะทันหัน (จำลอง --simulate-crash)",
+   "type": "เชิงรับ",
+   "from": "yolo1",
+   "ts": "2026-11-23T23:04:09+07:00",
+   "event": "lead_switch"
+  },
+  {
+   "account": "cyolo1",
+   "reason": "เกินงบโทเค็นลูกทีม (1544 > 1)",
+   "ts": "2026-11-23T23:04:19+07:00",
+   "event": "worker_stop"
+  },
+  {
+   "node": "cat5",
+   "to": "cyolo2",
+   "reason": "บัญชี cyolo1 หยุดรับงาน: เกินงบโทเค็นลูกทีม (1544 > 1)",
+   "from": "cyolo1",
+   "ts": "2026-11-23T23:04:19+07:00",
+   "event": "worker_switch"
+  },
+  {
+   "account": "yolo3",
+   "to": "yolo3",
+   "reason": "หัวหน้าใช้ tokens 20311 เกินงบ 1",
+   "type": "เชิงรุก",
+   "from": "yolo2",
+   "ts": "2026-11-23T23:04:49+07:00",
+   "event": "lead_switch"
+  }
+ ],
+ "leader": {
+  "first": "yolo1",
+  "current": "yolo3",
+  "episode": 3,
+  "tokens": 21862,
+  "budget": null,
+  "stop_requested": null,
+  "stop_reason": null,
+  "dispatch_count": 0,
+  "hb_epoch": 1795449898.3701851,
+  "heartbeat": "2026-11-23T23:04:55+07:00",
+  "checkpoints": 1,
+  "started": "2026-11-23T23:04:49+07:00",
+  "checkpoint_at": "2026-11-23T23:04:55+07:00"
+ },
+ "final": {
+  "output": "/workspace/cafe/menu.md",
+  "summary": "เมนูดอยหมอก 6 หมวด หมวดละ 3 รายการพร้อมราคา",
+  "by": "yolo3",
+  "ts": "2026-11-23T23:04:55+07:00"
+ },
+ "pool": [
+  "cyolo1",
+  "cyolo2",
+  "gyolo1",
+  "gyolo2"
+ ],
+ "succession": [
+  "yolo1",
+  "yolo2",
+  "yolo3"
+ ]
+}

@@ -1,0 +1,1 @@
+/workspace/ex31/img1_original.png

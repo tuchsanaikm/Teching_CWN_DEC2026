@@ -1,0 +1,1 @@
+/workspace/out/ex30_receipt.png

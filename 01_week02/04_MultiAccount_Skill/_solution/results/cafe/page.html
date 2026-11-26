@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ดอยหมอก</title>
+  <style>
+    :root {
+      font-family: system-ui, sans-serif;
+      color: #23362c;
+      background: #f6f3eb;
+    }
+    body {
+      margin: 0;
+      line-height: 1.65;
+    }
+    header {
+      padding: clamp(2.5rem, 7vw, 5rem) 1.25rem;
+      background: #233e33;
+      color: #fff8e8;
+      text-align: center;
+    }
+    h1, h2, h3, p {
+      margin: 0;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      line-height: 1.2;
+    }
+    #intro {
+      max-width: 38rem;
+      margin-inline: auto;
+    }
+    #intro:not(:empty) {
+      margin-top: 1rem;
+    }
+    main {
+      max-width: 70rem;
+      margin-inline: auto;
+      padding: 2.5rem 1.25rem 4rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+      gap: 1rem;
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .product {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      border: 1px solid #ded7c9;
+      border-radius: 1rem;
+      background: #fffcf6;
+    }
+    .price {
+      margin-top: auto;
+      color: #754221;
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+    .hero {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: clamp(14rem, 40vw, 28rem);
+      object-fit: cover;
+    }
+    .hours {
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .hours img {
+      display: block;
+      width: 100%;
+      max-width: 28rem;
+      height: auto;
+      margin: 1rem auto 0;
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ดอยหมอก</h1>
+    <div id="intro"><p>สัมผัสเสน่ห์แห่งขุนเขาและไอหมอกยามเช้าไปกับร้านกาแฟ "ดอยหมอก" ที่คัดสรรเมล็ดพันธุ์อราบิก้าคุณภาพเยี่ยมจากยอดดอยสูง นำมาผ่านการคั่วอย่างพิถีพิถันเพื่อมอบกลิ่นหอมละมุนและรสชาติอันเป็นเอกลักษณ์ พร้อมเสิร์ฟคู่กับเบเกอรีอบสดใหม่ที่จะเติมเต็มช่วงเวลาแห่งความสุขในทุกวันของคุณได้อย่างลงตัว</p></div>
+  </header>
+  <img class="hero" src="hero.jpg" alt="ลาเต้ร้อนบนโต๊ะไม้ ฉากหลังภูเขาและหมอกยามเช้า">
+  <main>
+    <h2>เมนู</h2>
+    <ul class="products" role="list">
+      <li class="product">
+        <h3>กาแฟดอยหมอกคั่วกลาง</h3>
+        <p>เมล็ดกาแฟอราบิก้าจากยอดดอยคั่วระดับกลาง หอมละมุนและมีรสผลไม้เล็กน้อย</p>
+        <p class="price">180 บาท</p>
+      </li>
+      <li class="product">
+        <h3>ลาเต้ม่านหมอก</h3>
+        <p>ลาเต้นมร้อนเนื้อเนียนนุ่มตกแต่งลายหมอกบางๆ เหมาะกับยามเช้าอากาศเย็น</p>
+        <p class="price">95 บาท</p>
+      </li>
+      <li class="product">
+        <h3>ครัวซองต์เนยสดดอยสูง</h3>
+        <p>ครัวซองต์อบสดใหม่หอมเนยกรอบนอกนุ่มใน เสิร์ฟคู่กาแฟได้อย่างลงตัว</p>
+        <p class="price">75 บาท</p>
+      </li>
+    </ul>
+    <section class="hours">
+      <h2>เวลาเปิดร้าน</h2>
+      <img src="sign.jpg" alt="ป้ายไม้หน้าร้าน ดอยหมอก เปิด 07:00–17:00">
+    </section>
+  </main>
+</body>
+</html>

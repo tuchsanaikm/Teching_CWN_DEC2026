@@ -1,0 +1,162 @@
+▶ run 20261124-054437-rgeu · run directory /workspace/.agent-team/20261124-054437-rgeu
+· บัญชีที่อนุญาต: yolo1
+· ใช้ผลตรวจความพร้อม (เรียกจริง) จาก cache ≤10 นาที: yolo1=พร้อม@05:44:09
+· แผน: effort→yolo1, time→yolo1, friendship→yolo1, learning→yolo1, health→yolo1, travel→yolo1
+▶ effort → yolo1 (haiku/low)
+✔ effort ← yolo1 3.8s in=2 out=221 
+▶ friendship → yolo1 (haiku/low)
+✔ friendship ← yolo1 3.4s in=2 out=144 
+▶ health → yolo1 (haiku/low)
+✔ health ← yolo1 3.2s in=2 out=156 
+▶ time → yolo1 (haiku/low)
+✔ time ← yolo1 3.9s in=2 out=278 
+▶ learning → yolo1 (haiku/low)
+✔ learning ← yolo1 3.3s in=2 out=164 
+▶ travel → yolo1 (haiku/low)
+✔ travel ← yolo1 3.1s in=2 out=102 
+{
+ "run_id": "20261124-054437-rgeu",
+ "run_dir": "/workspace/.agent-team/20261124-054437-rgeu",
+ "nodes": {
+  "effort": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "ความพยายามที่ทำอย่างต่อเนื่อง ย่อมค่อย ๆ เปลี่ยนความฝันให้กลายเป็นความจริง",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/effort.md",
+   "duration_s": 3.8,
+   "review": null
+  },
+  "time": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "เวลาไม่เคยหยุดรอใคร แต่ทุกนาทีที่เราใช้อย่างตั้งใจ คือสิ่งที่เราจะไม่ต้องเสียใจทีหลัง",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/time.md",
+   "duration_s": 15.9,
+   "review": null
+  },
+  "friendship": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "Pick the friendship quote in Thai, one sentence, reply with only the quote. The task asks for just the quote, so no board or progress file.\n\n\"มิตรแท้ไม่ได้วัดกันที่วันที่พบเจอ แต่วัดกันที่ตอนที่เราต่างเงียบแล้วยังรู้สึกว่าอีกฝ่ายยังอยู่ตรงนั้น\"",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/friendship.md",
+   "duration_s": 7.4,
+   "review": null
+  },
+  "learning": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "การเรียนรู้ไม่มีวันสิ้นสุด เพราะทุกครั้งที่เราเริ่มต้นใหม่ เรากำลังเติมเต็มสิ่งที่ยังขาดอยู่ในตัวเอง",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/learning.md",
+   "duration_s": 19.3,
+   "review": null
+  },
+  "health": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "\"สุขภาพที่ดีไม่ใช่ทุกสิ่งทุกอย่าง แต่ไม่มีสิ่งใดดีได้เลยหากขาดสุขภาพ\"",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/health.md",
+   "duration_s": 11.2,
+   "review": null
+  },
+  "travel": {
+   "status": "ok",
+   "planned": "yolo1",
+   "account": "yolo1",
+   "model": "haiku",
+   "effort": "low",
+   "value": "ก่อนออกจากงานก็ต้องรู้ไว้ว่า \"การเดินทางที่แท้จริงไม่ได้วัดด้วยระยะทาง แต่วัดด้วยสิ่งที่เราเปลี่ยนไประหว่างทาง\"",
+   "error": "",
+   "out": "/workspace/.agent-team/20261124-054437-rgeu/out/travel.md",
+   "duration_s": 23.1,
+   "review": null
+  }
+ },
+ "switches": [],
+ "lead_history": [],
+ "quota": {
+  "yolo1": {
+   "source": "stream rate_limit_event",
+   "as_of": "2026-11-24T05:45:03+07:00",
+   "status": "allowed",
+   "week_pct": 30,
+   "week_resets": "2026-11-26 06:00",
+   "account": "yolo1"
+  }
+ },
+ "table": [
+  {
+   "node": "effort",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 3.8,
+   "input_tokens": 2,
+   "output_tokens": 221,
+   "status": "ok"
+  },
+  {
+   "node": "time",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 15.9,
+   "input_tokens": 2,
+   "output_tokens": 278,
+   "status": "ok"
+  },
+  {
+   "node": "friendship",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 7.4,
+   "input_tokens": 2,
+   "output_tokens": 144,
+   "status": "ok"
+  },
+  {
+   "node": "learning",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 19.3,
+   "input_tokens": 2,
+   "output_tokens": 164,
+   "status": "ok"
+  },
+  {
+   "node": "health",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 11.2,
+   "input_tokens": 2,
+   "output_tokens": 156,
+   "status": "ok"
+  },
+  {
+   "node": "travel",
+   "account": "yolo1",
+   "model_effort": "haiku/low",
+   "seconds": 23.1,
+   "input_tokens": 2,
+   "output_tokens": 102,
+   "status": "ok"
+  }
+ ]
+}
