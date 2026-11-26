@@ -1,0 +1,43 @@
+{
+ "n": 12,
+ "tasks": 4,
+ "score": 0.6924333333333333,
+ "passes": 0,
+ "pass3": 0,
+ "all3": 0,
+ "none3": 4,
+ "mixed": 0,
+ "by_task": {
+  "t1-cafe-bill": [
+   0.7,
+   0.7,
+   0.7
+  ],
+  "t2-split-bill": [
+   0.9,
+   0.7,
+   0.7
+  ],
+  "t3-shipping-fee": [
+   0.6364,
+   0.6364,
+   0.6364
+  ],
+  "t4-cashback": [
+   0.6,
+   0.8,
+   0.6
+  ]
+ },
+ "cost_usd": 1.4948,
+ "context_tokens": 150816,
+ "tool_calls": 3.67,
+ "skill_read": 12,
+ "grader_failed": 0,
+ "label": "v1_train",
+ "split": "train",
+ "skills": [
+  "money-function-solver"
+ ],
+ "model": "sonnet"
+}

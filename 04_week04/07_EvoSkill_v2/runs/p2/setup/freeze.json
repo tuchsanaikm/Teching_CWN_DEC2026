@@ -1,0 +1,26 @@
+{
+ "frozen_at": "2026-11-14 23:12 UTC",
+ "sha256": {
+  "benchmark_plugin.py": "3cc5554a218e812f129916857282818d71ba9772ffefe3d897c62350e9241b9e",
+  "benchmark_grader.py": "e89edcf373747b247eaa94efdb03a84f5db7c53d5d859914965cbf0b989097c0",
+  "tasks.json": "484a4bf7022504445f33fe763a258ef261df20a96a2f2960cffb790dcb14f1cd"
+ },
+ "grader_unchanged_by_adaptor": true,
+ "tasks": {
+  "train": [
+   "t1-cafe-bill",
+   "t2-split-bill",
+   "t3-shipping-fee",
+   "t4-cashback"
+  ],
+  "validation": [
+   "v1-parking-fee",
+   "v2-net-pay"
+  ],
+  "test": [
+   "x1-late-fee",
+   "x2-refund",
+   "x3-bulk-price"
+  ]
+ }
+}
