@@ -1,0 +1,185 @@
+== 2026-11-22 17:56:36 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+10:56:31 [rank 0] step 50/500 loss 0.0852 (avg 0.0899) width 110 compute 0.38s comm 2.17s peak 20694/20962 MB
+10:56:31 [rank 1] step 50/500 loss 0.0256 (avg 0.0899) width 153 compute 0.47s comm 2.07s peak 20782/21038 MB
+0, 0 %, 21302 MiB;1, 0 %, 21386 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+10:56:31 [rank 2] step 50/500 loss 0.0991 (avg 0.0899) width 124 compute 0.41s comm 2.18s peak 20169/20432 MB
+10:56:31 [rank 3] step 50/500 loss 0.1497 (avg 0.0899) width 118 compute 0.40s comm 2.27s peak 20230/20486 MB
+0, 0 %, 20768 MiB;1, 0 %, 20826 MiB;
+== 2026-11-22 17:59:12 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+10:59:09 [rank 0] step 110/500 loss 0.0284 (avg 0.0374) width 115 compute 0.39s comm 2.22s peak 21162/21452 MB
+10:59:09 [rank 1] step 110/500 loss 0.0105 (avg 0.0374) width 130 compute 0.45s comm 2.16s peak 20782/21068 MB
+0, 0 %, 21788 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+10:59:09 [rank 2] step 110/500 loss 0.0680 (avg 0.0374) width 127 compute 0.41s comm 2.15s peak 20564/20816 MB
+10:59:09 [rank 3] step 110/500 loss 0.0425 (avg 0.0374) width 139 compute 0.47s comm 2.07s peak 20867/21132 MB
+0, 0 %, 21152 MiB;1, 0 %, 21468 MiB;
+== 2026-11-22 18:01:48 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+10:59:35 [rank 0] step 120/500 loss 0.0174 (avg 0.0194) width 144 compute 0.46s comm 2.14s peak 21162/21452 MB
+10:59:35 [rank 1] step 120/500 loss 0.0169 (avg 0.0194) width 122 compute 0.40s comm 2.19s peak 20782/21068 MB
+0, 0 %, 21788 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:00:10 [rank 2] step 120/500 loss 0.0333 (avg 0.0194) width 132 compute 0.45s comm 36.48s peak 20564/20816 MB
+11:00:08 [rank 3] step 120/500 loss 0.0101 (avg 0.0194) width 164 compute 0.61s comm 34.36s peak 20867/21132 MB
+0, 0 %, 21152 MiB;1, 0 %, 21468 MiB;
+== 2026-11-22 18:04:34 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:03:11 [rank 0] step 140/500 loss 0.1043 (avg 0.0402) width 131 compute 0.44s comm 2.28s peak 21162/21452 MB
+11:03:11 [rank 1] step 140/500 loss 0.0205 (avg 0.0402) width 127 compute 0.41s comm 2.30s peak 20782/21068 MB
+0, 0 %, 21788 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:03:12 [rank 2] step 140/500 loss 0.0115 (avg 0.0402) width 124 compute 0.41s comm 2.32s peak 20564/20816 MB
+11:03:11 [rank 3] step 140/500 loss 0.0246 (avg 0.0402) width 147 compute 0.47s comm 2.26s peak 20992/21272 MB
+0, 0 %, 21152 MiB;1, 0 %, 21608 MiB;
+== 2026-11-22 18:07:25 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:07:23 [rank 0] step 160/500 loss 0.0090 (avg 0.0711) width 136 compute 0.44s comm 40.09s peak 21162/21452 MB
+11:07:23 [rank 1] step 160/500 loss 0.1377 (avg 0.0711) width 112 compute 0.39s comm 40.14s peak 20782/21068 MB
+0, 0 %, 21788 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:04:56 [rank 2] step 150/500 loss 0.0294 (avg 0.0560) width 113 compute 0.39s comm 3.01s peak 20564/20816 MB
+11:04:56 [rank 3] step 150/500 loss 0.0773 (avg 0.0560) width 119 compute 0.40s comm 25.14s peak 20992/21272 MB
+0, 0 %, 21152 MiB;1, 0 %, 21608 MiB;
+== 2026-11-22 18:10:18 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:09:59 [rank 0] step 190/500 loss 0.0068 (avg 0.0744) width 122 compute 0.39s comm 2.41s peak 21162/21454 MB
+11:09:59 [rank 1] step 190/500 loss 0.2370 (avg 0.0744) width 131 compute 0.45s comm 2.35s peak 20782/21068 MB
+0, 0 %, 21790 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:09:59 [rank 2] step 190/500 loss 0.0370 (avg 0.0744) width 110 compute 0.40s comm 2.43s peak 20609/20876 MB
+11:09:59 [rank 3] step 190/500 loss 0.0167 (avg 0.0744) width 109 compute 0.39s comm 2.29s peak 20992/21274 MB
+0, 0 %, 21212 MiB;1, 85 %, 21610 MiB;
+== 2026-11-22 18:13:09 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:13:09 [rank 0] step 260/500 loss 0.0177 (avg 0.0300) width 133 compute 0.45s comm 2.14s peak 22144/22426 MB
+11:13:09 [rank 1] step 260/500 loss 0.0570 (avg 0.0300) width 149 compute 0.47s comm 2.12s peak 20782/21068 MB
+0, 0 %, 22762 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:13:09 [rank 2] step 260/500 loss 0.0437 (avg 0.0300) width 133 compute 0.46s comm 2.09s peak 20609/20886 MB
+11:13:09 [rank 3] step 260/500 loss 0.0017 (avg 0.0300) width 124 compute 0.41s comm 2.26s peak 20992/21286 MB
+0, 0 %, 21222 MiB;1, 0 %, 21622 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+== 2026-11-22 18:16:00 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:15:51 [rank 0] step 320/500 loss 0.0743 (avg 0.0484) width 112 compute 0.38s comm 2.45s peak 22144/22426 MB
+11:15:51 [rank 1] step 320/500 loss 0.0242 (avg 0.0484) width 121 compute 0.40s comm 2.42s peak 20782/21068 MB
+0, 0 %, 22762 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:15:52 [rank 2] step 320/500 loss 0.0166 (avg 0.0484) width 150 compute 0.48s comm 2.30s peak 21066/21348 MB
+11:15:52 [rank 3] step 320/500 loss 0.0785 (avg 0.0484) width 162 compute 0.61s comm 2.17s peak 20992/21286 MB
+0, 0 %, 21684 MiB;1, 0 %, 21622 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+== 2026-11-22 18:18:51 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:18:34 [rank 0] step 380/500 loss 0.0107 (avg 0.0241) width 171 compute 0.62s comm 2.25s peak 22144/22426 MB
+11:18:34 [rank 1] step 380/500 loss 0.0016 (avg 0.0241) width 151 compute 0.47s comm 2.39s peak 20782/21068 MB
+0, 0 %, 22762 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:18:34 [rank 2] step 380/500 loss 0.0435 (avg 0.0241) width 172 compute 0.63s comm 2.22s peak 21066/21348 MB
+11:18:35 [rank 3] step 380/500 loss 0.0406 (avg 0.0241) width 133 compute 0.45s comm 2.29s peak 20992/21286 MB
+0, 0 %, 21684 MiB;1, 0 %, 21622 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+== 2026-11-22 18:21:42 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon dp_w0 dp_w1 
+11:21:17 [rank 0] step 440/500 loss 0.0083 (avg 0.0210) width 126 compute 0.40s comm 2.26s peak 22144/22428 MB
+11:21:17 [rank 1] step 440/500 loss 0.0572 (avg 0.0210) width 122 compute 0.40s comm 2.26s peak 20782/21068 MB
+0, 0 %, 22764 MiB;1, 0 %, 21404 MiB;
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+-- node 2 --
+tmux: dp_gpumon dp_w2 dp_w3 
+11:21:44 [rank 2] step 450/500 loss 0.0051 (avg 0.0124) width 110 compute 0.39s comm 2.42s peak 22144/22430 MB
+11:21:43 [rank 3] step 450/500 loss 0.0289 (avg 0.0124) width 134 compute 0.45s comm 2.10s peak 20992/21290 MB
+0, 24 %, 22766 MiB;1, 94 %, 21628 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+== 2026-11-22 18:24:18 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon 
+11:23:55 [rank 0] finished
+11:23:55 [rank 1] finished
+0, 0 %, 1 MiB;1, 0 %, 1 MiB;
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:23:55 weights check epoch 2: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 0] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 1] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+-- node 2 --
+tmux: dp_gpumon 
+11:23:55 [rank 2] finished
+11:23:55 [rank 3] finished
+0, 0 %, 1 MiB;1, 0 %, 1 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 2] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 3] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+== 2026-11-22 18:26:41 ==
+-- node 1 --
+tmux: dp_coord dp_gpumon 
+11:23:55 [rank 0] finished
+11:23:55 [rank 1] finished
+0, 0 %, 1 MiB;1, 0 %, 1 MiB;
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:23:55 weights check epoch 2: identical=True max_abs_diff=0.0
+11:12:39 [rank 0] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 0] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 1] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+logs/eval_base.log: "exact_match": 0.015, "loss": 1.85753909472137,
+logs/eval_epoch1.log: "exact_match": 0.725, "loss": 0.060276856949426263,
+-- node 2 --
+tmux: dp_gpumon 
+11:23:55 [rank 2] finished
+11:23:55 [rank 3] finished
+0, 0 %, 1 MiB;1, 0 %, 1 MiB;
+11:12:39 [rank 2] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 2] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:39 [rank 3] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 3] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+logs/eval_epoch2.log: "exact_match": 0.75, "loss": 0.05146241613635082,

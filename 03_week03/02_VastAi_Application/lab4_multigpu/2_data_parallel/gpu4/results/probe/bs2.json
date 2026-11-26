@@ -1,0 +1,30 @@
+{
+ "batch_per_gpu": 2,
+ "global_batch": 8,
+ "status": "ok",
+ "steps": 3,
+ "seq_len": 256,
+ "sec_per_step": [
+  10.031,
+  0.382,
+  0.38
+ ],
+ "torch_allocated_mib": [
+  18735,
+  18735,
+  18735,
+  18735
+ ],
+ "torch_reserved_mib": [
+  18808,
+  18808,
+  18808,
+  18808
+ ],
+ "nvidia_smi_peak_mib": [
+  19268,
+  19268,
+  19268,
+  19268
+ ]
+}

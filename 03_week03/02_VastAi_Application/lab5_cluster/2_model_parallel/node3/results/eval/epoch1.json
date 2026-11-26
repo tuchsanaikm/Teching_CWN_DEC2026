@@ -1,0 +1,14 @@
+{
+ "name": "epoch1",
+ "lora": "/workspace/lab5/run/train/lora_epoch1_node2.pt",
+ "lora_sha256": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a",
+ "n": 200,
+ "exact": 138,
+ "exact_match": 0.69,
+ "test_loss": 0.06554,
+ "answer_tokens": 5266,
+ "max_len": 256,
+ "max_new_tokens": 200,
+ "gen_seconds": 60.1,
+ "seconds": 84.1
+}

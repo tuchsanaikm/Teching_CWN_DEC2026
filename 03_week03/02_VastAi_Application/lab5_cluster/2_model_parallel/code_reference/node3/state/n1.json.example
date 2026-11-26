@@ -1,0 +1,10 @@
+{
+ "node": 1,
+ "id": "<id>",
+ "label": "vapp-lab5-3mp-1",
+ "status": "running",
+ "ip": "<N1_IP>",
+ "ssh_port": "<N1_SSH_PORT>",
+ "port9000": "<ext_port>",
+ "gpu": "2x RTX 3090"
+}

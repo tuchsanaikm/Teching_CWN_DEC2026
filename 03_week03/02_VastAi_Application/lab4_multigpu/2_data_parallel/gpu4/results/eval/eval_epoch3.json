@@ -1,0 +1,12 @@
+{
+ "tag": "epoch3",
+ "adapter": "/workspace/lab4_dp4/results/adapters/epoch3",
+ "n": 200,
+ "test_loss": 0.0543,
+ "answer_tokens": 5266,
+ "exact_match": 0.765,
+ "em_correct": 153,
+ "exact_match_loose": 0.785,
+ "eval_sec": 54.9,
+ "vram_peak_mib": 19383
+}

@@ -1,0 +1,2161 @@
+{
+ "machine": {
+  "gpu": "RTX 3090",
+  "count": 2,
+  "location": "Quebec, CA",
+  "cpu_threads_shown": 64,
+  "cpu_cores_usable": 24.6,
+  "dollars_per_hour": 0.3578,
+  "wait_ready_seconds": 56,
+  "image": "pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime"
+ },
+ "loadtest_check": {
+  "A": {
+   "expected": "p50 50 ms; throughput 20/200/1000/2000 req/s at N=1/10/50/100 (within 10%)",
+   "measured": {
+    "p50_ms": [
+     50.6,
+     50.6,
+     50.6,
+     50.6
+    ],
+    "throughput_rps": [
+     19.8,
+     197.33,
+     986.6,
+     1971.33
+    ],
+    "throughput_diff_pct": [
+     -1.0,
+     -1.33,
+     -1.34,
+     -1.43
+    ]
+   },
+   "pass": true
+  },
+  "B": {
+   "expected": "sent = received, difference <= 1%",
+   "measured": {
+    "runs": 7,
+    "total_sent": 1386504,
+    "total_received": 1386504,
+    "max_diff_pct": 0.0,
+    "sent_in_test_A_runs": [
+     396,
+     3855,
+     19277,
+     38499
+    ]
+   },
+   "pass": true
+  },
+  "C": {
+   "expected": "> 2000 req/s",
+   "measured": {
+    "throughput_rps": 64167.67,
+    "loadgen_cpu_pct": 400.1,
+    "loadgen_procs": 4
+   },
+   "pass": true
+  },
+  "D": {
+   "expected": "p50 through NGINX - p50 direct <= 10 ms",
+   "measured": {
+    "p50_direct_ms": 50.6,
+    "p50_nginx_ms": 50.9,
+    "p50_added_ms": 0.3,
+    "throughput_direct_rps": 986.8,
+    "throughput_nginx_rps": 981.13
+   },
+   "pass": true
+  },
+  "E": {
+   "expected": "3 runs at N=8 within 10% (throughput and p50)",
+   "measured": {
+    "throughput_rps": [
+     57.53,
+     58.8,
+     60.87
+    ],
+    "p50_ms": [
+     134.0,
+     129.8,
+     130.9
+    ],
+    "p95_ms": [
+     168.1,
+     180.6,
+     140.7
+    ],
+    "throughput_spread_pct": 5.81,
+    "p50_spread_pct": 3.24,
+    "p95_spread_pct_not_in_rule": 28.36
+   },
+   "pass": true
+  }
+ },
+ "designs": {
+  "base": {
+   "capacity_users": 29,
+   "first_fail_users": 30,
+   "max_throughput_rps": 62.6,
+   "max_throughput_at_users": 29,
+   "throughput_at_capacity_rps": 62.6,
+   "p95_ms_at_capacity": 494.4,
+   "p50_ms_at_capacity": 459.4,
+   "p50_ms_at_n1": 24.9,
+   "capacity_run_attempt": 2,
+   "capacity_level_runs": [
+    {
+     "attempt": 1,
+     "p95": 507.4,
+     "pass": false
+    },
+    {
+     "attempt": 2,
+     "p95": 494.4,
+     "pass": true
+    }
+   ],
+   "gpu_util_pct_at_capacity": [
+    22.1,
+    0.0
+   ],
+   "server_cpu_cores_at_capacity": 1.36,
+   "nginx_cpu_cores_at_capacity": 0.02,
+   "loadgen_cpu_cores_at_capacity": 0.03,
+   "mean_batch_at_capacity": 1.0,
+   "model_ms_at_capacity": 15.57,
+   "queue_ms_at_capacity": 437.26,
+   "share_gpu0_pct": 100.0,
+   "share_gpu1_pct": 0.0,
+   "levels_measured": 9,
+   "runs_measured": 13,
+   "search_seconds": 282,
+   "first_estimate_users": 28.73,
+   "estimates": [
+    {
+     "round": 1,
+     "pass_point": {
+      "users": 16,
+      "p95_ms": 273.6
+     },
+     "fail_point": {
+      "users": 32,
+      "p95_ms": 558.2
+     },
+     "method": "line",
+     "estimated_users": 28.73,
+     "measured_users": 29,
+     "measured_p95_ms": 494.4,
+     "measured_pass": true
+    },
+    {
+     "round": 2,
+     "pass_point": {
+      "users": 29,
+      "p95_ms": 494.4
+     },
+     "fail_point": {
+      "users": 32,
+      "p95_ms": 558.2
+     },
+     "method": "line",
+     "estimated_users": 29.26,
+     "measured_users": 30,
+     "measured_p95_ms": 521.5,
+     "measured_pass": false
+    }
+   ],
+   "estimate_throughput_x_0_5s": 31.3,
+   "levels": [
+    {
+     "n": 1,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 38.8,
+     "p50": 24.9,
+     "p95": 31.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      13.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.0,
+     "mean_batch": 1.0,
+     "model_ms": 16.58,
+     "queue_ms": 0.07
+    },
+    {
+     "n": 2,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 59.4,
+     "p50": 33.1,
+     "p95": 41.5,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      20.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.32,
+     "mean_batch": 1.0,
+     "model_ms": 16.46,
+     "queue_ms": 7.79
+    },
+    {
+     "n": 4,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 61.8,
+     "p50": 64.1,
+     "p95": 72.7,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.35,
+     "mean_batch": 1.0,
+     "model_ms": 15.81,
+     "queue_ms": 39.28
+    },
+    {
+     "n": 8,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 60.33,
+     "p50": 128.8,
+     "p95": 159.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      21.3,
+      0.0
+     ],
+     "server_cpu_cores": 1.35,
+     "mean_batch": 1.0,
+     "model_ms": 16.19,
+     "queue_ms": 106.64
+    },
+    {
+     "n": 16,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 62.13,
+     "p50": 255.3,
+     "p95": 273.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.7,
+     "queue_ms": 231.95
+    },
+    {
+     "n": 32,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 60.87,
+     "p50": 517.9,
+     "p95": 558.2,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      21.6,
+      0.0
+     ],
+     "server_cpu_cores": 1.35,
+     "mean_batch": 1.0,
+     "model_ms": 15.97,
+     "queue_ms": 498.29
+    },
+    {
+     "n": 32,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 62.4,
+     "p50": 507.4,
+     "p95": 559.8,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.57,
+     "queue_ms": 486.13
+    },
+    {
+     "n": 64,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 62.33,
+     "p50": 1017.3,
+     "p95": 1068.3,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.62,
+     "queue_ms": 999.09
+    },
+    {
+     "n": 64,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 59.8,
+     "p50": 1057.8,
+     "p95": 1168.5,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      20.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.32,
+     "mean_batch": 1.0,
+     "model_ms": 16.06,
+     "queue_ms": 1037.81
+    },
+    {
+     "n": 29,
+     "attempt": 1,
+     "phase": "estimate",
+     "rps": 61.47,
+     "p50": 465.3,
+     "p95": 507.4,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      21.7,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.84,
+     "queue_ms": 445.38
+    },
+    {
+     "n": 29,
+     "attempt": 2,
+     "phase": "estimate",
+     "rps": 62.6,
+     "p50": 459.4,
+     "p95": 494.4,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      22.1,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.57,
+     "queue_ms": 437.26
+    },
+    {
+     "n": 30,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 62.07,
+     "p50": 476.1,
+     "p95": 525.8,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "server_cpu_cores": 1.35,
+     "mean_batch": 1.0,
+     "model_ms": 15.66,
+     "queue_ms": 456.56
+    },
+    {
+     "n": 30,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 62.0,
+     "p50": 476.2,
+     "p95": 521.5,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      21.9,
+      0.0
+     ],
+     "server_cpu_cores": 1.36,
+     "mean_batch": 1.0,
+     "model_ms": 15.71,
+     "queue_ms": 457.44
+    }
+   ],
+   "vram": "522 MiB after start (cluster_status.txt)",
+   "times_of_design1": 1.0
+  },
+  "batch": {
+   "capacity_users": 52,
+   "first_fail_users": 54,
+   "max_throughput_rps": 142.93,
+   "max_throughput_at_users": 64,
+   "throughput_at_capacity_rps": 135.2,
+   "p95_ms_at_capacity": 490.0,
+   "p50_ms_at_capacity": 368.6,
+   "p50_ms_at_n1": 30.0,
+   "capacity_run_attempt": 2,
+   "capacity_level_runs": [
+    {
+     "attempt": 1,
+     "p95": 511.5,
+     "pass": false
+    },
+    {
+     "attempt": 2,
+     "p95": 490.0,
+     "pass": true
+    }
+   ],
+   "gpu_util_pct_at_capacity": [
+    31.3,
+    0.0
+   ],
+   "server_cpu_cores_at_capacity": 1.81,
+   "nginx_cpu_cores_at_capacity": 0.03,
+   "loadgen_cpu_cores_at_capacity": 0.04,
+   "mean_batch_at_capacity": 26.0,
+   "model_ms_at_capacity": 174.04,
+   "queue_ms_at_capacity": 123.84,
+   "share_gpu0_pct": 100.0,
+   "share_gpu1_pct": 0.0,
+   "levels_measured": 12,
+   "runs_measured": 17,
+   "search_seconds": 593,
+   "first_estimate_users": 53.94,
+   "estimates": [
+    {
+     "round": 1,
+     "pass_point": {
+      "users": 32,
+      "p95_ms": 336.4
+     },
+     "fail_point": {
+      "users": 64,
+      "p95_ms": 575.0
+     },
+     "method": "line",
+     "estimated_users": 53.94,
+     "measured_users": 54,
+     "measured_p95_ms": 538.0,
+     "measured_pass": false
+    },
+    {
+     "round": 2,
+     "pass_point": {
+      "users": 32,
+      "p95_ms": 336.4
+     },
+     "fail_point": {
+      "users": 54,
+      "p95_ms": 538.0
+     },
+     "method": "line",
+     "estimated_users": 49.85,
+     "measured_users": 50,
+     "measured_p95_ms": 492.7,
+     "measured_pass": true
+    },
+    {
+     "round": 3,
+     "pass_point": {
+      "users": 50,
+      "p95_ms": 492.7
+     },
+     "fail_point": {
+      "users": 54,
+      "p95_ms": 538.0
+     },
+     "method": "line",
+     "estimated_users": 50.64,
+     "measured_users": 51,
+     "measured_p95_ms": 484.0,
+     "measured_pass": true
+    },
+    {
+     "round": 4,
+     "pass_point": {
+      "users": 51,
+      "p95_ms": 484.0
+     },
+     "fail_point": {
+      "users": 54,
+      "p95_ms": 538.0
+     },
+     "method": "midpoint (same side moved twice)",
+     "estimated_users": 52.5,
+     "measured_users": 52,
+     "measured_p95_ms": 490.0,
+     "measured_pass": true
+    }
+   ],
+   "estimate_throughput_x_0_5s": 71.5,
+   "levels": [
+    {
+     "n": 1,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 32.67,
+     "p50": 30.0,
+     "p95": 36.2,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      11.4,
+      0.0
+     ],
+     "server_cpu_cores": 0.83,
+     "mean_batch": 1.0,
+     "model_ms": 16.94,
+     "queue_ms": 5.17
+    },
+    {
+     "n": 2,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 50.4,
+     "p50": 40.0,
+     "p95": 46.4,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      16.4,
+      0.0
+     ],
+     "server_cpu_cores": 1.09,
+     "mean_batch": 1.2,
+     "model_ms": 16.55,
+     "queue_ms": 13.37
+    },
+    {
+     "n": 4,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 84.07,
+     "p50": 45.9,
+     "p95": 57.2,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      20.9,
+      0.0
+     ],
+     "server_cpu_cores": 1.23,
+     "mean_batch": 3.3,
+     "model_ms": 22.88,
+     "queue_ms": 7.32
+    },
+    {
+     "n": 8,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 110.4,
+     "p50": 71.1,
+     "p95": 80.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      27.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.54,
+     "mean_batch": 4.0,
+     "model_ms": 28.62,
+     "queue_ms": 24.85
+    },
+    {
+     "n": 16,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 136.93,
+     "p50": 112.0,
+     "p95": 136.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      32.4,
+      0.0
+     ],
+     "server_cpu_cores": 1.66,
+     "mean_batch": 7.99,
+     "model_ms": 47.75,
+     "queue_ms": 38.5
+    },
+    {
+     "n": 32,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 137.4,
+     "p50": 222.8,
+     "p95": 336.4,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      32.2,
+      0.0
+     ],
+     "server_cpu_cores": 1.72,
+     "mean_batch": 15.98,
+     "model_ms": 98.94,
+     "queue_ms": 77.31
+    },
+    {
+     "n": 64,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 142.93,
+     "p50": 423.2,
+     "p95": 594.9,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      32.9,
+      0.0
+     ],
+     "server_cpu_cores": 1.91,
+     "mean_batch": 32.0,
+     "model_ms": 212.52,
+     "queue_ms": 140.22
+    },
+    {
+     "n": 64,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 138.67,
+     "p50": 449.2,
+     "p95": 575.0,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      31.7,
+      0.0
+     ],
+     "server_cpu_cores": 1.81,
+     "mean_batch": 32.0,
+     "model_ms": 217.0,
+     "queue_ms": 149.67
+    },
+    {
+     "n": 128,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 130.13,
+     "p50": 935.0,
+     "p95": 1158.9,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      27.8,
+      0.0
+     ],
+     "server_cpu_cores": 1.81,
+     "mean_batch": 32.0,
+     "model_ms": 229.26,
+     "queue_ms": 642.68
+    },
+    {
+     "n": 128,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 130.13,
+     "p50": 940.0,
+     "p95": 1118.8,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      30.0,
+      0.0
+     ],
+     "server_cpu_cores": 1.81,
+     "mean_batch": 32.0,
+     "model_ms": 228.84,
+     "queue_ms": 637.81
+    },
+    {
+     "n": 54,
+     "attempt": 1,
+     "phase": "estimate",
+     "rps": 129.6,
+     "p50": 398.3,
+     "p95": 562.8,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      28.6,
+      0.0
+     ],
+     "server_cpu_cores": 1.75,
+     "mean_batch": 27.0,
+     "model_ms": 186.09,
+     "queue_ms": 138.82
+    },
+    {
+     "n": 54,
+     "attempt": 2,
+     "phase": "estimate",
+     "rps": 133.2,
+     "p50": 386.2,
+     "p95": 538.0,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      31.1,
+      0.0
+     ],
+     "server_cpu_cores": 1.77,
+     "mean_batch": 27.0,
+     "model_ms": 180.27,
+     "queue_ms": 137.36
+    },
+    {
+     "n": 50,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 100.0,
+     "p50": 363.3,
+     "p95": 531.7,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      23.9,
+      0.0
+     ],
+     "server_cpu_cores": 1.35,
+     "mean_batch": 25.0,
+     "model_ms": 290.1,
+     "queue_ms": 249.92
+    },
+    {
+     "n": 50,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 132.0,
+     "p50": 362.7,
+     "p95": 492.7,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      31.5,
+      0.0
+     ],
+     "server_cpu_cores": 1.75,
+     "mean_batch": 25.06,
+     "model_ms": 171.84,
+     "queue_ms": 123.35
+    },
+    {
+     "n": 51,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 134.2,
+     "p50": 366.2,
+     "p95": 484.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      30.0,
+      0.1
+     ],
+     "server_cpu_cores": 1.77,
+     "mean_batch": 25.48,
+     "model_ms": 166.24,
+     "queue_ms": 131.27
+    },
+    {
+     "n": 52,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 133.93,
+     "p50": 364.2,
+     "p95": 511.5,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      28.7,
+      0.0
+     ],
+     "server_cpu_cores": 1.8,
+     "mean_batch": 25.74,
+     "model_ms": 164.45,
+     "queue_ms": 138.99
+    },
+    {
+     "n": 52,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 135.2,
+     "p50": 368.6,
+     "p95": 490.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      31.3,
+      0.0
+     ],
+     "server_cpu_cores": 1.81,
+     "mean_batch": 26.0,
+     "model_ms": 174.04,
+     "queue_ms": 123.84
+    }
+   ],
+   "vram": "13,812 MiB after start (batch_cluster_status.txt)",
+   "times_of_design1": 1.79
+  },
+  "multi": {
+   "capacity_users": 90,
+   "first_fail_users": 91,
+   "max_throughput_rps": 278.73,
+   "max_throughput_at_users": 128,
+   "throughput_at_capacity_rps": 268.67,
+   "p95_ms_at_capacity": 468.4,
+   "p50_ms_at_capacity": 333.9,
+   "p50_ms_at_n1": 31.8,
+   "capacity_run_attempt": 1,
+   "capacity_level_runs": [
+    {
+     "attempt": 1,
+     "p95": 468.4,
+     "pass": true
+    }
+   ],
+   "gpu_util_pct_at_capacity": [
+    81.9,
+    0.0
+   ],
+   "server_cpu_cores_at_capacity": 5.35,
+   "nginx_cpu_cores_at_capacity": 0.06,
+   "loadgen_cpu_cores_at_capacity": 0.08,
+   "mean_batch_at_capacity": 11.01,
+   "model_ms_at_capacity": 147.29,
+   "queue_ms_at_capacity": 126.14,
+   "share_gpu0_pct": 100.0,
+   "share_gpu1_pct": 0.0,
+   "levels_measured": 15,
+   "runs_measured": 20,
+   "search_seconds": 433,
+   "first_estimate_users": 102.39,
+   "estimates": [
+    {
+     "round": 1,
+     "pass_point": {
+      "users": 64,
+      "p95_ms": 272.1
+     },
+     "fail_point": {
+      "users": 128,
+      "p95_ms": 652.0
+     },
+     "method": "line",
+     "estimated_users": 102.39,
+     "measured_users": 102,
+     "measured_p95_ms": 523.4,
+     "measured_pass": false
+    },
+    {
+     "round": 2,
+     "pass_point": {
+      "users": 64,
+      "p95_ms": 272.1
+     },
+     "fail_point": {
+      "users": 102,
+      "p95_ms": 523.4
+     },
+     "method": "line",
+     "estimated_users": 98.46,
+     "measured_users": 98,
+     "measured_p95_ms": 525.1,
+     "measured_pass": false
+    },
+    {
+     "round": 3,
+     "pass_point": {
+      "users": 64,
+      "p95_ms": 272.1
+     },
+     "fail_point": {
+      "users": 98,
+      "p95_ms": 525.1
+     },
+     "method": "midpoint (same side moved twice)",
+     "estimated_users": 81.0,
+     "measured_users": 81,
+     "measured_p95_ms": 466.1,
+     "measured_pass": true
+    },
+    {
+     "round": 4,
+     "pass_point": {
+      "users": 81,
+      "p95_ms": 466.1
+     },
+     "fail_point": {
+      "users": 98,
+      "p95_ms": 525.1
+     },
+     "method": "line",
+     "estimated_users": 90.77,
+     "measured_users": 91,
+     "measured_p95_ms": 513.3,
+     "measured_pass": false
+    },
+    {
+     "round": 5,
+     "pass_point": {
+      "users": 81,
+      "p95_ms": 466.1
+     },
+     "fail_point": {
+      "users": 91,
+      "p95_ms": 513.3
+     },
+     "method": "line",
+     "estimated_users": 88.18,
+     "measured_users": 88,
+     "measured_p95_ms": 452.2,
+     "measured_pass": true
+    },
+    {
+     "round": 6,
+     "pass_point": {
+      "users": 88,
+      "p95_ms": 452.2
+     },
+     "fail_point": {
+      "users": 91,
+      "p95_ms": 513.3
+     },
+     "method": "line",
+     "estimated_users": 90.35,
+     "measured_users": 90,
+     "measured_p95_ms": 468.4,
+     "measured_pass": true
+    }
+   ],
+   "estimate_throughput_x_0_5s": 139.4,
+   "levels": [
+    {
+     "n": 1,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 30.93,
+     "p50": 31.8,
+     "p95": 37.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      11.2,
+      0.0
+     ],
+     "server_cpu_cores": 0.85,
+     "mean_batch": 1.0,
+     "model_ms": 18.16,
+     "queue_ms": 5.22
+    },
+    {
+     "n": 2,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 61.13,
+     "p50": 31.9,
+     "p95": 38.3,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      50.7,
+      0.0
+     ],
+     "server_cpu_cores": 1.7,
+     "mean_batch": 1.0,
+     "model_ms": 18.17,
+     "queue_ms": 5.19
+    },
+    {
+     "n": 4,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 118.73,
+     "p50": 32.7,
+     "p95": 39.1,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      58.7,
+      0.0
+     ],
+     "server_cpu_cores": 3.31,
+     "mean_batch": 1.0,
+     "model_ms": 18.21,
+     "queue_ms": 5.19
+    },
+    {
+     "n": 8,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 169.53,
+     "p50": 46.2,
+     "p95": 55.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      80.2,
+      0.0
+     ],
+     "server_cpu_cores": 4.47,
+     "mean_batch": 1.04,
+     "model_ms": 18.16,
+     "queue_ms": 18.2
+    },
+    {
+     "n": 16,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 225.93,
+     "p50": 70.0,
+     "p95": 88.8,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ],
+     "server_cpu_cores": 5.01,
+     "mean_batch": 2.09,
+     "model_ms": 29.56,
+     "queue_ms": 25.57
+    },
+    {
+     "n": 32,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 260.47,
+     "p50": 121.6,
+     "p95": 135.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      83.4,
+      0.0
+     ],
+     "server_cpu_cores": 5.32,
+     "mean_batch": 3.94,
+     "model_ms": 51.09,
+     "queue_ms": 47.58
+    },
+    {
+     "n": 64,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 266.87,
+     "p50": 239.5,
+     "p95": 272.1,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      81.8,
+      0.0
+     ],
+     "server_cpu_cores": 5.34,
+     "mean_batch": 7.83,
+     "model_ms": 103.44,
+     "queue_ms": 95.54
+    },
+    {
+     "n": 128,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 278.73,
+     "p50": 454.4,
+     "p95": 652.0,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      80.3,
+      0.0
+     ],
+     "server_cpu_cores": 5.39,
+     "mean_batch": 15.64,
+     "model_ms": 208.39,
+     "queue_ms": 162.8
+    },
+    {
+     "n": 128,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 261.07,
+     "p50": 571.3,
+     "p95": 700.4,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ],
+     "server_cpu_cores": 4.72,
+     "mean_batch": 17.18,
+     "model_ms": 223.56,
+     "queue_ms": 172.86
+    },
+    {
+     "n": 256,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 261.6,
+     "p50": 933.5,
+     "p95": 1216.0,
+     "err": 3,
+     "pass": false,
+     "gpu_util_pct": [
+      78.4,
+      0.0
+     ],
+     "server_cpu_cores": 4.73,
+     "mean_batch": 31.65,
+     "model_ms": 350.44,
+     "queue_ms": 483.13
+    },
+    {
+     "n": 256,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 268.8,
+     "p50": 943.0,
+     "p95": 1006.4,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      76.7,
+      0.0
+     ],
+     "server_cpu_cores": 5.38,
+     "mean_batch": 32.0,
+     "model_ms": 436.52,
+     "queue_ms": 372.81
+    },
+    {
+     "n": 102,
+     "attempt": 1,
+     "phase": "estimate",
+     "rps": 275.47,
+     "p50": 351.0,
+     "p95": 604.5,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ],
+     "server_cpu_cores": 5.39,
+     "mean_batch": 12.21,
+     "model_ms": 161.44,
+     "queue_ms": 133.96
+    },
+    {
+     "n": 102,
+     "attempt": 2,
+     "phase": "estimate",
+     "rps": 276.93,
+     "p50": 368.0,
+     "p95": 523.4,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      82.7,
+      0.0
+     ],
+     "server_cpu_cores": 5.42,
+     "mean_batch": 12.54,
+     "model_ms": 160.21,
+     "queue_ms": 143.96
+    },
+    {
+     "n": 98,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 269.4,
+     "p50": 358.8,
+     "p95": 531.3,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      81.3,
+      0.0
+     ],
+     "server_cpu_cores": 5.39,
+     "mean_batch": 11.98,
+     "model_ms": 158.53,
+     "queue_ms": 138.69
+    },
+    {
+     "n": 98,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 275.53,
+     "p50": 354.2,
+     "p95": 525.1,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      82.4,
+      0.0
+     ],
+     "server_cpu_cores": 5.38,
+     "mean_batch": 12.05,
+     "model_ms": 158.53,
+     "queue_ms": 134.5
+    },
+    {
+     "n": 81,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 272.33,
+     "p50": 293.9,
+     "p95": 466.1,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      82.3,
+      0.0
+     ],
+     "server_cpu_cores": 5.36,
+     "mean_batch": 9.75,
+     "model_ms": 125.27,
+     "queue_ms": 109.18
+    },
+    {
+     "n": 91,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 277.73,
+     "p50": 300.4,
+     "p95": 537.2,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      83.9,
+      0.0
+     ],
+     "server_cpu_cores": 5.41,
+     "mean_batch": 11.05,
+     "model_ms": 139.39,
+     "queue_ms": 119.09
+    },
+    {
+     "n": 91,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 271.67,
+     "p50": 327.4,
+     "p95": 513.3,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      82.6,
+      0.0
+     ],
+     "server_cpu_cores": 5.33,
+     "mean_batch": 11.01,
+     "model_ms": 141.48,
+     "queue_ms": 125.0
+    },
+    {
+     "n": 88,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 272.33,
+     "p50": 323.1,
+     "p95": 452.2,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      81.0,
+      0.0
+     ],
+     "server_cpu_cores": 5.36,
+     "mean_batch": 10.8,
+     "model_ms": 137.25,
+     "queue_ms": 122.09
+    },
+    {
+     "n": 90,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 268.67,
+     "p50": 333.9,
+     "p95": 468.4,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      81.9,
+      0.0
+     ],
+     "server_cpu_cores": 5.35,
+     "mean_batch": 11.01,
+     "model_ms": 147.29,
+     "queue_ms": 126.14
+    }
+   ],
+   "vram": "14,001-14,017 MiB during the search, 212 samples (multi_vram.csv)",
+   "times_of_design1": 3.1
+  },
+  "gpu2": {
+   "capacity_users": 180,
+   "first_fail_users": 183,
+   "max_throughput_rps": 566.47,
+   "max_throughput_at_users": 512,
+   "throughput_at_capacity_rps": 553.4,
+   "p95_ms_at_capacity": 490.3,
+   "p50_ms_at_capacity": 312.6,
+   "p50_ms_at_n1": 33.1,
+   "capacity_run_attempt": 1,
+   "capacity_level_runs": [
+    {
+     "attempt": 1,
+     "p95": 490.3,
+     "pass": true
+    }
+   ],
+   "gpu_util_pct_at_capacity": [
+    85.4,
+    82.6
+   ],
+   "server_cpu_cores_at_capacity": 10.9,
+   "nginx_cpu_cores_at_capacity": 0.12,
+   "loadgen_cpu_cores_at_capacity": 0.19,
+   "mean_batch_at_capacity": 12.12,
+   "model_ms_at_capacity": 155.61,
+   "queue_ms_at_capacity": 113.55,
+   "share_gpu0_pct": 50.0,
+   "share_gpu1_pct": 50.0,
+   "levels_measured": 15,
+   "runs_measured": 19,
+   "search_seconds": 412,
+   "first_estimate_users": 142.1,
+   "estimates": [
+    {
+     "round": 1,
+     "pass_point": {
+      "users": 128,
+      "p95_ms": 476.1
+     },
+     "fail_point": {
+      "users": 256,
+      "p95_ms": 693.1
+     },
+     "method": "line",
+     "estimated_users": 142.1,
+     "measured_users": 142,
+     "measured_p95_ms": 354.0,
+     "measured_pass": true
+    },
+    {
+     "round": 2,
+     "pass_point": {
+      "users": 142,
+      "p95_ms": 354.0
+     },
+     "fail_point": {
+      "users": 256,
+      "p95_ms": 693.1
+     },
+     "method": "line",
+     "estimated_users": 191.08,
+     "measured_users": 191,
+     "measured_p95_ms": 529.1,
+     "measured_pass": false
+    },
+    {
+     "round": 3,
+     "pass_point": {
+      "users": 142,
+      "p95_ms": 354.0
+     },
+     "fail_point": {
+      "users": 191,
+      "p95_ms": 529.1
+     },
+     "method": "line",
+     "estimated_users": 182.86,
+     "measured_users": 183,
+     "measured_p95_ms": 514.0,
+     "measured_pass": false
+    },
+    {
+     "round": 4,
+     "pass_point": {
+      "users": 142,
+      "p95_ms": 354.0
+     },
+     "fail_point": {
+      "users": 183,
+      "p95_ms": 514.0
+     },
+     "method": "midpoint (same side moved twice)",
+     "estimated_users": 162.5,
+     "measured_users": 162,
+     "measured_p95_ms": 416.3,
+     "measured_pass": true
+    },
+    {
+     "round": 5,
+     "pass_point": {
+      "users": 162,
+      "p95_ms": 416.3
+     },
+     "fail_point": {
+      "users": 183,
+      "p95_ms": 514.0
+     },
+     "method": "line",
+     "estimated_users": 179.99,
+     "measured_users": 180,
+     "measured_p95_ms": 490.3,
+     "measured_pass": true
+    }
+   ],
+   "estimate_throughput_x_0_5s": 283.2,
+   "levels": [
+    {
+     "n": 1,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 29.47,
+     "p50": 33.1,
+     "p95": 39.2,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      5.0,
+      4.9
+     ],
+     "server_cpu_cores": 0.87,
+     "mean_batch": 1.0,
+     "model_ms": 19.51,
+     "queue_ms": 5.22
+    },
+    {
+     "n": 2,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 60.8,
+     "p50": 32.2,
+     "p95": 38.5,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      11.0,
+      10.7
+     ],
+     "server_cpu_cores": 1.71,
+     "mean_batch": 1.0,
+     "model_ms": 18.41,
+     "queue_ms": 5.19
+    },
+    {
+     "n": 4,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 121.53,
+     "p50": 32.2,
+     "p95": 38.1,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      40.1,
+      44.9
+     ],
+     "server_cpu_cores": 3.38,
+     "mean_batch": 1.0,
+     "model_ms": 18.64,
+     "queue_ms": 5.19
+    },
+    {
+     "n": 8,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 229.67,
+     "p50": 33.5,
+     "p95": 43.1,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      62.0,
+      60.2
+     ],
+     "server_cpu_cores": 6.57,
+     "mean_batch": 1.0,
+     "model_ms": 18.89,
+     "queue_ms": 5.23
+    },
+    {
+     "n": 16,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 320.87,
+     "p50": 48.1,
+     "p95": 68.6,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      85.5,
+      86.7
+     ],
+     "server_cpu_cores": 8.86,
+     "mean_batch": 1.08,
+     "model_ms": 20.74,
+     "queue_ms": 17.63
+    },
+    {
+     "n": 32,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 450.8,
+     "p50": 70.1,
+     "p95": 95.8,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      85.5,
+      85.3
+     ],
+     "server_cpu_cores": 9.96,
+     "mean_batch": 2.19,
+     "model_ms": 31.18,
+     "queue_ms": 24.07
+    },
+    {
+     "n": 64,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 527.07,
+     "p50": 117.9,
+     "p95": 148.4,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      85.7,
+      84.9
+     ],
+     "server_cpu_cores": 10.82,
+     "mean_batch": 4.52,
+     "model_ms": 57.86,
+     "queue_ms": 41.27
+    },
+    {
+     "n": 128,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 497.8,
+     "p50": 235.5,
+     "p95": 476.1,
+     "err": 2,
+     "pass": true,
+     "gpu_util_pct": [
+      78.6,
+      82.4
+     ],
+     "server_cpu_cores": 9.74,
+     "mean_batch": 7.31,
+     "model_ms": 121.47,
+     "queue_ms": 87.49
+    },
+    {
+     "n": 256,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 554.4,
+     "p50": 419.5,
+     "p95": 740.8,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      83.0,
+      77.7
+     ],
+     "server_cpu_cores": 10.79,
+     "mean_batch": 15.95,
+     "model_ms": 228.59,
+     "queue_ms": 159.76
+    },
+    {
+     "n": 256,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 549.47,
+     "p50": 448.5,
+     "p95": 693.1,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      82.3,
+      82.3
+     ],
+     "server_cpu_cores": 10.77,
+     "mean_batch": 16.43,
+     "model_ms": 227.91,
+     "queue_ms": 159.61
+    },
+    {
+     "n": 512,
+     "attempt": 1,
+     "phase": "range",
+     "rps": 566.47,
+     "p50": 894.3,
+     "p95": 1354.2,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      85.4,
+      83.7
+     ],
+     "server_cpu_cores": 10.99,
+     "mean_batch": 30.87,
+     "model_ms": 407.66,
+     "queue_ms": 397.08
+    },
+    {
+     "n": 512,
+     "attempt": 2,
+     "phase": "range",
+     "rps": 559.6,
+     "p50": 901.7,
+     "p95": 1280.5,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      81.4,
+      81.1
+     ],
+     "server_cpu_cores": 10.96,
+     "mean_batch": 31.1,
+     "model_ms": 412.08,
+     "queue_ms": 398.92
+    },
+    {
+     "n": 142,
+     "attempt": 1,
+     "phase": "estimate",
+     "rps": 550.33,
+     "p50": 254.3,
+     "p95": 354.0,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      84.5,
+      84.7
+     ],
+     "server_cpu_cores": 10.96,
+     "mean_batch": 9.78,
+     "model_ms": 124.7,
+     "queue_ms": 91.17
+    },
+    {
+     "n": 191,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 552.93,
+     "p50": 335.7,
+     "p95": 529.1,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      84.8,
+      83.3
+     ],
+     "server_cpu_cores": 10.84,
+     "mean_batch": 12.84,
+     "model_ms": 168.12,
+     "queue_ms": 121.46
+    },
+    {
+     "n": 191,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 559.27,
+     "p50": 318.4,
+     "p95": 530.7,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      84.3,
+      82.7
+     ],
+     "server_cpu_cores": 10.99,
+     "mean_batch": 13.0,
+     "model_ms": 164.8,
+     "queue_ms": 118.92
+    },
+    {
+     "n": 183,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 554.67,
+     "p50": 317.5,
+     "p95": 520.1,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      83.0,
+      82.8
+     ],
+     "server_cpu_cores": 10.92,
+     "mean_batch": 12.52,
+     "model_ms": 160.37,
+     "queue_ms": 115.33
+    },
+    {
+     "n": 183,
+     "attempt": 2,
+     "phase": "refine",
+     "rps": 558.93,
+     "p50": 312.5,
+     "p95": 514.0,
+     "err": 0,
+     "pass": false,
+     "gpu_util_pct": [
+      82.9,
+      84.2
+     ],
+     "server_cpu_cores": 11.0,
+     "mean_batch": 12.57,
+     "model_ms": 160.43,
+     "queue_ms": 114.57
+    },
+    {
+     "n": 162,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 552.53,
+     "p50": 284.6,
+     "p95": 416.3,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      84.7,
+      83.4
+     ],
+     "server_cpu_cores": 10.88,
+     "mean_batch": 11.07,
+     "model_ms": 141.2,
+     "queue_ms": 102.83
+    },
+    {
+     "n": 180,
+     "attempt": 1,
+     "phase": "refine",
+     "rps": 553.4,
+     "p50": 312.6,
+     "p95": 490.3,
+     "err": 0,
+     "pass": true,
+     "gpu_util_pct": [
+      85.4,
+      82.6
+     ],
+     "server_cpu_cores": 10.9,
+     "mean_batch": 12.12,
+     "model_ms": 155.61,
+     "queue_ms": 113.55
+    }
+   ],
+   "vram": "8,057-9,681 MiB per GPU during the search, with GPU_MEM_FRACTION = 0.85 / 4 per server (gpu2_vram.csv)",
+   "times_of_design1": 6.21
+  }
+ },
+ "scaling": {
+  "speedup_gpu2_vs_multi": 2.0,
+  "efficiency_pct": 100.0,
+  "throughput_ratio": 2.03,
+  "share_gpu0_pct": 50.0,
+  "share_gpu1_pct": 50.0
+ },
+ "strategies": {
+  "equal": {
+   "rr": {
+    "capacity_users": 180,
+    "first_fail_users": 183,
+    "max_throughput_rps": 566.47,
+    "max_throughput_at_users": 512,
+    "throughput_at_capacity_rps": 553.4,
+    "p95_ms_at_capacity": 490.3,
+    "p50_ms_at_capacity": 312.6,
+    "share_gpu0_pct": 50.0,
+    "share_gpu1_pct": 50.0,
+    "gpu_util_pct_at_capacity": [
+     85.4,
+     82.6
+    ],
+    "levels_measured": 15,
+    "runs_measured": 19,
+    "first_estimate_users": 142.1,
+    "capacity_level_runs": [
+     {
+      "attempt": 1,
+      "p95": 490.3,
+      "pass": true
+     }
+    ]
+   },
+   "lc": {
+    "capacity_users": 250,
+    "first_fail_users": 253,
+    "max_throughput_rps": 561.07,
+    "max_throughput_at_users": 512,
+    "throughput_at_capacity_rps": 560.67,
+    "p95_ms_at_capacity": 493.3,
+    "p50_ms_at_capacity": 443.6,
+    "share_gpu0_pct": 49.8,
+    "share_gpu1_pct": 50.2,
+    "gpu_util_pct_at_capacity": [
+     81.9,
+     82.7
+    ],
+    "levels_measured": 14,
+    "runs_measured": 18,
+    "first_estimate_users": 236.81,
+    "capacity_level_runs": [
+     {
+      "attempt": 1,
+      "p95": 493.3,
+      "pass": true
+     }
+    ]
+   },
+   "rr_single_level_checks": [
+    {
+     "file": "rr_equal_check_n180.json",
+     "users": 180,
+     "p50": 309.9,
+     "p95": 392.2,
+     "rps": 562.33,
+     "pass": true,
+     "requests_per_server": [
+      1054,
+      1054,
+      1054,
+      1055,
+      1054,
+      1054,
+      1055,
+      1055
+     ]
+    },
+    {
+     "file": "rr_equal_check_n180_b.json",
+     "users": 180,
+     "p50": 312.5,
+     "p95": 468.7,
+     "rps": 560.47,
+     "pass": true,
+     "requests_per_server": [
+      1051,
+      1051,
+      1051,
+      1051,
+      1051,
+      1051,
+      1051,
+      1050
+     ]
+    },
+    {
+     "file": "rr_equal_check_n180_c.json",
+     "users": 180,
+     "p50": 318.2,
+     "p95": 640.6,
+     "rps": 526.27,
+     "pass": false,
+     "requests_per_server": [
+      1048,
+      559,
+      1048,
+      1048,
+      1048,
+      1047,
+      1048,
+      1048
+     ]
+    },
+    {
+     "file": "rr_equal_check_n250_a.json",
+     "users": 250,
+     "p50": 422.0,
+     "p95": 705.3,
+     "rps": 564.73,
+     "pass": false,
+     "requests_per_server": [
+      1059,
+      1059,
+      1059,
+      1059,
+      1059,
+      1058,
+      1059,
+      1059
+     ]
+    },
+    {
+     "file": "rr_equal_check_n250_b.json",
+     "users": 250,
+     "p50": 418.3,
+     "p95": 696.6,
+     "rps": 558.53,
+     "pass": false,
+     "requests_per_server": [
+      1048,
+      1047,
+      1047,
+      1047,
+      1047,
+      1047,
+      1047,
+      1048
+     ]
+    }
+   ],
+   "same_levels_p95_ms": {
+    "64": {
+     "rr": [
+      148.4
+     ],
+     "lc": [
+      133.9
+     ]
+    },
+    "128": {
+     "rr": [
+      476.1
+     ],
+     "lc": [
+      253.3
+     ]
+    },
+    "256": {
+     "rr": [
+      740.8,
+      693.1
+     ],
+     "lc": [
+      543.5,
+      564.8
+     ]
+    },
+    "512": {
+     "rr": [
+      1354.2,
+      1280.5
+     ],
+     "lc": [
+      949.1,
+      953.3
+     ]
+    }
+   },
+   "same_levels_p50_ms": {
+    "64": {
+     "rr": [
+      117.9
+     ],
+     "lc": [
+      121.4
+     ]
+    },
+    "128": {
+     "rr": [
+      235.5
+     ],
+     "lc": [
+      237.8
+     ]
+    },
+    "256": {
+     "rr": [
+      419.5,
+      448.5
+     ],
+     "lc": [
+      459.7,
+      459.8
+     ]
+    },
+    "512": {
+     "rr": [
+      894.3,
+      901.7
+     ],
+     "lc": [
+      924.8,
+      925.2
+     ]
+    }
+   }
+  },
+  "slow": {
+   "rr": {
+    "capacity_users": 52,
+    "first_fail_users": 53,
+    "max_throughput_rps": 223.4,
+    "max_throughput_at_users": 128,
+    "throughput_at_capacity_rps": 219.87,
+    "p95_ms_at_capacity": 495.9,
+    "p50_ms_at_capacity": 139.4,
+    "share_gpu0_pct": 50.0,
+    "share_gpu1_pct": 50.0,
+    "gpu_util_pct_at_capacity": [
+     54.8,
+     95.0
+    ],
+    "levels_measured": 10,
+    "runs_measured": 13,
+    "first_estimate_users": 53.43,
+    "capacity_level_runs": [
+     {
+      "attempt": 1,
+      "p95": 495.9,
+      "pass": true
+     }
+    ]
+   },
+   "lc": {
+    "capacity_users": 103,
+    "first_fail_users": 107,
+    "max_throughput_rps": 389.33,
+    "max_throughput_at_users": 256,
+    "throughput_at_capacity_rps": 370.0,
+    "p95_ms_at_capacity": 493.5,
+    "p50_ms_at_capacity": 199.1,
+    "share_gpu0_pct": 70.8,
+    "share_gpu1_pct": 29.2,
+    "gpu_util_pct_at_capacity": [
+     82.5,
+     93.4
+    ],
+    "levels_measured": 11,
+    "runs_measured": 14,
+    "first_estimate_users": 106.53,
+    "capacity_level_runs": [
+     {
+      "attempt": 1,
+      "p95": 493.5,
+      "pass": true
+     }
+    ]
+   },
+   "slow_factor_gpu1": 3
+  },
+  "config_difference": "rr_slow_nginx.conf and lc_slow_nginx.conf differ in one line (least_conn;); lc_equal_nginx.conf = lc_slow_nginx.conf; gpu2 was measured in step 9, before cluster.sh had --lb (nginx.conf without the directive = Round Robin)"
+ },
+ "failure": {
+  "off": {
+   "users": 60,
+   "requests": 32769,
+   "errors": 11206,
+   "error_pct": 34.2,
+   "error_kinds": {
+    "http_502": 11206
+   },
+   "in_flight_errors": 21,
+   "after_requests": 22175,
+   "after_errors": 11087,
+   "after_error_pct": 50.0,
+   "rps_before": 522.13,
+   "rps_after": 279.61,
+   "p95_before_ms": 153.4,
+   "p95_after_ms": 197.4,
+   "pass_after": false,
+   "kill_at_s": 20.0,
+   "kill_took_s": 0.349,
+   "nginx_cpu_cores_before": 0.135,
+   "nginx_cpu_cores_after": 0.164,
+   "seconds_with_p95_over_500_after_kill": []
+  },
+  "on": {
+   "users": 60,
+   "requests": 20413,
+   "errors": 0,
+   "error_pct": 0.0,
+   "error_kinds": {},
+   "in_flight_errors": 0,
+   "after_requests": 10218,
+   "after_errors": 0,
+   "after_error_pct": 0.0,
+   "rps_before": 506.33,
+   "rps_after": 257.44,
+   "p95_before_ms": 168.7,
+   "p95_after_ms": 346.3,
+   "pass_after": true,
+   "kill_at_s": 20.0,
+   "kill_took_s": 0.309,
+   "nginx_cpu_cores_before": 0.145,
+   "nginx_cpu_cores_after": 0.071,
+   "seconds_with_p95_over_500_after_kill": [
+    [
+     33,
+     506.7
+    ],
+    [
+     37,
+     532.9
+    ]
+   ]
+  },
+  "users_rule": "60 = 180 / 3 (one third of the gpu2 capacity)"
+ },
+ "cost": {
+  "hours": 2.067,
+  "lifetime_seconds": 7442,
+  "dollars_per_hour": 0.3578,
+  "charged_dollars": 0.644,
+  "charged_note": "billing read about 10 minutes after the destroy counted 1.79 h of 2.07 h",
+  "lifetime_x_price_dollars": 0.74
+ },
+ "step_minutes": {
+  "1": 2,
+  "2": 4,
+  "3": 6,
+  "4": 10,
+  "5": 9,
+  "6": 6,
+  "7": 21,
+  "8": 16,
+  "9": 10,
+  "10": 25,
+  "11": 7,
+  "12": 14
+ },
+ "step_minutes_total": 130,
+ "sources": {
+  "machine": "machine_verify.txt, cost.md, answers/answer_01.md",
+  "loadtest_check": "loadtest_check.json",
+  "designs": "base.json, batch.json, multi.json, gpu2.json (+ *_cluster_status.txt, *_vram.csv for VRAM)",
+  "scaling": "gpu2.json, multi.json",
+  "strategies": "gpu2.json, lc_equal.json, rr_slow.json, lc_slow.json, rr_equal_check_n*.json, *_nginx.conf",
+  "failure": "fail_off.json, fail_on.json",
+  "cost": "cost.md",
+  "step_minutes": "wall-clock time of each step of the real run",
+  "note": "where a level was measured twice, the run used is the passing one (the load generator fails a level only if both runs fail)"
+ }
+}

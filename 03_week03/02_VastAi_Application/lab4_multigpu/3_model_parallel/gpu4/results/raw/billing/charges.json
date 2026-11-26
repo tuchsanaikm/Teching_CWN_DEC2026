@@ -1,0 +1,111 @@
+{
+ "fetched_at": 1795336950.4909253,
+ "charges": [
+  {
+   "amount": 0.637,
+   "description": "Instance <id> Charges - 1 day",
+   "end": 1795305600,
+   "items": [
+    {
+     "amount": 0.583,
+     "description": "0.684 hours at $0.853/hour",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "gpu"
+    },
+    {
+     "amount": 0.013,
+     "description": "0.797 hours at $0.017/hour",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "disk"
+    },
+    {
+     "amount": 0.039,
+     "description": "15.1 GB Downloaded at $0.003/GB",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwd"
+    },
+    {
+     "amount": 0.002,
+     "description": "0.4 GB Uploaded at $0.005/GB",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwu"
+    }
+   ],
+   "metadata": {
+    "label": "vapp-lab4-mp4"
+   },
+   "source": "instance-<id>",
+   "start": 1795305600,
+   "type": "instance"
+  },
+  {
+   "amount": 0.006,
+   "description": "Instance <id> Charges - 1 day",
+   "end": 1795305600,
+   "items": [
+    {
+     "amount": 0.0,
+     "description": "GPU",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "gpu"
+    },
+    {
+     "amount": 0.006,
+     "description": "0.167 hours at $0.033/hour",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "disk"
+    },
+    {
+     "amount": 0.0,
+     "description": "Bandwidth (download)",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwd"
+    },
+    {
+     "amount": 0.0,
+     "description": "Bandwidth (upload)",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwu"
+    }
+   ],
+   "metadata": {
+    "label": "vapp-lab4-mp4"
+   },
+   "source": "instance-<id>",
+   "start": 1795305600,
+   "type": "instance"
+  }
+ ]
+}

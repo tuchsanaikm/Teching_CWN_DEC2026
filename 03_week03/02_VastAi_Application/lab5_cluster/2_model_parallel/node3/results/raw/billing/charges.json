@@ -1,0 +1,170 @@
+{
+ "taken_at": 1795360877.1454325,
+ "charges": {
+  "3": [
+   {
+    "amount": 0.609,
+    "description": "Instance <id> Charges - 1 day",
+    "end": 1795305600,
+    "items": [
+     {
+      "amount": 0.511,
+      "description": "1.065 hours at $0.480/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "gpu"
+     },
+     {
+      "amount": 0.02,
+      "description": "1.179 hours at $0.017/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "disk"
+     },
+     {
+      "amount": 0.054,
+      "description": "20.7 GB Downloaded at $0.003/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwd"
+     },
+     {
+      "amount": 0.024,
+      "description": "6.1 GB Uploaded at $0.004/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwu"
+     }
+    ],
+    "metadata": {
+     "label": "vapp-lab5-3mp-3"
+    },
+    "source": "instance-<id>",
+    "start": 1795305600,
+    "type": "instance"
+   }
+  ],
+  "2": [
+   {
+    "amount": 0.568,
+    "description": "Instance <id> Charges - 1 day",
+    "end": 1795305600,
+    "items": [
+     {
+      "amount": 0.464,
+      "description": "1.088 hours at $0.427/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "gpu"
+     },
+     {
+      "amount": 0.02,
+      "description": "1.179 hours at $0.017/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "disk"
+     },
+     {
+      "amount": 0.057,
+      "description": "21.8 GB Downloaded at $0.003/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwd"
+     },
+     {
+      "amount": 0.027,
+      "description": "6.9 GB Uploaded at $0.004/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwu"
+     }
+    ],
+    "metadata": {
+     "label": "vapp-lab5-3mp-2"
+    },
+    "source": "instance-<id>",
+    "start": 1795305600,
+    "type": "instance"
+   }
+  ],
+  "1": [
+   {
+    "amount": 0.553,
+    "description": "Instance <id> Charges - 1 day",
+    "end": 1795305600,
+    "items": [
+     {
+      "amount": 0.411,
+      "description": "1.100 hours at $0.373/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "gpu"
+     },
+     {
+      "amount": 0.02,
+      "description": "1.180 hours at $0.017/hour",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "disk"
+     },
+     {
+      "amount": 0.072,
+      "description": "27.7 GB Downloaded at $0.003/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwd"
+     },
+     {
+      "amount": 0.05,
+      "description": "12.7 GB Uploaded at $0.004/GB",
+      "end": 1795305600,
+      "items": [],
+      "metadata": {},
+      "source": null,
+      "start": 1795305600,
+      "type": "bwu"
+     }
+    ],
+    "metadata": {
+     "label": "vapp-lab5-3mp-1"
+    },
+    "source": "instance-<id>",
+    "start": 1795305600,
+    "type": "instance"
+   }
+  ]
+ }
+}

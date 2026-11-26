@@ -1,0 +1,244 @@
+{
+ "gpus": 4,
+ "machine": {
+  "gpu": "RTX 3090 24 GB",
+  "count": 4,
+  "country": "Chile",
+  "usd_per_hour": 0.87,
+  "cpu": "2x Xeon E5-2680 v4 (56 cores)",
+  "gpu_link": "PCIe Gen3 x16, no NVLink; GPU0-GPU1 and GPU2-GPU3 PHB (same CPU), other pairs SYS (across the 2 CPUs)"
+ },
+ "gpu_speed_check": {
+  "matmul_per_sec": [
+   56.42,
+   57.99,
+   53.41,
+   61.88
+  ],
+  "matmul_slower_than_fastest_pct": [
+   8.8,
+   6.3,
+   13.7,
+   0.0
+  ],
+  "train_step_per_sec": [
+   130.19,
+   129.27,
+   126.65,
+   134.62
+  ],
+  "worst_slower_pct": 13.7,
+  "limit_pct": 20,
+  "pass": true
+ },
+ "model_vram_before_training_gib": {
+  "note": "calculated, not measured: 9 layers = 3.24 GiB; + embed_tokens or lm_head 1.16 GiB",
+  "per_gpu": [
+   4.4,
+   3.24,
+   3.24,
+   4.4
+  ]
+ },
+ "probe": [
+  {
+   "batch": 1,
+   "result": "pass",
+   "peak_allocated_gib": [
+    4.84,
+    3.64,
+    3.64,
+    5.21
+   ],
+   "nvidia_smi_mib": [
+    5330,
+    4072,
+    4072,
+    5772
+   ],
+   "sec_per_step_256_tokens": 0.556
+  },
+  {
+   "batch": 2,
+   "result": "pass",
+   "peak_allocated_gib": [
+    5.26,
+    4.01,
+    4.01,
+    6.0
+   ],
+   "nvidia_smi_mib": [
+    5752,
+    4472,
+    4472,
+    6672
+   ],
+   "sec_per_step_256_tokens": 0.386
+  },
+  {
+   "batch": 4,
+   "result": "pass",
+   "peak_allocated_gib": [
+    6.1,
+    4.75,
+    4.75,
+    7.59
+   ],
+   "nvidia_smi_mib": [
+    6654,
+    5234,
+    5234,
+    8454
+   ],
+   "sec_per_step_256_tokens": 0.71
+  },
+  {
+   "batch": 8,
+   "result": "pass",
+   "peak_allocated_gib": [
+    7.78,
+    6.24,
+    6.24,
+    10.75
+   ],
+   "nvidia_smi_mib": [
+    8396,
+    6776,
+    6776,
+    12036
+   ],
+   "sec_per_step_256_tokens": 1.379
+  },
+  {
+   "batch": 16,
+   "result": "pass",
+   "peak_allocated_gib": [
+    11.14,
+    9.21,
+    9.21,
+    17.08
+   ],
+   "nvidia_smi_mib": [
+    12024,
+    9882,
+    9882,
+    19162
+   ],
+   "sec_per_step_256_tokens": 2.69
+  },
+  {
+   "batch": 32,
+   "result": "Out of Memory (GPU 3, asked 4.64 GiB more)",
+   "peak_allocated_gib": [
+    16.04,
+    14.97,
+    14.97,
+    22.84
+   ],
+   "nvidia_smi_mib": [
+    16834,
+    15714,
+    15714,
+    23794
+   ],
+   "sec_per_step_256_tokens": null
+  }
+ ],
+ "largest_batch": 16,
+ "first_oom_batch": 32,
+ "oom_gpu": 3,
+ "batch_used": 16,
+ "steps_per_epoch": 250,
+ "sec_per_step": 1.6153,
+ "examples_per_sec": 9.91,
+ "gpu_util_pct": [
+  24.9,
+  21.8,
+  23.1,
+  30.3
+ ],
+ "train_peak_allocated_gib": [
+  11.72,
+  9.7,
+  9.7,
+  17.52
+ ],
+ "train_nvidia_smi_max_mib": [
+  12530,
+  10468,
+  10468,
+  19748
+ ],
+ "layer_placement": {
+  "GPU 0": "embed_tokens + layers 0-8",
+  "GPU 1": "layers 9-17",
+  "GPU 2": "layers 18-26",
+  "GPU 3": "layers 27-35 + norm + lm_head"
+ },
+ "train_loss_per_epoch": [
+  0.1233,
+  0.0382,
+  0.0252
+ ],
+ "test_loss_per_epoch": [
+  0.0629,
+  0.0536,
+  0.054
+ ],
+ "test_loss_base": 1.9176,
+ "exact_match": {
+  "rule_strict": "collapse spaces and strip trailing ';', case and quotes must match",
+  "strict": {
+   "base": 1.5,
+   "epoch1": 69.0,
+   "epoch2": 77.5,
+   "epoch3": 74.5
+  },
+  "rule_relaxed": "same, ignoring case",
+  "relaxed": {
+   "base": 1.5,
+   "epoch1": 71.5,
+   "epoch2": 79.0,
+   "epoch3": 76.5
+  },
+  "same_rule_as_2gpu_run": {
+   "base": 0.0,
+   "epoch1": 69.0,
+   "epoch2": 77.5,
+   "epoch3": 74.5
+  },
+  "n_test": 200
+ },
+ "train_minutes": 20.2,
+ "speed_vs_2gpu_run": 0.978,
+ "cost": {
+  "rented_usd_per_hour": 0.87,
+  "market_usd_per_hour_verified": 0.5394,
+  "usd_per_1000_examples_rented": 0.0244,
+  "usd_per_1000_examples_market": 0.0151,
+  "machine_minutes": 46.3,
+  "bill_usd": 0.637,
+  "bill_split_usd": {
+   "gpu": 0.583,
+   "disk": 0.013,
+   "download": 0.039,
+   "upload": 0.002
+  },
+  "replaced_machine_in_step4_usd": 0.006,
+  "bill_total_this_run_usd": 0.643
+ },
+ "step_minutes": {
+  "step4": 23.2,
+  "step5": 30.2,
+  "step6": 6.0
+ },
+ "sources": {
+  "probe": "probe.json",
+  "gpu_speed_check": "gpu_bench.json",
+  "train": "train.json / metrics.json train",
+  "exact_match": "eval_all.json",
+  "same_rule_as_2gpu_run": "recomputed from pred_*.jsonl with the 2-GPU run's rule (collapse spaces only)",
+  "cost": "metrics.json cost, raw/billing/charges.json",
+  "step_minutes": "start/end times of each step"
+ }
+}

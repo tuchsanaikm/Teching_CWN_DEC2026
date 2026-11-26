@@ -1,0 +1,5 @@
+index, name, memory.total [MiB], driver_version
+0, NVIDIA GeForce RTX 3090, 24576 MiB, 615.71.09
+1, NVIDIA GeForce RTX 3090, 24576 MiB, 615.71.09
+64
+3072000 100000

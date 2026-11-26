@@ -1,0 +1,133 @@
+{
+ "track": "Data Parallelism, 3 Nodes",
+ "nodes": 3,
+ "gpus_per_node": 2,
+ "machines": [
+  {
+   "node": 1,
+   "gpu": "RTX 3090 x2",
+   "country": "Estonia",
+   "usd_per_hour": 0.414
+  },
+  {
+   "node": 2,
+   "gpu": "RTX 3090 x2",
+   "country": "Bulgaria",
+   "usd_per_hour": 0.4164
+  },
+  {
+   "node": 3,
+   "gpu": "RTX 3090 x2",
+   "country": "Romania",
+   "usd_per_hour": 0.518
+  }
+ ],
+ "network": [
+  {
+   "pair": "node2-node1",
+   "rtt_ms_avg": 73.58,
+   "mbps_node2_to_node1": 281.6,
+   "mbps_node1_to_node2": 185.8
+  },
+  {
+   "pair": "node3-node1",
+   "rtt_ms_avg": 81.15,
+   "mbps_node3_to_node1": 233.9,
+   "mbps_node1_to_node3": 73.2
+  }
+ ],
+ "batch": {
+  "per_gpu": 4,
+  "total": 24,
+  "note": "last step of each epoch has 16 examples (4000 = 166 x 24 + 16)"
+ },
+ "steps_per_epoch": 167,
+ "total_steps": 334,
+ "sec_per_step": 5.3392,
+ "sec_per_step_median": 3.9668,
+ "compute_sec_per_step": 0.3638,
+ "comm_sec_per_step": 4.966,
+ "comm_share_pct": 93.2,
+ "examples_per_sec": 4.486,
+ "gpu_util_pct": {
+  "node1": [
+   6.3,
+   6.7
+  ],
+  "node2": [
+   6.8,
+   6.7
+  ],
+  "node3": [
+   6.1,
+   7.0
+  ]
+ },
+ "gradient_message_mb": {
+  "up_per_worker": 7.67,
+  "down_per_worker": 15.34,
+  "wire_format": "up bf16, down float32"
+ },
+ "train_loss_per_epoch": [
+  0.1504,
+  0.0433
+ ],
+ "test_loss_per_epoch": [
+  0.0639,
+  0.0564
+ ],
+ "test_loss_base": 1.847,
+ "exact_match_pct": {
+  "base": 1.5,
+  "epoch1": 71.0,
+  "epoch2": 74.5,
+  "n": 200
+ },
+ "lora_weights_equal": {
+  "epoch1": true,
+  "epoch2": true
+ },
+ "train_minutes": 29.72,
+ "cost": {
+  "combined_usd_per_hour": 1.3484,
+  "usd_per_1000_examples": 0.0835,
+  "bill_usd": {
+   "node1": 0.622,
+   "node2": 0.572,
+   "node3": 0.689,
+   "total": 1.883
+  },
+  "bill_split_usd": {
+   "node1": {
+    "gpu": 0.446,
+    "storage": 0.02,
+    "download": 0.07,
+    "upload": 0.086
+   },
+   "node2": {
+    "gpu": 0.469,
+    "storage": 0.013,
+    "download": 0.067,
+    "upload": 0.023
+   },
+   "node3": {
+    "gpu": 0.575,
+    "storage": 0.02,
+    "download": 0.07,
+    "upload": 0.024
+   }
+  }
+ },
+ "step_minutes": {
+  "step1": 16.4,
+  "step2": 47.7,
+  "step3": 12.9
+ },
+ "sources": {
+  "most_numbers": "node3/results/metrics.json",
+  "network": "node3/results/network_node2_to_node1.json, network_node3_to_node1.json",
+  "bill": "node3/results/raw/billing_charges.json (same as metrics.json cost.machines)",
+  "wire_format": "node3/results/report.md",
+  "step_minutes": "track.log of the run (step start/end times)"
+ }
+}

@@ -1,0 +1,113 @@
+{
+ "track": "Model Parallelism, 2 Nodes",
+ "nodes": 2,
+ "gpus_per_node": 2,
+ "machines": [
+  {
+   "node": 1,
+   "gpu": "RTX 3090 x2",
+   "country": "France",
+   "usd_per_hour": 0.3956
+  },
+  {
+   "node": 2,
+   "gpu": "RTX 3090 x2",
+   "country": "Czechia",
+   "usd_per_hour": 0.5102
+  }
+ ],
+ "network": [
+  {
+   "pair": "node2-node1",
+   "rtt_ms_avg": 31.36,
+   "mbps_node2_to_node1": 82.7,
+   "mbps_node1_to_node2": 81.7,
+   "mbps_node2_to_node1_8streams": 92.5,
+   "mbps_node1_to_node2_8streams": 90.1
+  }
+ ],
+ "batch": {
+  "per_node": 8,
+  "total": 16
+ },
+ "steps_per_epoch": 250,
+ "total_steps": 500,
+ "sec_per_step": 3.2654,
+ "sec_per_step_median": 2.6082,
+ "compute_sec_per_step": 0.7019,
+ "comm_sec_per_step": 2.5635,
+ "comm_share_pct": 78.5,
+ "examples_per_sec": 4.9,
+ "gpu_util_pct": {
+  "node1": [
+   10.64,
+   10.78
+  ],
+  "node2": [
+   10.78,
+   9.4
+  ]
+ },
+ "gradient_message_mb": {
+  "up_per_node": 7.67,
+  "down_per_node": 15.34,
+  "wire_format": "up bf16 (checked lossless every step), down float32; 4 TCP connections per node"
+ },
+ "train_loss_per_epoch": [
+  0.1211,
+  0.0384
+ ],
+ "test_loss_per_epoch": [
+  0.0604,
+  0.0544
+ ],
+ "test_loss_base": 1.9154,
+ "exact_match_pct": {
+  "base": 1.5,
+  "epoch1": 69.5,
+  "epoch2": 74.0,
+  "n": 200
+ },
+ "lora_weights_equal": {
+  "epoch1": true,
+  "epoch2": true
+ },
+ "train_minutes": 27.21,
+ "train_minutes_wall_incl_host_outage": 32.72,
+ "cost": {
+  "combined_usd_per_hour": 0.9058,
+  "usd_per_1000_examples": 0.0513,
+  "bill_usd": {
+   "node1": 0.801,
+   "node2": 1.037,
+   "total": 1.838
+  },
+  "bill_split_usd": {
+   "node1": {
+    "gpu": 0.631,
+    "storage": 0.041,
+    "download": 0.083,
+    "upload": 0.046
+   },
+   "node2": {
+    "gpu": 0.903,
+    "storage": 0.042,
+    "download": 0.068,
+    "upload": 0.024
+   }
+  }
+ },
+ "step_minutes": {
+  "step1": 34.6,
+  "step2": 73.8,
+  "step3": 10.1
+ },
+ "sources": {
+  "most_numbers": "results/metrics.json",
+  "network": "results/network_test.json",
+  "machines": "results/raw/vast_instances.json",
+  "bill": "results/raw/vast_charges.json (same as metrics.json billing_actual)",
+  "wire_format": "results/run/summary.json wire_counts + results/REPORT.md",
+  "step_minutes": "track.log of the run (step start/end times)"
+ }
+}

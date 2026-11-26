@@ -1,0 +1,22 @@
+{
+  "total_requests": 64,
+  "concurrency": 32,
+  "ok": 64,
+  "errors": 0,
+  "valid_json": 64,
+  "wall_seconds": 1.452,
+  "receipts_per_second": 44.064,
+  "receipts_per_minute": 2643.9,
+  "latency_p50_s": 0.622,
+  "latency_p95_s": 0.788,
+  "latency_mean_s": 0.605,
+  "by_replica": {
+    "gpu0": 32,
+    "gpu1": 32
+  },
+  "sample_outputs": [
+    "{\"merchant\": \"UNKNOWN\", \"date\": \"1900-01-01\", \"items\": [{\"name\": \"-TICKET CP\", \"price\": \"60000.00\"}], \"total\": \"60000.00\"}",
+    "{\"merchant\": \"UNKNOWN\", \"date\": \"1900-01-01\", \"items\": [{\"name\": \"NASI GOR SFD TLR\", \"price\": \"3000.00\"}, {\"name\": \"ES TEH TAMAR\", \"price\": \"3000.00\"}], \"total\": \"38000.00\"}",
+    "{\"merchant\": \"UNKNOWN\", \"date\": \"1900-01-01\", \"items\": [{\"name\": \"SOFT STEAMED CHEESECA\", \"price\": \"20000.00\"}, {\"name\": \"SOFT STEAMED CHOCOCA\", \"price\": \"20000.00\"}], \"total\": \"40000.00\"}"
+  ]
+}

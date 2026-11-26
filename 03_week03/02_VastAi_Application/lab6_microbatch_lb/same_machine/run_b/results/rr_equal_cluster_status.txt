@@ -1,0 +1,14 @@
+[cluster] layout: gpus=2 per-gpu=4 mode=micro lb=rr slow-gpu=none slow-factor=1 failover=default started=2026-11-23T23:38:07Z
+  server 127.0.0.1:8101 pid=10932 health=200 gpu0-8101 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8201 pid=10936 health=200 gpu1-8201 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8102 pid=10941 health=200 gpu0-8102 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8202 pid=10945 health=200 gpu1-8202 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8103 pid=10950 health=200 gpu0-8103 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8203 pid=10957 health=200 gpu1-8203 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8104 pid=10965 health=200 gpu0-8104 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8204 pid=10972 health=200 gpu1-8204 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  nginx  0.0.0.0:8080 pid=11507 processes=5 health=200 upstreams=8 lb_line=# (no directive)
+  listening: 0.0.0.0:8080 127.0.0.1:8101 127.0.0.1:8102 127.0.0.1:8103 127.0.0.1:8104 127.0.0.1:8201 127.0.0.1:8202 127.0.0.1:8203 127.0.0.1:8204
+  gpu 0, 8074 MiB, 0 %
+  gpu 1, 8074 MiB, 0 %
+[cluster] status: OK

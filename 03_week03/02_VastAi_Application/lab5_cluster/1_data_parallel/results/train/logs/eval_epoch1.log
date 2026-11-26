@@ -1,0 +1,19 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 4273.66it/s]
+{
+ "name": "epoch1",
+ "adapter": "/workspace/lab5_dp/run_train/adapter_epoch1_rank1",
+ "n": 200,
+ "exact_match": 0.725,
+ "exact_match_count": 145,
+ "exact_match_if_code_fence_removed": 0.725,
+ "contains_think_tag": 0,
+ "loss": 0.060276856949426263,
+ "loss_tokens": 5266,
+ "enable_thinking": false,
+ "max_new_tokens": 200,
+ "generated_tokens": 5212,
+ "seconds_loss": 10.521642923355103,
+ "seconds_generate": 30.3891122341156,
+ "gpu": "NVIDIA GeForce RTX 3090",
+ "vram_peak_mb": 19384.6337890625
+}

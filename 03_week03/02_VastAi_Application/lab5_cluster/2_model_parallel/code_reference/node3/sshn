@@ -1,0 +1,5 @@
+#!/bin/bash
+# usage: sshn <node> <command...>   (direct SSH to node N using state/n<N>.json)
+D="$(cd "$(dirname "$0")" && pwd)"; N=$1; shift
+read IP PORT < <(python3 -c "import json;d=json.load(open('$D/state/n$N.json'));print(d['ip'],d['ssh_port'])")
+exec ssh -i /workspace/vastai_lab/Devtool_SSH/devtoolSSH -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=20 -o ServerAliveInterval=30 -p "$PORT" root@"$IP" "$@"

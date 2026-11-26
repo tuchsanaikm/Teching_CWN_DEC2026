@@ -1,0 +1,1 @@
+{"target": "203.0.113.10:<ext_port>", "connect_ms": 75.24, "reachable": true, "rtt_ms": {"n": 50, "min": 73.39, "avg": 73.58, "median": 73.58, "max": 73.78}, "send_to_server_mbps": 281.6, "send_bytes": 352059392, "recv_from_server_mbps": 185.8, "recv_bytes": 235929600}

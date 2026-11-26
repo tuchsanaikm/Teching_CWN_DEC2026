@@ -1,0 +1,167 @@
+{
+ "gpus": 2,
+ "machine": {
+  "gpu": "RTX 3090 24 GB",
+  "count": 2,
+  "country": "United States",
+  "usd_per_hour": 0.4067,
+  "gpu_link": "PCIe (PHB), no NVLink"
+ },
+ "model_vram_before_training_gib": [
+  7.64,
+  7.64
+ ],
+ "probe": [
+  {
+   "batch": 1,
+   "result": "pass",
+   "peak_allocated_gib": [
+    8.44,
+    8.82
+   ],
+   "nvidia_smi_gib": [
+    8.8,
+    9.24
+   ],
+   "sec_per_step_256_tokens": 0.274
+  },
+  {
+   "batch": 2,
+   "result": "pass",
+   "peak_allocated_gib": [
+    9.21,
+    9.96
+   ],
+   "nvidia_smi_gib": [
+    9.59,
+    10.47
+   ],
+   "sec_per_step_256_tokens": 0.364
+  },
+  {
+   "batch": 4,
+   "result": "pass",
+   "peak_allocated_gib": [
+    10.76,
+    12.25
+   ],
+   "nvidia_smi_gib": [
+    11.46,
+    12.94
+   ],
+   "sec_per_step_256_tokens": 0.704
+  },
+  {
+   "batch": 8,
+   "result": "pass",
+   "peak_allocated_gib": [
+    13.85,
+    16.82
+   ],
+   "nvidia_smi_gib": [
+    14.34,
+    17.85
+   ],
+   "sec_per_step_256_tokens": 1.357
+  },
+  {
+   "batch": 16,
+   "result": "Out of Memory (GPU 1)",
+   "peak_allocated_gib": [
+    19.09,
+    22.5
+   ],
+   "nvidia_smi_gib": [
+    19.51,
+    22.87
+   ],
+   "sec_per_step_256_tokens": null
+  }
+ ],
+ "largest_batch": 8,
+ "first_oom_batch": 16,
+ "oom_gpu": 1,
+ "batch_used": 8,
+ "steps_per_epoch": 500,
+ "sec_per_step": 0.7889,
+ "examples_per_sec": 10.134,
+ "gpu_util_pct": [
+  46.5,
+  51.8
+ ],
+ "train_peak_allocated_gib": [
+  14.29,
+  17.26
+ ],
+ "train_nvidia_smi_max_gib": [
+  18.2,
+  23.27
+ ],
+ "layer_placement": {
+  "GPU 0": "embed_tokens + layers 0-17",
+  "GPU 1": "layers 18-35 + norm + lm_head"
+ },
+ "train_loss_per_epoch": [
+  0.08764,
+  0.03045,
+  0.01682
+ ],
+ "test_loss_per_epoch": [
+  0.05801,
+  0.05064,
+  0.05287
+ ],
+ "test_loss_base": 1.91369,
+ "exact_match": {
+  "rule_strict": "whitespace collapsed only, case and quotes must match, trailing ';' counts",
+  "strict": {
+   "base": 0.0,
+   "epoch1": 70.0,
+   "epoch2": 77.5,
+   "epoch3": 77.0
+  },
+  "rule_relaxed": "also ignores case, quote type, code fence and trailing ';'",
+  "relaxed": {
+   "base": 54.5,
+   "epoch1": 72.5,
+   "epoch2": 79.5,
+   "epoch3": 79.5
+  },
+  "same_rule_as_4gpu_run": {
+   "base": 1.5,
+   "epoch1": 70.0,
+   "epoch2": 77.5,
+   "epoch3": 77.0
+  },
+  "n_test": 200
+ },
+ "train_minutes": 19.7,
+ "cost": {
+  "rented_usd_per_hour": 0.4067,
+  "market_usd_per_hour_verified": 0.2947,
+  "usd_per_1000_examples_rented": 0.01115,
+  "usd_per_1000_examples_market": 0.00808,
+  "machine_minutes": 55.0,
+  "bill_usd": 0.356,
+  "bill_split_usd": {
+   "gpu": 0.287,
+   "disk": 0.03,
+   "download": 0.038,
+   "upload": 0.001
+  }
+ },
+ "step_minutes": {
+  "step1": 16.5,
+  "step2": 36.6,
+  "step3": 5.3
+ },
+ "sources": {
+  "probe": "probe_b*.json",
+  "model_vram_before_training_gib": "probe_b1.json vram_model_only",
+  "train": "metrics.json train / train_summary.json",
+  "exact_match": "eval_*.json",
+  "same_rule_as_4gpu_run": "recomputed from pred_*.jsonl with the 4-GPU run's normalize() (strip code fence and trailing ';', collapse spaces)",
+  "cost": "metrics.json usd_per_1000_samples, raw/billing.json",
+  "step_minutes": "start/end times of each step"
+ }
+}

@@ -1,0 +1,19 @@
+23:24:31 p2c_equal UP
+23:24:47 p2c_equal LOADGEN
+23:31:44 p2c_equal DONE rc=0 CAPACITY: 238 users  (N=238 passes, N=239 fails)
+23:31:44 lc_equal UP
+23:32:00 lc_equal LOADGEN
+23:37:51 lc_equal DONE rc=0 CAPACITY: 230 users  (N=230 passes, N=234 fails)
+23:37:51 rr_equal UP
+23:38:07 rr_equal LOADGEN
+23:45:47 rr_equal DONE rc=0 CAPACITY: 203 users  (N=203 passes, N=207 fails)
+23:45:47 p2c_slow UP
+23:46:04 p2c_slow LOADGEN
+23:51:33 p2c_slow DONE rc=0 CAPACITY: 81 users  (N=81 passes, N=82 fails)
+23:51:33 lc_slow UP
+23:51:50 lc_slow LOADGEN
+23:57:19 lc_slow DONE rc=0 CAPACITY: 111 users  (N=111 passes, N=112 fails)
+23:57:19 rr_slow UP
+23:57:35 rr_slow LOADGEN
+00:02:20 rr_slow DONE rc=0 CAPACITY: 54 users  (N=54 passes, N=55 fails)
+00:02:22 ALL_FINISHED

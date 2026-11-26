@@ -1,0 +1,7 @@
+{
+  "n_questions": 10,
+  "ttft_mean_s": 0.0237,
+  "ttft_p50_s": 0.0247,
+  "speed_mean_tps": 164.01,
+  "speed_p50_tps": 163.71
+}

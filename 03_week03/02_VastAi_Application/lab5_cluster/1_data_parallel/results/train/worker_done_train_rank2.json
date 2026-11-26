@@ -1,0 +1,16 @@
+{
+ "rank": 2,
+ "node": 2,
+ "steps": 500,
+ "names": [
+  "base_model.model.model.layers.0.self_attn.q_proj.lora_A.default.weight",
+  "base_model.model.model.layers.0.self_attn.q_proj.lora_B.default.weight",
+  "base_model.model.model.layers.0.self_attn.v_proj.lora_A.default.weight",
+  "base_model.model.model.layers.0.self_attn.v_proj.lora_B.default.weight"
+ ],
+ "n_params": 3833856,
+ "reconnects": 0,
+ "vram_peak_alloc_mb": 22143.82373046875,
+ "vram_peak_reserved_mb": 22440.0,
+ "lean_loss": true
+}

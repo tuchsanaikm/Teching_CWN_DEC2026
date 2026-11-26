@@ -1,0 +1,306 @@
+{
+ "setup": {
+  "nodes": 3,
+  "gpus": 6,
+  "gpus_per_node": 2,
+  "batch_per_gpu": 4,
+  "batch_total": 24,
+  "steps": 334,
+  "epochs": 2,
+  "examples_trained": 8000
+ },
+ "throughput": {
+  "train_wall_s": 1783.3,
+  "examples_per_s": 4.486065160096451,
+  "sec_per_step_wall": 5.339221556886227,
+  "sec_per_step_median": 3.966816666666667,
+  "sec_per_step_max": 127.55443333333334,
+  "steps_over_15s": 5
+ },
+ "step_time": {
+  "compute_s_per_step": 0.3637624750499003,
+  "send_wait_s_per_step": 4.966012275449102,
+  "send_wait_fraction": 0.9317489965188787,
+  "compute_fraction": 0.06825100348112138,
+  "send_wait_fraction_median_step": 0.910133349628236,
+  "grad_up_mb_per_worker_step": 7.667829,
+  "grad_down_mb_per_worker_step": 15.335521
+ },
+ "per_gpu": [
+  {
+   "rank": 0,
+   "node": 1,
+   "gpu": 0,
+   "compute_s_per_step": 0.3780532934131737,
+   "send_wait_s_per_step": 4.9448440119760475,
+   "send_s_per_step": 0.00377874251497006,
+   "wait_recv_s_per_step": 4.941062574850299,
+   "send_wait_fraction": 0.9289760309614822,
+   "examples": 1334,
+   "gpu_util_mean_pct": 6.28675645342312,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1782,
+   "gpu_util_pct_samples_over_50": 7.12682379349046,
+   "vram_nvidia_smi_max_mib": 21012.0,
+   "vram_torch_reserved_peak_mb": 20676,
+   "reconnects": 0
+  },
+  {
+   "rank": 1,
+   "node": 1,
+   "gpu": 1,
+   "compute_s_per_step": 0.39632425149700595,
+   "send_wait_s_per_step": 4.927545209580838,
+   "send_s_per_step": 0.004253293413173653,
+   "wait_recv_s_per_step": 4.923288622754491,
+   "send_wait_fraction": 0.9255571057114597,
+   "examples": 1334,
+   "gpu_util_mean_pct": 6.664421997755331,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1782,
+   "gpu_util_pct_samples_over_50": 7.4074074074074066,
+   "vram_nvidia_smi_max_mib": 21232.0,
+   "vram_torch_reserved_peak_mb": 20896,
+   "reconnects": 0
+  },
+  {
+   "rank": 2,
+   "node": 2,
+   "gpu": 0,
+   "compute_s_per_step": 0.35985898203592814,
+   "send_wait_s_per_step": 4.9700922155688625,
+   "send_s_per_step": 1.0517844311377245,
+   "wait_recv_s_per_step": 3.9183083832335326,
+   "send_wait_fraction": 0.9324836253289441,
+   "examples": 1334,
+   "gpu_util_mean_pct": 6.839887640449438,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1780,
+   "gpu_util_pct_samples_over_50": 7.078651685393258,
+   "vram_nvidia_smi_max_mib": 20868.0,
+   "vram_torch_reserved_peak_mb": 20534,
+   "reconnects": 0
+  },
+  {
+   "rank": 3,
+   "node": 2,
+   "gpu": 1,
+   "compute_s_per_step": 0.3611443113772455,
+   "send_wait_s_per_step": 4.969197604790419,
+   "send_s_per_step": 0.659785628742515,
+   "wait_recv_s_per_step": 4.30940868263473,
+   "send_wait_fraction": 0.9322474398346108,
+   "examples": 1334,
+   "gpu_util_mean_pct": 6.675280898876404,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1780,
+   "gpu_util_pct_samples_over_50": 7.078651685393258,
+   "vram_nvidia_smi_max_mib": 22278.0,
+   "vram_torch_reserved_peak_mb": 21944,
+   "reconnects": 0
+  },
+  {
+   "rank": 4,
+   "node": 3,
+   "gpu": 0,
+   "compute_s_per_step": 0.34110778443113776,
+   "send_wait_s_per_step": 4.994613173652695,
+   "send_s_per_step": 0.9787925149700598,
+   "wait_recv_s_per_step": 4.015823353293413,
+   "send_wait_fraction": 0.9360709101711276,
+   "examples": 1332,
+   "gpu_util_mean_pct": 6.129068462401796,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1782,
+   "gpu_util_pct_samples_over_50": 6.565656565656567,
+   "vram_nvidia_smi_max_mib": 22290.0,
+   "vram_torch_reserved_peak_mb": 21958,
+   "reconnects": 0
+  },
+  {
+   "rank": 5,
+   "node": 3,
+   "gpu": 1,
+   "compute_s_per_step": 0.3460862275449102,
+   "send_wait_s_per_step": 4.989781437125749,
+   "send_s_per_step": 0.802152994011976,
+   "wait_recv_s_per_step": 4.187634131736527,
+   "send_wait_fraction": 0.9351396531371302,
+   "examples": 1332,
+   "gpu_util_mean_pct": 7.026389668725435,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_samples": 1781,
+   "gpu_util_pct_samples_over_50": 7.411566535654127,
+   "vram_nvidia_smi_max_mib": 20942.0,
+   "vram_torch_reserved_peak_mb": 20610,
+   "reconnects": 0
+  }
+ ],
+ "gpu_util_mean_pct_all": 6.603634186938588,
+ "epochs": {
+  "1": {
+   "steps": 167,
+   "examples": 4000,
+   "train_loss_mean": 0.15041448832611787,
+   "train_loss_first_step": 1.6107210516929626,
+   "train_loss_last_step": 0.09964941481302958,
+   "seconds": 862.46
+  },
+  "2": {
+   "steps": 167,
+   "examples": 4000,
+   "train_loss_mean": 0.04328935203992296,
+   "train_loss_first_step": 0.0466401243271927,
+   "train_loss_last_step": 0.024502112544723786,
+   "seconds": 919.8499999999999
+  }
+ },
+ "eval": {
+  "base": {
+   "n": 200,
+   "exact_match": 0.015,
+   "exact_match_count": 3,
+   "exact_match_case_insensitive": 0.015,
+   "test_loss": 1.847047522454673,
+   "lora_sha256": null
+  },
+  "epoch1": {
+   "n": 200,
+   "exact_match": 0.71,
+   "exact_match_count": 142,
+   "exact_match_case_insensitive": 0.73,
+   "test_loss": 0.06388833138283853,
+   "lora_sha256": "b5d99e4b7f7cad847c1dd9fdcd3c47fb01a835157ff9c4e88bc27b52b2268ea4"
+  },
+  "epoch2": {
+   "n": 200,
+   "exact_match": 0.745,
+   "exact_match_count": 149,
+   "exact_match_case_insensitive": 0.76,
+   "test_loss": 0.056416664911703586,
+   "lora_sha256": "64bfb2eccdec8733f01a6664d30327cd779e4667d2fc34d6b1ad95e9d7f702d9"
+  }
+ },
+ "weights_equal_on_all_6_gpus": {
+  "epoch1": true,
+  "epoch2": true
+ },
+ "cost": {
+  "usd_per_hour_3_machines": 1.3484444444444446,
+  "train_wall_hours": 0.4953611111111111,
+  "train_only_usd": 0.667966938271605,
+  "usd_per_1000_examples": 0.08349586728395063,
+  "usd_per_1000_examples_formula": "sum(usd_per_hour of 3 machines) / 3600 / examples_per_s * 1000",
+  "billed_total_usd": 1.883,
+  "billed_usd_per_1000_examples_all_in": 0.235375,
+  "all_in_note": "all-in = everything Vast.ai charged for the 3 machines (setup, model download, smoke test, eval, idle time, disk, bandwidth) divided by examples trained",
+  "billing_captured_at": 1795352207.5250192,
+  "machines": [
+   {
+    "label": "vapp-lab5-3dp-1",
+    "instance_id": "<id>",
+    "gpu": "2x RTX 3090",
+    "location": "Estonia, EE",
+    "usd_per_hour": 0.414,
+    "usd_per_hour_gpu": 0.3973333333333333,
+    "usd_per_hour_disk": 0.016666666666666663,
+    "age_hours": 1.1357815253734589,
+    "age_measured_until": "destroy",
+    "billed_usd": 0.622,
+    "billed_items_usd": {
+     "gpu": 0.446,
+     "disk": 0.02,
+     "bwd": 0.07,
+     "bwu": 0.086
+    },
+    "billed_item_text": {
+     "gpu": [
+      "1.124 hours at $0.397/hour"
+     ],
+     "disk": [
+      "1.197 hours at $0.017/hour"
+     ],
+     "bwd": [
+      "26.7 GB Downloaded at $0.003/GB"
+     ],
+     "bwu": [
+      "21.9 GB Uploaded at $0.004/GB"
+     ]
+    },
+    "train_only_usd": 0.20507949999999997
+   },
+   {
+    "label": "vapp-lab5-3dp-2",
+    "instance_id": "<id>",
+    "gpu": "2x RTX 3090",
+    "location": "Bulgaria, BG",
+    "usd_per_hour": 0.41644444444444445,
+    "usd_per_hour_gpu": 0.4053333333333333,
+    "usd_per_hour_disk": 0.011111111111111127,
+    "age_hours": 1.1353303127818637,
+    "age_measured_until": "destroy",
+    "billed_usd": 0.572,
+    "billed_items_usd": {
+     "gpu": 0.469,
+     "disk": 0.013,
+     "bwd": 0.067,
+     "bwu": 0.023
+    },
+    "billed_item_text": {
+     "gpu": [
+      "1.158 hours at $0.405/hour"
+     ],
+     "disk": [
+      "1.196 hours at $0.011/hour"
+     ],
+     "bwd": [
+      "25.7 GB Downloaded at $0.003/GB"
+     ],
+     "bwu": [
+      "5.9 GB Uploaded at $0.004/GB"
+     ]
+    },
+    "train_only_usd": 0.20629038271604938
+   },
+   {
+    "label": "vapp-lab5-3dp-3",
+    "instance_id": "<id>",
+    "gpu": "2x RTX 3090",
+    "location": "Romania, RO",
+    "usd_per_hour": 0.518,
+    "usd_per_hour_gpu": 0.5013333333333334,
+    "usd_per_hour_disk": 0.016666666666666607,
+    "age_hours": 1.134877094493972,
+    "age_measured_until": "destroy",
+    "billed_usd": 0.689,
+    "billed_items_usd": {
+     "gpu": 0.575,
+     "disk": 0.02,
+     "bwd": 0.07,
+     "bwu": 0.024
+    },
+    "billed_item_text": {
+     "gpu": [
+      "1.147 hours at $0.501/hour"
+     ],
+     "disk": [
+      "1.196 hours at $0.017/hour"
+     ],
+     "bwd": [
+      "25.6 GB Downloaded at $0.003/GB"
+     ],
+     "bwu": [
+      "6.0 GB Uploaded at $0.004/GB"
+     ]
+    },
+    "train_only_usd": 0.25659705555555556
+   }
+  ]
+ },
+ "images": [
+  "images/step_time.png",
+  "images/gpu_util.png",
+  "images/loss.png",
+  "images/exact_match.png"
+ ]
+}

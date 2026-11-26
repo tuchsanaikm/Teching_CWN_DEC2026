@@ -1,0 +1,25 @@
+{
+  "train": {
+    "n": 4000,
+    "total_min": 64,
+    "total_mean": 107.2,
+    "total_p95": 139,
+    "total_max": 320,
+    "over_256": 1,
+    "prompt_ge_256": 0,
+    "prompt_max": 212,
+    "answer_max": 110
+  },
+  "test": {
+    "n": 200,
+    "total_min": 65,
+    "total_mean": 108.9,
+    "total_p95": 141,
+    "total_max": 195,
+    "over_256": 0,
+    "prompt_ge_256": 0,
+    "prompt_max": 118,
+    "answer_max": 78
+  },
+  "example_text": "<|im_start|>system\nYou are a text-to-SQL assistant. Given the table schema and a question, answer with a single SQL query only.<|im_end|>\n<|im_start|>user\nSchema:\nCREATE TABLE table_name_98 (record VARCHAR, high_points VARCHAR)\n\nQuestion: What is Record, when High Points is \"Ray Allen (20)\"?<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\nSELECT record FROM table_name_98 WHERE high_points = \"ray allen (20)\"<|im_end|>"
+}

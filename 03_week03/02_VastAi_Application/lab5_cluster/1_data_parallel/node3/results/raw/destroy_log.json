@@ -1,0 +1,38 @@
+{
+ "targets": [
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-1"
+  },
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-2"
+  },
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-3"
+  }
+ ],
+ "results": [
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-1",
+   "ok": true,
+   "t": 1795351734.3547387
+  },
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-2",
+   "ok": true,
+   "t": 1795351735.9582798
+  },
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-3dp-3",
+   "ok": true,
+   "t": 1795351737.6142743
+  }
+ ],
+ "destroyed_at": 1795351737.614283,
+ "remaining": []
+}

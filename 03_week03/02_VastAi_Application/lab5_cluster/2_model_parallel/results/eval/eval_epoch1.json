@@ -1,0 +1,10 @@
+{
+ "tag": "epoch1",
+ "adapter": "/workspace/mp/run/lora_epoch1_node2.pt",
+ "n": 200,
+ "exact_match": 0.695,
+ "exact_match_count": 139,
+ "exact_match_case_insensitive": 0.725,
+ "test_loss": 0.06036358673859103,
+ "seconds": 36.8
+}

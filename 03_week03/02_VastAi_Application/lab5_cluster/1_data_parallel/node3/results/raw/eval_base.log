@@ -1,0 +1,2 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  80%|███████▉  | 318/399 [00:00<00:00, 3179.04it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3700.28it/s]
+EVAL {"name": "base", "ckpt": "", "lora_sha256": null, "n": 200, "exact_match": 0.015, "exact_match_count": 3, "exact_match_case_insensitive": 0.015, "test_loss": 1.847047522454673, "loss_tokens": 5266, "seconds": 55.5, "gpu": "NVIDIA GeForce RTX 3090"}

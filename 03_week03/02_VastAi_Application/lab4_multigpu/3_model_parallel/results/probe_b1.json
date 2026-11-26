@@ -1,0 +1,41 @@
+{
+  "batch": 1,
+  "steps": 3,
+  "seq_len": 256,
+  "max_len": 256,
+  "vram_model_only": {
+    "gpu0": {
+      "allocated_mib": 7820,
+      "reserved_mib": 7820
+    },
+    "gpu1": {
+      "allocated_mib": 7820,
+      "reserved_mib": 7820
+    }
+  },
+  "status": "ok",
+  "step_sec": [
+    0.874,
+    0.279,
+    0.269
+  ],
+  "loss": [
+    0.1296,
+    0.0449,
+    0.0029
+  ],
+  "vram_peak": {
+    "gpu0": {
+      "allocated_mib": 8645,
+      "reserved_mib": 8676
+    },
+    "gpu1": {
+      "allocated_mib": 9027,
+      "reserved_mib": 9130
+    }
+  },
+  "smi_mem_used_mib": {
+    "gpu0": 9008,
+    "gpu1": 9462
+  }
+}

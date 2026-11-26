@@ -1,0 +1,1025 @@
+{
+  "name": "batch",
+  "mode": "capacity",
+  "started_utc": "2026-11-26T13:43:02+00:00",
+  "finished": true,
+  "config": {
+    "url": "http://127.0.0.1:8080/v1/detect",
+    "images": [
+      "sample-1.jpg",
+      "sample-2.jpg",
+      "sample-3.jpg",
+      "sample-4.jpg",
+      "sample-5.jpg",
+      "sample-6.jpg"
+    ],
+    "timeout_s": 10.0,
+    "level_seconds": 15.0,
+    "warmup_s": 4.0,
+    "pass_rule": {
+      "p95_ms_max": 500.0,
+      "error_pct_below": 1.0
+    },
+    "ladder": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ]
+  },
+  "system": {
+    "servers": {
+      "gpu0-8101": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      }
+    },
+    "gpus": [
+      "NVIDIA GeForce RTX 4090",
+      "NVIDIA GeForce RTX 4090"
+    ],
+    "cpu_count": 96
+  },
+  "levels": [
+    {
+      "users": 1,
+      "pass": true,
+      "throughput_rps": 26.73,
+      "latency_ms": {
+        "p50": 24.3,
+        "p95": 102.2,
+        "p99": 285.8,
+        "mean": 37.5,
+        "max": 434.2
+      },
+      "requests": 294,
+      "ok": 294,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        6.0,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 75.7,
+        "nginx": 0.6,
+        "loadgen": 0.8
+      },
+      "model": {
+        "requests": 294,
+        "queue_ms_mean": 9.0,
+        "queue_ms_p95": 5.14,
+        "model_ms_mean": 17.14,
+        "model_ms_p95": 21.3,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 294,
+          "queue_ms_mean": 9.0,
+          "queue_ms_p95": 5.14,
+          "model_ms_mean": 17.14,
+          "model_ms_p95": 21.3,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 390,
+        "warmup": 96,
+        "measured": 294,
+        "ok_total": 390,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 2,
+      "pass": true,
+      "throughput_rps": 45.27,
+      "latency_ms": {
+        "p50": 29.3,
+        "p95": 217.5,
+        "p99": 296.8,
+        "mean": 44.3,
+        "max": 373.6
+      },
+      "requests": 498,
+      "ok": 498,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        6.5,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 97.9,
+        "nginx": 1.0,
+        "loadgen": 3.2
+      },
+      "model": {
+        "requests": 498,
+        "queue_ms_mean": 7.22,
+        "queue_ms_p95": 5.13,
+        "model_ms_mean": 20.43,
+        "model_ms_p95": 20.99,
+        "batch_mean_per_call": 2.0,
+        "batch_mean_per_request": 2.0,
+        "batch_max": 2
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 498,
+          "queue_ms_mean": 7.22,
+          "queue_ms_p95": 5.13,
+          "model_ms_mean": 20.43,
+          "model_ms_p95": 20.99,
+          "batch_mean_per_call": 2.0,
+          "batch_mean_per_request": 2.0,
+          "batch_max": 2,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 627,
+        "warmup": 129,
+        "measured": 498,
+        "ok_total": 627,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 4,
+      "pass": true,
+      "throughput_rps": 72.0,
+      "latency_ms": {
+        "p50": 35.4,
+        "p95": 219.5,
+        "p99": 428.0,
+        "mean": 55.7,
+        "max": 574.5
+      },
+      "requests": 792,
+      "ok": 792,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        9.1,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 129.3,
+        "nginx": 1.4,
+        "loadgen": 4.2
+      },
+      "model": {
+        "requests": 792,
+        "queue_ms_mean": 15.35,
+        "queue_ms_p95": 24.84,
+        "model_ms_mean": 20.95,
+        "model_ms_p95": 27.68,
+        "batch_mean_per_call": 2.33,
+        "batch_mean_per_request": 2.59,
+        "batch_max": 4
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 792,
+          "queue_ms_mean": 15.35,
+          "queue_ms_p95": 24.84,
+          "model_ms_mean": 20.95,
+          "model_ms_p95": 27.68,
+          "batch_mean_per_call": 2.33,
+          "batch_mean_per_request": 2.59,
+          "batch_max": 4,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 994,
+        "warmup": 202,
+        "measured": 792,
+        "ok_total": 994,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 8,
+      "pass": true,
+      "throughput_rps": 94.91,
+      "latency_ms": {
+        "p50": 54.6,
+        "p95": 285.9,
+        "p99": 478.7,
+        "mean": 84.2,
+        "max": 541.0
+      },
+      "requests": 1044,
+      "ok": 1044,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        9.5,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 146.6,
+        "nginx": 2.4,
+        "loadgen": 3.2
+      },
+      "model": {
+        "requests": 1044,
+        "queue_ms_mean": 28.78,
+        "queue_ms_p95": 72.48,
+        "model_ms_mean": 29.85,
+        "model_ms_p95": 86.45,
+        "batch_mean_per_call": 4.0,
+        "batch_mean_per_request": 4.0,
+        "batch_max": 4
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1044,
+          "queue_ms_mean": 28.78,
+          "queue_ms_p95": 72.48,
+          "model_ms_mean": 29.85,
+          "model_ms_p95": 86.45,
+          "batch_mean_per_call": 4.0,
+          "batch_mean_per_request": 4.0,
+          "batch_max": 4,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1351,
+        "warmup": 307,
+        "measured": 1044,
+        "ok_total": 1351,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 16,
+      "pass": true,
+      "throughput_rps": 107.64,
+      "latency_ms": {
+        "p50": 100.3,
+        "p95": 384.0,
+        "p99": 542.0,
+        "mean": 148.8,
+        "max": 870.7
+      },
+      "requests": 1184,
+      "ok": 1184,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        12.4,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 162.5,
+        "nginx": 5.7,
+        "loadgen": 6.4
+      },
+      "model": {
+        "requests": 1184,
+        "queue_ms_mean": 46.53,
+        "queue_ms_p95": 200.06,
+        "model_ms_mean": 56.01,
+        "model_ms_p95": 248.35,
+        "batch_mean_per_call": 8.0,
+        "batch_mean_per_request": 8.12,
+        "batch_max": 9
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1184,
+          "queue_ms_mean": 46.53,
+          "queue_ms_p95": 200.06,
+          "model_ms_mean": 56.01,
+          "model_ms_p95": 248.35,
+          "batch_mean_per_call": 8.0,
+          "batch_mean_per_request": 8.12,
+          "batch_max": 9,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1496,
+        "warmup": 312,
+        "measured": 1184,
+        "ok_total": 1496,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 32,
+      "pass": false,
+      "throughput_rps": 113.36,
+      "latency_ms": {
+        "p50": 221.7,
+        "p95": 723.5,
+        "p99": 745.8,
+        "mean": 282.6,
+        "max": 759.8
+      },
+      "requests": 1247,
+      "ok": 1247,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        10.0,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 150.7,
+        "nginx": 6.7,
+        "loadgen": 7.0
+      },
+      "model": {
+        "requests": 1247,
+        "queue_ms_mean": 82.11,
+        "queue_ms_p95": 311.08,
+        "model_ms_mean": 121.72,
+        "model_ms_p95": 344.25,
+        "batch_mean_per_call": 15.99,
+        "batch_mean_per_request": 16.98,
+        "batch_max": 20
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1247,
+          "queue_ms_mean": 82.11,
+          "queue_ms_p95": 311.08,
+          "model_ms_mean": 121.72,
+          "model_ms_p95": 344.25,
+          "batch_mean_per_call": 15.99,
+          "batch_mean_per_request": 16.98,
+          "batch_max": 20,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1633,
+        "warmup": 386,
+        "measured": 1247,
+        "ok_total": 1633,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 32,
+      "pass": true,
+      "throughput_rps": 107.64,
+      "latency_ms": {
+        "p50": 257.0,
+        "p95": 481.3,
+        "p99": 708.9,
+        "mean": 295.3,
+        "max": 710.1
+      },
+      "requests": 1184,
+      "ok": 1184,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        18.7,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 199.4,
+        "nginx": 3.2,
+        "loadgen": 3.6
+      },
+      "model": {
+        "requests": 1184,
+        "queue_ms_mean": 78.62,
+        "queue_ms_p95": 304.55,
+        "model_ms_mean": 123.48,
+        "model_ms_p95": 328.09,
+        "batch_mean_per_call": 16.0,
+        "batch_mean_per_request": 19.06,
+        "batch_max": 23
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1184,
+          "queue_ms_mean": 78.62,
+          "queue_ms_p95": 304.55,
+          "model_ms_mean": 123.48,
+          "model_ms_p95": 328.09,
+          "batch_mean_per_call": 16.0,
+          "batch_mean_per_request": 19.06,
+          "batch_max": 23,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1580,
+        "warmup": 396,
+        "measured": 1184,
+        "ok_total": 1580,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 2
+    },
+    {
+      "users": 64,
+      "pass": false,
+      "throughput_rps": 119.27,
+      "latency_ms": {
+        "p50": 415.2,
+        "p95": 984.7,
+        "p99": 1225.0,
+        "mean": 529.7,
+        "max": 1468.3
+      },
+      "requests": 1312,
+      "ok": 1312,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        14.4,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 154.2,
+        "nginx": 5.3,
+        "loadgen": 5.5
+      },
+      "model": {
+        "requests": 1312,
+        "queue_ms_mean": 146.76,
+        "queue_ms_p95": 379.87,
+        "model_ms_mean": 251.39,
+        "model_ms_p95": 456.84,
+        "batch_mean_per_call": 32.0,
+        "batch_mean_per_request": 32.0,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1312,
+          "queue_ms_mean": 146.76,
+          "queue_ms_p95": 379.87,
+          "model_ms_mean": 251.39,
+          "model_ms_p95": 456.84,
+          "batch_mean_per_call": 32.0,
+          "batch_mean_per_request": 32.0,
+          "batch_max": 32,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1716,
+        "warmup": 404,
+        "measured": 1312,
+        "ok_total": 1716,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 64,
+      "pass": false,
+      "throughput_rps": 116.36,
+      "latency_ms": {
+        "p50": 424.5,
+        "p95": 1214.4,
+        "p99": 1597.5,
+        "mean": 547.7,
+        "max": 1603.2
+      },
+      "requests": 1280,
+      "ok": 1280,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        2.4,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 150.9,
+        "nginx": 5.0,
+        "loadgen": 5.4
+      },
+      "model": {
+        "requests": 1280,
+        "queue_ms_mean": 140.06,
+        "queue_ms_p95": 390.46,
+        "model_ms_mean": 262.32,
+        "model_ms_p95": 553.15,
+        "batch_mean_per_call": 32.0,
+        "batch_mean_per_request": 32.0,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1280,
+          "queue_ms_mean": 140.06,
+          "queue_ms_p95": 390.46,
+          "model_ms_mean": 262.32,
+          "model_ms_p95": 553.15,
+          "batch_mean_per_call": 32.0,
+          "batch_mean_per_request": 32.0,
+          "batch_max": 32,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1841,
+        "warmup": 561,
+        "measured": 1280,
+        "ok_total": 1841,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 2
+    },
+    {
+      "users": 128,
+      "pass": false,
+      "throughput_rps": 114.18,
+      "latency_ms": {
+        "p50": 872.0,
+        "p95": 1766.5,
+        "p99": 1985.4,
+        "mean": 1050.5,
+        "max": 1987.8
+      },
+      "requests": 1258,
+      "ok": 1258,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        15.6,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 285.2,
+        "nginx": 2.3,
+        "loadgen": 4.6
+      },
+      "model": {
+        "requests": 1258,
+        "queue_ms_mean": 658.38,
+        "queue_ms_p95": 1225.4,
+        "model_ms_mean": 241.17,
+        "model_ms_p95": 418.47,
+        "batch_mean_per_call": 32.0,
+        "batch_mean_per_request": 32.0,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1258,
+          "queue_ms_mean": 658.38,
+          "queue_ms_p95": 1225.4,
+          "model_ms_mean": 241.17,
+          "model_ms_p95": 418.47,
+          "batch_mean_per_call": 32.0,
+          "batch_mean_per_request": 32.0,
+          "batch_max": 32,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1903,
+        "warmup": 645,
+        "measured": 1258,
+        "ok_total": 1903,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 2,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 128,
+      "pass": false,
+      "throughput_rps": 113.45,
+      "latency_ms": {
+        "p50": 966.4,
+        "p95": 1824.6,
+        "p99": 2044.2,
+        "mean": 1106.4,
+        "max": 2048.8
+      },
+      "requests": 1248,
+      "ok": 1248,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        12.6,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 303.4,
+        "nginx": 2.3,
+        "loadgen": 8.3
+      },
+      "model": {
+        "requests": 1248,
+        "queue_ms_mean": 695.66,
+        "queue_ms_p95": 1392.67,
+        "model_ms_mean": 264.39,
+        "model_ms_p95": 603.39,
+        "batch_mean_per_call": 32.0,
+        "batch_mean_per_request": 32.0,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1248,
+          "queue_ms_mean": 695.66,
+          "queue_ms_p95": 1392.67,
+          "model_ms_mean": 264.39,
+          "model_ms_p95": 603.39,
+          "batch_mean_per_call": 32.0,
+          "batch_mean_per_request": 32.0,
+          "batch_max": 32,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1730,
+        "warmup": 482,
+        "measured": 1248,
+        "ok_total": 1730,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 2,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 2
+    },
+    {
+      "users": 33,
+      "pass": false,
+      "throughput_rps": 111.73,
+      "latency_ms": {
+        "p50": 228.1,
+        "p95": 647.5,
+        "p99": 695.8,
+        "mean": 297.3,
+        "max": 700.1
+      },
+      "requests": 1229,
+      "ok": 1229,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        12.7,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 224.8,
+        "nginx": 2.1,
+        "loadgen": 2.5
+      },
+      "model": {
+        "requests": 1229,
+        "queue_ms_mean": 72.01,
+        "queue_ms_p95": 263.48,
+        "model_ms_mean": 118.28,
+        "model_ms_p95": 335.4,
+        "batch_mean_per_call": 16.39,
+        "batch_mean_per_request": 20.79,
+        "batch_max": 25
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1229,
+          "queue_ms_mean": 72.01,
+          "queue_ms_p95": 263.48,
+          "model_ms_mean": 118.28,
+          "model_ms_p95": 335.4,
+          "batch_mean_per_call": 16.39,
+          "batch_mean_per_request": 20.79,
+          "batch_max": 25,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1611,
+        "warmup": 382,
+        "measured": 1229,
+        "ok_total": 1611,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "estimate",
+      "attempt": 1
+    },
+    {
+      "users": 33,
+      "pass": false,
+      "throughput_rps": 121.27,
+      "latency_ms": {
+        "p50": 177.8,
+        "p95": 761.7,
+        "p99": 1090.1,
+        "mean": 272.0,
+        "max": 1095.8
+      },
+      "requests": 1334,
+      "ok": 1334,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        14.6,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 160.8,
+        "nginx": 2.4,
+        "loadgen": 2.7
+      },
+      "model": {
+        "requests": 1334,
+        "queue_ms_mean": 76.43,
+        "queue_ms_p95": 274.55,
+        "model_ms_mean": 122.73,
+        "model_ms_p95": 439.15,
+        "batch_mean_per_call": 16.47,
+        "batch_mean_per_request": 16.85,
+        "batch_max": 19
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1334,
+          "queue_ms_mean": 76.43,
+          "queue_ms_p95": 274.55,
+          "model_ms_mean": 122.73,
+          "model_ms_p95": 439.15,
+          "batch_mean_per_call": 16.47,
+          "batch_mean_per_request": 16.85,
+          "batch_max": 19,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        4.0,
+        15.0
+      ],
+      "sent": {
+        "total": 1687,
+        "warmup": 353,
+        "measured": 1334,
+        "ok_total": 1687,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 1,
+      "nginx_procs": 5,
+      "phase": "estimate",
+      "attempt": 2
+    }
+  ],
+  "decisions": [
+    {
+      "users": 1,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 102.2,
+      "throughput_rps": 26.73,
+      "error_pct": 0.0
+    },
+    {
+      "users": 2,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 217.5,
+      "throughput_rps": 45.27,
+      "error_pct": 0.0
+    },
+    {
+      "users": 4,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 219.5,
+      "throughput_rps": 72.0,
+      "error_pct": 0.0
+    },
+    {
+      "users": 8,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 285.9,
+      "throughput_rps": 94.91,
+      "error_pct": 0.0
+    },
+    {
+      "users": 16,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 384.0,
+      "throughput_rps": 107.64,
+      "error_pct": 0.0
+    },
+    {
+      "users": 32,
+      "phase": "range",
+      "pass": true,
+      "runs": 2,
+      "p95_ms": 481.3,
+      "throughput_rps": 107.64,
+      "error_pct": 0.0
+    },
+    {
+      "users": 64,
+      "phase": "range",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 984.7,
+      "throughput_rps": 119.27,
+      "error_pct": 0.0
+    },
+    {
+      "users": 128,
+      "phase": "range",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 1766.5,
+      "throughput_rps": 114.18,
+      "error_pct": 0.0
+    },
+    {
+      "users": 33,
+      "phase": "estimate",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 647.5,
+      "throughput_rps": 111.73,
+      "error_pct": 0.0
+    }
+  ],
+  "estimates": [
+    {
+      "round": 1,
+      "pass_point": {
+        "users": 32,
+        "p95_ms": 481.3
+      },
+      "fail_point": {
+        "users": 64,
+        "p95_ms": 984.7
+      },
+      "method": "line",
+      "estimated_users": 33.19,
+      "measured_users": 33,
+      "measured_p95_ms": 647.5,
+      "measured_pass": false
+    }
+  ],
+  "capacity": 32,
+  "capacity_closed": true,
+  "last_pass_users": 32,
+  "first_fail_users": 33,
+  "max_throughput_rps": 121.27,
+  "max_throughput_at_users": 33,
+  "estimate_from_throughput": {
+    "formula": "max throughput x target p95 (s)",
+    "users": 60.6
+  },
+  "finished_utc": "2026-11-26T13:46:39+00:00"
+}

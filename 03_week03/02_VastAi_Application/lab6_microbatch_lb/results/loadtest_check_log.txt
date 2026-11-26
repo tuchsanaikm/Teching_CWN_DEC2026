@@ -1,0 +1,21 @@
+[A] fake server 50 ms, direct, N = 1, 10, 50, 100
+  A_direct_n1            N=1    thr=    19.8/s  p50=50.6 p95=50.6 ms  err=0  sent=396 counted=396  fake_cpu=0.6% loadgen_cpu=0.8%
+  A_direct_n10           N=10   thr=   197.3/s  p50=50.6 p95=51.2 ms  err=0  sent=3855 counted=3855  fake_cpu=4.7% loadgen_cpu=4.9%
+  A_direct_n50           N=50   thr=   986.6/s  p50=50.6 p95=51.4 ms  err=0  sent=19277 counted=19277  fake_cpu=20.1% loadgen_cpu=21.0%
+  A_direct_n100          N=100  thr=  1971.3/s  p50=50.6 p95=51.4 ms  err=0  sent=38499 counted=38499  fake_cpu=37.3% loadgen_cpu=41.3%
+[C] fake server answers at once, direct, N = 200
+  C_direct_n200_delay0   N=200  thr= 64167.7/s  p50=2.9 p95=5.0 ms  err=0  sent=1286025 counted=1286025  fake_cpu=313.3% loadgen_cpu=400.1%
+[D] NGINX :8080 -> fake server 50 ms, N = 50, against direct
+  D_direct_n50           N=50   thr=   986.8/s  p50=50.6 p95=51.3 ms  err=0  sent=19280 counted=19280  fake_cpu=19.4% loadgen_cpu=20.6%
+  D_nginx_n50            N=50   thr=   981.1/s  p50=50.9 p95=51.6 ms  err=0  sent=19172 counted=19172  fake_cpu=23.7% loadgen_cpu=21.3%
+[E] real system, layout 1 (1 GPU x 1 server, single), N = 8, three times
+  E_real_n8_run1         N=8    thr=    57.5/s  p50=134.0 p95=168.1 ms  err=0  gpu=[20.6, 0.0]
+  E_real_n8_run2         N=8    thr=    58.8/s  p50=129.8 p95=180.6 ms  err=0  gpu=[20.8, 0.0]
+  E_real_n8_run3         N=8    thr=    60.9/s  p50=130.9 p95=140.7 ms  err=0  gpu=[21.4, 0.0]
+[check] saved /workspace/lab6/results/loadtest_check.json
+  A: PASS  numbers match the calculation (fake server waits 50 ms, shot directly)
+  B: PASS  requests sent by the load generator (warm-up included) = requests counted by the fake server
+  C: PASS  how many requests per second the load generator can send (fake server answers at once)
+  D: PASS  time added by NGINX (fake server waits 50 ms, N = 50)
+  E: PASS  same measurement three times on the real API (layout 1, N = 8)
+ALL PASS

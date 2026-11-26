@@ -1,0 +1,10 @@
+{
+ "tag": "base",
+ "adapter": "",
+ "n": 200,
+ "exact_match": 0.015,
+ "exact_match_count": 3,
+ "exact_match_case_insensitive": 0.015,
+ "test_loss": 1.9154050461339533,
+ "seconds": 29.7
+}

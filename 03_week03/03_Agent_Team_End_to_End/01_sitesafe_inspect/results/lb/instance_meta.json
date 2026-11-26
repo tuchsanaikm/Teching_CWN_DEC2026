@@ -1,0 +1,23 @@
+{
+  "instance_id": 62695848,
+  "offer_id": 61536152,
+  "label": "e2e-sitesafe-lb",
+  "gpu_name": "RTX 4090",
+  "num_gpus": 2,
+  "vcpus": 48.0,
+  "ram_gb": 125.6,
+  "disk_gb": 60.0,
+  "geolocation": "Poland, PL",
+  "inet_down_mbps": 1488.3,
+  "inet_up_mbps": 993.5,
+  "inet_down_cost_per_gb": 0.0026041666666666665,
+  "dph_total": 0.7422222222222223,
+  "public_ip": "1.193.139.28",
+  "ssh_port": 35326,
+  "api_port_8080": 35101,
+  "created_utc": "2026-11-26T13:08:14Z",
+  "status": "destroyed",
+  "ssh_proxy_host": "ssh5.vast.ai",
+  "ssh_proxy_port": 20656,
+  "destroyed_utc": "2026-11-26T14:47:00Z"
+}

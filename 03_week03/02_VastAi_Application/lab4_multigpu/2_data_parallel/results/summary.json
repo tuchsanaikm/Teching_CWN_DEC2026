@@ -1,0 +1,162 @@
+{
+ "gpus": 2,
+ "machine": {
+  "gpu": "RTX 3090 24 GB",
+  "count": 2,
+  "country": "Quebec, Canada",
+  "usd_per_hour": 0.3767,
+  "cpu": "AMD EPYC 7551P",
+  "link": "SYS (PCIe across NUMA nodes), no NVLink; GPU0 PCIe x4, GPU1 x16"
+ },
+ "model_vram_before_training_gib": [
+  15.29,
+  15.29
+ ],
+ "probe": [
+  {
+   "batch_per_gpu": 1,
+   "batch_total": 2,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    17.19,
+    17.18
+   ],
+   "nvidia_smi_peak_mib": [
+    18227.0,
+    18233.0
+   ],
+   "sec_per_step": 0.269
+  },
+  {
+   "batch_per_gpu": 2,
+   "batch_total": 4,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    19.02,
+    19.02
+   ],
+   "nvidia_smi_peak_mib": [
+    20123.0,
+    20123.0
+   ],
+   "sec_per_step": 0.379
+  },
+  {
+   "batch_per_gpu": 4,
+   "batch_total": 8,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    22.71,
+    22.71
+   ],
+   "nvidia_smi_peak_mib": [
+    24075.0,
+    24075.0
+   ],
+   "sec_per_step": 0.714
+  },
+  {
+   "batch_per_gpu": 8,
+   "batch_total": 16,
+   "result": "OOM",
+   "torch_peak_alloc_gib": [
+    23.15,
+    23.15
+   ],
+   "nvidia_smi_peak_mib": null,
+   "sec_per_step": null
+  }
+ ],
+ "batch_used": {
+  "per_gpu": 4,
+  "total": 8,
+  "equals_largest_probe_pass": true
+ },
+ "first_training_attempt": "Out of Memory at about step 59 of Epoch 1 (padded batch); fixed by not passing attention_mask (right padding + causal attention) and emptying the cache on a new largest batch; probe repeated, same batch 4",
+ "steps_per_epoch": 500,
+ "epochs": 3,
+ "sec_per_step": 0.4193,
+ "examples_per_sec": 19.078,
+ "examples_per_sec_per_gpu": 9.54,
+ "gpu_util_pct": [
+  97.8,
+  98.6
+ ],
+ "gpu_util_note": "mean of the 3 Epoch means; Epoch 1 measured on steps 101-500",
+ "peak_vram_training_torch_gib": [
+  22.71,
+  22.71
+ ],
+ "peak_vram_training_nvidia_smi_mib": [
+  24145.0,
+  24147.0
+ ],
+ "train_loss_per_epoch": [
+  0.08848,
+  0.03218,
+  0.02053
+ ],
+ "test_loss_per_epoch": [
+  0.0581,
+  0.052,
+  0.0578
+ ],
+ "test_loss_base": 1.8453,
+ "exact_match": {
+  "n_test": 200,
+  "strict_pct": {
+   "base": 0.0,
+   "epoch1": 70.0,
+   "epoch2": 77.5,
+   "epoch3": 79.0
+  },
+  "strict_rule": "collapse whitespace only (a trailing ; counts as a difference)",
+  "strict_trailing_semicolon_removed_pct": {
+   "base": 1.5,
+   "epoch1": 70.0,
+   "epoch2": 77.5,
+   "epoch3": 79.0
+  },
+  "relaxed_pct": {
+   "base": 54.5,
+   "epoch1": 72.0,
+   "epoch2": 79.5,
+   "epoch3": 81.0
+  }
+ },
+ "train_minutes": 10.5,
+ "cost": {
+  "rented_usd_per_hour": 0.3767,
+  "usd_per_1000_examples_rented": 0.005484,
+  "market_on_demand_verified_usd_per_hour": 0.3389,
+  "usd_per_1000_examples_market_verified": 0.004934,
+  "market_note": "cheapest verified on-demand offer (California) has 569.9 Mbps download, below the lab's 700 Mbps condition",
+  "market_interruptible_verified_usd_per_hour": 0.2356,
+  "usd_per_1000_examples_interruptible": 0.00343,
+  "bill_usd": 0.351,
+  "bill_split": {
+   "gpu": 0.295,
+   "disk": 0.016,
+   "download": 0.039,
+   "upload": 0.001
+  },
+  "machine_age_min": 50.7,
+  "first_machine_stuck_loading_usd": 0.008,
+  "total_with_first_machine_usd": 0.359
+ },
+ "step_minutes": {
+  "1": 30.4,
+  "2": 28.9,
+  "3": 12.6
+ },
+ "sources": [
+  "results/metrics.json",
+  "results/train_summary.json",
+  "results/eval_summary.json",
+  "results/probe/*.json",
+  "results/raw/billing.json",
+  "results/eval/*_predictions.json (semicolon rule recomputed)",
+  "results/logs/train_attempt1_oom.log",
+  "step times from the run's start/end log"
+ ]
+}

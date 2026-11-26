@@ -1,0 +1,102 @@
+{
+ "track": "Model Parallelism, 3 Nodes",
+ "nodes": 3,
+ "gpus_per_node": 2,
+ "machines": [
+  {"node": 1, "gpu": "RTX 3090 x2", "country": "Argentina", "usd_per_hour": 0.39},
+  {"node": 2, "gpu": "RTX 3090 x2", "country": "Chile", "usd_per_hour": 0.4433},
+  {"node": 3, "gpu": "RTX 3090 x2", "country": "Chile", "usd_per_hour": 0.4967}
+ ],
+ "network": [
+  {
+   "pair": "node2-node1",
+   "rtt_ms_avg": {"run1": 34.24, "run2": 35.62},
+   "mbps_node2_to_node1": {"run1": 644.3, "run2": 210.0},
+   "mbps_node1_to_node2": {"run1": 262.1, "run2": 619.4}
+  },
+  {
+   "pair": "node3-node1",
+   "rtt_ms_avg": {"run1": 28.83, "run2": 29.41},
+   "mbps_node3_to_node1": {"run1": 82.3, "run2": 305.7},
+   "mbps_node1_to_node3": {"run1": 197.5, "run2": 148.0}
+  }
+ ],
+ "batch": {
+  "per_node": 8,
+  "total": 24,
+  "note": "last step of each epoch has 6+5+5 = 16 examples (4000 = 166 x 24 + 16)"
+ },
+ "steps_per_epoch": 167,
+ "total_steps": 334,
+ "sec_per_step": 5.5242,
+ "sec_per_step_median": {"node1": 5.0187, "node2": 4.9272, "node3": 5.0158},
+ "compute_sec_per_step": 0.7312,
+ "comm_sec_per_step": 4.7929,
+ "comm_share_pct": 86.76,
+ "examples_per_sec": 4.32,
+ "gpu_util_pct": {
+  "node1": [7.3, 6.6],
+  "node2": [6.2, 6.3],
+  "node3": [6.9, 6.1]
+ },
+ "vram_peak_mib": {
+  "node1": [14314, 14716],
+  "node2": [13086, 13528],
+  "node3": [12884, 13326]
+ },
+ "layer_placement": {
+  "n_layers": 36,
+  "gpu0": "embed_tokens + layers 0-17",
+  "gpu1": "layers 18-35 + norm + lm_head",
+  "same_on_all_nodes": true
+ },
+ "gradient_message_mb": {
+  "up_per_node": 15.34,
+  "down_per_node": 15.34,
+  "dtype": "float32 both ways (3,833,856 LoRA parameters x 4 bytes = 15,335,424 bytes)"
+ },
+ "train_loss_per_epoch": [0.15159, 0.04261],
+ "test_loss_per_epoch": [0.06554, 0.05885],
+ "test_loss_base": 1.91541,
+ "exact_match_pct": {
+  "base": 1.5,
+  "epoch1": 69.0,
+  "epoch2": 71.0,
+  "n": 200
+ },
+ "lora_weights_equal": {
+  "epoch1": true,
+  "epoch2": true
+ },
+ "train_minutes": 30.87,
+ "cost": {
+  "combined_usd_per_hour": 1.33,
+  "usd_per_1000_examples": 0.0855,
+  "bill_usd": {
+   "node1": 0.553,
+   "node2": 0.568,
+   "node3": 0.609,
+   "total": 1.73
+  },
+  "bill_split_usd": {
+   "node1": {"gpu": 0.411, "storage": 0.02, "download": 0.072, "upload": 0.05},
+   "node2": {"gpu": 0.464, "storage": 0.02, "download": 0.057, "upload": 0.027},
+   "node3": {"gpu": 0.511, "storage": 0.02, "download": 0.054, "upload": 0.024}
+  }
+ },
+ "step_minutes": {
+  "step1": 20.2,
+  "step2": 48.7,
+  "step3": 4.5
+ },
+ "sources": {
+  "most_numbers": "node3/results/metrics.json (cluster, nodes, loss, exact_match, cost)",
+  "layer_placement": "node3/results/train/summary_node1.json (info), same in summary_node2/3.json",
+  "network": "node3/results/net_probe_run1.json, net_probe_run2.json (up = Node N to Node 1, down = Node 1 to Node N)",
+  "gradient_dtype": "node3/results/train/steps_node*.jsonl (grad_bytes), code_reference/node3/code/worker.py and coordinator.py (float32)",
+  "lora_weights_equal": "node3/results/train/coordinator.jsonl (epoch_check)",
+  "train_minutes": "metrics.json cluster.wall_s 1851.9 / 60",
+  "bill": "node3/results/raw/billing/charges.json (same as metrics.json billing)",
+  "step_minutes": "track.log of the run (step start/end times)"
+ }
+}

@@ -1,0 +1,6 @@
+#!/bin/bash
+# usage: scpn <node> <local files...> <remote dir>
+D="$(cd "$(dirname "$0")" && pwd)"; N=$1; shift
+read IP PORT < <(python3 -c "import json;d=json.load(open('$D/state/n$N.json'));print(d['ip'],d['ssh_port'])")
+ARGS=("$@"); DEST="${ARGS[-1]}"; unset 'ARGS[-1]'
+exec scp -i /workspace/vastai_lab/Devtool_SSH/devtoolSSH -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -P "$PORT" "${ARGS[@]}" root@"$IP":"$DEST"

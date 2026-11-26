@@ -1,0 +1,554 @@
+{
+  "tests": {
+    "A": {
+      "what": "numbers match the calculation (fake server waits 50 ms, shot directly)",
+      "rule": "p50 and throughput within 10 % of 50 ms and N / 0.05 s",
+      "fake_workers": 4,
+      "rows": [
+        {
+          "run": "A_direct_n1",
+          "users": 1,
+          "target_port": 8101,
+          "throughput_rps": 19.8,
+          "p50_ms": 50.6,
+          "p95_ms": 50.6,
+          "p99_ms": 50.7,
+          "mean_ms": 50.6,
+          "max_ms": 50.8,
+          "requests_measured": 297,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 0.8,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 396,
+            "warmup": 99,
+            "measured": 297,
+            "ok_total": 396,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 396,
+            "fake_received": 396,
+            "fake_answered_200": 396,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.158,
+          "fake_cpu_pct": 0.6,
+          "expected_p50_ms": 50.0,
+          "expected_throughput_rps": 20.0,
+          "p50_diff_pct": 1.2,
+          "throughput_diff_pct": -1.0,
+          "pass": true
+        },
+        {
+          "run": "A_direct_n10",
+          "users": 10,
+          "target_port": 8101,
+          "throughput_rps": 197.33,
+          "p50_ms": 50.6,
+          "p95_ms": 51.2,
+          "p99_ms": 51.4,
+          "mean_ms": 50.7,
+          "max_ms": 51.6,
+          "requests_measured": 2960,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 4.9,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 3855,
+            "warmup": 895,
+            "measured": 2960,
+            "ok_total": 3855,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 3855,
+            "fake_received": 3855,
+            "fake_answered_200": 3855,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.238,
+          "fake_cpu_pct": 4.7,
+          "expected_p50_ms": 50.0,
+          "expected_throughput_rps": 200.0,
+          "p50_diff_pct": 1.2,
+          "throughput_diff_pct": -1.33,
+          "pass": true
+        },
+        {
+          "run": "A_direct_n50",
+          "users": 50,
+          "target_port": 8101,
+          "throughput_rps": 986.6,
+          "p50_ms": 50.6,
+          "p95_ms": 51.4,
+          "p99_ms": 51.7,
+          "mean_ms": 50.7,
+          "max_ms": 52.8,
+          "requests_measured": 14799,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 21.0,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 19277,
+            "warmup": 4478,
+            "measured": 14799,
+            "ok_total": 19277,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 19277,
+            "fake_received": 19277,
+            "fake_answered_200": 19277,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.23,
+          "fake_cpu_pct": 20.1,
+          "expected_p50_ms": 50.0,
+          "expected_throughput_rps": 1000.0,
+          "p50_diff_pct": 1.2,
+          "throughput_diff_pct": -1.34,
+          "pass": true
+        },
+        {
+          "run": "A_direct_n100",
+          "users": 100,
+          "target_port": 8101,
+          "throughput_rps": 1971.33,
+          "p50_ms": 50.6,
+          "p95_ms": 51.4,
+          "p99_ms": 51.7,
+          "mean_ms": 50.7,
+          "max_ms": 53.2,
+          "requests_measured": 29570,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 2,
+          "loadgen_cpu_pct": 41.3,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 38499,
+            "warmup": 8929,
+            "measured": 29570,
+            "ok_total": 38499,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 38499,
+            "fake_received": 38499,
+            "fake_answered_200": 38499,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.256,
+          "fake_cpu_pct": 37.3,
+          "expected_p50_ms": 50.0,
+          "expected_throughput_rps": 2000.0,
+          "p50_diff_pct": 1.2,
+          "throughput_diff_pct": -1.43,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "measured_utc": "2026-11-23T01:15:27+00:00"
+    },
+    "B": {
+      "what": "requests sent by the load generator (warm-up included) = requests counted by the fake server",
+      "rule": "difference <= 1 % in every run",
+      "rows": [
+        {
+          "test": "A",
+          "run": "A_direct_n1",
+          "users": 1,
+          "path": "direct",
+          "loadgen_sent": 396,
+          "of_which_warmup": 99,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 396,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "A",
+          "run": "A_direct_n10",
+          "users": 10,
+          "path": "direct",
+          "loadgen_sent": 3855,
+          "of_which_warmup": 895,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 3855,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "A",
+          "run": "A_direct_n50",
+          "users": 50,
+          "path": "direct",
+          "loadgen_sent": 19277,
+          "of_which_warmup": 4478,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 19277,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "A",
+          "run": "A_direct_n100",
+          "users": 100,
+          "path": "direct",
+          "loadgen_sent": 38499,
+          "of_which_warmup": 8929,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 38499,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "C",
+          "run": "C_direct_n200_delay0",
+          "users": 200,
+          "path": "direct",
+          "loadgen_sent": 1286025,
+          "of_which_warmup": 323508,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 1286025,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "D",
+          "run": "D_direct_n50",
+          "users": 50,
+          "path": "direct",
+          "loadgen_sent": 19280,
+          "of_which_warmup": 4478,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 19280,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        },
+        {
+          "test": "D",
+          "run": "D_nginx_n50",
+          "users": 50,
+          "path": "nginx",
+          "loadgen_sent": 19172,
+          "of_which_warmup": 4455,
+          "resent_on_closed_keepalive": 0,
+          "fake_received": 19172,
+          "diff": 0,
+          "diff_pct": 0.0,
+          "pass": true
+        }
+      ],
+      "total_sent": 1386504,
+      "total_received": 1386504,
+      "max_diff_pct": 0.0,
+      "pass": true,
+      "measured_utc": "2026-11-23T01:17:55+00:00"
+    },
+    "C": {
+      "what": "how many requests per second the load generator can send (fake server answers at once)",
+      "rule": "throughput > 2000 requests/s",
+      "fake_workers": 4,
+      "rows": [
+        {
+          "run": "C_direct_n200_delay0",
+          "users": 200,
+          "target_port": 8101,
+          "throughput_rps": 64167.67,
+          "p50_ms": 2.9,
+          "p95_ms": 5.0,
+          "p99_ms": 5.9,
+          "mean_ms": 3.1,
+          "max_ms": 38.9,
+          "requests_measured": 962517,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 4,
+          "loadgen_cpu_pct": 400.1,
+          "loadgen_busy": true,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 1286025,
+            "warmup": 323508,
+            "measured": 962517,
+            "ok_total": 1286025,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 1286025,
+            "fake_received": 1286025,
+            "fake_answered_200": 1286025,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 0.006,
+          "fake_cpu_pct": 313.3,
+          "pass": true
+        }
+      ],
+      "max_throughput_rps": 64167.67,
+      "pass": true,
+      "measured_utc": "2026-11-23T01:15:54+00:00"
+    },
+    "D": {
+      "what": "time added by NGINX (fake server waits 50 ms, N = 50)",
+      "rule": "p50 through NGINX - p50 direct <= 10 ms",
+      "fake_workers": 4,
+      "rows": [
+        {
+          "run": "D_direct_n50",
+          "users": 50,
+          "target_port": 8101,
+          "throughput_rps": 986.8,
+          "p50_ms": 50.6,
+          "p95_ms": 51.3,
+          "p99_ms": 51.6,
+          "mean_ms": 50.7,
+          "max_ms": 52.4,
+          "requests_measured": 14802,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 20.6,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 0.0,
+          "sent": {
+            "total": 19280,
+            "warmup": 4478,
+            "measured": 14802,
+            "ok_total": 19280,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 19280,
+            "fake_received": 19280,
+            "fake_answered_200": 19280,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.213,
+          "fake_cpu_pct": 19.4
+        },
+        {
+          "run": "D_nginx_n50",
+          "users": 50,
+          "target_port": 8080,
+          "throughput_rps": 981.13,
+          "p50_ms": 50.9,
+          "p95_ms": 51.6,
+          "p99_ms": 51.9,
+          "mean_ms": 50.9,
+          "max_ms": 53.4,
+          "requests_measured": 14717,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 21.3,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 22.3,
+          "sent": {
+            "total": 19172,
+            "warmup": 4455,
+            "measured": 14717,
+            "ok_total": 19172,
+            "resent_on_closed_keepalive": 0
+          },
+          "count": {
+            "loadgen_sent": 19172,
+            "fake_received": 19172,
+            "fake_answered_200": 19172,
+            "diff": 0,
+            "diff_pct": 0.0
+          },
+          "fake_hold_ms_mean": 50.233,
+          "fake_cpu_pct": 23.7
+        }
+      ],
+      "p50_direct_ms": 50.6,
+      "p50_nginx_ms": 50.9,
+      "p50_added_ms": 0.3,
+      "p95_added_ms": 0.3,
+      "throughput_direct_rps": 986.8,
+      "throughput_nginx_rps": 981.13,
+      "pass": true,
+      "measured_utc": "2026-11-23T01:16:40+00:00"
+    },
+    "E": {
+      "what": "same measurement three times on the real API (layout 1, N = 8)",
+      "rule": "(max - min) / min <= 10 % for throughput and for p50",
+      "system": {
+        "server": "gpu0-8101",
+        "mode": "single",
+        "max_batch": 1,
+        "device": "cuda:0"
+      },
+      "rows": [
+        {
+          "run": "E_real_n8_run1",
+          "users": 8,
+          "target_port": 8080,
+          "throughput_rps": 57.53,
+          "p50_ms": 134.0,
+          "p95_ms": 168.1,
+          "p99_ms": 184.0,
+          "mean_ms": 138.7,
+          "max_ms": 190.3,
+          "requests_measured": 863,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 2.8,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 2.1,
+          "sent": {
+            "total": 1167,
+            "warmup": 304,
+            "measured": 863,
+            "ok_total": 1167,
+            "resent_on_closed_keepalive": 0
+          },
+          "server_cpu_pct": 130.4,
+          "gpu_util_pct": [
+            20.6,
+            0.0
+          ],
+          "model_ms_mean": 16.95,
+          "queue_ms_mean": 112.3
+        },
+        {
+          "run": "E_real_n8_run2",
+          "users": 8,
+          "target_port": 8080,
+          "throughput_rps": 58.8,
+          "p50_ms": 129.8,
+          "p95_ms": 180.6,
+          "p99_ms": 189.1,
+          "mean_ms": 135.7,
+          "max_ms": 198.4,
+          "requests_measured": 882,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 2.8,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 2.1,
+          "sent": {
+            "total": 1183,
+            "warmup": 301,
+            "measured": 882,
+            "ok_total": 1183,
+            "resent_on_closed_keepalive": 0
+          },
+          "server_cpu_pct": 132.0,
+          "gpu_util_pct": [
+            20.8,
+            0.0
+          ],
+          "model_ms_mean": 16.58,
+          "queue_ms_mean": 109.66
+        },
+        {
+          "run": "E_real_n8_run3",
+          "users": 8,
+          "target_port": 8080,
+          "throughput_rps": 60.87,
+          "p50_ms": 130.9,
+          "p95_ms": 140.7,
+          "p99_ms": 152.9,
+          "mean_ms": 131.3,
+          "max_ms": 162.5,
+          "requests_measured": 913,
+          "errors": 0,
+          "error_kinds": {},
+          "loadgen_procs": 1,
+          "loadgen_cpu_pct": 2.8,
+          "loadgen_busy": false,
+          "nginx_cpu_pct": 2.1,
+          "sent": {
+            "total": 1195,
+            "warmup": 282,
+            "measured": 913,
+            "ok_total": 1195,
+            "resent_on_closed_keepalive": 0
+          },
+          "server_cpu_pct": 134.7,
+          "gpu_util_pct": [
+            21.4,
+            0.0
+          ],
+          "model_ms_mean": 16.06,
+          "queue_ms_mean": 105.8
+        }
+      ],
+      "throughput_rps": [
+        57.53,
+        58.8,
+        60.87
+      ],
+      "p50_ms": [
+        134.0,
+        129.8,
+        130.9
+      ],
+      "p95_ms": [
+        168.1,
+        180.6,
+        140.7
+      ],
+      "throughput_spread_pct": 5.81,
+      "p50_spread_pct": 3.24,
+      "p95_spread_pct": 28.36,
+      "pass": true,
+      "measured_utc": "2026-11-23T01:17:55+00:00"
+    }
+  },
+  "previous_attempts": [],
+  "name": "loadtest_check",
+  "written_utc": "2026-11-23T01:17:55+00:00",
+  "method": {
+    "load_generator": "loadgen.py single",
+    "level_seconds": 20.0,
+    "warmup_s": 5.0,
+    "fake_server": "fake_server.py on 127.0.0.1:8101",
+    "fake_delay_ms": 50.0,
+    "everything_on_the_same_machine": true,
+    "cpu_count": 64
+  },
+  "limits": {
+    "A_pct": 10.0,
+    "B_pct": 1.0,
+    "C_rps": 2000.0,
+    "D_ms": 10.0,
+    "E_pct": 10.0
+  },
+  "summary": {
+    "A": true,
+    "B": true,
+    "C": true,
+    "D": true,
+    "E": true
+  },
+  "all_pass": true
+}

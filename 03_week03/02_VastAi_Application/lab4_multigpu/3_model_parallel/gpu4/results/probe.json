@@ -1,0 +1,234 @@
+{
+ "longest_tokens": 256,
+ "longest_index": 2589,
+ "mean_tokens": 106.2,
+ "n_over_max_len_truncated": 1,
+ "max_len": 256,
+ "steps_per_batch": 3,
+ "runs": [
+  {
+   "batch": 1,
+   "ok": true,
+   "sec_per_step": 0.556,
+   "losses": [
+    0.1989,
+    0.0627,
+    0.0036
+   ],
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 4.84,
+     "peak_reserved_gb": 4.88
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 3.64,
+     "peak_reserved_gb": 3.65
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 3.64,
+     "peak_reserved_gb": 3.65
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 5.21,
+     "peak_reserved_gb": 5.31
+    }
+   ],
+   "smi_used_mib": [
+    5330,
+    4072,
+    4072,
+    5772
+   ]
+  },
+  {
+   "batch": 2,
+   "ok": true,
+   "sec_per_step": 0.386,
+   "losses": [
+    0.0001,
+    0.0,
+    0.0
+   ],
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 5.26,
+     "peak_reserved_gb": 5.29
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 4.01,
+     "peak_reserved_gb": 4.04
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 4.01,
+     "peak_reserved_gb": 4.04
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 6.0,
+     "peak_reserved_gb": 6.19
+    }
+   ],
+   "smi_used_mib": [
+    5752,
+    4472,
+    4472,
+    6672
+   ]
+  },
+  {
+   "batch": 4,
+   "ok": true,
+   "sec_per_step": 0.71,
+   "losses": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 6.1,
+     "peak_reserved_gb": 6.17
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 4.75,
+     "peak_reserved_gb": 4.79
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 4.75,
+     "peak_reserved_gb": 4.79
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 7.59,
+     "peak_reserved_gb": 7.93
+    }
+   ],
+   "smi_used_mib": [
+    6654,
+    5234,
+    5234,
+    8454
+   ]
+  },
+  {
+   "batch": 8,
+   "ok": true,
+   "sec_per_step": 1.379,
+   "losses": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 7.78,
+     "peak_reserved_gb": 7.87
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 6.24,
+     "peak_reserved_gb": 6.29
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 6.24,
+     "peak_reserved_gb": 6.29
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 10.75,
+     "peak_reserved_gb": 11.43
+    }
+   ],
+   "smi_used_mib": [
+    8396,
+    6776,
+    6776,
+    12036
+   ]
+  },
+  {
+   "batch": 16,
+   "ok": true,
+   "sec_per_step": 2.69,
+   "losses": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 11.14,
+     "peak_reserved_gb": 11.41
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 9.21,
+     "peak_reserved_gb": 9.32
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 9.21,
+     "peak_reserved_gb": 9.32
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 17.08,
+     "peak_reserved_gb": 18.39
+    }
+   ],
+   "smi_used_mib": [
+    12024,
+    9882,
+    9882,
+    19162
+   ]
+  },
+  {
+   "batch": 32,
+   "ok": false,
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 16.04,
+     "peak_reserved_gb": 16.11
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 14.97,
+     "peak_reserved_gb": 15.02
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 14.97,
+     "peak_reserved_gb": 15.02
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 22.84,
+     "peak_reserved_gb": 23.01
+    }
+   ],
+   "smi_used_mib": [
+    16834,
+    15714,
+    15714,
+    23794
+   ],
+   "error": "CUDA out of memory. Tried to allocate 4.64 GiB. GPU 3 has a total capacity of 23.61 GiB of which 383.81 MiB is free. Including non-PyTorch memory, this process has 23.23 GiB memory in use. Of the allo"
+  }
+ ],
+ "max_batch": 16
+}

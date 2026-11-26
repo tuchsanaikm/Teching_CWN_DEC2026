@@ -1,0 +1,64 @@
+{
+  "instance_id": "<id>",
+  "label": "vapp-lab4-single",
+  "start_unix": 1795332654.416171,
+  "destroy_unix": 1795335953.3537838,
+  "lifetime_seconds": 3298.9,
+  "fetched_note": "vastai show invoices-v1 --charges, fetched after destroy",
+  "charges": [
+    {
+      "amount": 0.19,
+      "description": "Instance <id> Charges - 1 day",
+      "end": 1795305600,
+      "items": [
+        {
+          "amount": 0.167,
+          "description": "0.926 hours at $0.180/hour",
+          "end": 1795305600,
+          "items": [],
+          "metadata": {},
+          "source": null,
+          "start": 1795305600,
+          "type": "gpu"
+        },
+        {
+          "amount": 0.013,
+          "description": "0.934 hours at $0.014/hour",
+          "end": 1795305600,
+          "items": [],
+          "metadata": {},
+          "source": null,
+          "start": 1795305600,
+          "type": "disk"
+        },
+        {
+          "amount": 0.01,
+          "description": "15.1 GB Downloaded at $0.001/GB",
+          "end": 1795305600,
+          "items": [],
+          "metadata": {},
+          "source": null,
+          "start": 1795305600,
+          "type": "bwd"
+        },
+        {
+          "amount": 0.0,
+          "description": "0.3 GB Uploaded at $0.000/GB",
+          "end": 1795305600,
+          "items": [],
+          "metadata": {},
+          "source": null,
+          "start": 1795305600,
+          "type": "bwu"
+        }
+      ],
+      "metadata": {
+        "label": "vapp-lab4-single"
+      },
+      "source": "instance-<id>",
+      "start": 1795305600,
+      "type": "instance"
+    }
+  ],
+  "total_charged_usd": 0.19
+}

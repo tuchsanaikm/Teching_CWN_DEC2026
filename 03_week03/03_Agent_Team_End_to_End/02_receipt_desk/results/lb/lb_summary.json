@@ -1,0 +1,67 @@
+{
+  "measuredOn": "Vast.ai 2× RTX 4090 (Spain, ES, 6110.2 Mbps)",
+  "model": "Qwen/Qwen3-VL-2B-Instruct + LoRA (receipt-vlm)",
+  "n1SpeedTps": 219.41,
+  "n1TtftMs": 19.6,
+  "fastSloMinTps": 109.7,
+  "scalingEfficiencyPct": 101.6,
+  "capacityScalingEfficiencyPct": 100.0,
+  "ocrDp1Rpm": 1383.3,
+  "ocrDp2Rpm": 2643.9,
+  "ocrDp1P50s": 0.608,
+  "ocrDp2P50s": 0.622,
+  "ocrSpeedup": 1.91,
+  "cap32": {
+    "users": 640,
+    "ttftP95": 5.746,
+    "speedP5": 160.01,
+    "tps": 10210.1
+  },
+  "cap256": {
+    "users": 640,
+    "ttftP95": 1.64,
+    "speedP5": 48.41,
+    "tps": 27371.3
+  },
+  "mixBalance": {
+    "gpu0Pct": 49.4,
+    "gpu1Pct": 50.6,
+    "shortGpu0Pct": 49.9,
+    "shortGpu1Pct": 50.1
+  },
+  "failoverCutSec": 14,
+  "failoverErrorsAtCut": 80,
+  "failoverErrorsAfterCut": 0,
+  "table": [
+    {
+      "config": "1 GPU · Sequential (max-num-seqs=1)",
+      "gpus": 1,
+      "cap": 1,
+      "stdUsers": 4,
+      "fastUsers": 4,
+      "peakTps": "209",
+      "ttftP95": "1.750 s",
+      "efficiency": "Baseline"
+    },
+    {
+      "config": "1 GPU · Continuous Batching (max-num-seqs=256)",
+      "gpus": 1,
+      "cap": 256,
+      "stdUsers": 320,
+      "fastUsers": 128,
+      "peakTps": "14,050",
+      "ttftP95": "1.298 s",
+      "efficiency": "100% (1 GPU ref)"
+    },
+    {
+      "config": "2 GPUs · Data Parallelism + NGINX least_conn (NGINX least_conn)",
+      "gpus": 2,
+      "cap": 256,
+      "stdUsers": 640,
+      "fastUsers": 257,
+      "peakTps": "28,541",
+      "ttftP95": "1.547 s",
+      "efficiency": "101.6% (Throughput) / 100.0% (Users)"
+    }
+  ]
+}

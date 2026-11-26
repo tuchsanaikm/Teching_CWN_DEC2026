@@ -1,0 +1,22 @@
+[11:23:59] coordinator listening on :29500, waiting for 2 workers (synchronous)
+[11:24:09] worker 0 connected from 127.0.0.1 (start step 0)
+[11:24:13] worker 1 connected from 203.0.113.10 (start step 0)
+[11:26:29] progress: step 34/500 loss 0.0875 ~4.00s/step ETA 31.1 min
+[11:28:59] progress: step 75/500 loss 0.0683 ~3.85s/step ETA 27.3 min
+[11:31:29] progress: step 109/500 loss 0.0811 ~4.02s/step ETA 26.2 min
+[11:33:59] progress: step 147/500 loss 0.0630 ~4.01s/step ETA 23.6 min
+[11:39:20] coordinator listening on :29500, waiting for 2 workers (synchronous)
+[11:39:39] worker 0 connected from 127.0.0.1 (start step 150)
+[11:39:45] worker 1 connected from 203.0.113.10 (start step 150)
+[11:41:50] progress: step 160/500 loss 0.0868 ~12.91s/step ETA 73.2 min
+[11:44:20] progress: step 220/500 loss 0.0468 ~3.98s/step ETA 18.6 min
+[11:45:24] epoch 1 LoRA weight check: identical=True max_abs_diff=0
+[11:46:50] progress: step 294/500 loss 0.0453 ~2.98s/step ETA 10.2 min
+[11:49:20] progress: step 360/500 loss 0.0291 ~2.75s/step ETA 6.4 min
+[11:51:50] progress: step 408/500 loss 0.0276 ~2.82s/step ETA 4.3 min
+[11:54:20] progress: step 467/500 loss 0.0110 ~2.77s/step ETA 1.5 min
+[11:56:50] progress: step 497/500 loss 0.0180 ~2.96s/step ETA 0.1 min
+[11:57:15] epoch 2 LoRA weight check: identical=True max_abs_diff=0
+[11:57:15] worker 0 finished
+[11:57:15] worker 1 finished
+[11:57:15] all workers finished, coordinator exits

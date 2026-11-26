@@ -1,0 +1,3369 @@
+{
+  "name": "rr_equal",
+  "mode": "capacity",
+  "started_utc": "2026-11-23T23:38:08+00:00",
+  "finished": true,
+  "config": {
+    "url": "http://127.0.0.1:8080/v1/detect",
+    "images": [
+      "sample-1.jpg",
+      "sample-2.jpg",
+      "sample-3.jpg",
+      "sample-4.jpg",
+      "sample-5.jpg",
+      "sample-6.jpg"
+    ],
+    "timeout_s": 10.0,
+    "level_seconds": 20.0,
+    "warmup_s": 5.0,
+    "pass_rule": {
+      "p95_ms_max": 500.0,
+      "error_pct_below": 1.0
+    },
+    "ladder": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ]
+  },
+  "system": {
+    "servers": {
+      "gpu0-8101": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu0-8102": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu0-8103": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu0-8104": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu1-8201": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu1-8202": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu1-8203": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      },
+      "gpu1-8204": {
+        "mode": "micro",
+        "max_batch": 32,
+        "max_wait_ms": 5.0,
+        "device": "cuda:0",
+        "imgsz": 640,
+        "slowdown": 1.0
+      }
+    },
+    "gpus": [
+      "NVIDIA GeForce RTX 3090",
+      "NVIDIA GeForce RTX 3090"
+    ],
+    "cpu_count": 64
+  },
+  "levels": [
+    {
+      "users": 1,
+      "pass": true,
+      "throughput_rps": 31.27,
+      "latency_ms": {
+        "p50": 31.5,
+        "p95": 36.4,
+        "p99": 37.1,
+        "mean": 31.9,
+        "max": 37.6
+      },
+      "requests": 469,
+      "ok": 469,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        5.5,
+        5.6
+      ],
+      "cpu_pct": {
+        "server": 84.9,
+        "nginx": 0.9,
+        "loadgen": 1.3
+      },
+      "model": {
+        "requests": 469,
+        "queue_ms_mean": 5.21,
+        "queue_ms_p95": 5.25,
+        "model_ms_mean": 18.34,
+        "model_ms_p95": 19.74,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 59,
+          "queue_ms_mean": 5.21,
+          "queue_ms_p95": 5.26,
+          "model_ms_mean": 17.8,
+          "model_ms_p95": 19.36,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.6
+        },
+        "gpu0-8102": {
+          "requests": 59,
+          "queue_ms_mean": 5.23,
+          "queue_ms_p95": 5.24,
+          "model_ms_mean": 18.79,
+          "model_ms_p95": 19.25,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.6
+        },
+        "gpu0-8103": {
+          "requests": 58,
+          "queue_ms_mean": 5.22,
+          "queue_ms_p95": 5.24,
+          "model_ms_mean": 18.14,
+          "model_ms_p95": 20.07,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.4
+        },
+        "gpu0-8104": {
+          "requests": 58,
+          "queue_ms_mean": 5.22,
+          "queue_ms_p95": 5.24,
+          "model_ms_mean": 18.68,
+          "model_ms_p95": 19.29,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.4
+        },
+        "gpu1-8201": {
+          "requests": 59,
+          "queue_ms_mean": 5.22,
+          "queue_ms_p95": 5.28,
+          "model_ms_mean": 16.7,
+          "model_ms_p95": 19.51,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.6
+        },
+        "gpu1-8202": {
+          "requests": 59,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.21,
+          "model_ms_mean": 19.44,
+          "model_ms_p95": 19.89,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.6
+        },
+        "gpu1-8203": {
+          "requests": 58,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.21,
+          "model_ms_mean": 19.35,
+          "model_ms_p95": 19.96,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.4
+        },
+        "gpu1-8204": {
+          "requests": 59,
+          "queue_ms_mean": 5.21,
+          "queue_ms_p95": 5.26,
+          "model_ms_mean": 17.8,
+          "model_ms_p95": 19.28,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.6
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 624,
+        "warmup": 155,
+        "measured": 469,
+        "ok_total": 624,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 2,
+      "pass": true,
+      "throughput_rps": 62.4,
+      "latency_ms": {
+        "p50": 31.6,
+        "p95": 36.4,
+        "p99": 37.4,
+        "mean": 31.9,
+        "max": 39.1
+      },
+      "requests": 936,
+      "ok": 936,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        11.1,
+        11.3
+      ],
+      "cpu_pct": {
+        "server": 168.1,
+        "nginx": 1.8,
+        "loadgen": 2.5
+      },
+      "model": {
+        "requests": 936,
+        "queue_ms_mean": 5.18,
+        "queue_ms_p95": 5.22,
+        "model_ms_mean": 18.42,
+        "model_ms_p95": 19.88,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.21,
+          "model_ms_mean": 18.84,
+          "model_ms_p95": 19.88,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 117,
+          "queue_ms_mean": 5.16,
+          "queue_ms_p95": 5.21,
+          "model_ms_mean": 18.75,
+          "model_ms_p95": 19.57,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 117,
+          "queue_ms_mean": 5.24,
+          "queue_ms_p95": 5.6,
+          "model_ms_mean": 17.51,
+          "model_ms_p95": 19.58,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.2,
+          "model_ms_mean": 18.1,
+          "model_ms_p95": 19.51,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.2,
+          "model_ms_mean": 18.02,
+          "model_ms_p95": 19.72,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.22,
+          "model_ms_mean": 18.82,
+          "model_ms_p95": 19.67,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.19,
+          "model_ms_mean": 18.38,
+          "model_ms_p95": 19.8,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 117,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.21,
+          "model_ms_mean": 18.93,
+          "model_ms_p95": 20.06,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 1228,
+        "warmup": 292,
+        "measured": 936,
+        "ok_total": 1228,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 4,
+      "pass": true,
+      "throughput_rps": 124.73,
+      "latency_ms": {
+        "p50": 31.9,
+        "p95": 37.2,
+        "p99": 38.8,
+        "mean": 31.9,
+        "max": 43.8
+      },
+      "requests": 1871,
+      "ok": 1871,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        43.5,
+        38.4
+      ],
+      "cpu_pct": {
+        "server": 336.1,
+        "nginx": 3.5,
+        "loadgen": 4.9
+      },
+      "model": {
+        "requests": 1871,
+        "queue_ms_mean": 5.15,
+        "queue_ms_p95": 5.18,
+        "model_ms_mean": 18.2,
+        "model_ms_p95": 20.44,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 234,
+          "queue_ms_mean": 5.15,
+          "queue_ms_p95": 5.18,
+          "model_ms_mean": 18.99,
+          "model_ms_p95": 21.19,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 234,
+          "queue_ms_mean": 5.16,
+          "queue_ms_p95": 5.2,
+          "model_ms_mean": 19.09,
+          "model_ms_p95": 20.64,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 234,
+          "queue_ms_mean": 5.15,
+          "queue_ms_p95": 5.18,
+          "model_ms_mean": 17.95,
+          "model_ms_p95": 20.07,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 234,
+          "queue_ms_mean": 5.16,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 18.79,
+          "model_ms_p95": 20.09,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 234,
+          "queue_ms_mean": 5.14,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 17.27,
+          "model_ms_p95": 19.71,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 234,
+          "queue_ms_mean": 5.15,
+          "queue_ms_p95": 5.18,
+          "model_ms_mean": 17.71,
+          "model_ms_p95": 20.33,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 233,
+          "queue_ms_mean": 5.15,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 16.81,
+          "model_ms_p95": 20.33,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 234,
+          "queue_ms_mean": 5.15,
+          "queue_ms_p95": 5.19,
+          "model_ms_mean": 19.01,
+          "model_ms_p95": 20.64,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 2435,
+        "warmup": 564,
+        "measured": 1871,
+        "ok_total": 2435,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 8,
+      "pass": true,
+      "throughput_rps": 246.67,
+      "latency_ms": {
+        "p50": 31.9,
+        "p95": 39.9,
+        "p99": 42.9,
+        "mean": 32.3,
+        "max": 49.5
+      },
+      "requests": 3700,
+      "ok": 3700,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        65.3,
+        65.0
+      ],
+      "cpu_pct": {
+        "server": 649.0,
+        "nginx": 6.0,
+        "loadgen": 9.1
+      },
+      "model": {
+        "requests": 3700,
+        "queue_ms_mean": 5.17,
+        "queue_ms_p95": 5.17,
+        "model_ms_mean": 17.42,
+        "model_ms_p95": 21.57,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 463,
+          "queue_ms_mean": 5.14,
+          "queue_ms_p95": 5.16,
+          "model_ms_mean": 17.22,
+          "model_ms_p95": 20.57,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 463,
+          "queue_ms_mean": 5.18,
+          "queue_ms_p95": 5.18,
+          "model_ms_mean": 17.63,
+          "model_ms_p95": 21.66,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 462,
+          "queue_ms_mean": 5.17,
+          "queue_ms_p95": 5.18,
+          "model_ms_mean": 17.57,
+          "model_ms_p95": 21.72,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 462,
+          "queue_ms_mean": 5.19,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 17.81,
+          "model_ms_p95": 22.22,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 463,
+          "queue_ms_mean": 5.16,
+          "queue_ms_p95": 5.16,
+          "model_ms_mean": 16.85,
+          "model_ms_p95": 20.43,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 462,
+          "queue_ms_mean": 5.18,
+          "queue_ms_p95": 5.16,
+          "model_ms_mean": 17.68,
+          "model_ms_p95": 22.01,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 462,
+          "queue_ms_mean": 5.16,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 17.81,
+          "model_ms_p95": 21.37,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 463,
+          "queue_ms_mean": 5.19,
+          "queue_ms_p95": 5.17,
+          "model_ms_mean": 16.81,
+          "model_ms_p95": 21.38,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 4813,
+        "warmup": 1113,
+        "measured": 3700,
+        "ok_total": 4813,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 16,
+      "pass": true,
+      "throughput_rps": 382.33,
+      "latency_ms": {
+        "p50": 41.6,
+        "p95": 53.6,
+        "p99": 62.1,
+        "mean": 41.7,
+        "max": 78.9
+      },
+      "requests": 5735,
+      "ok": 5735,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        78.6,
+        78.1
+      ],
+      "cpu_pct": {
+        "server": 862.3,
+        "nginx": 9.7,
+        "loadgen": 13.4
+      },
+      "model": {
+        "requests": 5735,
+        "queue_ms_mean": 15.15,
+        "queue_ms_p95": 22.21,
+        "model_ms_mean": 16.51,
+        "model_ms_p95": 22.81,
+        "batch_mean_per_call": 1.09,
+        "batch_mean_per_request": 1.17,
+        "batch_max": 2
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 717,
+          "queue_ms_mean": 15.33,
+          "queue_ms_p95": 21.81,
+          "model_ms_mean": 16.12,
+          "model_ms_p95": 21.77,
+          "batch_mean_per_call": 1.07,
+          "batch_mean_per_request": 1.14,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 717,
+          "queue_ms_mean": 15.18,
+          "queue_ms_p95": 22.1,
+          "model_ms_mean": 16.47,
+          "model_ms_p95": 22.41,
+          "batch_mean_per_call": 1.08,
+          "batch_mean_per_request": 1.15,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 717,
+          "queue_ms_mean": 15.6,
+          "queue_ms_p95": 22.65,
+          "model_ms_mean": 16.65,
+          "model_ms_p95": 22.89,
+          "batch_mean_per_call": 1.1,
+          "batch_mean_per_request": 1.18,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 717,
+          "queue_ms_mean": 14.51,
+          "queue_ms_p95": 21.65,
+          "model_ms_mean": 16.39,
+          "model_ms_p95": 22.34,
+          "batch_mean_per_call": 1.1,
+          "batch_mean_per_request": 1.18,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 716,
+          "queue_ms_mean": 15.11,
+          "queue_ms_p95": 22.34,
+          "model_ms_mean": 16.56,
+          "model_ms_p95": 22.71,
+          "batch_mean_per_call": 1.09,
+          "batch_mean_per_request": 1.17,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 717,
+          "queue_ms_mean": 15.45,
+          "queue_ms_p95": 21.72,
+          "model_ms_mean": 16.17,
+          "model_ms_p95": 21.99,
+          "batch_mean_per_call": 1.08,
+          "batch_mean_per_request": 1.15,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 717,
+          "queue_ms_mean": 14.74,
+          "queue_ms_p95": 21.96,
+          "model_ms_mean": 16.41,
+          "model_ms_p95": 22.89,
+          "batch_mean_per_call": 1.09,
+          "batch_mean_per_request": 1.16,
+          "batch_max": 2,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 717,
+          "queue_ms_mean": 15.25,
+          "queue_ms_p95": 23.02,
+          "model_ms_mean": 17.31,
+          "model_ms_p95": 24.7,
+          "batch_mean_per_call": 1.13,
+          "batch_mean_per_request": 1.23,
+          "batch_max": 2,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 7493,
+        "warmup": 1758,
+        "measured": 5735,
+        "ok_total": 7493,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 32,
+      "pass": true,
+      "throughput_rps": 497.87,
+      "latency_ms": {
+        "p50": 64.5,
+        "p95": 82.7,
+        "p99": 95.4,
+        "mean": 64.2,
+        "max": 137.5
+      },
+      "requests": 7468,
+      "ok": 7468,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        84.0,
+        82.8
+      ],
+      "cpu_pct": {
+        "server": 966.3,
+        "nginx": 12.0,
+        "loadgen": 15.8
+      },
+      "model": {
+        "requests": 7468,
+        "queue_ms_mean": 22.61,
+        "queue_ms_p95": 36.23,
+        "model_ms_mean": 28.05,
+        "model_ms_p95": 36.1,
+        "batch_mean_per_call": 2.19,
+        "batch_mean_per_request": 2.33,
+        "batch_max": 5
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 933,
+          "queue_ms_mean": 23.36,
+          "queue_ms_p95": 37.04,
+          "model_ms_mean": 28.87,
+          "model_ms_p95": 38.55,
+          "batch_mean_per_call": 2.24,
+          "batch_mean_per_request": 2.39,
+          "batch_max": 5,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 934,
+          "queue_ms_mean": 23.12,
+          "queue_ms_p95": 36.59,
+          "model_ms_mean": 28.75,
+          "model_ms_p95": 36.49,
+          "batch_mean_per_call": 2.23,
+          "batch_mean_per_request": 2.35,
+          "batch_max": 4,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 934,
+          "queue_ms_mean": 23.14,
+          "queue_ms_p95": 37.58,
+          "model_ms_mean": 28.74,
+          "model_ms_p95": 37.22,
+          "batch_mean_per_call": 2.24,
+          "batch_mean_per_request": 2.36,
+          "batch_max": 4,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 933,
+          "queue_ms_mean": 23.47,
+          "queue_ms_p95": 37.07,
+          "model_ms_mean": 28.81,
+          "model_ms_p95": 36.31,
+          "batch_mean_per_call": 2.24,
+          "batch_mean_per_request": 2.38,
+          "batch_max": 4,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 934,
+          "queue_ms_mean": 21.78,
+          "queue_ms_p95": 35.29,
+          "model_ms_mean": 27.02,
+          "model_ms_p95": 35.25,
+          "batch_mean_per_call": 2.15,
+          "batch_mean_per_request": 2.28,
+          "batch_max": 4,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 934,
+          "queue_ms_mean": 22.09,
+          "queue_ms_p95": 35.31,
+          "model_ms_mean": 27.38,
+          "model_ms_p95": 34.91,
+          "batch_mean_per_call": 2.14,
+          "batch_mean_per_request": 2.3,
+          "batch_max": 4,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 933,
+          "queue_ms_mean": 22.21,
+          "queue_ms_p95": 35.59,
+          "model_ms_mean": 27.5,
+          "model_ms_p95": 35.16,
+          "batch_mean_per_call": 2.15,
+          "batch_mean_per_request": 2.3,
+          "batch_max": 5,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 933,
+          "queue_ms_mean": 21.71,
+          "queue_ms_p95": 35.02,
+          "model_ms_mean": 27.32,
+          "model_ms_p95": 35.57,
+          "batch_mean_per_call": 2.14,
+          "batch_mean_per_request": 2.3,
+          "batch_max": 4,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 9819,
+        "warmup": 2351,
+        "measured": 7468,
+        "ok_total": 9819,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 64,
+      "pass": true,
+      "throughput_rps": 550.6,
+      "latency_ms": {
+        "p50": 115.6,
+        "p95": 144.8,
+        "p99": 172.9,
+        "mean": 115.9,
+        "max": 271.4
+      },
+      "requests": 8259,
+      "ok": 8259,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        84.3,
+        83.3
+      ],
+      "cpu_pct": {
+        "server": 1033.9,
+        "nginx": 14.3,
+        "loadgen": 17.5
+      },
+      "model": {
+        "requests": 8259,
+        "queue_ms_mean": 40.31,
+        "queue_ms_p95": 63.71,
+        "model_ms_mean": 54.57,
+        "model_ms_p95": 61.71,
+        "batch_mean_per_call": 4.48,
+        "batch_mean_per_request": 4.61,
+        "batch_max": 9
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1033,
+          "queue_ms_mean": 41.69,
+          "queue_ms_p95": 65.9,
+          "model_ms_mean": 56.12,
+          "model_ms_p95": 67.01,
+          "batch_mean_per_call": 4.62,
+          "batch_mean_per_request": 4.7,
+          "batch_max": 7,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1033,
+          "queue_ms_mean": 41.93,
+          "queue_ms_p95": 65.18,
+          "model_ms_mean": 55.53,
+          "model_ms_p95": 64.67,
+          "batch_mean_per_call": 4.62,
+          "batch_mean_per_request": 4.71,
+          "batch_max": 9,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1032,
+          "queue_ms_mean": 41.77,
+          "queue_ms_p95": 64.77,
+          "model_ms_mean": 56.16,
+          "model_ms_p95": 66.64,
+          "batch_mean_per_call": 4.62,
+          "batch_mean_per_request": 4.7,
+          "batch_max": 7,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1032,
+          "queue_ms_mean": 41.92,
+          "queue_ms_p95": 66.06,
+          "model_ms_mean": 55.8,
+          "model_ms_p95": 66.06,
+          "batch_mean_per_call": 4.62,
+          "batch_mean_per_request": 4.7,
+          "batch_max": 8,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1033,
+          "queue_ms_mean": 39.1,
+          "queue_ms_p95": 62.69,
+          "model_ms_mean": 53.25,
+          "model_ms_p95": 59.92,
+          "batch_mean_per_call": 4.36,
+          "batch_mean_per_request": 4.52,
+          "batch_max": 6,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1032,
+          "queue_ms_mean": 38.59,
+          "queue_ms_p95": 62.01,
+          "model_ms_mean": 53.37,
+          "model_ms_p95": 60.33,
+          "batch_mean_per_call": 4.35,
+          "batch_mean_per_request": 4.51,
+          "batch_max": 5,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1032,
+          "queue_ms_mean": 38.98,
+          "queue_ms_p95": 62.52,
+          "model_ms_mean": 53.26,
+          "model_ms_p95": 60.04,
+          "batch_mean_per_call": 4.37,
+          "batch_mean_per_request": 4.53,
+          "batch_max": 6,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1032,
+          "queue_ms_mean": 38.49,
+          "queue_ms_p95": 62.57,
+          "model_ms_mean": 53.04,
+          "model_ms_p95": 59.77,
+          "batch_mean_per_call": 4.34,
+          "batch_mean_per_request": 4.49,
+          "batch_max": 6,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 10917,
+        "warmup": 2658,
+        "measured": 8259,
+        "ok_total": 10917,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 1,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 128,
+      "pass": true,
+      "throughput_rps": 572.73,
+      "latency_ms": {
+        "p50": 219.3,
+        "p95": 305.0,
+        "p99": 413.9,
+        "mean": 223.7,
+        "max": 587.1
+      },
+      "requests": 8591,
+      "ok": 8591,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        81.1,
+        80.2
+      ],
+      "cpu_pct": {
+        "server": 1046.3,
+        "nginx": 14.1,
+        "loadgen": 20.1
+      },
+      "model": {
+        "requests": 8591,
+        "queue_ms_mean": 77.98,
+        "queue_ms_p95": 125.07,
+        "model_ms_mean": 106.92,
+        "model_ms_p95": 138.47,
+        "batch_mean_per_call": 8.62,
+        "batch_mean_per_request": 9.17,
+        "batch_max": 25
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1074,
+          "queue_ms_mean": 69.8,
+          "queue_ms_p95": 119.82,
+          "model_ms_mean": 103.3,
+          "model_ms_p95": 128.72,
+          "batch_mean_per_call": 8.23,
+          "batch_mean_per_request": 8.89,
+          "batch_max": 25,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1074,
+          "queue_ms_mean": 68.29,
+          "queue_ms_p95": 118.03,
+          "model_ms_mean": 100.33,
+          "model_ms_p95": 122.83,
+          "batch_mean_per_call": 8.1,
+          "batch_mean_per_request": 8.76,
+          "batch_max": 23,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1074,
+          "queue_ms_mean": 68.87,
+          "queue_ms_p95": 119.24,
+          "model_ms_mean": 99.81,
+          "model_ms_p95": 118.44,
+          "batch_mean_per_call": 8.11,
+          "batch_mean_per_request": 8.66,
+          "batch_max": 19,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1074,
+          "queue_ms_mean": 67.46,
+          "queue_ms_p95": 116.91,
+          "model_ms_mean": 99.58,
+          "model_ms_p95": 122.01,
+          "batch_mean_per_call": 7.99,
+          "batch_mean_per_request": 8.48,
+          "batch_max": 19,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1074,
+          "queue_ms_mean": 87.0,
+          "queue_ms_p95": 132.75,
+          "model_ms_mean": 111.83,
+          "model_ms_p95": 140.75,
+          "batch_mean_per_call": 9.18,
+          "batch_mean_per_request": 9.47,
+          "batch_max": 16,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1074,
+          "queue_ms_mean": 87.31,
+          "queue_ms_p95": 134.58,
+          "model_ms_mean": 112.86,
+          "model_ms_p95": 139.13,
+          "batch_mean_per_call": 9.26,
+          "batch_mean_per_request": 9.64,
+          "batch_max": 22,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1074,
+          "queue_ms_mean": 88.79,
+          "queue_ms_p95": 134.59,
+          "model_ms_mean": 114.99,
+          "model_ms_p95": 146.05,
+          "batch_mean_per_call": 9.26,
+          "batch_mean_per_request": 9.93,
+          "batch_max": 24,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1073,
+          "queue_ms_mean": 86.31,
+          "queue_ms_p95": 132.49,
+          "model_ms_mean": 112.64,
+          "model_ms_p95": 144.94,
+          "batch_mean_per_call": 9.09,
+          "batch_mean_per_request": 9.54,
+          "batch_max": 18,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11475,
+        "warmup": 2884,
+        "measured": 8591,
+        "ok_total": 11475,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 2,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 256,
+      "pass": false,
+      "throughput_rps": 592.6,
+      "latency_ms": {
+        "p50": 427.6,
+        "p95": 558.2,
+        "p99": 679.6,
+        "mean": 431.3,
+        "max": 799.9
+      },
+      "requests": 8889,
+      "ok": 8889,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        82.9,
+        78.0
+      ],
+      "cpu_pct": {
+        "server": 1071.9,
+        "nginx": 14.4,
+        "loadgen": 22.8
+      },
+      "model": {
+        "requests": 8889,
+        "queue_ms_mean": 148.02,
+        "queue_ms_p95": 232.52,
+        "model_ms_mean": 216.24,
+        "model_ms_p95": 256.81,
+        "batch_mean_per_call": 17.92,
+        "batch_mean_per_request": 18.49,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1111,
+          "queue_ms_mean": 149.84,
+          "queue_ms_p95": 228.22,
+          "model_ms_mean": 216.71,
+          "model_ms_p95": 280.72,
+          "batch_mean_per_call": 17.63,
+          "batch_mean_per_request": 18.33,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1112,
+          "queue_ms_mean": 152.67,
+          "queue_ms_p95": 235.66,
+          "model_ms_mean": 218.81,
+          "model_ms_p95": 256.27,
+          "batch_mean_per_call": 18.23,
+          "batch_mean_per_request": 18.76,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1111,
+          "queue_ms_mean": 148.89,
+          "queue_ms_p95": 231.76,
+          "model_ms_mean": 213.93,
+          "model_ms_p95": 254.12,
+          "batch_mean_per_call": 17.63,
+          "batch_mean_per_request": 18.23,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1111,
+          "queue_ms_mean": 147.45,
+          "queue_ms_p95": 222.86,
+          "model_ms_mean": 213.7,
+          "model_ms_p95": 256.81,
+          "batch_mean_per_call": 17.63,
+          "batch_mean_per_request": 18.14,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1111,
+          "queue_ms_mean": 141.95,
+          "queue_ms_p95": 229.74,
+          "model_ms_mean": 213.46,
+          "model_ms_p95": 255.63,
+          "batch_mean_per_call": 17.51,
+          "batch_mean_per_request": 18.25,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1111,
+          "queue_ms_mean": 147.59,
+          "queue_ms_p95": 240.31,
+          "model_ms_mean": 221.88,
+          "model_ms_p95": 283.72,
+          "batch_mean_per_call": 18.36,
+          "batch_mean_per_request": 18.84,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1111,
+          "queue_ms_mean": 145.6,
+          "queue_ms_p95": 234.5,
+          "model_ms_mean": 212.33,
+          "model_ms_p95": 247.23,
+          "batch_mean_per_call": 18.07,
+          "batch_mean_per_request": 18.61,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1111,
+          "queue_ms_mean": 150.17,
+          "queue_ms_p95": 238.44,
+          "model_ms_mean": 219.09,
+          "model_ms_p95": 259.5,
+          "batch_mean_per_call": 18.36,
+          "batch_mean_per_request": 18.76,
+          "batch_max": 31,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11979,
+        "warmup": 3090,
+        "measured": 8889,
+        "ok_total": 11979,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 256,
+      "pass": false,
+      "throughput_rps": 600.87,
+      "latency_ms": {
+        "p50": 423.0,
+        "p95": 608.7,
+        "p99": 690.8,
+        "mean": 427.2,
+        "max": 783.9
+      },
+      "requests": 9015,
+      "ok": 9015,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        81.5,
+        87.2
+      ],
+      "cpu_pct": {
+        "server": 1070.4,
+        "nginx": 14.0,
+        "loadgen": 22.1
+      },
+      "model": {
+        "requests": 9015,
+        "queue_ms_mean": 146.39,
+        "queue_ms_p95": 231.73,
+        "model_ms_mean": 212.89,
+        "model_ms_p95": 257.48,
+        "batch_mean_per_call": 17.76,
+        "batch_mean_per_request": 18.71,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1127,
+          "queue_ms_mean": 140.29,
+          "queue_ms_p95": 224.25,
+          "model_ms_mean": 203.48,
+          "model_ms_p95": 276.36,
+          "batch_mean_per_call": 16.46,
+          "batch_mean_per_request": 18.31,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1127,
+          "queue_ms_mean": 161.46,
+          "queue_ms_p95": 278.58,
+          "model_ms_mean": 222.63,
+          "model_ms_p95": 297.71,
+          "batch_mean_per_call": 18.96,
+          "batch_mean_per_request": 19.83,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1126,
+          "queue_ms_mean": 158.22,
+          "queue_ms_p95": 257.46,
+          "model_ms_mean": 218.97,
+          "model_ms_p95": 292.02,
+          "batch_mean_per_call": 18.63,
+          "batch_mean_per_request": 19.33,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1127,
+          "queue_ms_mean": 136.74,
+          "queue_ms_p95": 220.19,
+          "model_ms_mean": 202.51,
+          "model_ms_p95": 239.32,
+          "batch_mean_per_call": 16.7,
+          "batch_mean_per_request": 18.39,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1127,
+          "queue_ms_mean": 143.64,
+          "queue_ms_p95": 229.7,
+          "model_ms_mean": 214.38,
+          "model_ms_p95": 249.19,
+          "batch_mean_per_call": 17.9,
+          "batch_mean_per_request": 18.47,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1127,
+          "queue_ms_mean": 143.11,
+          "queue_ms_p95": 230.31,
+          "model_ms_mean": 213.87,
+          "model_ms_p95": 248.36,
+          "batch_mean_per_call": 17.9,
+          "batch_mean_per_request": 18.49,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1127,
+          "queue_ms_mean": 142.41,
+          "queue_ms_p95": 224.68,
+          "model_ms_mean": 215.37,
+          "model_ms_p95": 259.41,
+          "batch_mean_per_call": 17.89,
+          "batch_mean_per_request": 18.35,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1127,
+          "queue_ms_mean": 145.24,
+          "queue_ms_p95": 222.58,
+          "model_ms_mean": 211.93,
+          "model_ms_p95": 236.97,
+          "batch_mean_per_call": 17.89,
+          "batch_mean_per_request": 18.48,
+          "batch_max": 32,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 12064,
+        "warmup": 3049,
+        "measured": 9015,
+        "ok_total": 12064,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 2
+    },
+    {
+      "users": 512,
+      "pass": false,
+      "throughput_rps": 596.67,
+      "latency_ms": {
+        "p50": 850.1,
+        "p95": 1132.5,
+        "p99": 1255.6,
+        "mean": 853.1,
+        "max": 1364.3
+      },
+      "requests": 8950,
+      "ok": 8950,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        76.0,
+        80.9
+      ],
+      "cpu_pct": {
+        "server": 1085.6,
+        "nginx": 14.0,
+        "loadgen": 22.7
+      },
+      "model": {
+        "requests": 8950,
+        "queue_ms_mean": 356.81,
+        "queue_ms_p95": 628.77,
+        "model_ms_mean": 388.55,
+        "model_ms_p95": 460.05,
+        "batch_mean_per_call": 31.08,
+        "batch_mean_per_request": 31.56,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1119,
+          "queue_ms_mean": 368.56,
+          "queue_ms_p95": 640.78,
+          "model_ms_mean": 386.87,
+          "model_ms_p95": 441.62,
+          "batch_mean_per_call": 31.72,
+          "batch_mean_per_request": 31.79,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1119,
+          "queue_ms_mean": 340.9,
+          "queue_ms_p95": 589.9,
+          "model_ms_mean": 389.17,
+          "model_ms_p95": 460.05,
+          "batch_mean_per_call": 31.52,
+          "batch_mean_per_request": 31.58,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1119,
+          "queue_ms_mean": 445.68,
+          "queue_ms_p95": 709.9,
+          "model_ms_mean": 387.78,
+          "model_ms_p95": 445.12,
+          "batch_mean_per_call": 31.14,
+          "batch_mean_per_request": 31.97,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1118,
+          "queue_ms_mean": 335.26,
+          "queue_ms_p95": 597.65,
+          "model_ms_mean": 384.53,
+          "model_ms_p95": 445.74,
+          "batch_mean_per_call": 30.81,
+          "batch_mean_per_request": 31.2,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1119,
+          "queue_ms_mean": 319.91,
+          "queue_ms_p95": 594.79,
+          "model_ms_mean": 383.81,
+          "model_ms_p95": 523.72,
+          "batch_mean_per_call": 30.55,
+          "batch_mean_per_request": 31.12,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1119,
+          "queue_ms_mean": 387.23,
+          "queue_ms_p95": 639.54,
+          "model_ms_mean": 397.93,
+          "model_ms_p95": 594.63,
+          "batch_mean_per_call": 31.41,
+          "batch_mean_per_request": 31.79,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1119,
+          "queue_ms_mean": 310.78,
+          "queue_ms_p95": 584.58,
+          "model_ms_mean": 386.25,
+          "model_ms_p95": 434.95,
+          "batch_mean_per_call": 30.45,
+          "batch_mean_per_request": 31.15,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1118,
+          "queue_ms_mean": 346.13,
+          "queue_ms_p95": 658.71,
+          "model_ms_mean": 392.1,
+          "model_ms_p95": 680.45,
+          "batch_mean_per_call": 31.06,
+          "batch_mean_per_request": 31.89,
+          "batch_max": 32,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 12289,
+        "warmup": 3339,
+        "measured": 8950,
+        "ok_total": 12289,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 8,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 1
+    },
+    {
+      "users": 512,
+      "pass": false,
+      "throughput_rps": 594.27,
+      "latency_ms": {
+        "p50": 843.9,
+        "p95": 1242.8,
+        "p99": 1500.7,
+        "mean": 856.7,
+        "max": 1778.2
+      },
+      "requests": 8914,
+      "ok": 8914,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        87.2,
+        80.1
+      ],
+      "cpu_pct": {
+        "server": 1078.3,
+        "nginx": 14.1,
+        "loadgen": 22.9
+      },
+      "model": {
+        "requests": 8914,
+        "queue_ms_mean": 364.71,
+        "queue_ms_p95": 748.12,
+        "model_ms_mean": 386.09,
+        "model_ms_p95": 426.89,
+        "batch_mean_per_call": 31.22,
+        "batch_mean_per_request": 31.48,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1115,
+          "queue_ms_mean": 389.94,
+          "queue_ms_p95": 665.64,
+          "model_ms_mean": 399.41,
+          "model_ms_p95": 431.18,
+          "batch_mean_per_call": 31.72,
+          "batch_mean_per_request": 31.8,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1114,
+          "queue_ms_mean": 387.14,
+          "queue_ms_p95": 660.48,
+          "model_ms_mean": 397.8,
+          "model_ms_p95": 428.8,
+          "batch_mean_per_call": 31.69,
+          "batch_mean_per_request": 31.79,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1114,
+          "queue_ms_mean": 615.56,
+          "queue_ms_p95": 1039.7,
+          "model_ms_mean": 384.38,
+          "model_ms_p95": 433.67,
+          "batch_mean_per_call": 31.91,
+          "batch_mean_per_request": 31.92,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1114,
+          "queue_ms_mean": 391.04,
+          "queue_ms_p95": 660.49,
+          "model_ms_mean": 395.32,
+          "model_ms_p95": 429.14,
+          "batch_mean_per_call": 31.69,
+          "batch_mean_per_request": 31.79,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1114,
+          "queue_ms_mean": 250.31,
+          "queue_ms_p95": 410.16,
+          "model_ms_mean": 378.96,
+          "model_ms_p95": 414.11,
+          "batch_mean_per_call": 30.94,
+          "batch_mean_per_request": 31.09,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1114,
+          "queue_ms_mean": 343.87,
+          "queue_ms_p95": 736.33,
+          "model_ms_mean": 369.84,
+          "model_ms_p95": 413.57,
+          "batch_mean_per_call": 30.81,
+          "batch_mean_per_request": 31.22,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1114,
+          "queue_ms_mean": 253.24,
+          "queue_ms_p95": 436.09,
+          "model_ms_mean": 384.05,
+          "model_ms_p95": 415.25,
+          "batch_mean_per_call": 30.11,
+          "batch_mean_per_request": 31.03,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1115,
+          "queue_ms_mean": 286.67,
+          "queue_ms_p95": 639.62,
+          "model_ms_mean": 378.98,
+          "model_ms_p95": 515.08,
+          "batch_mean_per_call": 30.97,
+          "batch_mean_per_request": 31.22,
+          "batch_max": 32,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 12154,
+        "warmup": 3240,
+        "measured": 8914,
+        "ok_total": 12154,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 8,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "range",
+      "attempt": 2
+    },
+    {
+      "users": 227,
+      "pass": false,
+      "throughput_rps": 591.27,
+      "latency_ms": {
+        "p50": 381.8,
+        "p95": 502.3,
+        "p99": 629.8,
+        "mean": 382.0,
+        "max": 797.9
+      },
+      "requests": 8869,
+      "ok": 8869,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        82.8,
+        83.6
+      ],
+      "cpu_pct": {
+        "server": 1055.4,
+        "nginx": 13.8,
+        "loadgen": 21.8
+      },
+      "model": {
+        "requests": 8869,
+        "queue_ms_mean": 129.96,
+        "queue_ms_p95": 206.32,
+        "model_ms_mean": 186.8,
+        "model_ms_p95": 227.02,
+        "batch_mean_per_call": 15.65,
+        "batch_mean_per_request": 16.55,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1109,
+          "queue_ms_mean": 132.77,
+          "queue_ms_p95": 211.75,
+          "model_ms_mean": 196.44,
+          "model_ms_p95": 286.67,
+          "batch_mean_per_call": 16.4,
+          "batch_mean_per_request": 16.88,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1109,
+          "queue_ms_mean": 122.76,
+          "queue_ms_p95": 203.55,
+          "model_ms_mean": 177.06,
+          "model_ms_p95": 212.06,
+          "batch_mean_per_call": 14.87,
+          "batch_mean_per_request": 15.89,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1108,
+          "queue_ms_mean": 116.66,
+          "queue_ms_p95": 201.43,
+          "model_ms_mean": 169.57,
+          "model_ms_p95": 211.0,
+          "batch_mean_per_call": 14.1,
+          "batch_mean_per_request": 15.59,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1108,
+          "queue_ms_mean": 132.07,
+          "queue_ms_p95": 212.29,
+          "model_ms_mean": 197.7,
+          "model_ms_p95": 277.36,
+          "batch_mean_per_call": 16.65,
+          "batch_mean_per_request": 17.3,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1109,
+          "queue_ms_mean": 133.26,
+          "queue_ms_p95": 205.6,
+          "model_ms_mean": 190.11,
+          "model_ms_p95": 218.23,
+          "batch_mean_per_call": 16.04,
+          "batch_mean_per_request": 16.62,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1109,
+          "queue_ms_mean": 133.09,
+          "queue_ms_p95": 206.03,
+          "model_ms_mean": 187.72,
+          "model_ms_p95": 214.13,
+          "batch_mean_per_call": 15.82,
+          "batch_mean_per_request": 16.44,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1108,
+          "queue_ms_mean": 136.56,
+          "queue_ms_p95": 210.54,
+          "model_ms_mean": 191.27,
+          "model_ms_p95": 215.44,
+          "batch_mean_per_call": 16.52,
+          "batch_mean_per_request": 17.11,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1109,
+          "queue_ms_mean": 132.48,
+          "queue_ms_p95": 206.19,
+          "model_ms_mean": 184.52,
+          "model_ms_p95": 254.02,
+          "batch_mean_per_call": 15.17,
+          "batch_mean_per_request": 16.6,
+          "batch_max": 32,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11914,
+        "warmup": 3045,
+        "measured": 8869,
+        "ok_total": 11914,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "estimate",
+      "attempt": 1
+    },
+    {
+      "users": 227,
+      "pass": false,
+      "throughput_rps": 587.67,
+      "latency_ms": {
+        "p50": 381.0,
+        "p95": 516.3,
+        "p99": 649.8,
+        "mean": 384.5,
+        "max": 807.3
+      },
+      "requests": 8815,
+      "ok": 8815,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        83.1,
+        77.3
+      ],
+      "cpu_pct": {
+        "server": 1062.6,
+        "nginx": 13.8,
+        "loadgen": 21.7
+      },
+      "model": {
+        "requests": 8815,
+        "queue_ms_mean": 132.26,
+        "queue_ms_p95": 214.08,
+        "model_ms_mean": 189.58,
+        "model_ms_p95": 233.39,
+        "batch_mean_per_call": 15.59,
+        "batch_mean_per_request": 16.38,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1102,
+          "queue_ms_mean": 126.71,
+          "queue_ms_p95": 203.21,
+          "model_ms_mean": 185.24,
+          "model_ms_p95": 267.56,
+          "batch_mean_per_call": 14.89,
+          "batch_mean_per_request": 16.08,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1102,
+          "queue_ms_mean": 119.18,
+          "queue_ms_p95": 202.91,
+          "model_ms_mean": 178.5,
+          "model_ms_p95": 210.39,
+          "batch_mean_per_call": 14.62,
+          "batch_mean_per_request": 15.28,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1102,
+          "queue_ms_mean": 123.61,
+          "queue_ms_p95": 209.5,
+          "model_ms_mean": 182.24,
+          "model_ms_p95": 213.43,
+          "batch_mean_per_call": 15.1,
+          "batch_mean_per_request": 16.18,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1102,
+          "queue_ms_mean": 117.91,
+          "queue_ms_p95": 201.7,
+          "model_ms_mean": 183.11,
+          "model_ms_p95": 209.55,
+          "batch_mean_per_call": 14.69,
+          "batch_mean_per_request": 15.59,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1102,
+          "queue_ms_mean": 143.53,
+          "queue_ms_p95": 224.28,
+          "model_ms_mean": 193.46,
+          "model_ms_p95": 235.64,
+          "batch_mean_per_call": 16.38,
+          "batch_mean_per_request": 16.87,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1102,
+          "queue_ms_mean": 141.44,
+          "queue_ms_p95": 221.97,
+          "model_ms_mean": 197.95,
+          "model_ms_p95": 268.5,
+          "batch_mean_per_call": 16.33,
+          "batch_mean_per_request": 16.79,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1102,
+          "queue_ms_mean": 143.95,
+          "queue_ms_p95": 231.17,
+          "model_ms_mean": 197.62,
+          "model_ms_p95": 238.01,
+          "batch_mean_per_call": 16.64,
+          "batch_mean_per_request": 17.26,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1101,
+          "queue_ms_mean": 141.74,
+          "queue_ms_p95": 217.0,
+          "model_ms_mean": 198.53,
+          "model_ms_p95": 236.46,
+          "batch_mean_per_call": 16.38,
+          "batch_mean_per_request": 17.0,
+          "batch_max": 30,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11858,
+        "warmup": 3043,
+        "measured": 8815,
+        "ok_total": 11858,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "estimate",
+      "attempt": 2
+    },
+    {
+      "users": 226,
+      "pass": false,
+      "throughput_rps": 586.47,
+      "latency_ms": {
+        "p50": 377.5,
+        "p95": 532.4,
+        "p99": 665.2,
+        "mean": 381.7,
+        "max": 863.0
+      },
+      "requests": 8795,
+      "ok": 8795,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        82.7,
+        84.2
+      ],
+      "cpu_pct": {
+        "server": 1064.9,
+        "nginx": 13.9,
+        "loadgen": 21.9
+      },
+      "model": {
+        "requests": 8795,
+        "queue_ms_mean": 130.18,
+        "queue_ms_p95": 210.23,
+        "model_ms_mean": 187.19,
+        "model_ms_p95": 222.85,
+        "batch_mean_per_call": 15.42,
+        "batch_mean_per_request": 16.34,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1099,
+          "queue_ms_mean": 131.41,
+          "queue_ms_p95": 206.34,
+          "model_ms_mean": 187.7,
+          "model_ms_p95": 219.38,
+          "batch_mean_per_call": 15.59,
+          "batch_mean_per_request": 16.35,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1099,
+          "queue_ms_mean": 130.81,
+          "queue_ms_p95": 210.28,
+          "model_ms_mean": 187.0,
+          "model_ms_p95": 212.43,
+          "batch_mean_per_call": 15.37,
+          "batch_mean_per_request": 16.17,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1100,
+          "queue_ms_mean": 133.73,
+          "queue_ms_p95": 208.09,
+          "model_ms_mean": 192.94,
+          "model_ms_p95": 247.18,
+          "batch_mean_per_call": 15.81,
+          "batch_mean_per_request": 16.72,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1100,
+          "queue_ms_mean": 135.55,
+          "queue_ms_p95": 229.29,
+          "model_ms_mean": 188.89,
+          "model_ms_p95": 223.21,
+          "batch_mean_per_call": 15.81,
+          "batch_mean_per_request": 16.52,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1099,
+          "queue_ms_mean": 126.53,
+          "queue_ms_p95": 208.37,
+          "model_ms_mean": 188.18,
+          "model_ms_p95": 243.38,
+          "batch_mean_per_call": 15.47,
+          "batch_mean_per_request": 16.89,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1099,
+          "queue_ms_mean": 127.49,
+          "queue_ms_p95": 206.75,
+          "model_ms_mean": 185.69,
+          "model_ms_p95": 216.36,
+          "batch_mean_per_call": 15.04,
+          "batch_mean_per_request": 16.11,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1100,
+          "queue_ms_mean": 127.49,
+          "queue_ms_p95": 205.07,
+          "model_ms_mean": 188.15,
+          "model_ms_p95": 231.89,
+          "batch_mean_per_call": 15.25,
+          "batch_mean_per_request": 16.03,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1099,
+          "queue_ms_mean": 128.46,
+          "queue_ms_p95": 210.72,
+          "model_ms_mean": 178.98,
+          "model_ms_p95": 211.21,
+          "batch_mean_per_call": 15.04,
+          "batch_mean_per_request": 15.94,
+          "batch_max": 24,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11823,
+        "warmup": 3028,
+        "measured": 8795,
+        "ok_total": 11823,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 1
+    },
+    {
+      "users": 226,
+      "pass": false,
+      "throughput_rps": 594.8,
+      "latency_ms": {
+        "p50": 378.0,
+        "p95": 520.6,
+        "p99": 633.8,
+        "mean": 379.5,
+        "max": 754.6
+      },
+      "requests": 8922,
+      "ok": 8922,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        82.7,
+        80.0
+      ],
+      "cpu_pct": {
+        "server": 1062.3,
+        "nginx": 13.9,
+        "loadgen": 22.1
+      },
+      "model": {
+        "requests": 8922,
+        "queue_ms_mean": 130.03,
+        "queue_ms_p95": 208.26,
+        "model_ms_mean": 187.5,
+        "model_ms_p95": 225.82,
+        "batch_mean_per_call": 15.68,
+        "batch_mean_per_request": 16.35,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1115,
+          "queue_ms_mean": 134.38,
+          "queue_ms_p95": 217.36,
+          "model_ms_mean": 193.6,
+          "model_ms_p95": 245.53,
+          "batch_mean_per_call": 16.4,
+          "batch_mean_per_request": 16.85,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1115,
+          "queue_ms_mean": 131.98,
+          "queue_ms_p95": 210.12,
+          "model_ms_mean": 194.81,
+          "model_ms_p95": 241.98,
+          "batch_mean_per_call": 16.16,
+          "batch_mean_per_request": 16.71,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1115,
+          "queue_ms_mean": 135.91,
+          "queue_ms_p95": 217.66,
+          "model_ms_mean": 189.53,
+          "model_ms_p95": 227.99,
+          "batch_mean_per_call": 16.16,
+          "batch_mean_per_request": 16.66,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1116,
+          "queue_ms_mean": 131.14,
+          "queue_ms_p95": 212.94,
+          "model_ms_mean": 193.1,
+          "model_ms_p95": 223.93,
+          "batch_mean_per_call": 16.17,
+          "batch_mean_per_request": 16.82,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1115,
+          "queue_ms_mean": 128.71,
+          "queue_ms_p95": 203.17,
+          "model_ms_mean": 182.29,
+          "model_ms_p95": 206.96,
+          "batch_mean_per_call": 15.38,
+          "batch_mean_per_request": 16.03,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1115,
+          "queue_ms_mean": 127.98,
+          "queue_ms_p95": 202.95,
+          "model_ms_mean": 181.96,
+          "model_ms_p95": 207.7,
+          "batch_mean_per_call": 15.39,
+          "batch_mean_per_request": 16.0,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1116,
+          "queue_ms_mean": 123.28,
+          "queue_ms_p95": 207.91,
+          "model_ms_mean": 178.87,
+          "model_ms_p95": 217.06,
+          "batch_mean_per_call": 14.58,
+          "batch_mean_per_request": 15.65,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1115,
+          "queue_ms_mean": 126.89,
+          "queue_ms_p95": 198.4,
+          "model_ms_mean": 185.85,
+          "model_ms_p95": 210.94,
+          "batch_mean_per_call": 15.37,
+          "batch_mean_per_request": 16.06,
+          "batch_max": 30,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11959,
+        "warmup": 3037,
+        "measured": 8922,
+        "ok_total": 11959,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 2
+    },
+    {
+      "users": 177,
+      "pass": true,
+      "throughput_rps": 580.47,
+      "latency_ms": {
+        "p50": 289.6,
+        "p95": 468.4,
+        "p99": 582.1,
+        "mean": 303.3,
+        "max": 765.6
+      },
+      "requests": 8707,
+      "ok": 8707,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        80.3,
+        88.1
+      ],
+      "cpu_pct": {
+        "server": 1053.9,
+        "nginx": 13.8,
+        "loadgen": 21.2
+      },
+      "model": {
+        "requests": 8707,
+        "queue_ms_mean": 103.66,
+        "queue_ms_p95": 183.32,
+        "model_ms_mean": 146.82,
+        "model_ms_p95": 192.61,
+        "batch_mean_per_call": 11.92,
+        "batch_mean_per_request": 12.98,
+        "batch_max": 28
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1088,
+          "queue_ms_mean": 101.26,
+          "queue_ms_p95": 166.63,
+          "model_ms_mean": 148.43,
+          "model_ms_p95": 184.28,
+          "batch_mean_per_call": 11.96,
+          "batch_mean_per_request": 12.62,
+          "batch_max": 22,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1089,
+          "queue_ms_mean": 108.09,
+          "queue_ms_p95": 183.91,
+          "model_ms_mean": 151.8,
+          "model_ms_p95": 188.78,
+          "batch_mean_per_call": 12.37,
+          "batch_mean_per_request": 13.26,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1089,
+          "queue_ms_mean": 107.28,
+          "queue_ms_p95": 179.61,
+          "model_ms_mean": 152.5,
+          "model_ms_p95": 200.96,
+          "batch_mean_per_call": 12.37,
+          "batch_mean_per_request": 13.28,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1088,
+          "queue_ms_mean": 100.04,
+          "queue_ms_p95": 169.13,
+          "model_ms_mean": 147.21,
+          "model_ms_p95": 185.57,
+          "batch_mean_per_call": 11.83,
+          "batch_mean_per_request": 12.54,
+          "batch_max": 24,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1088,
+          "queue_ms_mean": 110.85,
+          "queue_ms_p95": 199.69,
+          "model_ms_mean": 151.94,
+          "model_ms_p95": 223.78,
+          "batch_mean_per_call": 12.43,
+          "batch_mean_per_request": 13.59,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1089,
+          "queue_ms_mean": 105.76,
+          "queue_ms_p95": 193.97,
+          "model_ms_mean": 145.39,
+          "model_ms_p95": 191.93,
+          "batch_mean_per_call": 12.02,
+          "batch_mean_per_request": 13.13,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1088,
+          "queue_ms_mean": 97.91,
+          "queue_ms_p95": 180.3,
+          "model_ms_mean": 138.41,
+          "model_ms_p95": 192.61,
+          "batch_mean_per_call": 11.27,
+          "batch_mean_per_request": 12.55,
+          "batch_max": 21,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1088,
+          "queue_ms_mean": 98.09,
+          "queue_ms_p95": 176.14,
+          "model_ms_mean": 138.85,
+          "model_ms_p95": 174.41,
+          "batch_mean_per_call": 11.24,
+          "batch_mean_per_request": 12.89,
+          "batch_max": 28,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11669,
+        "warmup": 2962,
+        "measured": 8707,
+        "ok_total": 11669,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 3,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 1
+    },
+    {
+      "users": 207,
+      "pass": false,
+      "throughput_rps": 575.4,
+      "latency_ms": {
+        "p50": 341.0,
+        "p95": 573.8,
+        "p99": 638.9,
+        "mean": 356.6,
+        "max": 809.0
+      },
+      "requests": 8631,
+      "ok": 8631,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        82.0,
+        82.8
+      ],
+      "cpu_pct": {
+        "server": 1049.4,
+        "nginx": 13.7,
+        "loadgen": 22.0
+      },
+      "model": {
+        "requests": 8631,
+        "queue_ms_mean": 120.59,
+        "queue_ms_p95": 234.64,
+        "model_ms_mean": 173.33,
+        "model_ms_p95": 261.56,
+        "batch_mean_per_call": 13.09,
+        "batch_mean_per_request": 15.18,
+        "batch_max": 31
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1079,
+          "queue_ms_mean": 91.76,
+          "queue_ms_p95": 180.01,
+          "model_ms_mean": 148.19,
+          "model_ms_p95": 199.54,
+          "batch_mean_per_call": 10.87,
+          "batch_mean_per_request": 13.47,
+          "batch_max": 31,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1079,
+          "queue_ms_mean": 88.2,
+          "queue_ms_p95": 181.51,
+          "model_ms_mean": 145.96,
+          "model_ms_p95": 196.37,
+          "batch_mean_per_call": 11.23,
+          "batch_mean_per_request": 13.05,
+          "batch_max": 21,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1079,
+          "queue_ms_mean": 97.11,
+          "queue_ms_p95": 201.6,
+          "model_ms_mean": 154.96,
+          "model_ms_p95": 225.86,
+          "batch_mean_per_call": 11.72,
+          "batch_mean_per_request": 14.06,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1079,
+          "queue_ms_mean": 88.76,
+          "queue_ms_p95": 181.19,
+          "model_ms_mean": 144.52,
+          "model_ms_p95": 197.89,
+          "batch_mean_per_call": 10.78,
+          "batch_mean_per_request": 12.54,
+          "batch_max": 24,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1079,
+          "queue_ms_mean": 154.03,
+          "queue_ms_p95": 252.96,
+          "model_ms_mean": 206.19,
+          "model_ms_p95": 264.41,
+          "batch_mean_per_call": 16.68,
+          "batch_mean_per_request": 17.46,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1079,
+          "queue_ms_mean": 157.46,
+          "queue_ms_p95": 250.95,
+          "model_ms_mean": 207.15,
+          "model_ms_p95": 274.58,
+          "batch_mean_per_call": 16.94,
+          "batch_mean_per_request": 17.75,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1079,
+          "queue_ms_mean": 134.75,
+          "queue_ms_p95": 225.64,
+          "model_ms_mean": 172.63,
+          "model_ms_p95": 241.17,
+          "batch_mean_per_call": 13.66,
+          "batch_mean_per_request": 15.55,
+          "batch_max": 24,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1078,
+          "queue_ms_mean": 152.68,
+          "queue_ms_p95": 249.27,
+          "model_ms_mean": 207.1,
+          "model_ms_p95": 265.09,
+          "batch_mean_per_call": 16.67,
+          "batch_mean_per_request": 17.55,
+          "batch_max": 29,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11625,
+        "warmup": 2994,
+        "measured": 8631,
+        "ok_total": 11625,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 1
+    },
+    {
+      "users": 207,
+      "pass": false,
+      "throughput_rps": 583.8,
+      "latency_ms": {
+        "p50": 340.3,
+        "p95": 521.9,
+        "p99": 648.9,
+        "mean": 353.1,
+        "max": 732.8
+      },
+      "requests": 8756,
+      "ok": 8756,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        79.2,
+        83.2
+      ],
+      "cpu_pct": {
+        "server": 1054.0,
+        "nginx": 13.8,
+        "loadgen": 22.1
+      },
+      "model": {
+        "requests": 8756,
+        "queue_ms_mean": 120.71,
+        "queue_ms_p95": 215.3,
+        "model_ms_mean": 170.3,
+        "model_ms_p95": 227.1,
+        "batch_mean_per_call": 13.58,
+        "batch_mean_per_request": 15.0,
+        "batch_max": 28
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1094,
+          "queue_ms_mean": 117.35,
+          "queue_ms_p95": 201.78,
+          "model_ms_mean": 172.6,
+          "model_ms_p95": 263.71,
+          "batch_mean_per_call": 13.51,
+          "batch_mean_per_request": 14.7,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1094,
+          "queue_ms_mean": 119.73,
+          "queue_ms_p95": 208.39,
+          "model_ms_mean": 169.5,
+          "model_ms_p95": 225.67,
+          "batch_mean_per_call": 13.34,
+          "batch_mean_per_request": 14.71,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1095,
+          "queue_ms_mean": 121.03,
+          "queue_ms_p95": 220.24,
+          "model_ms_mean": 172.12,
+          "model_ms_p95": 220.95,
+          "batch_mean_per_call": 13.86,
+          "batch_mean_per_request": 15.08,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1095,
+          "queue_ms_mean": 121.08,
+          "queue_ms_p95": 208.78,
+          "model_ms_mean": 169.93,
+          "model_ms_p95": 239.34,
+          "batch_mean_per_call": 13.52,
+          "batch_mean_per_request": 14.71,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1094,
+          "queue_ms_mean": 127.81,
+          "queue_ms_p95": 225.89,
+          "model_ms_mean": 177.7,
+          "model_ms_p95": 227.1,
+          "batch_mean_per_call": 14.5,
+          "batch_mean_per_request": 15.84,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1094,
+          "queue_ms_mean": 128.51,
+          "queue_ms_p95": 229.43,
+          "model_ms_mean": 177.61,
+          "model_ms_p95": 229.29,
+          "batch_mean_per_call": 14.5,
+          "batch_mean_per_request": 15.71,
+          "batch_max": 28,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1095,
+          "queue_ms_mean": 103.53,
+          "queue_ms_p95": 186.33,
+          "model_ms_mean": 144.15,
+          "model_ms_p95": 222.72,
+          "batch_mean_per_call": 11.59,
+          "batch_mean_per_request": 13.73,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1095,
+          "queue_ms_mean": 126.63,
+          "queue_ms_p95": 220.77,
+          "model_ms_mean": 178.82,
+          "model_ms_p95": 226.31,
+          "batch_mean_per_call": 14.32,
+          "batch_mean_per_request": 15.57,
+          "batch_max": 26,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11720,
+        "warmup": 2964,
+        "measured": 8756,
+        "ok_total": 11720,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 2
+    },
+    {
+      "users": 195,
+      "pass": true,
+      "throughput_rps": 581.6,
+      "latency_ms": {
+        "p50": 329.7,
+        "p95": 461.6,
+        "p99": 629.5,
+        "mean": 333.8,
+        "max": 838.6
+      },
+      "requests": 8724,
+      "ok": 8724,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        81.6,
+        80.8
+      ],
+      "cpu_pct": {
+        "server": 1053.9,
+        "nginx": 13.9,
+        "loadgen": 22.1
+      },
+      "model": {
+        "requests": 8724,
+        "queue_ms_mean": 114.6,
+        "queue_ms_p95": 187.2,
+        "model_ms_mean": 163.05,
+        "model_ms_p95": 209.05,
+        "batch_mean_per_call": 13.21,
+        "batch_mean_per_request": 14.15,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1090,
+          "queue_ms_mean": 100.29,
+          "queue_ms_p95": 178.66,
+          "model_ms_mean": 151.35,
+          "model_ms_p95": 201.9,
+          "batch_mean_per_call": 12.34,
+          "batch_mean_per_request": 13.48,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1090,
+          "queue_ms_mean": 96.49,
+          "queue_ms_p95": 177.89,
+          "model_ms_mean": 150.73,
+          "model_ms_p95": 185.85,
+          "batch_mean_per_call": 12.02,
+          "batch_mean_per_request": 13.18,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1091,
+          "queue_ms_mean": 98.55,
+          "queue_ms_p95": 177.72,
+          "model_ms_mean": 149.97,
+          "model_ms_p95": 181.9,
+          "batch_mean_per_call": 12.1,
+          "batch_mean_per_request": 13.19,
+          "batch_max": 23,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1091,
+          "queue_ms_mean": 110.45,
+          "queue_ms_p95": 200.56,
+          "model_ms_mean": 159.18,
+          "model_ms_p95": 198.33,
+          "batch_mean_per_call": 13.17,
+          "batch_mean_per_request": 14.56,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1090,
+          "queue_ms_mean": 126.82,
+          "queue_ms_p95": 191.32,
+          "model_ms_mean": 172.57,
+          "model_ms_p95": 219.67,
+          "batch_mean_per_call": 13.97,
+          "batch_mean_per_request": 14.53,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1090,
+          "queue_ms_mean": 126.11,
+          "queue_ms_p95": 190.73,
+          "model_ms_mean": 172.11,
+          "model_ms_p95": 216.4,
+          "batch_mean_per_call": 14.05,
+          "batch_mean_per_request": 14.47,
+          "batch_max": 25,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1091,
+          "queue_ms_mean": 130.89,
+          "queue_ms_p95": 201.28,
+          "model_ms_mean": 176.18,
+          "model_ms_p95": 221.59,
+          "batch_mean_per_call": 14.55,
+          "batch_mean_per_request": 15.28,
+          "batch_max": 29,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1091,
+          "queue_ms_mean": 127.17,
+          "queue_ms_p95": 190.24,
+          "model_ms_mean": 172.31,
+          "model_ms_p95": 214.75,
+          "batch_mean_per_call": 13.99,
+          "batch_mean_per_request": 14.5,
+          "batch_max": 29,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11767,
+        "warmup": 3043,
+        "measured": 8724,
+        "ok_total": 11767,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 1
+    },
+    {
+      "users": 203,
+      "pass": true,
+      "throughput_rps": 588.27,
+      "latency_ms": {
+        "p50": 333.0,
+        "p95": 488.1,
+        "p99": 604.0,
+        "mean": 343.6,
+        "max": 778.5
+      },
+      "requests": 8824,
+      "ok": 8824,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        83.3,
+        77.4
+      ],
+      "cpu_pct": {
+        "server": 1066.9,
+        "nginx": 13.9,
+        "loadgen": 22.4
+      },
+      "model": {
+        "requests": 8824,
+        "queue_ms_mean": 117.42,
+        "queue_ms_p95": 188.28,
+        "model_ms_mean": 169.45,
+        "model_ms_p95": 209.77,
+        "batch_mean_per_call": 14.01,
+        "batch_mean_per_request": 14.73,
+        "batch_max": 32
+      },
+      "servers": {
+        "gpu0-8101": {
+          "requests": 1103,
+          "queue_ms_mean": 115.15,
+          "queue_ms_p95": 184.09,
+          "model_ms_mean": 167.58,
+          "model_ms_p95": 212.24,
+          "batch_mean_per_call": 13.53,
+          "batch_mean_per_request": 14.34,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu0-8102": {
+          "requests": 1103,
+          "queue_ms_mean": 115.83,
+          "queue_ms_p95": 182.71,
+          "model_ms_mean": 164.22,
+          "model_ms_p95": 199.68,
+          "batch_mean_per_call": 13.4,
+          "batch_mean_per_request": 14.11,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu0-8103": {
+          "requests": 1103,
+          "queue_ms_mean": 129.21,
+          "queue_ms_p95": 233.44,
+          "model_ms_mean": 178.97,
+          "model_ms_p95": 218.75,
+          "batch_mean_per_call": 14.99,
+          "batch_mean_per_request": 15.87,
+          "batch_max": 32,
+          "share_pct": 12.5
+        },
+        "gpu0-8104": {
+          "requests": 1103,
+          "queue_ms_mean": 115.1,
+          "queue_ms_p95": 186.54,
+          "model_ms_mean": 166.79,
+          "model_ms_p95": 193.2,
+          "batch_mean_per_call": 13.53,
+          "batch_mean_per_request": 14.31,
+          "batch_max": 27,
+          "share_pct": 12.5
+        },
+        "gpu1-8201": {
+          "requests": 1103,
+          "queue_ms_mean": 112.86,
+          "queue_ms_p95": 185.98,
+          "model_ms_mean": 167.81,
+          "model_ms_p95": 195.42,
+          "batch_mean_per_call": 13.96,
+          "batch_mean_per_request": 14.42,
+          "batch_max": 24,
+          "share_pct": 12.5
+        },
+        "gpu1-8202": {
+          "requests": 1103,
+          "queue_ms_mean": 116.74,
+          "queue_ms_p95": 187.95,
+          "model_ms_mean": 168.58,
+          "model_ms_p95": 209.77,
+          "batch_mean_per_call": 14.14,
+          "batch_mean_per_request": 14.76,
+          "batch_max": 30,
+          "share_pct": 12.5
+        },
+        "gpu1-8203": {
+          "requests": 1103,
+          "queue_ms_mean": 118.0,
+          "queue_ms_p95": 190.95,
+          "model_ms_mean": 169.45,
+          "model_ms_p95": 204.71,
+          "batch_mean_per_call": 14.14,
+          "batch_mean_per_request": 14.78,
+          "batch_max": 26,
+          "share_pct": 12.5
+        },
+        "gpu1-8204": {
+          "requests": 1103,
+          "queue_ms_mean": 116.44,
+          "queue_ms_p95": 189.75,
+          "model_ms_mean": 172.24,
+          "model_ms_p95": 207.61,
+          "batch_mean_per_call": 14.51,
+          "batch_mean_per_request": 15.22,
+          "batch_max": 32,
+          "share_pct": 12.5
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "sent": {
+        "total": 11825,
+        "warmup": 3001,
+        "measured": 8824,
+        "ok_total": 11825,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": false,
+      "server_procs": 8,
+      "nginx_procs": 5,
+      "phase": "refine",
+      "attempt": 1
+    }
+  ],
+  "decisions": [
+    {
+      "users": 1,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 36.4,
+      "throughput_rps": 31.27,
+      "error_pct": 0.0
+    },
+    {
+      "users": 2,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 36.4,
+      "throughput_rps": 62.4,
+      "error_pct": 0.0
+    },
+    {
+      "users": 4,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 37.2,
+      "throughput_rps": 124.73,
+      "error_pct": 0.0
+    },
+    {
+      "users": 8,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 39.9,
+      "throughput_rps": 246.67,
+      "error_pct": 0.0
+    },
+    {
+      "users": 16,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 53.6,
+      "throughput_rps": 382.33,
+      "error_pct": 0.0
+    },
+    {
+      "users": 32,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 82.7,
+      "throughput_rps": 497.87,
+      "error_pct": 0.0
+    },
+    {
+      "users": 64,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 144.8,
+      "throughput_rps": 550.6,
+      "error_pct": 0.0
+    },
+    {
+      "users": 128,
+      "phase": "range",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 305.0,
+      "throughput_rps": 572.73,
+      "error_pct": 0.0
+    },
+    {
+      "users": 256,
+      "phase": "range",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 558.2,
+      "throughput_rps": 592.6,
+      "error_pct": 0.0
+    },
+    {
+      "users": 512,
+      "phase": "range",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 1132.5,
+      "throughput_rps": 596.67,
+      "error_pct": 0.0
+    },
+    {
+      "users": 227,
+      "phase": "estimate",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 502.3,
+      "throughput_rps": 591.27,
+      "error_pct": 0.0
+    },
+    {
+      "users": 226,
+      "phase": "refine",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 520.6,
+      "throughput_rps": 594.8,
+      "error_pct": 0.0
+    },
+    {
+      "users": 177,
+      "phase": "refine",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 468.4,
+      "throughput_rps": 580.47,
+      "error_pct": 0.0
+    },
+    {
+      "users": 207,
+      "phase": "refine",
+      "pass": false,
+      "runs": 2,
+      "p95_ms": 521.9,
+      "throughput_rps": 583.8,
+      "error_pct": 0.0
+    },
+    {
+      "users": 195,
+      "phase": "refine",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 461.6,
+      "throughput_rps": 581.6,
+      "error_pct": 0.0
+    },
+    {
+      "users": 203,
+      "phase": "refine",
+      "pass": true,
+      "runs": 1,
+      "p95_ms": 488.1,
+      "throughput_rps": 588.27,
+      "error_pct": 0.0
+    }
+  ],
+  "estimates": [
+    {
+      "round": 1,
+      "pass_point": {
+        "users": 128,
+        "p95_ms": 305.0
+      },
+      "fail_point": {
+        "users": 256,
+        "p95_ms": 558.2
+      },
+      "method": "line",
+      "estimated_users": 226.58,
+      "measured_users": 227,
+      "measured_p95_ms": 502.3,
+      "measured_pass": false
+    },
+    {
+      "round": 2,
+      "pass_point": {
+        "users": 128,
+        "p95_ms": 305.0
+      },
+      "fail_point": {
+        "users": 227,
+        "p95_ms": 502.3
+      },
+      "method": "line",
+      "estimated_users": 225.85,
+      "measured_users": 226,
+      "measured_p95_ms": 520.6,
+      "measured_pass": false
+    },
+    {
+      "round": 3,
+      "pass_point": {
+        "users": 128,
+        "p95_ms": 305.0
+      },
+      "fail_point": {
+        "users": 226,
+        "p95_ms": 520.6
+      },
+      "method": "midpoint (same side moved twice)",
+      "estimated_users": 177.0,
+      "measured_users": 177,
+      "measured_p95_ms": 468.4,
+      "measured_pass": true
+    },
+    {
+      "round": 4,
+      "pass_point": {
+        "users": 177,
+        "p95_ms": 468.4
+      },
+      "fail_point": {
+        "users": 226,
+        "p95_ms": 520.6
+      },
+      "method": "line",
+      "estimated_users": 206.66,
+      "measured_users": 207,
+      "measured_p95_ms": 521.9,
+      "measured_pass": false
+    },
+    {
+      "round": 5,
+      "pass_point": {
+        "users": 177,
+        "p95_ms": 468.4
+      },
+      "fail_point": {
+        "users": 207,
+        "p95_ms": 521.9
+      },
+      "method": "line",
+      "estimated_users": 194.72,
+      "measured_users": 195,
+      "measured_p95_ms": 461.6,
+      "measured_pass": true
+    },
+    {
+      "round": 6,
+      "pass_point": {
+        "users": 195,
+        "p95_ms": 461.6
+      },
+      "fail_point": {
+        "users": 207,
+        "p95_ms": 521.9
+      },
+      "method": "line",
+      "estimated_users": 202.64,
+      "measured_users": 203,
+      "measured_p95_ms": 488.1,
+      "measured_pass": true
+    }
+  ],
+  "capacity": 203,
+  "capacity_closed": true,
+  "last_pass_users": 203,
+  "first_fail_users": 207,
+  "max_throughput_rps": 600.87,
+  "max_throughput_at_users": 256,
+  "estimate_from_throughput": {
+    "formula": "max throughput x target p95 (s)",
+    "users": 300.4
+  },
+  "finished_utc": "2026-11-23T23:45:44+00:00"
+}

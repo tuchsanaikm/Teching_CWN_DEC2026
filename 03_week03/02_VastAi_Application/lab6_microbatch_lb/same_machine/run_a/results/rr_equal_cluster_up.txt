@@ -1,0 +1,7 @@
+[cluster] up: gpus=2 per-gpu=4 mode=micro lb=rr (Round Robin) slow=none failover=default  (8 servers)
+[cluster] API key: reusing the existing one in /workspace/lab6/api_key.env
+[cluster] servers ready: 0/8  (3s)
+[cluster] servers ready: 3/8  (21s)
+[cluster] servers ready: 8/8  (22s)
+[cluster] nginx balancing line in use: '(none = Round Robin)'  (from nginx -T of the running config)
+[cluster] READY in 26s: nginx :8080 -> 8 server(s) [8101 8201 8102 8202 8103 8203 8104 8204] mode=micro lb=rr slow=none failover=default

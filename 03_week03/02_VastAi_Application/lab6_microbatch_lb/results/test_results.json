@@ -1,0 +1,1613 @@
+{
+  "health": {
+    "status_code": 200,
+    "body": {
+      "status": "ready",
+      "server": "gpu0-8001",
+      "mode": "single",
+      "max_batch": 1,
+      "max_wait_ms": 0,
+      "imgsz": 640,
+      "conf": 0.35,
+      "device": "cuda:0",
+      "classes": [
+        "Hardhat",
+        "Mask",
+        "NO-Hardhat",
+        "NO-Mask",
+        "NO-Safety Vest",
+        "Person",
+        "Safety Cone",
+        "Safety Vest",
+        "machinery",
+        "vehicle"
+      ],
+      "warmed_batch_sizes": 1,
+      "queue_len": 0
+    }
+  },
+  "images": [
+    {
+      "file": "sample-1.jpg",
+      "bytes": 48766,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-1.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.07,
+        "model_ms": 55.04,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 18,
+        "detections": [
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.9129,
+            "box": {
+              "x1": 61.8,
+              "y1": 295.2,
+              "x2": 174.8,
+              "y2": 488.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.9009,
+            "box": {
+              "x1": 7.0,
+              "y1": 216.3,
+              "x2": 189.4,
+              "y2": 639.9
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8728,
+            "box": {
+              "x1": 75.5,
+              "y1": 217.7,
+              "x2": 133.4,
+              "y2": 288.6
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.8679,
+            "box": {
+              "x1": 191.6,
+              "y1": 333.1,
+              "x2": 248.0,
+              "y2": 452.6
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.855,
+            "box": {
+              "x1": 458.1,
+              "y1": 434.9,
+              "x2": 490.9,
+              "y2": 517.6
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.833,
+            "box": {
+              "x1": 281.4,
+              "y1": 433.0,
+              "x2": 318.3,
+              "y2": 595.1
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8282,
+            "box": {
+              "x1": 209.8,
+              "y1": 277.8,
+              "x2": 244.2,
+              "y2": 316.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8202,
+            "box": {
+              "x1": 283.2,
+              "y1": 228.8,
+              "x2": 299.6,
+              "y2": 299.9
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.805,
+            "box": {
+              "x1": 451.4,
+              "y1": 395.8,
+              "x2": 495.3,
+              "y2": 614.5
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8013,
+            "box": {
+              "x1": 186.1,
+              "y1": 275.6,
+              "x2": 260.0,
+              "y2": 638.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7984,
+            "box": {
+              "x1": 500.7,
+              "y1": 430.7,
+              "x2": 542.1,
+              "y2": 599.9
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7843,
+            "box": {
+              "x1": 459.5,
+              "y1": 399.3,
+              "x2": 480.3,
+              "y2": 423.0
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.7124,
+            "box": {
+              "x1": 287.1,
+              "y1": 460.1,
+              "x2": 315.3,
+              "y2": 514.7
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.6214,
+            "box": {
+              "x1": 286.7,
+              "y1": 241.8,
+              "x2": 295.9,
+              "y2": 258.8
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.6088,
+            "box": {
+              "x1": 286.9,
+              "y1": 434.3,
+              "x2": 302.3,
+              "y2": 453.6
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.4657,
+            "box": {
+              "x1": 508.6,
+              "y1": 457.3,
+              "x2": 534.7,
+              "y2": 528.7
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.4443,
+            "box": {
+              "x1": 286.4,
+              "y1": 230.1,
+              "x2": 293.6,
+              "y2": 238.7
+            }
+          },
+          {
+            "class_id": 2,
+            "class_name": "NO-Hardhat",
+            "confidence": 0.3691,
+            "box": {
+              "x1": 512.8,
+              "y1": 433.1,
+              "x2": 527.8,
+              "y2": 446.7
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 16.48
+    },
+    {
+      "file": "sample-2.jpg",
+      "bytes": 51119,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-2.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.06,
+        "model_ms": 23.41,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 9,
+        "detections": [
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.8951,
+            "box": {
+              "x1": 97.4,
+              "y1": 27.7,
+              "x2": 172.4,
+              "y2": 207.0
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.8819,
+            "box": {
+              "x1": 52.7,
+              "y1": 334.2,
+              "x2": 161.0,
+              "y2": 605.5
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8752,
+            "box": {
+              "x1": 84.3,
+              "y1": 0.2,
+              "x2": 234.2,
+              "y2": 309.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8545,
+            "box": {
+              "x1": 48.6,
+              "y1": 233.5,
+              "x2": 191.1,
+              "y2": 638.5
+            }
+          },
+          {
+            "class_id": 2,
+            "class_name": "NO-Hardhat",
+            "confidence": 0.8258,
+            "box": {
+              "x1": 85.1,
+              "y1": 236.2,
+              "x2": 136.9,
+              "y2": 294.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8184,
+            "box": {
+              "x1": 444.5,
+              "y1": 80.8,
+              "x2": 510.6,
+              "y2": 491.7
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7919,
+            "box": {
+              "x1": 151.6,
+              "y1": 0.0,
+              "x2": 200.2,
+              "y2": 48.8
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7134,
+            "box": {
+              "x1": 446.1,
+              "y1": 84.5,
+              "x2": 477.0,
+              "y2": 127.1
+            }
+          },
+          {
+            "class_id": 1,
+            "class_name": "Mask",
+            "confidence": 0.6334,
+            "box": {
+              "x1": 118.7,
+              "y1": 304.0,
+              "x2": 137.3,
+              "y2": 335.4
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 18.25
+    },
+    {
+      "file": "sample-3.jpg",
+      "bytes": 54382,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-3.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.09,
+        "model_ms": 18.04,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 7,
+        "detections": [
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8998,
+            "box": {
+              "x1": 311.5,
+              "y1": 2.2,
+              "x2": 580.8,
+              "y2": 315.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8863,
+            "box": {
+              "x1": 139.6,
+              "y1": 246.8,
+              "x2": 350.4,
+              "y2": 466.1
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.8708,
+            "box": {
+              "x1": 155.4,
+              "y1": 291.4,
+              "x2": 239.0,
+              "y2": 360.2
+            }
+          },
+          {
+            "class_id": 4,
+            "class_name": "NO-Safety Vest",
+            "confidence": 0.8606,
+            "box": {
+              "x1": 326.3,
+              "y1": 44.4,
+              "x2": 473.6,
+              "y2": 140.8
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8238,
+            "box": {
+              "x1": 155.2,
+              "y1": 249.5,
+              "x2": 211.7,
+              "y2": 278.4
+            }
+          },
+          {
+            "class_id": 2,
+            "class_name": "NO-Hardhat",
+            "confidence": 0.8213,
+            "box": {
+              "x1": 351.1,
+              "y1": 30.0,
+              "x2": 411.1,
+              "y2": 57.0
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.7104,
+            "box": {
+              "x1": 197.4,
+              "y1": 269.8,
+              "x2": 227.6,
+              "y2": 286.8
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 16.14
+    },
+    {
+      "file": "sample-4.jpg",
+      "bytes": 79999,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-4.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.1,
+        "model_ms": 16.86,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 79,
+        "detections": [
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.9291,
+            "box": {
+              "x1": 118.1,
+              "y1": 272.9,
+              "x2": 162.7,
+              "y2": 360.1
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.9173,
+            "box": {
+              "x1": 270.2,
+              "y1": 264.4,
+              "x2": 320.3,
+              "y2": 348.1
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.9104,
+            "box": {
+              "x1": 193.6,
+              "y1": 248.7,
+              "x2": 235.4,
+              "y2": 322.8
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.906,
+            "box": {
+              "x1": 330.4,
+              "y1": 268.1,
+              "x2": 373.6,
+              "y2": 351.5
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.9047,
+            "box": {
+              "x1": 221.2,
+              "y1": 255.7,
+              "x2": 267.8,
+              "y2": 332.8
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8976,
+            "box": {
+              "x1": 382.4,
+              "y1": 266.1,
+              "x2": 428.3,
+              "y2": 355.6
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8957,
+            "box": {
+              "x1": 467.8,
+              "y1": 279.6,
+              "x2": 512.4,
+              "y2": 378.6
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8932,
+            "box": {
+              "x1": 69.7,
+              "y1": 270.0,
+              "x2": 119.3,
+              "y2": 367.3
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8751,
+            "box": {
+              "x1": 428.2,
+              "y1": 253.4,
+              "x2": 475.7,
+              "y2": 344.8
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.867,
+            "box": {
+              "x1": 514.6,
+              "y1": 261.9,
+              "x2": 567.5,
+              "y2": 373.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8653,
+            "box": {
+              "x1": 356.3,
+              "y1": 213.5,
+              "x2": 401.1,
+              "y2": 431.2
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8555,
+            "box": {
+              "x1": 132.0,
+              "y1": 238.3,
+              "x2": 152.8,
+              "y2": 258.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8496,
+            "box": {
+              "x1": 267.5,
+              "y1": 223.4,
+              "x2": 324.7,
+              "y2": 455.5
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8413,
+            "box": {
+              "x1": 172.7,
+              "y1": 228.1,
+              "x2": 195.1,
+              "y2": 251.6
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8409,
+            "box": {
+              "x1": 364.3,
+              "y1": 212.5,
+              "x2": 384.3,
+              "y2": 233.5
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8408,
+            "box": {
+              "x1": 304.6,
+              "y1": 258.7,
+              "x2": 340.2,
+              "y2": 329.4
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.84,
+            "box": {
+              "x1": 232.7,
+              "y1": 223.3,
+              "x2": 252.7,
+              "y2": 244.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8393,
+            "box": {
+              "x1": 63.6,
+              "y1": 228.7,
+              "x2": 123.7,
+              "y2": 481.2
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8361,
+            "box": {
+              "x1": 340.9,
+              "y1": 230.7,
+              "x2": 360.3,
+              "y2": 251.4
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8333,
+            "box": {
+              "x1": 202.8,
+              "y1": 209.5,
+              "x2": 222.4,
+              "y2": 230.2
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8253,
+            "box": {
+              "x1": 98.3,
+              "y1": 205.9,
+              "x2": 118.9,
+              "y2": 226.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8253,
+            "box": {
+              "x1": 116.5,
+              "y1": 234.0,
+              "x2": 168.5,
+              "y2": 455.9
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8156,
+            "box": {
+              "x1": 507.1,
+              "y1": 222.3,
+              "x2": 573.4,
+              "y2": 499.1
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8144,
+            "box": {
+              "x1": 529.1,
+              "y1": 222.3,
+              "x2": 554.8,
+              "y2": 242.9
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8121,
+            "box": {
+              "x1": 441.9,
+              "y1": 211.9,
+              "x2": 464.1,
+              "y2": 234.0
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8106,
+            "box": {
+              "x1": 313.0,
+              "y1": 219.0,
+              "x2": 331.9,
+              "y2": 238.2
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8093,
+            "box": {
+              "x1": 256.4,
+              "y1": 214.9,
+              "x2": 275.2,
+              "y2": 234.4
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8089,
+            "box": {
+              "x1": 361.9,
+              "y1": 250.7,
+              "x2": 396.5,
+              "y2": 330.3
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8086,
+            "box": {
+              "x1": 81.2,
+              "y1": 230.3,
+              "x2": 106.1,
+              "y2": 254.7
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8076,
+            "box": {
+              "x1": 101.5,
+              "y1": 249.0,
+              "x2": 129.4,
+              "y2": 293.5
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8037,
+            "box": {
+              "x1": 479.1,
+              "y1": 236.1,
+              "x2": 504.0,
+              "y2": 261.3
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8033,
+            "box": {
+              "x1": 278.2,
+              "y1": 204.6,
+              "x2": 295.5,
+              "y2": 221.6
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8029,
+            "box": {
+              "x1": 288.0,
+              "y1": 226.6,
+              "x2": 307.8,
+              "y2": 248.9
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7995,
+            "box": {
+              "x1": 493.9,
+              "y1": 198.0,
+              "x2": 516.4,
+              "y2": 220.4
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7982,
+            "box": {
+              "x1": 335.3,
+              "y1": 199.8,
+              "x2": 352.4,
+              "y2": 217.6
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7973,
+            "box": {
+              "x1": 151.3,
+              "y1": 209.5,
+              "x2": 170.2,
+              "y2": 228.5
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7962,
+            "box": {
+              "x1": 326.4,
+              "y1": 223.9,
+              "x2": 379.7,
+              "y2": 457.6
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7935,
+            "box": {
+              "x1": 461.4,
+              "y1": 230.6,
+              "x2": 517.7,
+              "y2": 488.4
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7892,
+            "box": {
+              "x1": 192.1,
+              "y1": 204.6,
+              "x2": 241.6,
+              "y2": 427.0
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.7743,
+            "box": {
+              "x1": 317.7,
+              "y1": 244.5,
+              "x2": 328.9,
+              "y2": 256.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7697,
+            "box": {
+              "x1": 483.1,
+              "y1": 197.2,
+              "x2": 531.9,
+              "y2": 387.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7665,
+            "box": {
+              "x1": 302.0,
+              "y1": 219.1,
+              "x2": 343.6,
+              "y2": 426.0
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7636,
+            "box": {
+              "x1": 385.2,
+              "y1": 207.6,
+              "x2": 401.0,
+              "y2": 227.0
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7614,
+            "box": {
+              "x1": 248.6,
+              "y1": 212.3,
+              "x2": 292.8,
+              "y2": 421.2
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7565,
+            "box": {
+              "x1": 420.5,
+              "y1": 219.9,
+              "x2": 439.3,
+              "y2": 240.1
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.7442,
+            "box": {
+              "x1": 166.4,
+              "y1": 258.7,
+              "x2": 210.9,
+              "y2": 349.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7382,
+            "box": {
+              "x1": 420.1,
+              "y1": 222.2,
+              "x2": 479.5,
+              "y2": 460.9
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.7381,
+            "box": {
+              "x1": 395.0,
+              "y1": 228.3,
+              "x2": 415.0,
+              "y2": 249.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7334,
+            "box": {
+              "x1": 216.9,
+              "y1": 219.2,
+              "x2": 272.2,
+              "y2": 445.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.7288,
+            "box": {
+              "x1": 237.1,
+              "y1": 252.0,
+              "x2": 250.9,
+              "y2": 263.1
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.7198,
+            "box": {
+              "x1": 494.1,
+              "y1": 241.6,
+              "x2": 527.9,
+              "y2": 332.1
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7016,
+            "box": {
+              "x1": 410.8,
+              "y1": 218.5,
+              "x2": 444.9,
+              "y2": 429.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.6982,
+            "box": {
+              "x1": 377.4,
+              "y1": 221.0,
+              "x2": 434.6,
+              "y2": 458.1
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.6788,
+            "box": {
+              "x1": 160.8,
+              "y1": 223.7,
+              "x2": 214.1,
+              "y2": 453.7
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.6778,
+            "box": {
+              "x1": 483.7,
+              "y1": 269.0,
+              "x2": 494.3,
+              "y2": 279.1
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.674,
+            "box": {
+              "x1": 207.5,
+              "y1": 236.9,
+              "x2": 219.6,
+              "y2": 248.2
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.6698,
+            "box": {
+              "x1": 252.7,
+              "y1": 251.2,
+              "x2": 288.3,
+              "y2": 299.9
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.6581,
+            "box": {
+              "x1": 147.1,
+              "y1": 205.9,
+              "x2": 183.4,
+              "y2": 408.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.658,
+            "box": {
+              "x1": 178.2,
+              "y1": 258.7,
+              "x2": 191.8,
+              "y2": 270.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.6555,
+            "box": {
+              "x1": 290.6,
+              "y1": 255.7,
+              "x2": 303.9,
+              "y2": 266.2
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.6503,
+            "box": {
+              "x1": 92.9,
+              "y1": 264.1,
+              "x2": 104.0,
+              "y2": 274.5
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.6038,
+            "box": {
+              "x1": 534.0,
+              "y1": 250.9,
+              "x2": 547.4,
+              "y2": 263.5
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5972,
+            "box": {
+              "x1": 261.2,
+              "y1": 240.2,
+              "x2": 272.7,
+              "y2": 250.1
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.5917,
+            "box": {
+              "x1": 96.3,
+              "y1": 204.3,
+              "x2": 134.4,
+              "y2": 377.7
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5908,
+            "box": {
+              "x1": 400.0,
+              "y1": 256.7,
+              "x2": 411.5,
+              "y2": 268.3
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.5827,
+            "box": {
+              "x1": 330.2,
+              "y1": 232.2,
+              "x2": 361.4,
+              "y2": 268.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5816,
+            "box": {
+              "x1": 343.9,
+              "y1": 258.1,
+              "x2": 359.0,
+              "y2": 269.5
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.5742,
+            "box": {
+              "x1": 152.0,
+              "y1": 259.5,
+              "x2": 177.3,
+              "y2": 338.7
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5661,
+            "box": {
+              "x1": 155.3,
+              "y1": 235.2,
+              "x2": 168.5,
+              "y2": 248.3
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5564,
+            "box": {
+              "x1": 137.5,
+              "y1": 264.7,
+              "x2": 150.2,
+              "y2": 274.8
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5561,
+            "box": {
+              "x1": 367.8,
+              "y1": 241.6,
+              "x2": 380.6,
+              "y2": 253.0
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.5393,
+            "box": {
+              "x1": 424.3,
+              "y1": 250.5,
+              "x2": 434.5,
+              "y2": 259.7
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.539,
+            "box": {
+              "x1": 104.0,
+              "y1": 232.0,
+              "x2": 115.5,
+              "y2": 243.5
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.535,
+            "box": {
+              "x1": 338.3,
+              "y1": 223.9,
+              "x2": 348.3,
+              "y2": 232.6
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.5037,
+            "box": {
+              "x1": 413.9,
+              "y1": 255.6,
+              "x2": 439.7,
+              "y2": 345.3
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.5003,
+            "box": {
+              "x1": 330.7,
+              "y1": 198.7,
+              "x2": 361.1,
+              "y2": 270.1
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.4676,
+            "box": {
+              "x1": 497.3,
+              "y1": 229.4,
+              "x2": 511.5,
+              "y2": 243.8
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.4598,
+            "box": {
+              "x1": 445.5,
+              "y1": 244.4,
+              "x2": 458.8,
+              "y2": 257.4
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.4076,
+            "box": {
+              "x1": 149.5,
+              "y1": 253.1,
+              "x2": 175.2,
+              "y2": 282.0
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 15.86
+    },
+    {
+      "file": "sample-5.jpg",
+      "bytes": 61813,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-5.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.09,
+        "model_ms": 17.89,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 8,
+        "detections": [
+          {
+            "class_id": 9,
+            "class_name": "vehicle",
+            "confidence": 0.9361,
+            "box": {
+              "x1": 372.7,
+              "y1": 286.6,
+              "x2": 431.4,
+              "y2": 336.0
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8895,
+            "box": {
+              "x1": 291.8,
+              "y1": 209.7,
+              "x2": 350.8,
+              "y2": 385.4
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8674,
+            "box": {
+              "x1": 211.3,
+              "y1": 224.6,
+              "x2": 251.6,
+              "y2": 337.4
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8261,
+            "box": {
+              "x1": 248.4,
+              "y1": 78.7,
+              "x2": 366.4,
+              "y2": 605.7
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.822,
+            "box": {
+              "x1": 310.0,
+              "y1": 145.5,
+              "x2": 335.8,
+              "y2": 173.1
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.815,
+            "box": {
+              "x1": 227.5,
+              "y1": 175.7,
+              "x2": 249.6,
+              "y2": 213.6
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.7969,
+            "box": {
+              "x1": 199.9,
+              "y1": 149.2,
+              "x2": 254.5,
+              "y2": 508.1
+            }
+          },
+          {
+            "class_id": 9,
+            "class_name": "vehicle",
+            "confidence": 0.4625,
+            "box": {
+              "x1": 290.5,
+              "y1": 273.0,
+              "x2": 376.9,
+              "y2": 365.8
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 18.97
+    },
+    {
+      "file": "sample-6.jpg",
+      "bytes": 41667,
+      "status_code": 200,
+      "response": {
+        "filename": "sample-6.jpg",
+        "server": "gpu0-8001",
+        "mode": "single",
+        "batch_size": 1,
+        "queue_ms": 0.06,
+        "model_ms": 15.42,
+        "image": {
+          "width": 640,
+          "height": 640
+        },
+        "count": 9,
+        "detections": [
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8917,
+            "box": {
+              "x1": 380.1,
+              "y1": 194.3,
+              "x2": 480.3,
+              "y2": 550.4
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8858,
+            "box": {
+              "x1": 255.4,
+              "y1": 124.3,
+              "x2": 300.4,
+              "y2": 168.7
+            }
+          },
+          {
+            "class_id": 0,
+            "class_name": "Hardhat",
+            "confidence": 0.8835,
+            "box": {
+              "x1": 377.4,
+              "y1": 196.4,
+              "x2": 415.5,
+              "y2": 259.1
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.876,
+            "box": {
+              "x1": 415.1,
+              "y1": 235.7,
+              "x2": 478.0,
+              "y2": 378.9
+            }
+          },
+          {
+            "class_id": 7,
+            "class_name": "Safety Vest",
+            "confidence": 0.8547,
+            "box": {
+              "x1": 268.9,
+              "y1": 189.5,
+              "x2": 336.3,
+              "y2": 345.8
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.8119,
+            "box": {
+              "x1": 248.4,
+              "y1": 125.3,
+              "x2": 370.7,
+              "y2": 548.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.7675,
+            "box": {
+              "x1": 265.3,
+              "y1": 182.6,
+              "x2": 284.2,
+              "y2": 207.9
+            }
+          },
+          {
+            "class_id": 3,
+            "class_name": "NO-Mask",
+            "confidence": 0.574,
+            "box": {
+              "x1": 396.3,
+              "y1": 242.2,
+              "x2": 410.9,
+              "y2": 281.7
+            }
+          },
+          {
+            "class_id": 5,
+            "class_name": "Person",
+            "confidence": 0.4635,
+            "box": {
+              "x1": 509.5,
+              "y1": 0.6,
+              "x2": 640.0,
+              "y2": 546.2
+            }
+          }
+        ]
+      },
+      "model_ms_round2": 16.81
+    }
+  ],
+  "auth": {
+    "no_key": {
+      "status_code": 401,
+      "body": {
+        "detail": "missing or invalid API key"
+      }
+    },
+    "wrong_key": {
+      "status_code": 401,
+      "body": {
+        "detail": "missing or invalid API key"
+      }
+    },
+    "wrong_scheme": {
+      "status_code": 401,
+      "body": {
+        "detail": "missing or invalid API key"
+      }
+    }
+  },
+  "bad_image": {
+    "status_code": 400,
+    "body": {
+      "detail": "file is not a readable image"
+    }
+  }
+}

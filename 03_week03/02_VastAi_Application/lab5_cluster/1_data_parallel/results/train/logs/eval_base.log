@@ -1,0 +1,19 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 4041.24it/s]
+{
+ "name": "base",
+ "adapter": null,
+ "n": 200,
+ "exact_match": 0.015,
+ "exact_match_count": 3,
+ "exact_match_if_code_fence_removed": 0.015,
+ "contains_think_tag": 0,
+ "loss": 1.85753909472137,
+ "loss_tokens": 5266,
+ "enable_thinking": false,
+ "max_new_tokens": 200,
+ "generated_tokens": 5342,
+ "seconds_loss": 9.890976667404175,
+ "seconds_generate": 28.356224298477173,
+ "gpu": "NVIDIA GeForce RTX 3090",
+ "vram_peak_mb": 19370.0087890625
+}

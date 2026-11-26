@@ -1,0 +1,111 @@
+{
+ "track": "Data Parallelism, 2 Nodes",
+ "nodes": 2,
+ "gpus_per_node": 2,
+ "machines": [
+  {
+   "node": 1,
+   "gpu": "RTX 3090 x2",
+   "country": "Taiwan",
+   "usd_per_hour": 0.4862
+  },
+  {
+   "node": 2,
+   "gpu": "RTX 3090 x2",
+   "country": "Taiwan",
+   "usd_per_hour": 0.494
+  }
+ ],
+ "network": [
+  {
+   "pair": "node2-node1",
+   "rtt_ms_avg": 5.95,
+   "mbps_node2_to_node1": 142.9,
+   "mbps_node1_to_node2": 783.5,
+   "mbps_node2_to_node1_iperf3_4streams": 139.5,
+   "mbps_node1_to_node2_iperf3_4streams": 742.4
+  }
+ ],
+ "batch": {
+  "per_gpu": 4,
+  "total": 16
+ },
+ "steps_per_epoch": 250,
+ "total_steps": 500,
+ "sec_per_step": 3.555,
+ "sec_per_step_median": 2.6687,
+ "compute_sec_per_step": 0.433,
+ "comm_sec_per_step": 3.1142,
+ "comm_share_pct": 87.8,
+ "examples_per_sec": 4.501,
+ "gpu_util_pct": {
+  "node1": [
+   12.4,
+   12.8
+  ],
+  "node2": [
+   12.7,
+   12.8
+  ]
+ },
+ "gradient_message_mb": {
+  "up_per_worker": 15.34,
+  "down_per_worker": 15.34,
+  "wire_format": "float32, uncompressed"
+ },
+ "train_loss_per_epoch": [
+  0.1198,
+  0.0371
+ ],
+ "test_loss_per_epoch": [
+  0.0603,
+  0.0515
+ ],
+ "test_loss_base": 1.8575,
+ "exact_match_pct": {
+  "base": 1.5,
+  "epoch1": 72.5,
+  "epoch2": 75.0,
+  "n": 200
+ },
+ "lora_weights_equal": {
+  "epoch1": true,
+  "epoch2": true
+ },
+ "train_minutes": 29.63,
+ "cost": {
+  "combined_usd_per_hour": 0.9802,
+  "usd_per_1000_examples": 0.0605,
+  "bill_usd": {
+   "node1": 0.819,
+   "node2": 0.769,
+   "total": 1.588
+  },
+  "bill_split_usd": {
+   "node1": {
+    "gpu": 0.559,
+    "storage": 0.028,
+    "download": 0.128,
+    "upload": 0.104
+   },
+   "node2": {
+    "gpu": 0.592,
+    "storage": 0.021,
+    "download": 0.089,
+    "upload": 0.067
+   }
+  }
+ },
+ "step_minutes": {
+  "step1": 27.5,
+  "step2": 46.9,
+  "step3": 11.1
+ },
+ "sources": {
+  "most_numbers": "results/metrics.json",
+  "network": "results/network.json (tcp_test + iperf3_4streams)",
+  "countries": "results/answers/answer_1.md",
+  "gradient_down_bytes": "results/train_summary.json per_worker.bytes_received",
+  "step_minutes": "track.log of the run (step start/end times)"
+ }
+}

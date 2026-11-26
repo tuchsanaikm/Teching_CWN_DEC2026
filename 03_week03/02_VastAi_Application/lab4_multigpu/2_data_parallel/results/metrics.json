@@ -1,0 +1,349 @@
+{
+ "lab": "lab4_multigpu/2_data_parallel",
+ "method": "LoRA fine-tuning with DistributedDataParallel on 2 GPUs (one model copy per GPU)",
+ "model": "Qwen/Qwen3-8B",
+ "dataset": "b-mc2/sql-create-context",
+ "n_train": 4000,
+ "n_test": 200,
+ "config": {
+  "dtype": "bfloat16",
+  "gradient_checkpointing": false,
+  "thinking": false,
+  "lora": {
+   "r": 8,
+   "alpha": 16,
+   "target_modules": [
+    "q_proj",
+    "v_proj"
+   ]
+  },
+  "lr": 0.0002,
+  "lr_schedule": "constant",
+  "optimizer": "AdamW",
+  "seed": 0,
+  "max_len": 256,
+  "world_size": 2
+ },
+ "gpu": {
+  "name": "RTX 3090",
+  "count": 2,
+  "vram_mib_per_gpu": 24576
+ },
+ "probe": [
+  {
+   "bs_per_gpu": 1,
+   "status": "ok",
+   "seq_len": 256,
+   "torch_peak_alloc_mib": [
+    17606,
+    17592
+   ],
+   "torch_peak_reserved_mib": [
+    17806,
+    17806
+   ],
+   "nvidia_smi_peak_mib": [
+    18227.0,
+    18233.0
+   ],
+   "gpu_util_mean_pct": [
+    67.2,
+    48.3
+   ],
+   "sec_per_step": 0.269
+  },
+  {
+   "bs_per_gpu": 2,
+   "status": "ok",
+   "seq_len": 256,
+   "torch_peak_alloc_mib": [
+    19479,
+    19479
+   ],
+   "torch_peak_reserved_mib": [
+    19668,
+    19668
+   ],
+   "nvidia_smi_peak_mib": [
+    20123.0,
+    20123.0
+   ],
+   "gpu_util_mean_pct": [
+    67.0,
+    48.4
+   ],
+   "sec_per_step": 0.379
+  },
+  {
+   "bs_per_gpu": 4,
+   "status": "ok",
+   "seq_len": 256,
+   "torch_peak_alloc_mib": [
+    23253,
+    23253
+   ],
+   "torch_peak_reserved_mib": [
+    23620,
+    23620
+   ],
+   "nvidia_smi_peak_mib": [
+    24075.0,
+    24075.0
+   ],
+   "gpu_util_mean_pct": [
+    73.2,
+    53.5
+   ],
+   "sec_per_step": 0.714
+  },
+  {
+   "bs_per_gpu": 8,
+   "status": "oom",
+   "seq_len": 256,
+   "torch_peak_alloc_mib": [
+    23705,
+    23705
+   ],
+   "torch_peak_reserved_mib": [
+    23738,
+    23738
+   ],
+   "nvidia_smi_peak_mib": null,
+   "error": "CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacity of 23.68 GiB of which 68.56 MiB is free. Process 3593946 has 23.60 GiB memory in use"
+  }
+ ],
+ "largest_bs_per_gpu": 4,
+ "largest_bs_total": 8,
+ "train": {
+  "bs_per_gpu": 4,
+  "bs_total": 8,
+  "steps_per_epoch": 500,
+  "epochs": 3,
+  "sec_per_step": 0.4193,
+  "samples_per_sec": 19.078,
+  "epochs_detail": [
+   {
+    "epoch": 1,
+    "steps": 500,
+    "train_loss_mean": 0.08848,
+    "sec_per_step": 0.4178,
+    "samples_per_sec": 19.148,
+    "epoch_wall_sec_this_run": 173.8,
+    "gpu_util_mean": [
+     97.1,
+     98.6
+    ],
+    "nvidia_smi_mem_max_mib": [
+     22445.0,
+     22585.0
+    ],
+    "torch_peak_alloc_mib": [
+     21631,
+     21749
+    ],
+    "torch_peak_reserved_mib": [
+     21990,
+     22130
+    ],
+    "replicas_identical": true
+   },
+   {
+    "epoch": 2,
+    "steps": 500,
+    "train_loss_mean": 0.03218,
+    "sec_per_step": 0.4184,
+    "samples_per_sec": 19.12,
+    "epoch_wall_sec_this_run": 211.9,
+    "gpu_util_mean": [
+     97.9,
+     98.6
+    ],
+    "nvidia_smi_mem_max_mib": [
+     22585.0,
+     24145.0
+    ],
+    "torch_peak_alloc_mib": [
+     21749,
+     23253
+    ],
+    "torch_peak_reserved_mib": [
+     22130,
+     23690
+    ],
+    "replicas_identical": true
+   },
+   {
+    "epoch": 3,
+    "steps": 500,
+    "train_loss_mean": 0.02053,
+    "sec_per_step": 0.4218,
+    "samples_per_sec": 18.966,
+    "epoch_wall_sec_this_run": 213.2,
+    "gpu_util_mean": [
+     98.3,
+     98.6
+    ],
+    "nvidia_smi_mem_max_mib": [
+     24145.0,
+     24147.0
+    ],
+    "torch_peak_alloc_mib": [
+     23253,
+     23253
+    ],
+    "torch_peak_reserved_mib": [
+     23690,
+     23692
+    ],
+    "replicas_identical": true
+   }
+  ]
+ },
+ "eval": [
+  {
+   "tag": "base",
+   "n_test": 200,
+   "test_loss": 1.8453,
+   "em_count": 0,
+   "exact_match_pct": 0.0,
+   "em_relaxed_pct": 54.5
+  },
+  {
+   "tag": "epoch1",
+   "n_test": 200,
+   "test_loss": 0.0581,
+   "em_count": 140,
+   "exact_match_pct": 70.0,
+   "em_relaxed_pct": 72.0
+  },
+  {
+   "tag": "epoch2",
+   "n_test": 200,
+   "test_loss": 0.052,
+   "em_count": 155,
+   "exact_match_pct": 77.5,
+   "em_relaxed_pct": 79.5
+  },
+  {
+   "tag": "epoch3",
+   "n_test": 200,
+   "test_loss": 0.0578,
+   "em_count": 158,
+   "exact_match_pct": 79.0,
+   "em_relaxed_pct": 81.0
+  }
+ ],
+ "final": {
+  "tag": "epoch3",
+  "exact_match_pct": 79.0,
+  "em_count": 158,
+  "n_test": 200
+ },
+ "best_epoch": {
+  "tag": "epoch3",
+  "exact_match_pct": 79.0
+ },
+ "market_price": {
+  "searched_at_utc": "2026-11-22T07:12:37Z",
+  "query": "gpu_name=RTX_3090 num_gpus=2 rentable=true, --storage 60, order dph_total",
+  "cheapest_on_demand_verified": {
+   "id": "<id>",
+   "machine_id": 156744,
+   "dph_total": 0.3388888888888889,
+   "dph_base": 0.26666666666666666,
+   "storage_total_cost": 0.07222222222222222,
+   "verification": "verified",
+   "reliability2": 0.9711219,
+   "geolocation": "California, US",
+   "n_offers": 26
+  },
+  "cheapest_on_demand_any_verification": {
+   "id": 38849860,
+   "machine_id": 16146,
+   "dph_total": 0.2566666666666667,
+   "dph_base": 0.24000000000000002,
+   "storage_total_cost": 0.016666666666666666,
+   "verification": "deverified",
+   "reliability2": 0.9953547,
+   "geolocation": "Quebec, CA",
+   "n_offers": 46
+  },
+  "cheapest_interruptible_verified": {
+   "id": 58384369,
+   "machine_id": 33953,
+   "dph_total": 0.23555555555555557,
+   "dph_base": 0.21333333333333335,
+   "storage_total_cost": 0.02222222222222222,
+   "verification": "verified",
+   "reliability2": 0.9661228,
+   "geolocation": "Taiwan, TW",
+   "n_offers": 25
+  }
+ },
+ "instance_cost": {
+  "instance_id": "<id>",
+  "label": "vapp-lab4-dp",
+  "usd_per_hour": 0.3767,
+  "created_utc": "2026-11-22T06:23:48Z",
+  "snapshot_utc": "2026-11-22T07:14:30Z",
+  "destroyed_utc": "2026-11-22T07:14:32Z",
+  "age_sec_at_destroy": 3043.6,
+  "age_min_at_destroy": 50.7,
+  "estimated_cost_usd": 0.3185,
+  "billed": {
+   "fetched_utc": "2026-11-22T07:23:21Z",
+   "note": "unchanged over 3 readings 07:20-07:23 UTC, after the destroy at 07:14:32 UTC",
+   "source": "instance-<id>",
+   "label": "vapp-lab4-dp",
+   "total_usd": 0.351,
+   "items": [
+    {
+     "type": "gpu",
+     "usd": 0.295,
+     "description": "0.820 hours at $0.360/hour"
+    },
+    {
+     "type": "disk",
+     "usd": 0.016,
+     "description": "0.931 hours at $0.017/hour"
+    },
+    {
+     "type": "bwd",
+     "usd": 0.039,
+     "description": "14.8 GB Downloaded at $0.003/GB"
+    },
+    {
+     "type": "bwu",
+     "usd": 0.001,
+     "description": "0.4 GB Uploaded at $0.003/GB"
+    }
+   ]
+  }
+ },
+ "cost_per_1000_samples": {
+  "formula": "usd_per_hour / (samples_per_sec * 3600) * 1000",
+  "samples_per_sec": 19.078,
+  "note": "samples = training examples; price includes 60 GB of disk",
+  "market_on_demand_verified": {
+   "usd_per_hour": 0.3389,
+   "usd_per_1000_samples": 0.004934
+  },
+  "market_on_demand_any_verification": {
+   "usd_per_hour": 0.2567,
+   "usd_per_1000_samples": 0.003737
+  },
+  "market_interruptible_verified": {
+   "usd_per_hour": 0.2356,
+   "usd_per_1000_samples": 0.00343
+  },
+  "headline": {
+   "usd_per_hour": 0.3389,
+   "usd_per_1000_samples": 0.004934,
+   "basis": "market_on_demand_verified"
+  },
+  "rented_instance": {
+   "usd_per_hour": 0.3767,
+   "usd_per_1000_samples": 0.005484
+  }
+ }
+}

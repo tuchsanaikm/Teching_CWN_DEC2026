@@ -1,0 +1,111 @@
+W1122 08:13:06.787000 5472 site-packages/torch/distributed/run.py:774] 
+W1122 08:13:06.787000 5472 site-packages/torch/distributed/run.py:774] *****************************************
+W1122 08:13:06.787000 5472 site-packages/torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W1122 08:13:06.787000 5472 site-packages/torch/distributed/run.py:774] *****************************************
+08:13:15 mode=train world=4 batch_per_gpu=4 global_batch=16 train=4000 truncated_to_256=1 longest=256 tokens
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:   1%|          | 2/399 [00:00<01:50,  3.61it/s]Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:   2%|▏         | 6/399 [00:00<00:35, 10.93it/s]Loading weights:   1%|          | 2/399 [00:00<00:59,  6.63it/s]Loading weights:   4%|▍         | 16/399 [00:00<00:12, 29.59it/s]Loading weights:   0%|          | 1/399 [00:00<02:01,  3.26it/s]Loading weights:   2%|▏         | 6/399 [00:00<00:24, 16.20it/s]Loading weights:   7%|▋         | 26/399 [00:00<00:08, 45.25it/s]Loading weights:   1%|          | 2/399 [00:00<01:14,  5.36it/s]Loading weights:   2%|▏         | 6/399 [00:00<00:22, 17.60it/s]Loading weights:   4%|▍         | 16/399 [00:00<00:09, 39.91it/s]Loading weights:   8%|▊         | 33/399 [00:00<00:07, 50.65it/s]Loading weights:   1%|          | 4/399 [00:00<00:43,  9.16it/s]Loading weights:   4%|▍         | 16/399 [00:00<00:09, 40.97it/s]Loading weights:   7%|▋         | 26/399 [00:00<00:06, 57.28it/s]Loading weights:  10%|█         | 40/399 [00:01<00:07, 49.65it/s]Loading weights:   4%|▍         | 16/399 [00:00<00:10, 37.49it/s]Loading weights:   9%|▊         | 34/399 [00:00<00:05, 62.54it/s]Loading weights:   7%|▋         | 27/399 [00:00<00:06, 55.71it/s]Loading weights:  12%|█▏        | 49/399 [00:01<00:06, 57.69it/s]Loading weights:   7%|▋         | 26/399 [00:00<00:06, 53.86it/s]Loading weights:  11%|█         | 42/399 [00:00<00:05, 65.20it/s]Loading weights:   9%|▉         | 37/399 [00:00<00:05, 66.54it/s]Loading weights:  15%|█▍        | 59/399 [00:01<00:05, 65.42it/s]Loading weights:   8%|▊         | 33/399 [00:00<00:06, 56.63it/s]Loading weights:  11%|█▏        | 45/399 [00:00<00:05, 68.08it/s]Loading weights:  13%|█▎        | 50/399 [00:01<00:05, 61.40it/s]Loading weights:  17%|█▋        | 67/399 [00:01<00:04, 68.37it/s]Loading weights:  10%|█         | 40/399 [00:00<00:06, 56.73it/s]Loading weights:  13%|█▎        | 53/399 [00:01<00:05, 67.68it/s]Loading weights:  15%|█▌        | 60/399 [00:01<00:04, 70.89it/s]Loading weights:  19%|█▉        | 75/399 [00:01<00:04, 68.16it/s]Loading weights:  12%|█▏        | 49/399 [00:01<00:05, 65.07it/s]Loading weights:  15%|█▌        | 61/399 [00:01<00:05, 64.06it/s]Loading weights:  18%|█▊        | 70/399 [00:01<00:04, 71.43it/s]Loading weights:  15%|█▍        | 59/399 [00:01<00:04, 71.77it/s]Loading weights:  21%|██        | 83/399 [00:01<00:05, 63.15it/s]Loading weights:  20%|██        | 81/399 [00:01<00:03, 80.48it/s]Loading weights:  18%|█▊        | 72/399 [00:01<00:04, 69.13it/s]Loading weights:  17%|█▋        | 68/399 [00:01<00:04, 76.48it/s]Loading weights:  23%|██▎       | 93/399 [00:01<00:04, 69.99it/s]Loading weights:  23%|██▎       | 90/399 [00:01<00:03, 80.51it/s]Loading weights:  21%|██        | 82/399 [00:01<00:04, 75.47it/s]Loading weights:  19%|█▉        | 77/399 [00:01<00:04, 73.31it/s]Loading weights:  26%|██▌       | 103/399 [00:01<00:03, 75.45it/s]Loading weights:  23%|██▎       | 92/399 [00:01<00:03, 80.41it/s]Loading weights:  25%|██▍       | 99/399 [00:01<00:04, 74.18it/s]Loading weights:  28%|██▊       | 111/399 [00:02<00:03, 73.79it/s]Loading weights:  21%|██▏       | 85/399 [00:01<00:04, 68.46it/s]Loading weights:  25%|██▌       | 101/399 [00:01<00:03, 79.73it/s]Loading weights:  27%|██▋       | 107/399 [00:01<00:04, 71.41it/s]Loading weights:  30%|██▉       | 119/399 [00:02<00:03, 70.35it/s]Loading weights:  23%|██▎       | 93/399 [00:01<00:04, 67.94it/s]Loading weights:  29%|██▉       | 115/399 [00:01<00:03, 72.22it/s]Loading weights:  28%|██▊       | 110/399 [00:01<00:03, 72.95it/s]Loading weights:  26%|██▌       | 103/399 [00:01<00:03, 74.56it/s]Loading weights:  32%|███▏      | 127/399 [00:02<00:04, 64.31it/s]Loading weights:  31%|███▏      | 125/399 [00:01<00:03, 78.64it/s]Loading weights:  30%|██▉       | 118/399 [00:01<00:03, 71.71it/s]Loading weights:  28%|██▊       | 111/399 [00:01<00:03, 75.50it/s]Loading weights:  34%|███▍      | 137/399 [00:02<00:03, 70.08it/s]Loading weights:  34%|███▎      | 134/399 [00:02<00:03, 80.39it/s]Loading weights:  32%|███▏      | 126/399 [00:01<00:03, 71.62it/s]Loading weights:  30%|██▉       | 119/399 [00:02<00:04, 69.56it/s]Loading weights:  37%|███▋      | 146/399 [00:02<00:03, 72.17it/s]Loading weights:  36%|███▌      | 143/399 [00:02<00:03, 76.70it/s]Loading weights:  34%|███▍      | 136/399 [00:02<00:03, 76.37it/s]Loading weights:  39%|███▊      | 154/399 [00:02<00:03, 71.69it/s]Loading weights:  32%|███▏      | 127/399 [00:02<00:04, 62.58it/s]Loading weights:  36%|███▌      | 144/399 [00:02<00:03, 75.46it/s]Loading weights:  38%|███▊      | 151/399 [00:02<00:03, 71.21it/s]Loading weights:  41%|████      | 162/399 [00:02<00:03, 69.46it/s]Loading weights:  34%|███▍      | 137/399 [00:02<00:03, 68.24it/s]Loading weights:  40%|███▉      | 159/399 [00:02<00:03, 72.64it/s]Loading weights:  38%|███▊      | 152/399 [00:02<00:03, 72.41it/s]Loading weights:  43%|████▎     | 170/399 [00:02<00:03, 70.77it/s]Loading weights:  37%|███▋      | 147/399 [00:02<00:03, 75.50it/s]Loading weights:  42%|████▏     | 169/399 [00:02<00:02, 78.89it/s]Loading weights:  40%|████      | 160/399 [00:02<00:03, 66.43it/s]Loading weights:  39%|███▉      | 156/399 [00:02<00:03, 79.20it/s]Loading weights:  45%|████▌     | 180/399 [00:03<00:02, 73.55it/s]Loading weights:  45%|████▍     | 178/399 [00:02<00:02, 80.49it/s]Loading weights:  43%|████▎     | 170/399 [00:02<00:03, 74.48it/s]Loading weights:  41%|████▏     | 165/399 [00:02<00:03, 77.42it/s]Loading weights:  47%|████▋     | 188/399 [00:03<00:02, 72.96it/s]Loading weights:  47%|████▋     | 187/399 [00:02<00:02, 76.00it/s]Loading weights:  45%|████▌     | 180/399 [00:02<00:02, 79.65it/s]Loading weights:  49%|████▉     | 196/399 [00:03<00:02, 70.76it/s]Loading weights:  43%|████▎     | 173/399 [00:02<00:03, 68.60it/s]Loading weights:  49%|████▉     | 195/399 [00:02<00:02, 72.21it/s]Loading weights:  47%|████▋     | 189/399 [00:02<00:02, 79.59it/s]Loading weights:  45%|████▌     | 181/399 [00:02<00:03, 68.52it/s]Loading weights:  51%|█████     | 204/399 [00:03<00:03, 64.51it/s]Loading weights:  51%|█████     | 204/399 [00:03<00:02, 71.73it/s]Loading weights:  50%|████▉     | 198/399 [00:02<00:02, 73.89it/s]Loading weights:  54%|█████▎    | 214/399 [00:03<00:02, 72.25it/s]Loading weights:  48%|████▊     | 191/399 [00:03<00:03, 68.77it/s]Loading weights:  52%|█████▏    | 206/399 [00:03<00:02, 71.82it/s]Loading weights:  54%|█████▍    | 215/399 [00:03<00:02, 74.41it/s]Loading weights:  56%|█████▌    | 224/399 [00:03<00:02, 76.25it/s]Loading weights:  50%|████▉     | 199/399 [00:03<00:02, 70.41it/s]Loading weights:  54%|█████▎    | 214/399 [00:03<00:02, 73.42it/s]Loading weights:  56%|█████▋    | 225/399 [00:03<00:02, 77.54it/s]Loading weights:  58%|█████▊    | 232/399 [00:03<00:02, 71.54it/s]Loading weights:  52%|█████▏    | 207/399 [00:03<00:02, 69.24it/s]Loading weights:  56%|█████▌    | 224/399 [00:03<00:02, 78.13it/s]Loading weights:  59%|█████▉    | 235/399 [00:03<00:02, 77.23it/s]Loading weights:  58%|█████▊    | 232/399 [00:03<00:02, 77.30it/s]Loading weights:  60%|██████    | 240/399 [00:03<00:02, 66.16it/s]Loading weights:  54%|█████▍    | 215/399 [00:03<00:02, 63.88it/s]Loading weights:  61%|██████    | 243/399 [00:03<00:02, 72.47it/s]Loading weights:  60%|██████    | 240/399 [00:03<00:02, 74.49it/s]Loading weights:  56%|█████▋    | 225/399 [00:03<00:02, 71.06it/s]Loading weights:  62%|██████▏   | 247/399 [00:04<00:02, 62.68it/s]Loading weights:  63%|██████▎   | 251/399 [00:03<00:02, 66.95it/s]Loading weights:  59%|█████▉    | 235/399 [00:03<00:02, 77.91it/s]Loading weights:  62%|██████▏   | 248/399 [00:03<00:02, 68.95it/s]Loading weights:  64%|██████▍   | 257/399 [00:04<00:02, 67.96it/s]Loading weights:  65%|██████▍   | 258/399 [00:03<00:02, 65.97it/s]Loading weights:  65%|██████▍   | 258/399 [00:03<00:01, 75.46it/s]Loading weights:  66%|██████▌   | 264/399 [00:04<00:01, 67.57it/s]Loading weights:  61%|██████    | 244/399 [00:03<00:02, 71.31it/s]Loading weights:  67%|██████▋   | 268/399 [00:03<00:01, 68.69it/s]Loading weights:  67%|██████▋   | 268/399 [00:03<00:01, 80.39it/s]Loading weights:  68%|██████▊   | 271/399 [00:04<00:02, 61.01it/s]Loading weights:  63%|██████▎   | 252/399 [00:03<00:02, 68.99it/s]Loading weights:  69%|██████▉   | 275/399 [00:04<00:01, 67.90it/s]Loading weights:  69%|██████▉   | 277/399 [00:03<00:01, 80.53it/s]Loading weights:  70%|███████   | 280/399 [00:04<00:01, 65.27it/s]Loading weights:  65%|██████▌   | 260/399 [00:04<00:02, 66.90it/s]Loading weights:  71%|███████   | 282/399 [00:04<00:01, 62.80it/s]Loading weights:  72%|███████▏  | 286/399 [00:04<00:01, 74.96it/s]Loading weights:  73%|███████▎  | 290/399 [00:04<00:01, 71.88it/s]Loading weights:  67%|██████▋   | 269/399 [00:04<00:01, 67.54it/s]Loading weights:  73%|███████▎  | 291/399 [00:04<00:01, 68.00it/s]Loading weights:  74%|███████▎  | 294/399 [00:04<00:01, 72.05it/s]Loading weights:  75%|███████▍  | 298/399 [00:04<00:01, 71.01it/s]Loading weights:  70%|██████▉   | 279/399 [00:04<00:01, 73.36it/s]Loading weights:  75%|███████▌  | 301/399 [00:04<00:01, 71.80it/s]Loading weights:  77%|███████▋  | 306/399 [00:04<00:01, 69.22it/s]Loading weights:  72%|███████▏  | 287/399 [00:04<00:01, 72.73it/s]Loading weights:  77%|███████▋  | 309/399 [00:04<00:01, 73.08it/s]Loading weights:  76%|███████▌  | 302/399 [00:04<00:01, 60.50it/s]Loading weights:  78%|███████▊  | 313/399 [00:05<00:01, 64.99it/s]Loading weights:  78%|███████▊  | 313/399 [00:04<00:01, 71.72it/s]Loading weights:  74%|███████▍  | 295/399 [00:04<00:01, 68.77it/s]Loading weights:  79%|███████▉  | 317/399 [00:04<00:01, 66.83it/s]Loading weights:  81%|████████  | 323/399 [00:05<00:01, 70.00it/s]Loading weights:  81%|████████  | 323/399 [00:04<00:00, 76.40it/s]Loading weights:  76%|███████▌  | 302/399 [00:04<00:01, 68.36it/s]Loading weights:  81%|████████  | 324/399 [00:04<00:01, 63.27it/s]Loading weights:  83%|████████▎ | 331/399 [00:05<00:00, 69.34it/s]Loading weights:  83%|████████▎ | 332/399 [00:04<00:00, 75.49it/s]Loading weights:  78%|███████▊  | 312/399 [00:04<00:01, 72.54it/s]Loading weights:  84%|████████▎ | 334/399 [00:04<00:00, 71.98it/s]Loading weights:  85%|████████▍ | 338/399 [00:05<00:00, 66.21it/s]Loading weights:  85%|████████▌ | 340/399 [00:04<00:00, 71.00it/s]Loading weights:  81%|████████  | 323/399 [00:04<00:01, 75.51it/s]Loading weights:  86%|████████▌ | 342/399 [00:04<00:00, 71.96it/s]Loading weights:  87%|████████▋ | 346/399 [00:05<00:00, 67.47it/s]Loading weights:  83%|████████▎ | 332/399 [00:04<00:00, 78.81it/s]Loading weights:  87%|████████▋ | 348/399 [00:05<00:00, 65.71it/s]Loading weights:  88%|████████▊ | 350/399 [00:05<00:00, 68.05it/s]Loading weights:  89%|████████▉ | 356/399 [00:05<00:00, 73.53it/s]Loading weights:  85%|████████▌ | 340/399 [00:05<00:00, 74.67it/s]Loading weights:  89%|████████▉ | 357/399 [00:05<00:00, 63.95it/s]Loading weights:  89%|████████▉ | 357/399 [00:05<00:00, 65.34it/s]Loading weights:  91%|█████████ | 364/399 [00:05<00:00, 74.12it/s]Loading weights:  92%|█████████▏| 367/399 [00:05<00:00, 73.02it/s]Loading weights:  87%|████████▋ | 348/399 [00:05<00:00, 68.06it/s]Loading weights:  92%|█████████▏| 367/399 [00:05<00:00, 73.10it/s]Loading weights:  93%|█████████▎| 372/399 [00:05<00:00, 68.99it/s]Loading weights:  94%|█████████▍| 375/399 [00:05<00:00, 73.55it/s]Loading weights:  89%|████████▉ | 357/399 [00:05<00:00, 70.25it/s]Loading weights:  94%|█████████▍| 375/399 [00:05<00:00, 72.10it/s]Loading weights:  95%|█████████▍| 379/399 [00:05<00:00, 66.24it/s]Loading weights:  92%|█████████▏| 367/399 [00:05<00:00, 77.29it/s]Loading weights:  96%|█████████▌| 383/399 [00:05<00:00, 69.26it/s]Loading weights:  96%|█████████▌| 383/399 [00:05<00:00, 64.37it/s]Loading weights:  97%|█████████▋| 389/399 [00:06<00:00, 73.18it/s]Loading weights:  94%|█████████▍| 375/399 [00:05<00:00, 77.45it/s]Loading weights:  98%|█████████▊| 390/399 [00:05<00:00, 65.50it/s]Loading weights:  99%|█████████▉| 397/399 [00:06<00:00, 73.26it/s]Loading weights: 100%|██████████| 399/399 [00:06<00:00, 64.18it/s]
+Loading weights:  98%|█████████▊| 391/399 [00:05<00:00, 60.24it/s]Loading weights: 100%|██████████| 399/399 [00:05<00:00, 68.98it/s]
+Loading weights:  96%|█████████▌| 383/399 [00:05<00:00, 73.73it/s]Loading weights: 100%|██████████| 399/399 [00:05<00:00, 69.78it/s]
+Loading weights:  98%|█████████▊| 391/399 [00:05<00:00, 72.61it/s]Loading weights: 100%|██████████| 399/399 [00:05<00:00, 68.55it/s]
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+08:13:23 base dtype=torch.bfloat16 trainable=3,833,856 (torch.float32) total=8,194,569,216 weights_on_gpu=15637 MiB
+08:13:24 samples_per_gpu_per_epoch=1000 steps_per_epoch=250 epochs=3 lr=0.0002
+08:13:34 [GRADCHECK] step 1 local_loss/rank=[1.6576, 1.5366, 1.674, 1.3509] grad_abs_sum/rank=[902.6214080968937, 902.6214080968937, 902.6214080968937, 902.6214080968937] identical=True
+08:13:35 [GRADCHECK] step 2 local_loss/rank=[1.3175, 1.8385, 1.7022, 1.7637] grad_abs_sum/rank=[1018.8398613419896, 1018.8398613419896, 1018.8398613419896, 1018.8398613419896] identical=True
+08:13:35 [GRADCHECK] step 3 local_loss/rank=[1.1517, 1.5717, 0.6248, 1.6539] grad_abs_sum/rank=[1016.5937656287123, 1016.5937656287123, 1016.5937656287123, 1016.5937656287123] identical=True
+08:13:38 epoch 1/3 step 10/250 loss=0.2495 avg10=0.9926 0.40s/step
+08:13:42 epoch 1/3 step 20/250 loss=0.3594 avg10=0.1955 0.38s/step
+08:13:47 epoch 1/3 step 30/250 loss=0.0699 avg10=0.1433 0.69s/step
+08:13:51 epoch 1/3 step 40/250 loss=0.0645 avg10=0.1292 0.41s/step
+08:13:55 epoch 1/3 step 50/250 loss=0.1379 avg10=0.1120 0.42s/step
+08:14:00 epoch 1/3 step 60/250 loss=0.1111 avg10=0.0929 0.37s/step
+08:14:04 epoch 1/3 step 70/250 loss=0.0661 avg10=0.1003 0.39s/step
+08:14:09 epoch 1/3 step 80/250 loss=0.0966 avg10=0.0987 0.57s/step
+08:14:13 epoch 1/3 step 90/250 loss=0.0482 avg10=0.0743 0.39s/step
+08:14:17 epoch 1/3 step 100/250 loss=0.0584 avg10=0.0768 0.41s/step
+08:14:21 epoch 1/3 step 110/250 loss=0.0677 avg10=0.0782 0.37s/step
+08:14:25 epoch 1/3 step 120/250 loss=0.1107 avg10=0.0787 0.38s/step
+08:14:29 epoch 1/3 step 130/250 loss=0.0314 avg10=0.0742 0.36s/step
+08:14:34 epoch 1/3 step 140/250 loss=0.1794 avg10=0.0675 0.52s/step
+08:14:38 epoch 1/3 step 150/250 loss=0.0645 avg10=0.0404 0.38s/step
+08:14:42 epoch 1/3 step 160/250 loss=0.0798 avg10=0.0577 0.40s/step
+08:14:47 epoch 1/3 step 170/250 loss=0.0637 avg10=0.0665 0.52s/step
+08:14:51 epoch 1/3 step 180/250 loss=0.1532 avg10=0.0686 0.60s/step
+08:14:55 epoch 1/3 step 190/250 loss=0.0170 avg10=0.0524 0.37s/step
+08:15:00 epoch 1/3 step 200/250 loss=0.0383 avg10=0.0665 0.52s/step
+08:15:05 epoch 1/3 step 210/250 loss=0.0337 avg10=0.0451 0.42s/step
+08:15:09 epoch 1/3 step 220/250 loss=0.0437 avg10=0.0496 0.38s/step
+08:15:13 epoch 1/3 step 230/250 loss=0.0747 avg10=0.0431 0.41s/step
+08:15:17 epoch 1/3 step 240/250 loss=0.0337 avg10=0.0554 0.41s/step
+08:15:22 epoch 1/3 step 250/250 loss=0.0969 avg10=0.0585 0.42s/step
+/opt/conda/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py:4807: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+/opt/conda/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py:4807: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+/opt/conda/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py:4807: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+08:15:22 [EPOCH] 1 done loss=0.1167 sec/step=0.4704 samples/s=34.02 gpu_util%=[96.3, 97.5, 96.2, 97.8] vram_mib=[21532, 21692, 22700, 21292] time=118s
+/opt/conda/lib/python3.11/site-packages/torch/distributed/distributed_c10d.py:4807: UserWarning: No device id is provided via `init_process_group` or `barrier `. Using the current device set by the user. 
+  warnings.warn(  # warn only once
+08:15:24 [REPORT] epoch 2/3 step 5/250 loss_epoch_avg=0.0371 sec/step=0.50 samples/s=32.0 eta=4.1min gpu_util%=[96.4, 97.5, 96.1, 97.8] vram_mib=[21532, 21692, 22700, 21292]
+08:15:27 epoch 2/3 step 10/250 loss=0.0289 avg10=0.0475 0.54s/step
+08:15:31 epoch 2/3 step 20/250 loss=0.0199 avg10=0.0348 0.38s/step
+08:15:36 epoch 2/3 step 30/250 loss=0.0447 avg10=0.0375 0.56s/step
+08:15:40 epoch 2/3 step 40/250 loss=0.0403 avg10=0.0435 0.42s/step
+08:15:45 epoch 2/3 step 50/250 loss=0.0350 avg10=0.0440 0.42s/step
+08:15:49 epoch 2/3 step 60/250 loss=0.0277 avg10=0.0392 0.53s/step
+08:15:53 epoch 2/3 step 70/250 loss=0.0065 avg10=0.0223 0.52s/step
+08:15:58 epoch 2/3 step 80/250 loss=0.0348 avg10=0.0405 0.41s/step
+08:16:02 epoch 2/3 step 90/250 loss=0.0300 avg10=0.0409 0.52s/step
+08:16:06 epoch 2/3 step 100/250 loss=0.0203 avg10=0.0337 0.39s/step
+08:16:11 epoch 2/3 step 110/250 loss=0.0327 avg10=0.0394 0.38s/step
+08:16:16 epoch 2/3 step 120/250 loss=0.0429 avg10=0.0422 0.41s/step
+08:16:20 epoch 2/3 step 130/250 loss=0.0319 avg10=0.0386 0.41s/step
+08:16:24 epoch 2/3 step 140/250 loss=0.0249 avg10=0.0336 0.37s/step
+08:16:28 epoch 2/3 step 150/250 loss=0.0331 avg10=0.0343 0.44s/step
+08:16:32 epoch 2/3 step 160/250 loss=0.0990 avg10=0.0352 0.43s/step
+08:16:37 epoch 2/3 step 170/250 loss=0.0296 avg10=0.0435 0.43s/step
+08:16:41 epoch 2/3 step 180/250 loss=0.0241 avg10=0.0335 0.39s/step
+08:16:46 epoch 2/3 step 190/250 loss=0.0289 avg10=0.0493 0.37s/step
+08:16:50 epoch 2/3 step 200/250 loss=0.0148 avg10=0.0327 0.53s/step
+08:16:54 epoch 2/3 step 210/250 loss=0.0458 avg10=0.0457 0.41s/step
+08:16:58 epoch 2/3 step 220/250 loss=0.0679 avg10=0.0342 0.43s/step
+08:17:02 epoch 2/3 step 230/250 loss=0.0866 avg10=0.0460 0.42s/step
+08:17:07 epoch 2/3 step 240/250 loss=0.0104 avg10=0.0433 0.42s/step
+08:17:11 epoch 2/3 step 250/250 loss=0.0252 avg10=0.0295 0.40s/step
+08:17:11 [EPOCH] 2 done loss=0.0386 sec/step=0.4366 samples/s=36.64 gpu_util%=[97.4, 97.2, 97.8, 97.1] vram_mib=[21532, 21692, 22700, 22720] time=109s
+08:17:16 epoch 3/3 step 10/250 loss=0.0328 avg10=0.0278 0.43s/step
+08:17:20 epoch 3/3 step 20/250 loss=0.0094 avg10=0.0213 0.44s/step
+08:17:24 epoch 3/3 step 30/250 loss=0.0492 avg10=0.0231 0.42s/step
+08:17:25 [REPORT] epoch 3/3 step 31/250 loss_epoch_avg=0.0236 sec/step=0.42 samples/s=37.7 eta=1.6min gpu_util%=[97.3, 97.1, 98.0, 97.1] vram_mib=[21532, 21692, 22700, 22720]
+08:17:28 epoch 3/3 step 40/250 loss=0.0297 avg10=0.0186 0.37s/step
+08:17:32 epoch 3/3 step 50/250 loss=0.0108 avg10=0.0194 0.42s/step
+08:17:36 epoch 3/3 step 60/250 loss=0.0154 avg10=0.0247 0.38s/step
+08:17:41 epoch 3/3 step 70/250 loss=0.0307 avg10=0.0169 0.42s/step
+08:17:45 epoch 3/3 step 80/250 loss=0.0095 avg10=0.0244 0.59s/step
+08:17:50 epoch 3/3 step 90/250 loss=0.0128 avg10=0.0225 0.42s/step
+08:17:54 epoch 3/3 step 100/250 loss=0.0572 avg10=0.0315 0.41s/step
+08:17:58 epoch 3/3 step 110/250 loss=0.0304 avg10=0.0347 0.36s/step
+08:18:03 epoch 3/3 step 120/250 loss=0.0434 avg10=0.0184 0.39s/step
+08:18:07 epoch 3/3 step 130/250 loss=0.0089 avg10=0.0247 0.41s/step
+08:18:11 epoch 3/3 step 140/250 loss=0.0178 avg10=0.0272 0.38s/step
+08:18:16 epoch 3/3 step 150/250 loss=0.0078 avg10=0.0211 0.37s/step
+08:18:20 epoch 3/3 step 160/250 loss=0.0452 avg10=0.0263 0.38s/step
+08:18:25 epoch 3/3 step 170/250 loss=0.0732 avg10=0.0316 0.38s/step
+08:18:30 epoch 3/3 step 180/250 loss=0.0197 avg10=0.0335 0.37s/step
+08:18:34 epoch 3/3 step 190/250 loss=0.0361 avg10=0.0343 0.37s/step
+08:18:39 epoch 3/3 step 200/250 loss=0.0281 avg10=0.0283 0.40s/step
+08:18:44 epoch 3/3 step 210/250 loss=0.0122 avg10=0.0226 0.52s/step
+08:18:48 epoch 3/3 step 220/250 loss=0.0242 avg10=0.0268 0.64s/step
+08:18:52 epoch 3/3 step 230/250 loss=0.0096 avg10=0.0248 0.43s/step
+08:18:57 epoch 3/3 step 240/250 loss=0.0175 avg10=0.0212 0.39s/step
+08:19:01 epoch 3/3 step 250/250 loss=0.0202 avg10=0.0133 0.42s/step
+08:19:01 [EPOCH] 3 done loss=0.0248 sec/step=0.4396 samples/s=36.4 gpu_util%=[97.1, 97.2, 98.1, 97.3] vram_mib=[22680, 21692, 22700, 22720] time=110s
+08:19:01 TRAIN_DONE

@@ -1,0 +1,107 @@
+{
+ "ngpu": 4,
+ "max_batch_per_gpu": 4,
+ "probes": [
+  {
+   "batch_per_gpu": 1,
+   "global_batch": 4,
+   "status": "ok",
+   "steps": 3,
+   "seq_len": 256,
+   "sec_per_step": [
+    9.487,
+    0.272,
+    0.263
+   ],
+   "torch_allocated_mib": [
+    17593,
+    17593,
+    17593,
+    17593
+   ],
+   "torch_reserved_mib": [
+    17812,
+    17812,
+    17812,
+    17812
+   ],
+   "nvidia_smi_peak_mib": [
+    18272,
+    18272,
+    18272,
+    18272
+   ]
+  },
+  {
+   "batch_per_gpu": 2,
+   "global_batch": 8,
+   "status": "ok",
+   "steps": 3,
+   "seq_len": 256,
+   "sec_per_step": [
+    9.62,
+    0.393,
+    0.388
+   ],
+   "torch_allocated_mib": [
+    19480,
+    19480,
+    19480,
+    19480
+   ],
+   "torch_reserved_mib": [
+    19686,
+    19686,
+    19686,
+    19686
+   ],
+   "nvidia_smi_peak_mib": [
+    20146,
+    20146,
+    20146,
+    20146
+   ]
+  },
+  {
+   "batch_per_gpu": 4,
+   "global_batch": 16,
+   "status": "ok",
+   "steps": 3,
+   "seq_len": 256,
+   "sec_per_step": [
+    10.361,
+    0.714,
+    0.719
+   ],
+   "torch_allocated_mib": [
+    23255,
+    23255,
+    23255,
+    23255
+   ],
+   "torch_reserved_mib": [
+    23638,
+    23638,
+    23638,
+    23638
+   ],
+   "nvidia_smi_peak_mib": [
+    24098,
+    24098,
+    24098,
+    24098
+   ]
+  },
+  {
+   "batch_per_gpu": 8,
+   "global_batch": 32,
+   "status": "oom",
+   "oom_ranks": [
+    0,
+    1,
+    2,
+    3
+   ]
+  }
+ ]
+}

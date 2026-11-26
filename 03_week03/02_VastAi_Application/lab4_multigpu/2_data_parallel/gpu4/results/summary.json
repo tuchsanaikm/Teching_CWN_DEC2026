@@ -1,0 +1,190 @@
+{
+ "gpus": 4,
+ "machine": {
+  "gpu": "RTX 3090 24 GB",
+  "count": 4,
+  "country": "Chile",
+  "usd_per_hour": 0.87,
+  "cpu": "Xeon E5-2680 v4 (2 sockets)",
+  "link": "PCIe 3.0 x16, no NVLink; GPU0-1 and GPU2-3 PHB, other pairs SYS"
+ },
+ "model_vram_before_training_gib": [
+  15.27,
+  15.27,
+  15.27,
+  15.27
+ ],
+ "probe": [
+  {
+   "batch_per_gpu": 1,
+   "batch_total": 4,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    16.82,
+    16.82,
+    16.82,
+    16.82
+   ],
+   "nvidia_smi_peak_mib": [
+    18266,
+    18266,
+    18266,
+    18266
+   ],
+   "sec_per_step": 0.2765
+  },
+  {
+   "batch_per_gpu": 2,
+   "batch_total": 8,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    18.3,
+    18.3,
+    18.3,
+    18.3
+   ],
+   "nvidia_smi_peak_mib": [
+    19268,
+    19268,
+    19268,
+    19268
+   ],
+   "sec_per_step": 0.381
+  },
+  {
+   "batch_per_gpu": 4,
+   "batch_total": 16,
+   "result": "pass",
+   "torch_peak_alloc_gib": [
+    21.25,
+    21.25,
+    21.25,
+    21.25
+   ],
+   "nvidia_smi_peak_mib": [
+    22340,
+    22340,
+    22340,
+    22340
+   ],
+   "sec_per_step": 0.688
+  },
+  {
+   "batch_per_gpu": 8,
+   "batch_total": 32,
+   "result": "OOM",
+   "torch_peak_alloc_gib": [
+    23.1,
+    23.1,
+    23.1,
+    23.1
+   ],
+   "nvidia_smi_peak_mib": null,
+   "sec_per_step": null
+  }
+ ],
+ "batch_used": {
+  "per_gpu": 4,
+  "total": 16,
+  "equals_largest_probe_pass": true
+ },
+ "first_training_attempts": "two runs at batch 4 ran out of memory at about step 20-25 (default allocator, then expandable_segments); fixed by computing the vocabulary projection and loss on answer tokens only; probe repeated, same batch 4 (gpu4/results/before_fix/)",
+ "steps_per_epoch": 250,
+ "epochs": 3,
+ "sec_per_step": 0.4489,
+ "sec_per_step_median_per_epoch": [
+  0.4134,
+  0.416,
+  0.4161
+ ],
+ "examples_per_sec": 35.64,
+ "examples_per_sec_per_gpu": 8.91,
+ "gpu_util_pct": [
+  96.9,
+  97.3,
+  97.3,
+  97.4
+ ],
+ "peak_vram_training_torch_gib": [
+  21.59,
+  20.61,
+  21.6,
+  21.63
+ ],
+ "peak_vram_training_nvidia_smi_mib": [
+  22680,
+  21692,
+  22700,
+  22720
+ ],
+ "train_loss_per_epoch": [
+  0.1167,
+  0.0386,
+  0.0248
+ ],
+ "test_loss_per_epoch": [
+  0.0607,
+  0.0553,
+  0.0543
+ ],
+ "test_loss_base": 1.7702,
+ "exact_match": {
+  "n_test": 200,
+  "strict_pct": {
+   "base": 1.5,
+   "epoch1": 70.5,
+   "epoch2": 75.0,
+   "epoch3": 76.5
+  },
+  "strict_rule": "collapse whitespace and remove a trailing ;",
+  "relaxed_pct": {
+   "base": 54.5,
+   "epoch1": 72.5,
+   "epoch2": 77.5,
+   "epoch3": 78.5
+  },
+  "metrics_json_unit": "fraction (0.765), converted to percent here"
+ },
+ "train_minutes": 5.6,
+ "vs_2gpu": {
+  "speedup": 1.87,
+  "per_gpu_efficiency_pct": 93.4,
+  "note": "different rented machines; the 4-GPU code also computes logits on answer tokens only"
+ },
+ "gpus_comparable": "util 96.9-97.4% on all four; probe sec/step at batch 1/2 (0.277/0.381) about equal to the 2-GPU machine (0.269/0.379); no per-GPU speed test was run",
+ "cost": {
+  "rented_usd_per_hour": 0.87,
+  "usd_per_1000_examples_rented": 0.006781,
+  "market_on_demand_any_usd_per_hour": 0.6033,
+  "usd_per_1000_examples_market_any": 0.004702,
+  "market_on_demand_verified_usd_per_hour": 0.6056,
+  "usd_per_1000_examples_market_verified": 0.00472,
+  "market_note": "both cheapest offers fail the lab's 700 Mbps condition (374.2 and 569.9 Mbps); cheapest offer passing all conditions at search time: $0.78/h (United States)",
+  "bill_usd": 0.665,
+  "bill_split": {
+   "gpu": 0.61,
+   "disk": 0.014,
+   "download": 0.039,
+   "upload": 0.002
+  },
+  "machine_age_min": 49.5,
+  "first_machine_stuck_loading_usd": 0.006,
+  "total_with_first_machine_usd": 0.671
+ },
+ "step_minutes": {
+  "4": 23.1,
+  "5": 33.2,
+  "6": 5.8
+ },
+ "sources": [
+  "gpu4/results/metrics.json",
+  "gpu4/results/train_metrics.json",
+  "gpu4/results/batch_probe.json",
+  "gpu4/results/eval/eval_*.json",
+  "gpu4/results/raw/billing.json",
+  "gpu4/results/before_fix/*/train.log",
+  "gpu4/results/raw/market_verified_ondemand.json",
+  "results/summary.json (2-GPU numbers)",
+  "step times from the run's start/end log"
+ ]
+}

@@ -1,0 +1,91 @@
+{
+  "test_images": 82,
+  "test_boxes_per_class": {
+    "Hardhat": 110,
+    "Mask": 28,
+    "NO-Hardhat": 41,
+    "NO-Mask": 79,
+    "NO-Safety Vest": 90,
+    "Person": 174,
+    "Safety Cone": 92,
+    "Safety Vest": 61,
+    "machinery": 44,
+    "vehicle": 41
+  },
+  "settings": {
+    "imgsz": 640,
+    "conf": 0.001,
+    "iou_nms": 0.7,
+    "batch": 1,
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "ms_per_image": "preprocess + inference + postprocess, mean over test images"
+  },
+  "class_mapping_before": {
+    "person": "Person",
+    "car": "vehicle",
+    "bus": "vehicle",
+    "truck": "vehicle",
+    "other dataset classes": "AP 0 (COCO has no such class)"
+  },
+  "before": {
+    "model": "yolo11s.pt (COCO-pretrained)",
+    "mAP50": 0.09018669290560066,
+    "mAP50-95": 0.0656972015875105,
+    "AP50_per_class": {
+      "Hardhat": 0.0,
+      "Mask": 0.0,
+      "NO-Hardhat": 0.0,
+      "NO-Mask": 0.0,
+      "NO-Safety Vest": 0.0,
+      "Person": 0.7526369168082616,
+      "Safety Cone": 0.0,
+      "Safety Vest": 0.0,
+      "machinery": 0.0,
+      "vehicle": 0.14923001224774507
+    },
+    "AP50-95_per_class": {
+      "Hardhat": 0.0,
+      "Mask": 0.0,
+      "NO-Hardhat": 0.0,
+      "NO-Mask": 0.0,
+      "NO-Safety Vest": 0.0,
+      "Person": 0.5650186430620301,
+      "Safety Cone": 0.0,
+      "Safety Vest": 0.0,
+      "machinery": 0.0,
+      "vehicle": 0.09195337281307486
+    },
+    "ms_per_image": 8.56
+  },
+  "after": {
+    "model": "best.pt (fine-tuned 50 epochs)",
+    "mAP50": 0.7819321492399757,
+    "mAP50-95": 0.5040598937986499,
+    "AP50_per_class": {
+      "Hardhat": 0.9395359591926089,
+      "Mask": 0.745,
+      "NO-Hardhat": 0.5778249188284871,
+      "NO-Mask": 0.7936007790541284,
+      "NO-Safety Vest": 0.8385946216220614,
+      "Person": 0.8802887022636465,
+      "Safety Cone": 0.4851719171990082,
+      "Safety Vest": 0.887851078990456,
+      "machinery": 0.9136755861043684,
+      "vehicle": 0.757777929144992
+    },
+    "AP50-95_per_class": {
+      "Hardhat": 0.6165241923468326,
+      "Mask": 0.5388526395173454,
+      "NO-Hardhat": 0.3248971802473254,
+      "NO-Mask": 0.4094029106654905,
+      "NO-Safety Vest": 0.5496836432620313,
+      "Person": 0.5749228831858086,
+      "Safety Cone": 0.22631092972075323,
+      "Safety Vest": 0.6229276509982244,
+      "machinery": 0.6917295759541426,
+      "vehicle": 0.4853473320885452
+    },
+    "ms_per_image": 8.54
+  },
+  "eval_seconds": 5.3
+}

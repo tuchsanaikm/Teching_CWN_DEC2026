@@ -1,0 +1,5 @@
+[
+{"target": "203.0.113.10:<ext_port>", "connect_ok": true, "connect_ms": 39.63, "rtt_min_ms": 30.05, "rtt_avg_ms": 34.24, "rtt_med_ms": 34.15, "rtt_max_ms": 39.34, "rtt_n": 29, "up_mbps": 644.3, "up_mb": 806.4, "down_mbps": 262.1, "down_mb": 330.3, "seconds": 10.0, "from": "node2", "to": "node1"}
+,
+{"target": "203.0.113.10:<ext_port>", "connect_ok": true, "connect_ms": 31.87, "rtt_min_ms": 27.28, "rtt_avg_ms": 28.83, "rtt_med_ms": 29.13, "rtt_max_ms": 29.84, "rtt_n": 29, "up_mbps": 82.3, "up_mb": 105.9, "down_mbps": 197.5, "down_mb": 256.9, "seconds": 10.0, "from": "node3", "to": "node1"}
+]

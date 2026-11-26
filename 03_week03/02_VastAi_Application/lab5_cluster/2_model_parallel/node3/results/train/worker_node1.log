@@ -1,0 +1,44 @@
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+14:39:50 [node1] model loaded in 10s | GPU0: embed_tokens + layers 0-17 | GPU1: layers 18-35 + norm + lm_head | LoRA params 3,833,856
+14:39:51 [node1] shard 1334 examples (index % 3 == 0) | token length max 256 mean 106.6 | at 256 limit: 1 | steps/epoch 167
+14:39:51 [node1] connected to coordinator 127.0.0.1:9000 {'type': 'hello_ok', 'workers': 3, 'done_step': -1, 'nbytes': 0}
+14:39:53 [node1] epoch 1 step 1/167 loss(global) 2.0151 compute 1.54s comm 0.09s (send 0.02 wait 0.03 recv 0.02) elapsed 2s
+14:40:34 [node1] epoch 1 step 11/167 loss(global) 0.3644 compute 0.81s comm 5.07s (send 0.01 wait 5.02 recv 0.02) elapsed 42s
+14:41:29 [node1] epoch 1 step 21/167 loss(global) 0.1699 compute 0.71s comm 4.50s (send 0.01 wait 4.45 recv 0.02) elapsed 97s
+14:42:29 [node1] epoch 1 step 31/167 loss(global) 0.0848 compute 0.70s comm 5.46s (send 0.01 wait 5.41 recv 0.02) elapsed 158s
+14:43:21 [node1] epoch 1 step 41/167 loss(global) 0.0958 compute 0.71s comm 5.51s (send 0.01 wait 5.45 recv 0.02) elapsed 210s
+14:44:18 [node1] epoch 1 step 51/167 loss(global) 0.0737 compute 0.78s comm 4.47s (send 0.01 wait 4.42 recv 0.02) elapsed 267s
+14:45:19 [node1] epoch 1 step 61/167 loss(global) 0.1022 compute 0.71s comm 4.76s (send 0.01 wait 4.70 recv 0.02) elapsed 328s
+14:46:19 [node1] epoch 1 step 71/167 loss(global) 0.0860 compute 0.70s comm 5.78s (send 0.01 wait 5.72 recv 0.02) elapsed 388s
+14:47:14 [node1] epoch 1 step 81/167 loss(global) 0.0480 compute 0.78s comm 6.27s (send 0.01 wait 6.21 recv 0.02) elapsed 443s
+14:48:04 [node1] epoch 1 step 91/167 loss(global) 0.0819 compute 0.71s comm 3.80s (send 0.01 wait 3.74 recv 0.02) elapsed 492s
+14:48:50 [node1] epoch 1 step 101/167 loss(global) 0.0423 compute 0.77s comm 4.08s (send 0.01 wait 4.03 recv 0.02) elapsed 539s
+14:49:32 [node1] epoch 1 step 111/167 loss(global) 0.0436 compute 0.70s comm 2.74s (send 0.01 wait 2.69 recv 0.02) elapsed 581s
+14:50:14 [node1] epoch 1 step 121/167 loss(global) 0.0372 compute 0.78s comm 4.59s (send 0.01 wait 4.53 recv 0.02) elapsed 622s
+14:50:58 [node1] epoch 1 step 131/167 loss(global) 0.0258 compute 0.68s comm 3.89s (send 0.01 wait 3.84 recv 0.01) elapsed 667s
+14:51:48 [node1] epoch 1 step 141/167 loss(global) 0.0531 compute 0.80s comm 4.25s (send 0.01 wait 4.19 recv 0.01) elapsed 717s
+14:52:57 [node1] epoch 1 step 151/167 loss(global) 0.0449 compute 0.80s comm 5.47s (send 0.01 wait 5.41 recv 0.02) elapsed 786s
+14:53:54 [node1] epoch 1 step 161/167 loss(global) 0.0517 compute 0.72s comm 4.79s (send 0.01 wait 4.74 recv 0.02) elapsed 843s
+14:54:27 [node1] epoch 1 step 167/167 loss(global) 0.0583 compute 0.68s comm 7.27s (send 0.02 wait 7.20 recv 0.02) elapsed 875s
+14:54:30 [node1] EPOCH 1 done: {"epoch": 1, "node": 1, "steps": 167, "train_loss_mean": 0.15159, "seconds": 878.3, "compute_s": 129.0, "comm_s": 744.9, "lora_sha256": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a", "all_nodes_equal": true, "sha_all": {"0": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a", "1": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a", "2": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a"}}
+14:54:32 [node1] epoch 2 step 1/167 loss(global) 0.0166 compute 0.79s comm 1.82s (send 0.01 wait 1.76 recv 0.01) elapsed 881s
+14:55:21 [node1] epoch 2 step 11/167 loss(global) 0.0350 compute 0.79s comm 5.44s (send 0.01 wait 5.38 recv 0.02) elapsed 929s
+14:56:20 [node1] epoch 2 step 21/167 loss(global) 0.0524 compute 0.71s comm 6.01s (send 0.01 wait 5.95 recv 0.02) elapsed 989s
+14:57:06 [node1] epoch 2 step 31/167 loss(global) 0.0450 compute 0.71s comm 3.57s (send 0.02 wait 3.50 recv 0.02) elapsed 1035s
+14:58:12 [node1] epoch 2 step 41/167 loss(global) 0.0423 compute 0.72s comm 7.47s (send 0.01 wait 7.41 recv 0.02) elapsed 1101s
+14:59:03 [node1] epoch 2 step 51/167 loss(global) 0.0541 compute 0.79s comm 4.34s (send 0.01 wait 4.29 recv 0.02) elapsed 1152s
+14:59:55 [node1] epoch 2 step 61/167 loss(global) 0.0893 compute 0.80s comm 4.31s (send 0.01 wait 4.25 recv 0.02) elapsed 1204s
+15:00:50 [node1] epoch 2 step 71/167 loss(global) 0.0384 compute 0.72s comm 3.69s (send 0.01 wait 3.63 recv 0.02) elapsed 1258s
+15:03:19 [node1] epoch 2 step 81/167 loss(global) 0.0281 compute 0.79s comm 4.12s (send 0.01 wait 4.06 recv 0.02) elapsed 1407s
+15:04:27 [node1] epoch 2 step 91/167 loss(global) 0.0386 compute 0.68s comm 4.13s (send 0.01 wait 4.08 recv 0.02) elapsed 1476s
+15:05:20 [node1] epoch 2 step 101/167 loss(global) 0.0777 compute 0.71s comm 3.09s (send 0.01 wait 3.04 recv 0.02) elapsed 1528s
+15:06:09 [node1] epoch 2 step 111/167 loss(global) 0.0439 compute 0.72s comm 4.81s (send 0.01 wait 4.75 recv 0.02) elapsed 1577s
+15:06:54 [node1] epoch 2 step 121/167 loss(global) 0.0414 compute 1.02s comm 3.60s (send 0.01 wait 3.55 recv 0.02) elapsed 1623s
+15:07:41 [node1] epoch 2 step 131/167 loss(global) 0.0406 compute 0.77s comm 3.21s (send 0.01 wait 3.15 recv 0.02) elapsed 1669s
+15:08:29 [node1] epoch 2 step 141/167 loss(global) 0.0355 compute 0.70s comm 4.28s (send 0.01 wait 4.22 recv 0.02) elapsed 1718s
+15:09:20 [node1] epoch 2 step 151/167 loss(global) 0.0289 compute 0.72s comm 3.62s (send 0.01 wait 3.57 recv 0.02) elapsed 1769s
+15:10:11 [node1] epoch 2 step 161/167 loss(global) 0.0421 compute 0.78s comm 3.47s (send 0.01 wait 3.42 recv 0.02) elapsed 1820s
+15:10:39 [node1] epoch 2 step 167/167 loss(global) 0.0552 compute 0.68s comm 4.85s (send 0.01 wait 4.80 recv 0.02) elapsed 1848s
+15:10:42 [node1] EPOCH 2 done: {"epoch": 2, "node": 1, "steps": 167, "train_loss_mean": 0.04261, "seconds": 972.2, "compute_s": 128.5, "comm_s": 839.1, "lora_sha256": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063", "all_nodes_equal": true, "sha_all": {"0": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063", "1": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063", "2": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063"}}
+15:10:42 [node1] TRAINING DONE

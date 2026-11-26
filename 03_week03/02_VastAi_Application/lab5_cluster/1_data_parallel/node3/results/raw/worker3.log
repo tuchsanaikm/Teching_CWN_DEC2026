@@ -1,0 +1,43 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 6408.54it/s]
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[w3 12:06:15] model loaded in 6s on NVIDIA GeForce RTX 3090; LoRA tensors=144 params=3,833,856; init sha=9a6f9e5f4ea73819
+[w3 12:06:16] train rows=4000 token len min/mean/max=63/106.2/256 truncated(>256)=1
+[w3 12:06:17] gradient exactly representable in bf16: True
+[w3 12:06:21] ep 1 step 1/334 loss=1.6107 compute=1.18s comm=3.39s vram_peak=18260MB
+[w3 12:07:00] ep 1 step 11/334 loss=0.2596 compute=0.38s comm=4.27s vram_peak=19030MB
+[w3 12:07:45] ep 1 step 21/334 loss=0.2292 compute=0.34s comm=3.16s vram_peak=20412MB
+[w3 12:08:22] ep 1 step 31/334 loss=0.1812 compute=0.33s comm=3.67s vram_peak=20412MB
+[w3 12:09:54] ep 1 step 41/334 loss=0.1167 compute=0.33s comm=16.19s vram_peak=20412MB
+[w3 12:10:34] ep 1 step 51/334 loss=0.1171 compute=0.39s comm=4.62s vram_peak=20412MB
+[w3 12:11:05] ep 1 step 61/334 loss=0.0842 compute=0.34s comm=2.51s vram_peak=20412MB
+[w3 12:11:38] ep 1 step 71/334 loss=0.1259 compute=0.33s comm=3.81s vram_peak=20412MB
+[w3 12:12:25] ep 1 step 81/334 loss=0.0849 compute=0.33s comm=5.41s vram_peak=20412MB
+[w3 12:13:11] ep 1 step 91/334 loss=0.0558 compute=0.34s comm=3.56s vram_peak=20412MB
+[w3 12:13:54] ep 1 step 101/334 loss=0.0578 compute=0.33s comm=2.90s vram_peak=20412MB
+[w3 12:14:24] ep 1 step 111/334 loss=0.0866 compute=0.34s comm=2.31s vram_peak=20412MB
+[w3 12:15:00] ep 1 step 121/334 loss=0.0627 compute=0.39s comm=2.77s vram_peak=20412MB
+[w3 12:15:34] ep 1 step 131/334 loss=0.1103 compute=0.37s comm=2.63s vram_peak=20412MB
+[w3 12:16:10] ep 1 step 141/334 loss=0.0432 compute=0.33s comm=3.23s vram_peak=20412MB
+[w3 12:16:50] ep 1 step 151/334 loss=0.0845 compute=0.35s comm=3.80s vram_peak=20412MB
+[w3 12:20:07] ep 1 step 161/334 loss=0.0334 compute=0.37s comm=9.56s vram_peak=20412MB
+[w3 12:20:41] EPOCH 1 done train_loss=0.1504 lora sha=b5d99e4b7f7cad84 all-6-equal=True
+[w3 12:21:00] ep 2 step 171/334 loss=0.0739 compute=0.37s comm=3.78s vram_peak=20412MB
+[w3 12:22:02] ep 2 step 181/334 loss=0.0495 compute=0.33s comm=5.60s vram_peak=20432MB
+[w3 12:22:49] ep 2 step 191/334 loss=0.0426 compute=0.34s comm=5.68s vram_peak=20432MB
+[w3 12:23:47] ep 2 step 201/334 loss=0.0672 compute=0.33s comm=6.66s vram_peak=20432MB
+[w3 12:27:46] ep 2 step 211/334 loss=0.0279 compute=0.33s comm=3.88s vram_peak=21944MB
+[w3 12:28:20] ep 2 step 221/334 loss=0.0238 compute=0.33s comm=2.61s vram_peak=21944MB
+[w3 12:28:59] ep 2 step 231/334 loss=0.0357 compute=0.38s comm=3.93s vram_peak=21944MB
+[w3 12:29:34] ep 2 step 241/334 loss=0.0298 compute=0.35s comm=2.32s vram_peak=21944MB
+[w3 12:30:13] ep 2 step 251/334 loss=0.0557 compute=0.34s comm=3.47s vram_peak=21944MB
+[w3 12:30:53] ep 2 step 261/334 loss=0.0361 compute=0.38s comm=4.52s vram_peak=21944MB
+[w3 12:31:27] ep 2 step 271/334 loss=0.0275 compute=0.33s comm=3.14s vram_peak=21944MB
+[w3 12:32:05] ep 2 step 281/334 loss=0.0562 compute=0.37s comm=3.31s vram_peak=21944MB
+[w3 12:32:46] ep 2 step 291/334 loss=0.0484 compute=0.37s comm=4.25s vram_peak=21944MB
+[w3 12:33:43] ep 2 step 301/334 loss=0.0733 compute=0.37s comm=3.31s vram_peak=21944MB
+[w3 12:34:22] ep 2 step 311/334 loss=0.0283 compute=0.37s comm=3.51s vram_peak=21944MB
+[w3 12:35:02] ep 2 step 321/334 loss=0.0575 compute=0.33s comm=4.05s vram_peak=21944MB
+[w3 12:35:46] ep 2 step 331/334 loss=0.0156 compute=0.35s comm=3.91s vram_peak=21944MB
+[w3 12:36:00] EPOCH 2 done train_loss=0.0433 lora sha=64bfb2eccdec8733 all-6-equal=True
+[w3 12:36:00] finished, total train time 1784.1s, reconnects=0

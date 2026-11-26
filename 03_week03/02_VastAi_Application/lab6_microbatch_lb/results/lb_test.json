@@ -1,0 +1,97 @@
+{
+  "url": "http://203.0.113.10:<port>",
+  "image": "sample-1.jpg",
+  "tests": [
+    {
+      "test": "GET /lb/health (nginx itself)",
+      "expect": 200,
+      "status_code": 200,
+      "pass": true,
+      "client_ms": 608.6,
+      "answered_by": "nginx",
+      "www_authenticate": null,
+      "body": {
+        "status": "ok",
+        "service": "nginx"
+      }
+    },
+    {
+      "test": "GET /health (forwarded to a server)",
+      "expect": 200,
+      "status_code": 200,
+      "pass": true,
+      "client_ms": 573.5,
+      "answered_by": "127.0.0.1:8101",
+      "www_authenticate": null,
+      "body": {
+        "status": "ready",
+        "server": "gpu0-8101",
+        "mode": "single",
+        "max_batch": 1,
+        "device": "cuda:0"
+      }
+    },
+    {
+      "test": "POST /v1/detect, 1 image, with key",
+      "expect": 200,
+      "status_code": 200,
+      "pass": true,
+      "client_ms": 1225.5,
+      "answered_by": "127.0.0.1:8101",
+      "www_authenticate": null,
+      "image_bytes": 48766,
+      "server": "gpu0-8101",
+      "mode": "single",
+      "batch_size": 1,
+      "queue_ms": 0.08,
+      "model_ms": 48.52,
+      "objects": 18,
+      "classes": {
+        "NO-Safety Vest": 5,
+        "Person": 6,
+        "Hardhat": 5,
+        "Safety Vest": 1,
+        "NO-Hardhat": 1
+      }
+    },
+    {
+      "test": "POST /v1/detect, no key",
+      "expect": 401,
+      "status_code": 401,
+      "pass": true,
+      "client_ms": 596.3,
+      "answered_by": "nginx",
+      "www_authenticate": "Bearer",
+      "body": {
+        "detail": "missing API key"
+      }
+    },
+    {
+      "test": "POST /v1/detect, wrong key",
+      "expect": 401,
+      "status_code": 401,
+      "pass": true,
+      "client_ms": 1178.1,
+      "answered_by": "127.0.0.1:8101",
+      "www_authenticate": "Bearer",
+      "body": {
+        "detail": "missing or invalid API key"
+      }
+    },
+    {
+      "test": "GET /anything-else (unknown path)",
+      "expect": 404,
+      "status_code": 404,
+      "pass": true,
+      "client_ms": 587.6,
+      "answered_by": "nginx",
+      "www_authenticate": null
+    },
+    {
+      "test": "TCP connect 203.0.113.10:8101 (server port, from outside)",
+      "expect": "not reachable",
+      "result": "TimeoutError",
+      "pass": true
+    }
+  ]
+}

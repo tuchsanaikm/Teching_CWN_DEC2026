@@ -1,0 +1,8 @@
+5874 upstream=127.0.0.1:8101 status=200
+5873 upstream=127.0.0.1:8102 status=200
+5874 upstream=127.0.0.1:8103 status=200
+5870 upstream=127.0.0.1:8104 status=200
+5872 upstream=127.0.0.1:8201 status=200
+5869 upstream=127.0.0.1:8202 status=200
+5874 upstream=127.0.0.1:8203 status=200
+5873 upstream=127.0.0.1:8204 status=200

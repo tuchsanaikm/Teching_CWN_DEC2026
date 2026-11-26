@@ -1,0 +1,22 @@
+{
+  "instance_id": 62695824,
+  "label": "e2e-receipt-lb",
+  "gpu_name": "RTX 4090",
+  "num_gpus": 2,
+  "vcpu": 24.0,
+  "ram_gb": 251.6,
+  "disk_gb": 80.0,
+  "location": "Spain, ES",
+  "inet_down_mbps": 6110.2,
+  "inet_up_mbps": 3394.7,
+  "inet_down_cost": 0.009114583333333334,
+  "dph_total": 1.1037037037037036,
+  "ssh_host": "ssh8.vast.ai",
+  "ssh_port": 14128,
+  "public_ip": "79.116.17.210",
+  "port_8080": 20226,
+  "ready_epoch": 1795698271.2634938,
+  "status": "destroyed",
+  "destroyed_epoch": 1795701191.7306395,
+  "duration_minutes": 48.7
+}

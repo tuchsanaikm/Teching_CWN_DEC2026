@@ -1,0 +1,36 @@
+[loadgen] name=base mode=capacity target=http://127.0.0.1:8080  servers=1 (gpu0-8101)  mode=single
+[loadgen] level=20s (warm-up 5s)  images=6  timeout=10s  pass: p95<=500ms and errors<1%
+[range] N=1    PASS  thr=38.8/s  p50=24.9 p95=31.0 p99=33.2 ms  err=0/582 (0.00%)  gpu0=14% gpu1=0%  cpu% server=100.2 nginx=1.1 loadgen=1.2
+       queue=0.07 ms  model=16.58 ms  images/call=1.0  answered by: gpu0-8101=582
+[range] N=2    PASS  thr=59.4/s  p50=33.1 p95=41.5 p99=44.3 ms  err=0/891 (0.00%)  gpu0=21% gpu1=0%  cpu% server=132.2 nginx=2.1 loadgen=2.8
+       queue=7.79 ms  model=16.46 ms  images/call=1.0  answered by: gpu0-8101=891
+[range] N=4    PASS  thr=61.8/s  p50=64.1 p95=72.7 p99=77.3 ms  err=0/927 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.5 nginx=2.3 loadgen=3.0
+       queue=39.28 ms  model=15.81 ms  images/call=1.0  answered by: gpu0-8101=927
+[range] N=8    PASS  thr=60.3/s  p50=128.8 p95=159.0 p99=168.4 ms  err=0/905 (0.00%)  gpu0=21% gpu1=0%  cpu% server=134.8 nginx=2.1 loadgen=3.0
+       queue=106.64 ms  model=16.19 ms  images/call=1.0  answered by: gpu0-8101=905
+[range] N=16   PASS  thr=62.1/s  p50=255.3 p95=273.6 p99=285.5 ms  err=0/932 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.7 nginx=2.3 loadgen=3.1
+       queue=231.95 ms  model=15.7 ms  images/call=1.0  answered by: gpu0-8101=932
+[range] N=32   FAIL  thr=60.9/s  p50=517.9 p95=558.2 p99=669.8 ms  err=0/913 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.4 nginx=2.3 loadgen=3.1
+       queue=498.29 ms  model=15.97 ms  images/call=1.0  answered by: gpu0-8101=913
+[range again] N=32   FAIL  thr=62.4/s  p50=507.4 p95=559.8 p99=577.4 ms  err=0/936 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.9 nginx=2.2 loadgen=2.7
+       queue=486.13 ms  model=15.57 ms  images/call=1.0  answered by: gpu0-8101=936
+[range] N=64   FAIL  thr=62.3/s  p50=1017.3 p95=1068.3 p99=1079.8 ms  err=0/935 (0.00%)  gpu0=22% gpu1=0%  cpu% server=136.2 nginx=2.0 loadgen=2.7
+       queue=999.09 ms  model=15.62 ms  images/call=1.0  answered by: gpu0-8101=935
+[range again] N=64   FAIL  thr=59.8/s  p50=1057.8 p95=1168.5 p99=1181.2 ms  err=0/897 (0.00%)  gpu0=21% gpu1=0%  cpu% server=131.6 nginx=1.7 loadgen=2.3
+       queue=1037.81 ms  model=16.06 ms  images/call=1.0  answered by: gpu0-8101=897
+[estimate] next N = 29
+[estimate] N=29   FAIL  thr=61.5/s  p50=465.3 p95=507.4 p99=593.2 ms  err=0/922 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.7 nginx=1.9 loadgen=2.8
+       queue=445.38 ms  model=15.84 ms  images/call=1.0  answered by: gpu0-8101=922
+[estimate again] N=29   PASS  thr=62.6/s  p50=459.4 p95=494.4 p99=515.1 ms  err=0/939 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.8 nginx=2.3 loadgen=3.1
+       queue=437.26 ms  model=15.57 ms  images/call=1.0  answered by: gpu0-8101=939
+[refine] next N = 30
+[refine] N=30   FAIL  thr=62.1/s  p50=476.1 p95=525.8 p99=580.9 ms  err=0/931 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.3 nginx=2.2 loadgen=3.1
+       queue=456.56 ms  model=15.66 ms  images/call=1.0  answered by: gpu0-8101=931
+[refine again] N=30   FAIL  thr=62.0/s  p50=476.2 p95=521.5 p99=642.8 ms  err=0/930 (0.00%)  gpu0=22% gpu1=0%  cpu% server=135.7 nginx=2.1 loadgen=3.1
+       queue=457.44 ms  model=15.71 ms  images/call=1.0  answered by: gpu0-8101=930
+[loadgen] saved /workspace/lab6/results/base.json  (13 runs)
+  estimate 1: pass N=16 (p95 273.6) / fail N=32 (p95 558.2) -> line -> N~28.73 -> measured N=29: p95 494.4 PASS
+  estimate 2: pass N=29 (p95 494.4) / fail N=32 (p95 558.2) -> line -> N~29.26 -> measured N=30: p95 521.5 FAIL
+OTHER ESTIMATE: max throughput 62.6 req/s (at N=29) x 0.5 s = N ~ 31.3
+CAPACITY: 29 users  (N=29 passes, N=30 fails)
+DONE

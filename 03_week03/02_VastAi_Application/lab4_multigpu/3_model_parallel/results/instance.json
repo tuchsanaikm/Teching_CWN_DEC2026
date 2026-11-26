@@ -1,0 +1,21 @@
+{
+ "instance_id": "<id>",
+ "offer_id": 44133022,
+ "machine_id": 134131,
+ "host_id": 399360,
+ "label": "vapp-lab4-mp",
+ "image": "vastai/pytorch:2.8.0-cuda-12.8.1-py312-24.04-2026-10-23",
+ "disk_gb": 60,
+ "dph_total": 0.4066666666666667,
+ "gpu_name": "RTX 3090",
+ "num_gpus": 2,
+ "geolocation": "United States, US",
+ "cpu_cores_effective": 20.0,
+ "cpu_name": "Xeon® E5-2673 v4 ",
+ "inet_down": 771.6,
+ "inet_down_cost": 0.0026041666666666665,
+ "reliability": 0.9901744,
+ "pci_gen": 3.0,
+ "gpu_lanes": 16,
+ "ready_seconds": 542
+}

@@ -1,0 +1,17 @@
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[base] model ready in 10s, 200 test rows, lora sha None
+[base] generated 16/200
+[base] generated 32/200
+[base] generated 48/200
+[base] generated 64/200
+[base] generated 80/200
+[base] generated 96/200
+[base] generated 112/200
+[base] generated 128/200
+[base] generated 144/200
+[base] generated 160/200
+[base] generated 176/200
+[base] generated 192/200
+[base] generated 200/200
+{"name": "base", "lora": null, "lora_sha256": null, "n": 200, "exact": 3, "exact_match": 0.015, "test_loss": 1.91541, "answer_tokens": 5266, "max_len": 256, "max_new_tokens": 200, "gen_seconds": 59.9, "seconds": 79.5}

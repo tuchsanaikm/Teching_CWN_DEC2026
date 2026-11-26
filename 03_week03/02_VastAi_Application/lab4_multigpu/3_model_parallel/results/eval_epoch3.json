@@ -1,0 +1,9 @@
+{
+  "tag": "epoch3",
+  "n": 200,
+  "test_loss": 0.05287,
+  "exact_match": 77.0,
+  "em_count": 154,
+  "exact_match_loose": 79.5,
+  "eval_sec": 46.6
+}

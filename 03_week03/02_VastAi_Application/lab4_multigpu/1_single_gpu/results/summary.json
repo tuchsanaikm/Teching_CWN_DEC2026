@@ -1,0 +1,110 @@
+{
+ "lab": "LAB 4.1 Single GPU",
+ "gpus": 1,
+ "machine": {
+  "gpu": "RTX 3090 24 GB",
+  "count": 1,
+  "country": "Ontario, CA",
+  "usd_per_hour": 0.1944
+ },
+ "vram_unit_note": "every *_gib value is GiB (code divides by 2**30); metrics.json labels them gb. CUDA reports 23.80 GiB usable on this card.",
+ "model_vram_before_training_gib": 15.27,
+ "probe": [
+  {
+   "batch": 1,
+   "result": "pass",
+   "peak_allocated_gib": 17.24,
+   "sec_per_step": 0.327
+  },
+  {
+   "batch": 2,
+   "result": "pass",
+   "peak_allocated_gib": 19.15,
+   "sec_per_step": 0.348
+  },
+  {
+   "batch": 4,
+   "result": "pass",
+   "peak_allocated_gib": 22.98,
+   "sec_per_step": 0.647
+  },
+  {
+   "batch": 8,
+   "result": "Out of Memory",
+   "peak_allocated_gib": 23.4,
+   "sec_per_step": null
+  }
+ ],
+ "batch_used": 4,
+ "epochs": 3,
+ "steps_per_epoch": 1000,
+ "sec_per_step": 0.4712,
+ "examples_per_sec": 8.489,
+ "gpu_util_pct": 97.0,
+ "peak_vram_training_gib": 22.98,
+ "train_loss_per_epoch": [
+  0.0713,
+  0.029,
+  0.0198
+ ],
+ "test_loss_per_epoch": [
+  0.0529,
+  0.0502,
+  0.0489
+ ],
+ "test_loss_base": 1.7298,
+ "exact_match_pct": {
+  "n_test": 200,
+  "base": 1.5,
+  "epoch1": 77.0,
+  "epoch2": 79.0,
+  "epoch3": 77.5
+ },
+ "exact_match_relaxed_pct": {
+  "base": 52.5,
+  "epoch1": 79.0,
+  "epoch2": 81.0,
+  "epoch3": 79.0
+ },
+ "train_minutes": 23.6,
+ "cost": {
+  "rented_usd_per_hour": 0.1944,
+  "market_verified_cheapest_usd_per_hour": 0.1394,
+  "market_any_cheapest_usd_per_hour": 0.0943,
+  "usd_per_1000_examples": {
+   "rented": 0.006363,
+   "market_verified": 0.00456,
+   "market_any": 0.003084
+  },
+  "machine_lifetime_minutes": 55.0,
+  "real_bill_usd": 0.19,
+  "real_bill_split_usd": {
+   "gpu": 0.167,
+   "storage": 0.013,
+   "download": 0.01,
+   "upload": 0.0
+  },
+  "downloaded_gb": 15.1
+ },
+ "first_training_attempt": {
+  "result": "Out of Memory at batch 4 after step 740 of Epoch 1",
+  "fix": "train_step stopped passing attention_mask (right padding, causal attention, padded labels -100)",
+  "files": [
+   "attempt1_oom/run.log",
+   "attempt1_oom/train_log.jsonl"
+  ]
+ },
+ "step_minutes": {
+  "step1": 7,
+  "step2": 46,
+  "step3": 3
+ },
+ "sources": {
+  "probe, model_vram": "results/probe.json",
+  "training, loss, exact_match, market, usd_per_1000": "results/metrics.json (train_metrics.json, eval_*.json)",
+  "real bill": "results/raw/billing.json",
+  "machine": "results/raw/instance_before_destroy.json",
+  "first attempt": "results/attempt1_oom/run.log",
+  "step_minutes": "track log of the run (start/end time of each step)"
+ }
+}

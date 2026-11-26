@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f1f5f9;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --brand: #0284c7;
+  --pass: #059669;
+  --warn: #d97706;
+  --fail: #dc2626;
+  --red-bg: #fef2f2;
+}
+
+@layer base {
+  html, body {
+    @apply bg-slate-100 text-slate-900 antialiased;
+    font-family: 'Sarabun', 'IBM Plex Sans Thai', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, system-ui, sans-serif;
+  }
+}
+
+/* Polished component primitives preserving semantic classes */
+.btn-primary, button:not(.secondary):not(.btn-ghost):not(.tab-btn) {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+button.secondary, .button.secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:border-slate-400 disabled:cursor-not-allowed disabled:opacity-50 no-underline;
+}
+
+input:not([type="file"]):not([type="checkbox"]), select, textarea {
+  @apply rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm transition focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500/20;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm mb-5;
+}
+
+.error {
+  @apply rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm font-medium text-red-700;
+}
+
+.muted {
+  @apply text-slate-500;
+}
+
+/* Result & status badges */
+.result-PASS { @apply text-emerald-700 font-semibold; }
+.result-WARN { @apply text-amber-700 font-semibold; }
+.result-FAIL { @apply text-red-700 font-semibold; }
+
+.status-QUEUED { @apply text-slate-500 font-medium; }
+.status-PROCESSING { @apply text-sky-600 font-semibold; }
+.status-DONE { @apply text-emerald-600 font-semibold; }
+.status-FAILED { @apply text-red-600 font-semibold; }
+
+.badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold bg-slate-100 text-slate-700;
+}
+.badge.edited { @apply bg-amber-100 text-amber-800 border border-amber-300/70; }
+.badge.ready { @apply bg-emerald-100 text-emerald-800 border border-emerald-300/70; }
+.badge.intraday { @apply bg-sky-100 text-sky-800 border border-sky-300/70; }
+.badge.red { @apply bg-red-600 text-white shadow-sm; }
+
+/* Modern table styling */
+table.data {
+  @apply w-full border-collapse overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm;
+}
+table.data thead th {
+  @apply bg-slate-900/95 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-200;
+}
+table.data td {
+  @apply border-b border-slate-100 px-4 py-3 text-sm align-middle;
+}
+table.data tbody tr {
+  @apply transition hover:bg-slate-50/80;
+}
+table.data td.num, table.data th.num {
+  @apply text-right tabular-nums;
+}
+table.data tr.red td {
+  @apply bg-red-50/95 text-red-950 border-red-100;
+}
+table.data tr.red:hover td {
+  @apply bg-red-100/80;
+}
+
+/* Interactive photo bounding-box frame */
+.photo-frame {
+  @apply relative inline-block w-full overflow-hidden rounded-xl bg-slate-950 leading-none shadow-inner;
+}
+.photo-frame img {
+  @apply block w-full h-auto;
+}
+.photo-box {
+  position: absolute;
+  border-width: 2.5px;
+  border-style: solid;
+  border-radius: 4px;
+  line-height: 1.2;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.photo-box.NO_HARDHAT { border-color: #ef4444; background: rgba(239, 68, 68, 0.12); }
+.photo-box.NO_VEST { border-color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+.photo-box.HARDHAT { border-color: #10b981; background: rgba(16, 185, 129, 0.08); }
+.photo-box.VEST { border-color: #06b6d4; background: rgba(6, 182, 212, 0.08); }
+
+.photo-box .label {
+  position: absolute;
+  left: -2px;
+  top: -1.65em;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px 4px 4px 0;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+}
+.photo-box.NO_HARDHAT .label { background: #dc2626; }
+.photo-box.NO_VEST .label { background: #d97706; }
+.photo-box.HARDHAT .label { background: #059669; }
+.photo-box.VEST .label { background: #0891b2; }

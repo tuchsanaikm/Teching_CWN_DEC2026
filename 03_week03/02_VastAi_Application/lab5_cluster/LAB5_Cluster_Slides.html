@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAB 5 · เทรน LLM บนคลัสเตอร์ (DP · MP · 2 &amp; 3 Node) · Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12305e;--teal:#0f8f8c;--teal-soft:#e2f5f4;--orange:#e87f1c;--orange-soft:#fff1e3;--red:#c92a2a;--red-soft:#fdecec;
+--green:#15803d;--green-soft:#e7f7ec;--ink:#1c2533;--muted:#5b6b80;--line:#d8e0ec;--bg:#f5f7fb;--card:#fff;--code:#0e1a2b;
+--font:'IBM Plex Sans Thai','Leelawadee UI','Noto Sans Thai','Segoe UI',sans-serif;--mono:'JetBrains Mono','Cascadia Code',Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:var(--font);color:var(--ink)}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:40px 72px 44px;display:none;flex-direction:column;overflow:hidden}
+.slide.active,.slide.measure{display:flex}
+.slide.measure{visibility:hidden}
+.slide.active{animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hd{flex:none;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+.kicker{font-size:17px;font-weight:600;color:var(--teal);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kicker code{font-size:.9em;background:none;padding:0;color:inherit}
+h2{font-size:36px;line-height:1.22;margin:3px 0 0;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:14px}
+h2 .tt{min-width:0}
+h2 code{font-size:.88em}
+.tag{flex:none;font-size:16px;font-weight:600;color:#b35c0a;white-space:nowrap;align-self:center}
+.tag::before{content:"● ";font-size:.7em;vertical-align:.15em}
+.pg{flex:none;margin-left:auto;font-size:16px;font-weight:500;color:var(--muted);white-space:nowrap}
+.slide .no{display:none;position:absolute;right:26px;bottom:12px;font-size:13px;color:#8796ab}
+.slide .dk{position:absolute;left:72px;bottom:12px;font-size:13px;color:#8796ab}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5em;font-size:calc(23px*var(--fs,1));overflow:hidden}
+.body.scroll{overflow:auto}
+.body>*{flex:none;margin:0}
+p{line-height:1.55}
+ul{padding-left:1.3em;margin:0}
+li{line-height:1.5;margin:.22em 0}
+b,strong{color:var(--navy)}
+a{color:#1d5fd0;text-decoration:none;border-bottom:1px solid rgba(29,95,208,.3)}
+.xref{color:var(--navy);font-weight:600}
+code{font-family:var(--mono);font-size:.84em;background:#e6edf7;color:#0b3b7a;padding:.08em .38em;border-radius:5px;overflow-wrap:break-word}
+pre,code{font-variant-ligatures:none}
+h3.lead{font-size:1.14em;color:var(--navy);font-weight:700;line-height:1.35;padding-left:.6em;border-left:5px solid var(--teal)}
+h3.lead span{font-weight:400;color:var(--muted);font-size:.86em}
+h3.lead span b{color:var(--muted)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9em;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.4em .62em;text-align:left;vertical-align:top;line-height:1.42;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600}
+th code{background:rgba(255,255,255,.16);color:#fff}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f9fd}
+td:first-child{font-weight:500}
+td.yes{color:#0f5132}td.no{color:#9b1c1c}
+.slide td.no{display:table-cell;position:static;font-size:inherit;color:#9b1c1c}
+table.c6,table.c7{font-size:.84em}
+.v{font-weight:700;font-size:.92em;padding:.05em .5em;border-radius:6px;white-space:nowrap}
+.v.accept{background:var(--green-soft);color:var(--green)}
+.v.reject{background:var(--red-soft);color:var(--red)}
+.note{border-left:3px solid var(--teal);padding:.15em 0 .15em .9em;line-height:1.5}
+.note>*{margin:0}
+.note>*+*{margin-top:.4em}
+.note.ok{border-color:var(--green)}
+.note.warn{border-color:var(--orange)}
+.note.bad{border-color:var(--red)}
+.note.result{border-color:var(--navy)}
+.note.eye{border-color:var(--orange);display:block}
+.note.eye>*+*{margin-top:0}
+.note .lbl{flex:none;font-weight:700;color:#b35c0a}
+.note .lbl{margin-right:.45em}
+.note .lbl::after{content:" —";font-weight:400;color:var(--muted)}
+pre.code{position:relative;background:var(--code);color:#dbe7ff;font-family:var(--mono);font-size:.74em;line-height:1.5;padding:.85em 1.1em;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+pre.code.term{border-left:6px solid var(--teal)}
+pre .copy{position:absolute;top:8px;right:8px;font-family:var(--font);font-size:14px;background:#26406a;color:#fff;border:0;border-radius:7px;padding:5px 12px;cursor:pointer;opacity:.85}
+pre .copy:hover,.copy.big:hover{background:var(--teal);opacity:1}
+pre .err{color:#ff9b9b}pre .ok{color:#86e3ae}pre .dim{color:#8ea3c4}pre .cmd{color:#ffd28a}
+.tk-c{color:#7f93b5;font-style:italic}.tk-s{color:#a5e8b5}.tk-k{color:#ffb86b}.tk-n{color:#8fd3ff}
+.fig{flex:1 1 0;min-height:var(--figmin,260px);display:flex;align-items:center;justify-content:center}
+.fig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 6px 22px rgba(18,48,94,.16);background:#fff;cursor:zoom-in}
+.fig.wide{flex:none;min-height:0;display:block}
+.fig.wide img{width:100%;max-height:none}
+.body>.fig.wide:only-child{margin:auto 0}
+.figrow{flex:1 1 0;min-height:0;display:flex;gap:24px;align-items:center}
+.figrow .fig{height:100%}
+.cols{display:flex;gap:26px;align-items:flex-start}
+.cols .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:.5em}
+.cols .col>*{margin:0}
+.cmp pre.code{font-size:.72em}
+.fails{display:flex;flex-direction:column;gap:.45em}
+.fails .cardx{padding:.4em .8em}
+.slide.mid .body{justify-content:center;gap:.8em}
+.cardx h4 code{font-size:.9em}
+.fails .cardx p{font-size:.8em;font-family:var(--mono);line-height:1.45}
+/* พรอมต์ */
+.pbar{display:flex;align-items:center;gap:16px;background:var(--orange-soft);border:1px solid #f6d3ad;border-radius:10px;padding:.45em .8em;font-size:.86em}
+.pbar .how{flex:1;min-width:0}
+.pbar .plabel{flex:none;color:var(--muted);font-size:.9em}
+.copy.big{flex:none;font-family:var(--font);font-size:19px;font-weight:700;background:var(--orange);color:#fff;border:0;border-radius:9px;padding:9px 20px;cursor:pointer;box-shadow:0 3px 10px rgba(232,127,28,.35)}
+.copy.done{background:var(--green)!important}
+pre.code.prompt{font-size:.76em;line-height:1.52;border:2px solid #f08a24}
+.full{display:none}
+/* checklist */
+.checks{display:flex;flex-direction:column;gap:.45em}
+.chk{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5em .8em;cursor:pointer;line-height:1.45}
+.chk input{width:1.15em;height:1.15em;margin-top:.2em;flex:none;accent-color:var(--teal)}
+.chk:has(input:checked){background:var(--green-soft);border-color:#a7dcb8}
+/* ภาพ + ขั้นตอน */
+.fitbox{overflow:hidden}
+.ex{flex:1 1 0;min-height:0;display:flex;gap:30px;align-items:stretch}
+.ex .fig{flex:1.5 1 0;min-height:0;min-width:0}
+.ex .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.5em}
+.ex .side>*{flex:none;margin:0}
+.stp{display:flex;gap:.75em;align-items:baseline;padding:.42em 0;line-height:1.45;border-top:1px solid var(--line)}
+.side .stp:first-child{border-top:0}
+.stp .n{flex:none;min-width:1.1em;font-size:1.25em;font-weight:700;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.cap{color:var(--muted);line-height:1.5;text-align:center}
+.cap b{color:var(--navy)}
+/* ตัวเลขใหญ่ */
+.tiles{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-top:3px solid var(--navy)}
+.tile{min-width:0;padding:.55em 1.1em .2em;border-left:1px solid var(--line)}
+.tile:first-child{border-left:0;padding-left:0}
+.tile .k{font-size:.86em;font-weight:700;color:var(--ink);margin-top:.35em}
+.tile .num{font-size:2.25em;font-weight:700;color:var(--navy);line-height:1.1;white-space:nowrap;letter-spacing:-.01em}
+.tiles.tl{border-top:0;position:relative;padding-top:34px}
+.tiles.tl::before{content:"";position:absolute;left:0;right:0;top:11px;height:3px;background:var(--navy)}
+.tiles.tl .tile{border-left:0;padding-left:0;position:relative}
+.tiles.tl .tile::before{content:"";position:absolute;top:-31px;left:0;width:16px;height:16px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 5px var(--bg)}
+.tile .num small{font-size:.5em;font-weight:600;color:var(--muted)}
+.tile .s{font-size:.8em;color:var(--muted);line-height:1.4}
+.tile.ok{}.tile.ok .num{color:var(--green)}
+.tile.bad{}.tile.bad .num{color:var(--red)}
+.tile.warn .num{color:#b35c0a}
+/* การ์ด */
+.cards{display:grid;gap:18px;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.cardx{border-top:3px solid var(--teal);padding:.5em 0 0;display:flex;flex-direction:column;gap:.3em}
+.cardx>*{margin:0}
+.cardx h4{font-size:1.02em;color:var(--navy);line-height:1.35}
+.cardx p,.cardx li{font-size:.88em;line-height:1.48;color:#2b3648}
+.cardx .n{color:var(--teal);font-weight:700;margin-right:.45em}
+.cardx.ok{border-top-color:var(--green)}.cardx.bad{border-top-color:var(--red)}.cardx.warn{border-top-color:var(--orange)}.cardx.navy{border-top-color:var(--navy)}
+.cardx .chips{display:flex;flex-direction:column;gap:.3em}
+.cardx .chips div{font-size:.86em;line-height:1.45}
+/* สมการ (KaTeX) */
+.katex{font-size:1.1em;font-family:KaTeX_Main,'IBM Plex Sans Thai','Leelawadee UI','Times New Roman',serif}
+.katex-display{margin:0}
+.eqbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:.3em .6em;text-align:center;box-shadow:0 4px 14px rgba(18,48,94,.06);font-size:2.2em;color:var(--ink);display:flex;flex-direction:column;gap:.12em}
+.eqbox .row+.row{border-top:1px dashed var(--line);padding-top:.12em}
+.eqbox .sub{font-size:.36em;color:var(--muted);line-height:1.4;padding-bottom:.3em}
+.eqlead{color:var(--muted);font-size:.95em;line-height:1.45}
+.parts{display:grid;gap:16px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+.part{background:#fff;border:1px solid var(--line);border-top:9px solid var(--c);border-radius:14px;padding:.55em .8em .65em;display:flex;flex-direction:column;gap:.22em;box-shadow:0 3px 10px rgba(18,48,94,.05)}
+.part>*{margin:0}
+.part .role{font-size:.64em;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.part .top{display:flex;align-items:center;gap:.5em;min-height:2.3em}
+.part .n{flex:none;display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--c);color:#fff;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.part .sym{font-size:1.3em;color:var(--c)}
+.part h4{font-size:1em;color:var(--navy);line-height:1.3}
+.part p{font-size:.86em;line-height:1.45;color:#2b3648}
+.part .lab{align-self:flex-start;font-family:var(--mono);font-size:.74em;color:#0b6b69;background:var(--teal-soft);border-radius:6px;padding:.12em .5em;margin-top:.15em}
+/* เทียบ 2 ฝั่ง */
+.vs{display:flex;gap:26px;align-items:stretch}
+.vs .sidebox{flex:1;min-width:0;border-radius:16px;padding:.8em 1em;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:.4em}
+.vs .sidebox>*{margin:0}
+.vs .bad{border-color:#f0b4b4;background:#fff8f8}.vs .good{border-color:#a7dcb8;background:#f5fcf7}
+.vs .hd2{font-size:.8em;font-weight:700;letter-spacing:.03em}
+.vs .bad .hd2{color:var(--red)}.vs .good .hd2{color:var(--green)}
+.vs .bigv{font-family:var(--mono);font-size:2.6em;font-weight:700;line-height:1.15}
+.vs .bad .bigv{color:var(--red)}.vs .good .bigv{color:var(--green)}
+.vs .calc{font-family:var(--mono);font-size:.95em;color:#2b3648}
+.callbox{background:var(--code);color:#dbe7ff;font-family:var(--mono);border-radius:12px;padding:.6em 1em;font-size:1.05em;text-align:center}
+.formula{background:#fff;border:2px solid var(--navy);border-radius:16px;padding:.7em 1em;text-align:center;font-size:1.25em;font-weight:700;color:var(--navy);line-height:1.5}
+.bigq{font-size:1.9em;font-weight:700;color:var(--navy);line-height:1.35;margin:auto 0 .2em!important}
+.bigq em{font-style:normal;color:var(--orange)}
+.bigsub{font-size:1.05em;color:var(--muted);line-height:1.6;margin-bottom:auto!important}
+/* แท่ง */
+.bars{display:flex;flex-direction:column;gap:.5em}
+.bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 7.5em;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45em .85em}
+.bar .lb{line-height:1.4}
+.bar .lb small{display:block;color:var(--muted);font-size:.8em}
+.bar .tr{height:1.15em;background:#e7edf5;border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;border-radius:999px;background:var(--green);min-width:6px}
+.bar .fl.mid{background:var(--orange)}.bar .fl.low{background:var(--red)}
+.bar .vl{font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;font-size:.92em}
+/* ตารางสี 18 Trial */
+.heat{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;align-items:stretch}
+.heat .hh{font-family:var(--mono);font-size:.74em;font-weight:600;color:var(--navy);text-align:center;padding:.2em 0}
+.heat .hr{font-size:.82em;color:var(--muted);display:flex;align-items:center;padding-right:.4em;white-space:nowrap}
+.heat .hc{border-radius:10px;text-align:center;font-family:var(--mono);font-weight:700;font-size:1.15em;padding:.55em 0;color:#12305e}
+.heat .grp{grid-column:span 4;text-align:center;font-size:.8em;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:.15em}
+.heat .grp.val{grid-column:span 2;background:var(--orange)}
+/* Input -> LAB -> Output */
+.ff{display:flex;gap:22px;align-items:center}
+.ffcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:.42em}
+.ffh{font-size:.78em;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:10px;padding:.42em .7em;font-size:.9em;line-height:1.42}
+.ffcol.out .file{border-left-color:var(--orange)}
+.ffmid{flex:none;width:8em;text-align:center;background:var(--navy);color:#fff;border-radius:18px;padding:1.1em .5em;font-weight:700;font-size:1.1em;line-height:1.3;position:relative}
+.ffmid small{display:block;font-weight:500;font-size:.62em;color:#b9d2f5;margin-top:.3em}
+.ffar{flex:none;font-size:2em;color:var(--orange);font-weight:700}
+/* กลุ่มข้อตรวจ */
+.ck{display:flex;gap:.55em;align-items:baseline;font-size:.86em;line-height:1.45}
+.ck code{flex:none}
+/* แผนของบท */
+.road{display:flex;gap:26px;align-items:stretch}
+.road .partbox{flex:1;border-radius:18px;padding:.8em 1em 1em;background:#fff;border:2px solid var(--line);display:flex;flex-direction:column;gap:.55em}
+.road .partbox>*{margin:0}
+.road .ph{font-size:1.25em;font-weight:700;color:var(--navy)}
+.road .ph small{font-size:.6em;font-weight:600;color:var(--teal);margin-left:.6em}
+.road .secbox{border-left:7px solid var(--teal);background:var(--bg);border-radius:10px;padding:.5em .8em}
+.road .secbox b{display:block;font-size:1.02em}
+.road .secbox span{font-size:.86em;color:#2b3648;line-height:1.45;display:block}
+.road .partbox.lab .secbox{border-left-color:var(--orange)}
+/* hero: ภาพเต็มหน้า + ตัวเลขสีขาว */
+.slide.hero{background-color:#081222;background-size:cover;background-position:center right;color:#eef3fb}
+.slide.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,11,22,.97) 0%,rgba(5,11,22,.93) 44%,rgba(5,11,22,.55) 64%,rgba(5,11,22,.08) 88%),linear-gradient(180deg,rgba(5,11,22,.55) 0%,rgba(5,11,22,0) 22%)}
+.slide.hero>*{position:relative;z-index:1}
+.slide.hero .hd{border-bottom-color:rgba(255,255,255,.18)}
+.slide.hero h2{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.slide.hero .kicker{color:#7fe3dc}
+.slide.hero .body{justify-content:center}
+.herobox{max-width:62%;display:flex;flex-direction:column;gap:.7em}
+.tiles.hl{display:grid;grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:auto 1fr;column-gap:1.1em;border-top:0}
+.tiles.hl .tile{display:contents}
+.tiles.hl .num,.tiles.hl .txt{border-top:1px solid rgba(255,255,255,.16);padding:.4em 0}
+.tiles.hl .tile:first-child .num,.tiles.hl .tile:first-child .txt{border-top:0}
+.tiles.hl .num{font-size:2.35em;line-height:1.05;color:#fff;text-shadow:0 2px 18px rgba(34,184,207,.35)}
+.tiles.hl .num small{display:block;font-size:.36em;font-weight:600;color:#b9c8e2;margin-top:.15em}
+.tiles.hl .txt{min-width:0;align-self:center}
+.tiles.hl .k{color:#fff;margin-top:0}
+.tiles.hl .s{color:#b9c8e2}
+.tiles.hl .tile.ok .num{color:#7ee2a8}.tiles.hl .tile.warn .num{color:#ffb661}.tiles.hl .tile.bad .num{color:#ff8a8a}
+.slide.hero .note{border-left-color:#ffb661;color:#e6eefc}
+.slide.hero .note .lbl{color:#ffb661}
+.slide.hero .note b,.slide.hero b{color:#fff}
+.slide.hero .imgnote{position:absolute;right:22px;bottom:60px;z-index:2}
+/* ปก และหน้าคั่น */
+.cover,.divider{padding:0;background:linear-gradient(135deg,#0d2447 0%,#163f7a 62%,#0f8f8c 140%);background-size:cover;background-position:center;color:#fff}
+.cover .shade,.divider.photo .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.96) 0%,rgba(6,13,26,.86) 46%,rgba(6,13,26,.25) 80%)}
+.inner{position:relative;height:100%;padding:90px 96px 70px;display:flex;flex-direction:column;max-width:1120px;font-size:25px}
+.divider:not(.photo) .inner{max-width:1400px}
+.divider.photo .inner{max-width:940px}
+.inner .small{font-size:21px;font-weight:600;color:#8fe0dc;letter-spacing:.03em;min-height:28px}
+.inner .big{font-size:120px;font-weight:700;line-height:1.05;color:#fff;margin-top:8px}
+.inner h1{font-size:54px;line-height:1.2;margin:10px 0 0;color:#fff}
+.cover .inner h1{font-size:68px;margin-top:120px}
+.inner .sub{margin-top:26px;color:#d6e4fb;line-height:1.55;display:flex;flex-direction:column;gap:.55em}
+.cover .inner .sub{font-size:34px;color:#cfe0ff}
+.inner .sub p,.inner .sub ul{margin:0}
+.inner b{color:#fff}
+.inner code{background:rgba(255,255,255,.14);color:#fff}
+.inner a{color:#9fd8ff;border-bottom-color:rgba(159,216,255,.4)}
+.inner .xref{color:#fff}
+.inner .hint{margin-top:auto;font-size:19px;color:#9fb6dd}
+.inner .v.accept{background:rgba(134,227,174,.2);color:#9af0bf}.inner .v.reject{background:rgba(255,155,155,.2);color:#ffb3b3}
+.imgnote{position:absolute;right:22px;bottom:14px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:7px}
+.facts{display:flex;flex-wrap:wrap;row-gap:.3em;gap:0;margin-top:14px;font-size:24px;color:#fff;font-weight:600}
+.facts div{white-space:nowrap}
+.facts div:nth-child(3){flex-basis:100%;white-space:normal}
+.facts div:nth-child(3)::before{content:none}
+.facts div+div::before{content:"·";margin:0 .7em;color:#8fb3e6}
+.facts .fl{color:#9fd8ff;font-weight:500;margin-right:.4em}
+.kbd{display:inline-block;border:1px solid #9fb6dd;border-bottom-width:3px;border-radius:7px;padding:0 9px;font-family:var(--mono);font-size:.8em;margin:0 2px;background:rgba(255,255,255,.06)}
+.body .kbd{border-color:#9aa9bf;background:#fff}
+/* ส่วนควบคุม */
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--orange);transition:width .25s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:6;font-family:var(--font);opacity:.35;transition:opacity .2s}
+#hud:hover{opacity:1}
+#hud button{background:rgba(18,48,94,.85);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;height:36px;min-width:38px;font-size:16px;cursor:pointer;padding:0 10px}
+#hud button:hover{background:var(--teal)}
+#count{color:#fff;background:rgba(18,48,94,.85);border-radius:9px;padding:7px 10px;font-size:15px;min-width:80px;text-align:center}
+body.ov #stage{display:none}
+#ov{display:none;position:fixed;inset:0;overflow:auto;padding:26px 32px 60px;z-index:10;background:#0b1424;color:#dbe7ff}
+body.ov #ov{display:block}
+#ov h4{margin:22px 0 10px;font-size:19px;color:#8fe0dc;font-weight:600;border-bottom:1px solid #22324d;padding-bottom:6px}
+#ov .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+#ov .th{background:#16233a;border:2px solid transparent;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+#ov .th:hover,#ov .th.cur{border-color:var(--orange)}
+#ov .th span{color:var(--orange);font-weight:700;margin-right:6px}
+#lb{display:none;position:fixed;inset:0;z-index:20;background:rgba(4,8,16,.95);overflow:auto;padding:18px;text-align:center;cursor:zoom-out}
+#lb.on{display:block}
+#lb img{width:min(100%,2000px);height:auto;border-radius:8px;background:#fff}
+@media print{html,body{overflow:visible;height:auto;background:#fff}#hud,#bar,#ov,#lb,.copy{display:none!important}.slide .no{display:block}
+#stage{position:static;display:block}#deck{transform:none!important;height:auto}
+.slide{display:flex!important;position:relative;width:1600px;height:900px;page-break-after:always;break-after:page;animation:none}}
+@page{size:1600px 900px;margin:0}
+
+.ex.big .fig{flex:2.25 1 0}
+.ex.mid2 .fig{flex:1.95 1 0}
+.slide.stmt{padding:0;color:#fff}
+.stmt img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stmt .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.95) 0%,rgba(6,13,26,.82) 52%,rgba(6,13,26,.18) 88%)}
+.stmt .inner{justify-content:center;max-width:1060px}
+.stmt .q{font-size:48px;font-weight:700;line-height:1.32;color:#fff}
+.stmt .sub2{margin-top:28px;font-size:25px;line-height:1.6;color:#d6e4fb}
+.stmt .sub2 b{color:#ffd28a}
+.stmt .links{margin-top:26px;font-size:21px;line-height:1.7;color:#b9d2f5}
+.stmt .links a{color:#8fe0dc;border-bottom-color:rgba(143,224,220,.45);margin-right:18px;white-space:nowrap}
+.stmt .imgnote{bottom:60px}
+.inner .dim{color:#9fb6dd;font-size:.9em}
+.divider .inner .small{margin-bottom:22px}
+.inner h1{line-height:1.32}
+.slide.hero .tag{color:#ffd28a;text-shadow:0 1px 4px #000,0 0 10px rgba(0,0,0,.95),0 0 20px rgba(0,0,0,.98);padding:2px 8px;border-radius:4px;background:rgba(6,13,26,.55)}
+.slide.hero code{background:rgba(255,255,255,.16);color:#fff}
+.slide.hero .tiles.hl .num{font-size:2.1em}
+.slide th a{color:#fff}
+.slide.pslide .hd{margin-bottom:10px;padding-bottom:8px}
+.slide.pslide .pbar{margin-bottom:6px}
+.slide.pslide pre.code.prompt{font-size:.63em;line-height:1.36;padding:.65em .95em}
+</style>
+</head>
+<body>
+<!-- สร้างจาก README.md ด้วย tools/build_slides.py · ห้ามแก้ไฟล์นี้ด้วยมือ ให้แก้ README.md แล้วสร้างใหม่ -->
+<div id="stage"><div id="deck">
+<section class="slide cover" style="background-image:url(image/slides/s01-cover.jpg)" data-title="ปก" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์"><div class="shade"></div><div class="inner"><div class="small">02_VastAi_Application / lab5_cluster · 1 Node = เครื่องคอมพิวเตอร์ 1 เครื่อง (GPU 2 ใบ)</div><h1>LAB 5 · เทรน LLM บนคลัสเตอร์หลายเครื่อง</h1><div class="sub">1 เครื่อง (1 Node) เทียบ 2 เครื่อง (2 Node) เทียบ 3 เครื่อง (3 Node) · เครื่องละ 2 GPU ต่อกันผ่านอินเทอร์เน็ต</div><div class="hint">กด <span class="kbd">→</span> หรือ <span class="kbd">Space</span> เพื่อไปต่อ · <span class="kbd">O</span> สารบัญ · <span class="kbd">F</span> เต็มจอ · คลิกภาพเพื่อขยาย</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="เส้นทางของทั้งบท: จาก 1 เครื่อง (1 Node) สู่คลัสเตอร์ 2–3 เครื่อง (หลาย Node) ผ่านอินเทอร์เน็ต" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.10"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">เส้นทางของทั้งบท: จาก 1 เครื่อง (1 Node) สู่คลัสเตอร์ 2–3 เครื่อง (หลาย Node) ผ่านอินเทอร์เน็ต</span><span class="tag">ภาพจำลอง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="image/slides/s07-lab5-journey.jpg" alt="เส้นทางของทั้งบท: จาก 1 เครื่อง (1 Node) สู่คลัสเตอร์ 2–3 เครื่อง (หลาย Node) ผ่านอินเทอร์เน็ต" width="1920" height="1080"></div><p class="cap"><b>1 Node = เครื่องคอมพิวเตอร์ 1 เครื่อง (เครื่องละ 2 GPU)</b> · นำหลายเครื่องมาต่อกันเรียกว่า <b>คลัสเตอร์</b> — เทียบ 1, 2 และ 3 Node ทั้งแบบ Data Parallelism และ Model Parallelism</p></div></section>
+<section class="slide " data-title="แผนที่โฟลเดอร์ของ LAB 5: เทียบ 1 Node กับ 2 แล็บย่อยบนคลัสเตอร์" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">แผนที่โฟลเดอร์ของ LAB 5: เทียบ 1 Node กับ 2 แล็บย่อยบนคลัสเตอร์</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n01-lab5-folders.jpg" alt="แผนที่โฟลเดอร์ของ LAB 5: เทียบ 1 Node กับ 2 แล็บย่อยบนคลัสเตอร์" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ตัวเทียบ 1 Node (<code>lab4_multigpu/</code>)</b> ไม่ต้องรันใหม่ ใช้ผล GPU 2 ใบในเครื่องเดียวของ LAB 4.2 และ LAB 4.3 เป็นจุดเทียบความเร็ว</span></div><div class="stp"><span class="n">2</span><span><b>LAB 5.1 (<code>1_data_parallel/</code> และ <code>node3/</code>)</b> เทรนแบบ Data Parallelism ข้าม 2 Node (GPU 4 ใบ) แล้วขยายเป็น 3 Node (GPU 6 ใบ) รวม 6 ขั้น</span></div><div class="stp"><span class="n">3</span><span><b>LAB 5.2 (<code>2_model_parallel/</code> และ <code>node3/</code>)</b> แบ่ง Layer ของโมเดลลง 2 GPU ในแต่ละเครื่อง แล้วเฉลี่ย Gradient ข้าม 2 Node และ 3 Node รวม 6 ขั้น</span></div></div></div></div></section>
+<section class="slide " data-title="1 Node คืออะไร และคลัสเตอร์หลายเครื่องต่างจาก LAB 4 อย่างไร" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">1 Node คืออะไร และคลัสเตอร์หลายเครื่องต่างจาก LAB 4 อย่างไร</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="image/why-cluster.png" alt="1 Node คืออะไร และคลัสเตอร์หลายเครื่องต่างจาก LAB 4 อย่างไร" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>1 Node = เครื่องคอมพิวเตอร์ 1 เครื่อง</b> (ใน LAB นี้ทุกเครื่องเสียบ <b>GPU 2 ใบ</b> คือ RTX 3090 × 2) · เมื่อนำหลายเครื่องมาต่อกันผ่านเครือข่ายเรียกว่า <b>คลัสเตอร์</b></span></div><div class="stp"><span class="n">2</span><span><b>LAB 4</b> ใช้ <b>1 เครื่อง (1 Node)</b> GPU คุยกันในเครื่องผ่าน PCIe · <b>LAB 5</b> ขยายเป็น <b>2 เครื่อง (2 Node = 4 GPU)</b> และ <b>3 เครื่อง (3 Node = 6 GPU)</b> ต่อกันผ่านอินเทอร์เน็ต</span></div><div class="stp"><span class="n">3</span><span><b>1 Node ไม่ต้องรันใหม่</b> ใช้ผล 1 เครื่อง (GPU 2 ใบ) ของ LAB 4.2 และ LAB 4.3 เป็นตัวเทียบ เพื่อวัดว่าเพิ่มเครื่องแล้วเร็วขึ้นกี่เท่า และเวลา 1 step หมดไปกับอะไร</span></div></div></div></div></section>
+<section class="slide " data-title="คลัสเตอร์ 2 เครื่อง (2 Node · 4 GPU) ใช้ได้ 2 แบบ ต่างกันที่การจัดวางโมเดลในแต่ละเครื่อง" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">คลัสเตอร์ 2 เครื่อง (2 Node · 4 GPU) ใช้ได้ 2 แบบ ต่างกันที่การจัดวางโมเดลในแต่ละเครื่อง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="image/c-two-ways.png" alt="คลัสเตอร์ 2 เครื่อง (2 Node · 4 GPU) ใช้ได้ 2 แบบ ต่างกันที่การจัดวางโมเดลในแต่ละเครื่อง" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>LAB 5.1 · Data Parallelism</b> 2 เครื่อง (GPU 4 ใบ) ทุกใบถือโมเดลครบชุด รวม <b>4 ชุด</b> แบ่งข้อมูลใบละ 1/4</span></div><div class="stp"><span class="n">2</span><span><b>LAB 5.2 · Model Parallelism</b> 2 เครื่อง (GPU 4 ใบ) แต่ละเครื่องวางโมเดล 1 ชุดคร่อม GPU 2 ใบ รวม <b>2 ชุด</b> แบ่งข้อมูลเครื่องละครึ่ง</span></div><div class="stp"><span class="n">3</span><span><b>ข้ามเครื่องทำเหมือนกันทั้งสองแบบ</b> คือส่งเฉพาะ <b>Gradient ของ LoRA</b> ผ่านอินเทอร์เน็ตไปเฉลี่ยที่โปรแกรมกลาง (<b>Coordinator</b>) บน Node 1</span></div></div></div></div></section>
+<section class="slide " data-title="สรุปโครงสร้าง LAB 5.1 และ LAB 5.2: ในเครื่องทำอะไร ข้ามเครื่องทำอะไร และเทียบกับใคร" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">สรุปโครงสร้าง LAB 5.1 และ LAB 5.2: ในเครื่องทำอะไร ข้ามเครื่องทำอะไร และเทียบกับใคร</span><span class="tag">ตารางหลัก · 2 LAB ย่อย</span></h2></header><div class="body"><table class="c5"><thead><tr><th>LAB ย่อย</th><th>ในเครื่อง (GPU 2 ใบ)</th><th>ข้ามเครื่อง</th><th>ตัวเทียบ 1 Node</th><th>ขั้น</th></tr></thead><tbody><tr><td><a href="1_data_parallel/README.md" target="_blank" rel="noopener">LAB 5.1 · Data Parallelism</a></td><td>GPU ละ 1 โมเดลครบชุด · batch 4 ต่อ GPU</td><td>เฉลี่ย Gradient ของทุก GPU</td><td><a href="../lab4_multigpu/2_data_parallel/README.md" target="_blank" rel="noopener">LAB 4.2</a></td><td>6 (2 Node แล้ว 3 Node)</td></tr><tr><td><a href="2_model_parallel/README.md" target="_blank" rel="noopener">LAB 5.2 · Model Parallelism</a></td><td>โมเดล 1 ชุดแบ่ง Layer ลง 2 ใบ · batch 8 ต่อ Node</td><td>เฉลี่ย Gradient ของทุก Node</td><td><a href="../lab4_multigpu/3_model_parallel/README.md" target="_blank" rel="noopener">LAB 4.3</a></td><td>6 (2 Node แล้ว 3 Node)</td></tr></tbody></table><div class="note info">ทั้งสอง LAB ย่อยใช้ Coordinator แบบ Synchronous บน Node 1 เหมือนกัน · รอบ 2 Node เก็บที่รากโฟลเดอร์ และรอบ 3 Node เก็บใน <code>node3/</code></div></div></section>
+<section class="slide " data-title="ตัวแปรควบคุมที่ตรึงเหมือนกันทั้ง 2 LAB ย่อย เพื่อให้เทียบกับ 1 Node ได้ตรงไปตรงมา" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB 5</div><h2><span class="tt">ตัวแปรควบคุมที่ตรึงเหมือนกันทั้ง 2 LAB ย่อย เพื่อให้เทียบกับ 1 Node ได้ตรงไปตรงมา</span><span class="tag">ค่าที่ตรึง</span></h2></header><div class="body"><table class="c2"><thead><tr><th>หัวข้อ</th><th>ค่า</th></tr></thead><tbody><tr><td>โมเดล</td><td><a href="https://huggingface.co/Qwen/Qwen3-8B" target="_blank" rel="noopener">Qwen/Qwen3-8B</a> แบบ bf16 · LoRA r 8 alpha 16 ที่ <code>q_proj</code> กับ <code>v_proj</code> (เทรน 3,833,856 parameter)</td></tr><tr><td>Dataset</td><td><a href="https://huggingface.co/datasets/b-mc2/sql-create-context" target="_blank" rel="noopener">b-mc2/sql-create-context</a> · Training Set 4,000 · Test Set 200 · สับด้วย seed 0 · ทุก Node ได้ชุดเดียวกัน</td></tr><tr><td>ค่าที่ตรึง</td><td>learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · ปิด thinking · ไม่ใช้ Gradient Checkpointing · 2 Epoch · batch เท่ากับ LAB 4</td></tr><tr><td>เครื่อง</td><td>RTX 3090 24 GB × 2 ต่อ Node · IP สาธารณะต่างกัน · Node 1 เปิด 1 port</td></tr><tr><td>สิ่งที่วัด</td><td>เน็ตระหว่าง Node · เวลาต่อ step แยกเป็นคำนวณ กับ ส่งและรอ · ตัวอย่างต่อวินาที · GPU util · น้ำหนัก LoRA ของทุก Worker เท่ากันหรือไม่ · Exact Match ของ Base และหลังจบแต่ละ Epoch</td></tr></tbody></table><div class="note info">แต่ละ LAB ย่อยมี <b>6 ขั้น ทุกขั้นคือ 1 พรอมต์</b> (ขั้น 1–3 ใช้ 2 Node · ขั้น 4–6 ใช้ 3 Node) และลบเครื่องทุก Node ในขั้นที่ 3 และ 6 เสมอ</div></div></section>
+<section class="slide divider photo" style="background-image:url(image/slides/s02-foundations.jpg)" data-title="พื้นฐานร่วม · โจทย์เดิมจาก LAB 4 และกลไกหลักของคลัสเตอร์" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง"><div class="shade"></div><div class="inner"><div class="small">ใช้ร่วมกันทั้ง LAB 5.1 และ LAB 5.2</div><div class="big">พื้นฐานร่วม</div><h1>โจทย์เดิมจาก LAB 4 และกลไกหลักของคลัสเตอร์</h1><div class="sub"><p>ก่อนเริ่มเช่าคลัสเตอร์ ต้องเข้าใจ 4 เรื่องร่วม: ข้อมูลและ LoRA 15.3 MB · Coordinator 1 port · ต้นทุนสื่อสารข้ามอินเทอร์เน็ต · และวิธีวัด Speedup</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="งานเดิมจาก LAB 4: เทรน Qwen3-8B บน sql-create-context (4,000 / 200)" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · Dataset และโมเดล</div><h2><span class="tt">งานเดิมจาก LAB 4: เทรน <code>Qwen3-8B</code> บน <code>sql-create-context</code> (4,000 / 200)</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/d-example.png" alt="งานเดิมจาก LAB 4: เทรน Qwen3-8B บน sql-create-context (4,000 / 200)" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>Dataset <code>b-mc2/sql-create-context</code> (78,577 ตัวอย่าง) สับด้วย <b><code>seed 0</code></b> แบ่งเป็น Training Set <b>4,000</b> และ Test Set <b>200</b></span></div><div class="stp"><span class="n">2</span><span><b>ทุก Node ต้องได้ชุดข้อมูลเดียวกัน</b> ถ้าแบ่งไม่ตรงกัน บาง Node จะเทรนด้วยข้อสอบที่อีก Node ใช้ประเมิน</span></div><div class="stp"><span class="n">3</span><span>โมเดล <code>Qwen/Qwen3-8B</code> (<code>bf16</code>, 36 Layer, 8.19B params) ปิดโหมด thinking เทรน <b>2 Epoch</b> วัด Exact Match บน Test Set 200 ข้อ</span></div></div></div></div></section>
+<section class="slide " data-title="ทำไมคลัสเตอร์นี้ส่งข้ามเครื่องแค่ ~15 MB ต่อ step แทนที่จะเป็น 16 GB" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · Dataset และโมเดล</div><h2><span class="tt">ทำไมคลัสเตอร์นี้ส่งข้ามเครื่องแค่ ~15 MB ต่อ step แทนที่จะเป็น 16 GB</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/t-lora-qv.png" alt="ทำไมคลัสเตอร์นี้ส่งข้ามเครื่องแค่ ~15 MB ต่อ step แทนที่จะเป็น 16 GB" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>LoRA ล็อกน้ำหนักเดิมทั้งหมด แล้วเทรนเฉพาะตารางเล็ก (<code>r=8</code>, <code>alpha=16</code>) ที่ <code>q_proj</code> กับ <code>v_proj</code> ครบ 36 Layer = <b>72 จุด</b></span></div><div class="stp"><span class="n">2</span><span>จำนวนพารามิเตอร์ที่เทรนมีเพียง <b>3,833,856 ค่า</b> (0.047% ของโมเดล) สิ่งที่ต้องส่งข้ามเครื่องทุก step จึงมีเฉพาะ Gradient ส่วนนี้</span></div><div class="stp"><span class="n">3</span><span>Gradient 1 ชุดแบบ <code>float32</code> = <code>3,833,856 × 4 byte</code> = <b>15.3 MB</b> (วัดได้ 15,335,424 byte) — ถ้าส่งแบบ <code>bf16</code> เหลือครึ่งเดียวคือ <b>7.67 MB</b></span></div></div></div></div></section>
+<section class="slide " data-title="Coordinator: โปรแกรมกลางบน Node 1 เปิด port เดียวให้ทุก Worker ต่อเข้ามา" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · กลไกข้ามเครื่อง</div><h2><span class="tt">Coordinator: โปรแกรมกลางบน Node 1 เปิด port เดียวให้ทุก Worker ต่อเข้ามา</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/c-coordinator.png" alt="Coordinator: โปรแกรมกลางบน Node 1 เปิด port เดียวให้ทุก Worker ต่อเข้ามา" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ข้ามเครื่องเช่า GPU มองไม่เห็นกันโดยตรง และเครื่องเช่าเปิดรับพอร์ตภายนอกได้จำกัด จึงให้ <b>Node 1 เปิด 1 port</b> แล้วทุก Worker ต่อออกไปหา</span></div><div class="stp"><span class="n">2</span><span>ทำงานแบบ <b>Synchronous</b> 3 ขั้น: (1) รอ Gradient ครบทุก Worker → (2) เฉลี่ย → (3) ส่งค่าเฉลี่ยเดียวกันกลับให้ทุกตัว Update พร้อมกัน</span></div><div class="stp"><span class="n">3</span><span>ข้อดีคือน้ำหนัก LoRA ของทุก Worker <b>เท่ากันทุกค่าเสมอ</b> แต่ทั้งคลัสเตอร์จะเดินได้เร็วเท่า <b>Worker ที่ช้าที่สุด</b> เท่านั้น</span></div></div></div></div></section>
+<section class="slide " data-title="ต้นทุนการสื่อสาร: ในเครื่องวิ่งผ่าน PCIe แต่ข้ามเครื่องต้องผ่านอินเทอร์เน็ตทุก step" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · กลไกข้ามเครื่อง</div><h2><span class="tt">ต้นทุนการสื่อสาร: ในเครื่องวิ่งผ่าน PCIe แต่ข้ามเครื่องต้องผ่านอินเทอร์เน็ตทุก step</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/c-net-cost.png" alt="ต้นทุนการสื่อสาร: ในเครื่องวิ่งผ่าน PCIe แต่ข้ามเครื่องต้องผ่านอินเทอร์เน็ตทุก step" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ในเครื่องเดียว (LAB 4) GPU ส่ง Gradient ผ่าน PCIe ถนนสั้นและกว้าง ถึงเกือบทันทีจนแทบไม่เห็นเวลารอ</span></div><div class="stp"><span class="n">2</span><span>ข้ามเครื่อง (LAB 5) Gradient เดินทางผ่านอินเทอร์เน็ตสาธารณะ ช้ากว่ามากและขึ้นกับทั้ง <b>RTT</b> (เวลาไปกลับ) และ <b>ความเร็วส่งข้อมูล</b></span></div><div class="stp"><span class="n">3</span><span>ระหว่างที่รอส่งและรับ Gradient กลับ <b>GPU จะว่างไม่ได้คำนวณ</b> จึงต้องวัดเน็ตระหว่าง Node เองก่อนเริ่มเทรนทุกครั้ง</span></div></div></div></div></section>
+<section class="slide " data-title="วัดความคุ้มของการเพิ่มเครื่องด้วย Speedup และ Efficiency" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · กลไกข้ามเครื่อง</div><h2><span class="tt">วัดความคุ้มของการเพิ่มเครื่องด้วย Speedup และ Efficiency</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="image/c-speedup.png" alt="วัดความคุ้มของการเพิ่มเครื่องด้วย Speedup และ Efficiency" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Speedup</b> = ตัวอย่างต่อวินาทีของ N Node ÷ ตัวอย่างต่อวินาทีของ 1 Node (อุดมคติ = N เท่า)</span></div><div class="stp"><span class="n">2</span><span><b>Efficiency</b> = Speedup ÷ N (อุดมคติ = 100% แปลว่าเพิ่มเครื่องแล้วได้งานเต็มตามจำนวนเครื่อง)</span></div><div class="stp"><span class="n">3</span><span>ถ้า <b>Speedup ต่ำกว่า 1</b> แปลว่าเพิ่มเครื่องแล้ว <b>ช้าลง</b> เพราะเวลาส่งและรอผ่านเครือข่ายยาวกว่าเวลาคำนวณที่แบ่งเบาได้</span></div></div></div></div></section>
+<section class="slide " data-title="ประมาณเวลาส่งก่อนเทรน: ขนาด Gradient หารความเร็วเน็ต" data-group="พื้นฐานร่วม · โจทย์เดิมและกลไกข้ามเครื่อง" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · กลไกข้ามเครื่อง</div><h2><span class="tt">ประมาณเวลาส่งก่อนเทรน: ขนาด Gradient หารความเร็วเน็ต</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n02-comm-math.jpg" alt="ประมาณเวลาส่งก่อนเทรน: ขนาด Gradient หารความเร็วเน็ต" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>คำนวณปริมาณข้อมูลต่อ step</b> Node 2 มี 2 Worker ส่ง Gradient ของ LoRA ขึ้นพร้อมกัน <code>2 × 15.3 MB = 30.7 MB = 245 Mbit</code></span></div><div class="stp"><span class="n">2</span><span><b>วัดความเร็วเน็ตจริงระหว่าง Node</b> ในรอบ DP 2 Node ทิศ <code>Node 2 → Node 1</code> วัดได้จริงเพียง <b>143 Mbps</b> (ไม่ใช่ 700 Mbps ที่หน้าเช่าประกาศ)</span></div><div class="stp"><span class="n">3</span><span><b>เทียบกับเวลาคำนวณบน GPU</b> แค่ส่งขาขึ้นก็ใช้ <code>245 ÷ 143 ≈ 1.7 วินาที</code> นานกว่าเวลาคำนวณ (0.43 วินาที) ราว 4 เท่าแล้ว จึงรู้ก่อนเทรนว่าเน็ตจะเป็นคอขวด</span></div></div></div></div></section>
+<section class="slide divider photo" style="background-image:url(image/slides/s03-dp-cluster.jpg)" data-title="LAB 5.1 · Data Parallelism บนคลัสเตอร์ · 2 Node และ 3 Node" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 1 จาก 2 ของภาค LAB · โฟลเดอร์ 1_data_parallel/</div><div class="big">LAB 5.1</div><h1>Data Parallelism บนคลัสเตอร์ · 2 Node และ 3 Node</h1><div class="sub"><p>คำถาม: ให้ GPU ทุกใบข้ามเครื่องถือโมเดลครบชุด (4 และ 6 โมเดล) แบ่งข้อมูลกันเทรน จะเร็วขึ้นกี่เท่าเทียบกับ 1 Node ของ LAB 4.2</p><p class="dim">โฟลเดอร์: <code>1_data_parallel/</code> (ขั้น 1–3 · 2 Node = 4 GPU) และ <code>1_data_parallel/node3/</code> (ขั้น 4–6 · 3 Node = 6 GPU)</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Data Parallelism ข้าม 2 Node: โมเดล 4 ชุด แบ่งข้อมูลใบละ 1/4 แล้วเฉลี่ยที่ Node 1" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · แนวคิด DP ข้าม 2 Node</div><h2><span class="tt">Data Parallelism ข้าม 2 Node: โมเดล 4 ชุด แบ่งข้อมูลใบละ 1/4 แล้วเฉลี่ยที่ Node 1</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/c-dp-cluster.png" alt="Data Parallelism ข้าม 2 Node: โมเดล 4 ชุด แบ่งข้อมูลใบละ 1/4 แล้วเฉลี่ยที่ Node 1" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิด Worker <b>1 ตัวต่อ GPU</b> รวม 4 ตัว (โมเดล 4 ชุด) ตรึง <code>batch = 4</code> ต่อ GPU เท่า LAB 4.2 ทำให้ <b>batch รวม = 16</b> (250 step/Epoch)</span></div><div class="stp"><span class="n">2</span><span>ทุกใบคำนวณบนข้อมูลคนละส่วนไม่ซ้ำกัน แล้วส่ง Gradient ของ LoRA ไปยัง Coordinator บน Node 1</span></div><div class="stp"><span class="n">3</span><span>GPU 4 ใบคำนวณพร้อมกันได้ แต่ทุกตัวต้องหยุดรอให้ Gradient จาก Node 2 เดินทางข้ามอินเทอร์เน็ตมาถึงครบก่อน</span></div></div></div></div></section>
+<section class="slide " data-title="1 step ของ DP ข้าม 2 Node: เวลาต่อ step = เวลาคำนวณ + เวลาส่งและรอ" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · แนวคิด DP ข้าม 2 Node</div><h2><span class="tt">1 step ของ DP ข้าม 2 Node: เวลาต่อ step = เวลาคำนวณ + เวลาส่งและรอ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/c-dp-cluster-step.png" alt="1 step ของ DP ข้าม 2 Node: เวลาต่อ step = เวลาคำนวณ + เวลาส่งและรอ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ช่วงคำนวณ</b> (Forward + Backward + Update) ทำพร้อมกันทั้ง 4 ใบ ใช้เวลาพอ ๆ กับ 1 Node (ราว 0.4 วินาที)</span></div><div class="stp"><span class="n">2</span><span><b>ช่วงส่งและรอ</b> Worker ทั้ง 4 ส่ง Gradient ไป Coordinator รอเฉลี่ย และรับค่าเฉลี่ยกลับ (2 เส้นของ Node 2 ข้ามอินเทอร์เน็ต)</span></div><div class="stp"><span class="n">3</span><span>เพราะเป็น Synchronous แม้ Worker ของ Node 1 จะอยู่เครื่องเดียวกับ Coordinator ก็ต้องรอ Node 2 ด้วยทุก step</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 1: เช่า 2 Node เตรียมโมเดลกับ Dataset และวัดเน็ตระหว่างเครื่องก่อนเทรน" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ขั้นที่ 1: เช่า 2 Node เตรียมโมเดลกับ Dataset และวัดเน็ตระหว่างเครื่องก่อนเทรน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/s1-two-nodes.png" alt="ขั้นที่ 1: เช่า 2 Node เตรียมโมเดลกับ Dataset และวัดเน็ตระหว่างเครื่องก่อนเทรน" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่า 2 เครื่องที่มี <b>IP สาธารณะต่างกัน</b> (RTX 3090 × 2 ต่อเครื่อง) ป้าย <code>vapp-lab5-dp-1</code> และ <code>vapp-lab5-dp-2</code> โดย Node 1 เปิด 1 port</span></div><div class="stp"><span class="n">2</span><span>โหลด <code>Qwen3-8B</code> และแบ่ง <code>sql-create-context</code> (4,000 / 200 ด้วย <code>seed 0</code>) ให้ตรงกันทั้ง 2 Node</span></div><div class="stp"><span class="n">3</span><span>วัดว่า Node 2 ต่อเข้า port ของ Node 1 ได้หรือไม่ พร้อมวัด <b>RTT</b> และความเร็วส่งข้อมูลทั้งสองทิศ (ถ้า RTT &gt; 100 ms ให้เปลี่ยนเครื่อง)</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 1 · เช่า 2 Node เตรียมของ และวัดเน็ต" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 1 · เช่า 2 Node เตรียมของ และวัดเน็ต</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 2 เครื่อง (เรียกว่า Node 1 และ Node 2) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้งสอง Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 2 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-dp-1 และ vapp-lab5-dp-2
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 2 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 2 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 2 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง 2 Node: Node 2 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h01-dp2-net.jpg)" data-title="ผลวัดเน็ต DP 2 Node (ไต้หวันทั้งคู่): RTT ต่ำแค่ 5.95 ms แต่ส่งขึ้นได้เพียง 143 Mbps" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ผลวัดเน็ต DP 2 Node (ไต้หวันทั้งคู่): RTT ต่ำแค่ 5.95 ms แต่ส่งขึ้นได้เพียง 143 Mbps</span><span class="tag">1_data_parallel/results/network.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">5.95 ms</div><div class="txt"><div class="k">RTT เฉลี่ยระหว่าง Node</div><div class="s">สองเครื่องอยู่ไต้หวันเหมือนกัน และ Node 2 ต่อเข้า port ของ Node 1 ได้ปกติ</div></div></div><div class="tile bad"><div class="num">143 Mbps</div><div class="txt"><div class="k">ขาขึ้น Node 2 → Node 1</div><div class="s">ต่ำกว่า 700 Mbps ที่หน้าเช่าประกาศไว้มาก · ทิศนี้ใช้ส่ง Gradient ของ 2 Worker ขึ้น</div></div></div><div class="tile warn"><div class="num">784 Mbps</div><div class="txt"><div class="k">ขาลง Node 1 → Node 2</div><div class="s">เร็วกว่าขาขึ้นกว่า 5 เท่า แต่คอขวดอยู่ที่ทิศที่ช้ากว่าเสมอ</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>บทเรียนสำคัญ: ตัวเลขความเร็วในหน้าเช่าคือความเร็วออกอินเทอร์เน็ตของแต่ละเครื่อง ไม่ใช่ความเร็วระหว่างสองเครื่องที่เช่ามา <b>ต้องวัดเอง</b></span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ขั้นที่ 2 ทำอะไร: 5 งานต่อเนื่องในพรอมต์เดียว เพื่อจับเวลาคำนวณเทียบส่งและรอ" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ขั้นที่ 2 ทำอะไร: 5 งานต่อเนื่องในพรอมต์เดียว เพื่อจับเวลาคำนวณเทียบส่งและรอ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/s2-flow-cluster.png" alt="ขั้นที่ 2 ทำอะไร: 5 งานต่อเนื่องในพรอมต์เดียว เพื่อจับเวลาคำนวณเทียบส่งและรอ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>AI เขียน <code>coordinator.py</code> และ <code>worker.py</code> (4 ตัว) แล้ว <b>ลอง 3 step ด้วย batch ที่มี padding</b> ก่อนเทรนจริง</span></div><div class="stp"><span class="n">2</span><span>เทรน 2 Epoch (500 step) พร้อมแยกเวลาคำนวณกับเวลาส่ง/รอทุก step และตรวจว่าน้ำหนัก LoRA ทั้ง 4 ตัวเท่ากันหลังจบทุก Epoch</span></div><div class="stp"><span class="n">3</span><span>เขียน <code>eval.py</code> วัด Exact Match บน Test Set 200 ข้อของ Base และหลังจบ Epoch 1 และ 2</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 2 · เทรนแบบ Data Parallelism ข้าม 2 Node" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 2 · เทรนแบบ Data Parallelism ข้าม 2 Node</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 27 บรรทัด</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-dp-1 (Node 1) และ vapp-lab5-dp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism บนคลัสเตอร์ 2 Node
+แนวคิด: GPU ทั้ง 4 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 4 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทุกใบปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุกโปรแกรมเทรนให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ GPU รวม 4 ตัว แต่ละตัวต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละส่วนไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 4 ตัวเท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 4 ต่อ GPU (รวม 16) เท่ากับ batch ต่อ GPU ของ LAB 4.2 เพื่อเทียบกับผล 1 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU และรวม · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="แก้ OOM ตอนลอง 3 step ใน DP 2 Node: คิดคะแนนเฉพาะคำตอบ" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">แก้ OOM ตอนลอง 3 step ใน DP 2 Node: คิดคะแนนเฉพาะคำตอบ</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n03-dp-oom.jpg" alt="แก้ OOM ตอนลอง 3 step ใน DP 2 Node: คิดคะแนนเฉพาะคำตอบ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ลอง 3 step ก่อนเทรนจริง</b> ด้วย batch ที่มีตัวอย่างยาว 256 token ปนตัวอย่างสั้น แล้วเกิด Out of Memory เพราะต้องสร้างตารางคะแนนคำศัพท์ทุกตำแหน่ง</span></div><div class="stp"><span class="n">2</span><span><b>แก้ใน <code>worker.py</code> โดยไม่แตะค่าที่ตรึง</b> คำนวณ logits เฉพาะตำแหน่งที่เป็นคำตอบ SQL ซึ่งให้ค่า loss เท่าเดิมทุกประการ</span></div><div class="stp"><span class="n">3</span><span><b>ผลลัพธ์</b> ผ่านการทดสอบที่ VRAM สูงสุด <b>22,063 MiB</b> และเทรนครบ 2 Epoch (500 step) โดยไม่ล้มกลางทาง</span></div></div></div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h02-dp2-res.jpg)" data-title="ผล DP 2 Node: ได้ 4.50 ตัวอย่าง/วิ · ส่งและรอ 88% ของ step · GPU util เหลือ 12.7%" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ผล DP 2 Node: ได้ 4.50 ตัวอย่าง/วิ · ส่งและรอ 88% ของ step · GPU util เหลือ 12.7%</span><span class="tag">1_data_parallel/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">4.50<small>ตัวอย่าง/วินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 2 Epoch</div><div class="s">ช้ากว่า 1 Node (19.08) ราว 4 เท่า · Speedup = <b>0.24</b> · เทรน 500 step ใน 29.6 นาที</div></div></div><div class="tile warn"><div class="num">3.56 วิ</div><div class="txt"><div class="k">เวลาต่อ step เฉลี่ย</div><div class="s">คำนวณ <b>0.43 วิ (12%)</b> · ส่งและรอ <b>3.11 วิ (88%)</b> · ค่ากลาง 2.67 วิ</div></div></div><div class="tile ok"><div class="num">12.7% / 75.0%</div><div class="txt"><div class="k">GPU util / Exact Match</div><div class="s">GPU 4 ใบทำงานเพียง 12.4–12.8% · แต่น้ำหนัก LoRA เท่ากันทุกค่า (Epoch 2 = 75.0%)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ส่ง Gradient แบบ <code>float32</code> เต็ม (15.34 MB ต่อ Worker ทั้งขาขึ้นและขาลง) · Epoch 1 เน็ตสะดุดได้ 3.63 ตัวอย่าง/วิ ส่วน Epoch 2 เน็ตนิ่งขึ้นได้ 5.92</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="DP 2 Node · 88% ของทุก step คือแถบสีส้ม (ส่งและรอ) และมีช่วงเน็ตค้างพุ่งถึง 19 วิ" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">DP 2 Node · 88% ของทุก step คือแถบสีส้ม (ส่งและรอ) และมีช่วงเน็ตค้างพุ่งถึง 19 วิ</span><span class="tag">1_data_parallel/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:372px"><img src="1_data_parallel/results/images/step_time.png" alt="DP 2 Node · 88% ของทุก step คือแถบสีส้ม (ส่งและรอ) และมีช่วงเน็ตค้างพุ่งถึง 19 วิ" width="1789" height="654"></div><p class="cap">ด้านซ้าย: แถบสีน้ำเงิน (คำนวณ 0.43 วิ) บางติดก้นกราฟ ส่วนช่วง step 120–200 เน็ตสะดุด 16 step (สูงสุด 44 วิ) · ด้านขวา: Worker ทั้ง 4 ตัวรอเท่ากัน</p></div></section>
+<section class="slide " data-title="DP 2 Node · GPU ทั้ง 4 ใบอยู่ที่ 0% เกือบตลอดเวลา เฉลี่ยเพียง 12.4–12.8%" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">DP 2 Node · GPU ทั้ง 4 ใบอยู่ที่ 0% เกือบตลอดเวลา เฉลี่ยเพียง 12.4–12.8%</span><span class="tag">1_data_parallel/results/train/</span></h2></header><div class="body"><div class="fig" style="--figmin:472px"><img src="1_data_parallel/results/images/gpu_util.png" alt="DP 2 Node · GPU ทั้ง 4 ใบอยู่ที่ 0% เกือบตลอดเวลา เฉลี่ยเพียง 12.4–12.8%" width="1789" height="830"></div><p class="cap">เทียบกับ 1 Node ใน LAB 4.2 ที่ GPU util ราว <b>98%</b> · เมื่อรอเน็ตข้ามเครื่อง การ์ดจะพุ่งขึ้น 100% เป็นจังหวะสั้น ๆ แล้วหล่นกลับไปรอที่ 0%</p></div></section>
+<section class="slide " data-title="DP 2 Node · Loss ลดลงราบรื่นตลอด 500 step แสดงว่าการเฉลี่ยข้ามเครื่องทำงานถูกต้อง" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">DP 2 Node · Loss ลดลงราบรื่นตลอด 500 step แสดงว่าการเฉลี่ยข้ามเครื่องทำงานถูกต้อง</span><span class="tag">1_data_parallel/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:463px"><img src="1_data_parallel/results/images/loss.png" alt="DP 2 Node · Loss ลดลงราบรื่นตลอด 500 step แสดงว่าการเฉลี่ยข้ามเครื่องทำงานถูกต้อง" width="1483" height="675"></div><p class="cap">train loss ลดจาก <b>0.1198 → 0.0371</b> · test loss ลดจาก Base <b>1.8575</b> เหลือ <b>0.0603</b> และ <b>0.0515</b> หลังจบ Epoch 1 และ 2</p></div></section>
+<section class="slide " data-title="DP 2 Node · Exact Match พุ่งจาก 1.5% เป็น 72.5% และจบ Epoch 2 ที่ 75.0%" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">DP 2 Node · Exact Match พุ่งจาก 1.5% เป็น 72.5% และจบ Epoch 2 ที่ 75.0%</span><span class="tag">1_data_parallel/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_data_parallel/results/images/exact_match.png" alt="DP 2 Node · Exact Match พุ่งจาก 1.5% เป็น 72.5% และจบ Epoch 2 ที่ 75.0%" width="945" height="645"></div><p class="cap">ใกล้เคียงกับ 1 Node (77.5% หลัง Epoch 2) ต่างกัน 5 ข้อจาก 200 · น้ำหนัก LoRA ของ Worker ทั้ง 4 ตัวตรงกันทุกค่าหลังจบทั้ง 2 Epoch</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 3 · สรุปผลและลบเครื่องทั้ง 2 Node (ห้ามข้าม)" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 3 · สรุปผลและลบเครื่องทั้ง 2 Node (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 17 บรรทัด</span><button class="copy big" data-full="prompt2">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-dp-1 (Node 1) และ vapp-lab5-dp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 2 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 2 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 2 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-dp-1 และ vapp-lab5-dp-2 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ขยาย DP จาก 2 Node เป็น 3 Node (6 โมเดล): batch รวมเป็น 24 แต่ต้องรอครบ 6 ตัว" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ขยาย DP จาก 2 Node เป็น 3 Node (6 โมเดล): batch รวมเป็น 24 แต่ต้องรอครบ 6 ตัว</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/c-dp-cluster3.png" alt="ขยาย DP จาก 2 Node เป็น 3 Node (6 โมเดล): batch รวมเป็น 24 แต่ต้องรอครบ 6 ตัว" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เพิ่มเป็น <b>3 Node (GPU 6 ใบ, โมเดล 6 ชุด)</b> ทำให้ batch รวมเพิ่ม 1.5 เท่าเป็น <b>24</b> (ลดเหลือ 167 step/Epoch)</span></div><div class="stp"><span class="n">2</span><span>เวลาคำนวณต่อ step ควรใกล้เดิม (batch ต่อ GPU ยังเป็น 4) แต่ Coordinator ต้องรับ Gradient 6 ชุดและรอตัวที่ช้าที่สุดจาก 6 ตัว</span></div><div class="stp"><span class="n">3</span><span><b>คำถามชี้วัด</b>: ถ้าเวลาต่อ step นานขึ้นเกิน 1.5 เท่า การเพิ่มเป็น 3 Node จะไม่เร็วขึ้นเลย</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 4: เช่า 3 Node ให้ใกล้กัน เตรียมของ และวัดเน็ตทั้ง 2 เส้นทางเข้า Node 1" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ขั้นที่ 4: เช่า 3 Node ให้ใกล้กัน เตรียมของ และวัดเน็ตทั้ง 2 เส้นทางเข้า Node 1</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="1_data_parallel/image/s1-three-nodes.png" alt="ขั้นที่ 4: เช่า 3 Node ให้ใกล้กัน เตรียมของ และวัดเน็ตทั้ง 2 เส้นทางเข้า Node 1" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่า 3 เครื่อง IP ต่างกัน ป้าย <code>vapp-lab5-3dp-1</code>, <code>vapp-lab5-3dp-2</code>, <code>vapp-lab5-3dp-3</code> เก็บงานแยกใน <code>1_data_parallel/node3/</code></span></div><div class="stp"><span class="n">2</span><span>หา 3 เครื่องที่อยู่ใกล้กันยากกว่า 2 เครื่อง รอบจริง AI เลือกชุดที่ถูกที่สุดในยุโรป 3 ประเทศ (<b>เอสโตเนีย · บัลแกเรีย · โรมาเนีย</b>)</span></div><div class="stp"><span class="n">3</span><span>วัดเน็ตทั้งเส้น <code>Node 2 ↔ Node 1</code> และ <code>Node 3 ↔ Node 1</code> โดยตั้งเกณฑ์ RTT ไม่เกิน 100 ms เช่นเดิม</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 4 · เช่า 3 Node เตรียมของ และวัดเน็ต" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 4 · เช่า 3 Node เตรียมของ และวัดเน็ต</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 3 เครื่อง (เรียกว่า Node 1 Node 2 และ Node 3) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้ง 3 Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 3 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-3dp-1 vapp-lab5-3dp-2 และ vapp-lab5-3dp-3
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 3 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 3 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 3 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง Node: Node 2 และ Node 3 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลวัดเน็ต DP 3 Node (ยุโรป 3 ประเทศ): RTT 74–81 ms ผ่านเกณฑ์ แต่ขาลงไป Node 3 เหลือ 73.2 Mbps" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ผลวัดเน็ต DP 3 Node (ยุโรป 3 ประเทศ): RTT 74–81 ms ผ่านเกณฑ์ แต่ขาลงไป Node 3 เหลือ 73.2 Mbps</span><span class="tag">node3/results/network_*.json</span></h2></header><div class="body"><table class="c4"><thead><tr><th>เส้นทาง</th><th>RTT เฉลี่ย</th><th>ส่งไป Node 1</th><th>รับจาก Node 1</th></tr></thead><tbody><tr><td>Node 2 ↔ Node 1</td><td>73.6 ms</td><td>281.6 Mbps</td><td>185.8 Mbps</td></tr><tr><td>Node 3 ↔ Node 1</td><td>81.2 ms</td><td>233.9 Mbps</td><td><b>73.2 Mbps</b></td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>เส้นทางที่ช้าที่สุดคือ <b>Node 1 → Node 3 (73.2 Mbps)</b> · ค่าเฉลี่ย Gradient ขนาด 15.34 MB ที่ส่งกลับ Node 3 ต้องผ่านเส้นนี้ทุก step และทั้งคลัสเตอร์ต้องรอ</span></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 5 · เทรนแบบ Data Parallelism ข้าม 3 Node" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 5 · เทรนแบบ Data Parallelism ข้าม 3 Node</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 27 บรรทัด</span><button class="copy big" data-full="prompt4">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3dp-1 (Node 1) vapp-lab5-3dp-2 (Node 2) และ vapp-lab5-3dp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism บนคลัสเตอร์ 3 Node
+แนวคิด: GPU ทั้ง 6 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 6 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทุกใบปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุกโปรแกรมเทรนให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ GPU รวม 6 ตัว แต่ละตัวต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละส่วนไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 6 ตัวเท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 4 ต่อ GPU (รวม 24) เท่ากับ batch ต่อ GPU ของ LAB 4.2 เพื่อเทียบกับผล 1 Node และ 2 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU และรวม · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="บทเรียน 3 Node: ตั้งขนาด socket buffer เองทำให้ช้าลงหลายเท่า" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">บทเรียน 3 Node: ตั้งขนาด socket buffer เองทำให้ช้าลงหลายเท่า</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n04-socket-bug.jpg" alt="บทเรียน 3 Node: ตั้งขนาด socket buffer เองทำให้ช้าลงหลายเท่า" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ปัญหาที่เจอตอนลอง 3 step</b> AI ตั้งค่าขนาด socket buffer เอง ทำให้ระบบ TCP autotuning ของ OS ทำงานไม่เต็มที่จนช้าถึง <b>16–70 วินาทีต่อ step</b></span></div><div class="stp"><span class="n">2</span><span><b>วิธีแก้ที่เรียบง่าย</b> เอาโค้ดที่กำหนดขนาด buffer ออก ให้ระบบปฏิบัติการปรับขนาดเอง เวลาต่อ step ลดฮวบเหลือ <b>3.5–4 วินาที</b></span></div><div class="stp"><span class="n">3</span><span><b>ข้อควรจำ</b> บั๊กนี้เกิดซ้ำในรอบ 3 Node ของทั้ง LAB 5.1 และ LAB 5.2 ถ้าเห็น step ช้าผิดปกติตั้งแต่ทดสอบ 3 step ให้ตรวจการตั้งค่า socket ก่อน</span></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รอบ 3 Node นี้ AI แปลง Gradient ขาขึ้นเป็น <code>bf16</code> (7.67 MB) เอง ทำให้ขนาดเล็กลงครึ่งหนึ่ง แต่ขาลงยังส่ง <code>float32</code> เต็ม (15.34 MB)</span></div></div></div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h03-dp3-res.jpg)" data-title="ผล DP 3 Node: ได้ 4.49 ตัวอย่าง/วิ (เท่า 2 Node) — ส่งและรอ 93%, GPU util 6.6%" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ผล DP 3 Node: ได้ 4.49 ตัวอย่าง/วิ (เท่า 2 Node) — ส่งและรอ 93%, GPU util 6.6%</span><span class="tag">1_data_parallel/node3/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">4.49<small>ตัวอย่าง/วินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 2 Epoch</div><div class="s">batch รวมเพิ่ม 1.5× แต่เวลาต่อ step เพิ่ม 1.5× ด้วย · Speedup ยังเป็น <b>0.24</b> (Efficiency <b>8%</b>)</div></div></div><div class="tile warn"><div class="num">5.34 วิ</div><div class="txt"><div class="k">เวลาต่อ step เฉลี่ย</div><div class="s">คำนวณ <b>0.36 วิ (7%)</b> · ส่งและรอ <b>4.97 วิ (93%)</b> · ค่ากลาง 3.97 วิ</div></div></div><div class="tile ok"><div class="num">6.6% / 74.5%</div><div class="txt"><div class="k">GPU util / Exact Match</div><div class="s">GPU 6 ใบว่าง ~93% ของเวลา (6.1–7.0%) · การเชื่อมต่อหลุด 0 ครั้ง · LoRA เท่ากันทุกใบ</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>แม้จะส่งขาขึ้นเป็น <code>bf16</code> ครึ่งขนาดแล้ว แต่มี 5 step ที่เน็ตค้างเกิน 15 วิ (ช้าสุด <b>128 วิ</b>) ยิ่งมากเส้นทาง ยิ่งมีโอกาสสะดุด</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="DP 3 Node · 93–94% ของเวลาคือการส่งและรอ และมี 4 step ที่เครือข่ายค้าง 29–128 วินาที" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">DP 3 Node · 93–94% ของเวลาคือการส่งและรอ และมี 4 step ที่เครือข่ายค้าง 29–128 วินาที</span><span class="tag">1_data_parallel/node3/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:376px"><img src="1_data_parallel/node3/results/images/step_time.png" alt="DP 3 Node · 93–94% ของเวลาคือการส่งและรอ และมี 4 step ที่เครือข่ายค้าง 29–128 วินาที" width="2080" height="768"></div><p class="cap">ด้านซ้าย: ทั้ง 6 GPU คำนวณเพียง 0.34–0.40 วิ แต่รอเกือบ 5 วิ · ด้านขวา: ช่วง step 155–210 เน็ตค้างสูงสุด 128 วิ</p></div></section>
+<section class="slide " data-title="DP 3 Node · GPU ทั้ง 6 ใบทำงานเฉลี่ยเพียง 6.1–7.0% ตลอด 29.7 นาที" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">DP 3 Node · GPU ทั้ง 6 ใบทำงานเฉลี่ยเพียง 6.1–7.0% ตลอด 29.7 นาที</span><span class="tag">1_data_parallel/node3/results/raw/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_data_parallel/node3/results/images/gpu_util.png" alt="DP 3 Node · GPU ทั้ง 6 ใบทำงานเฉลี่ยเพียง 6.1–7.0% ตลอด 29.7 นาที" width="2114" height="1072"></div><p class="cap">เพิ่ม GPU เป็น 6 ใบใน 3 เครื่อง แต่เวลาแทบทั้งหมดหมดไปกับการรอเครือข่ายข้ามประเทศ ทำให้ GPU ว่างราว 93% ของเวลา</p></div></section>
+<section class="slide " data-title="DP 3 Node · Loss ลดลงราบรื่นตลอด 334 step แม้มีจังหวะเน็ตค้างกลางทาง" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">DP 3 Node · Loss ลดลงราบรื่นตลอด 334 step แม้มีจังหวะเน็ตค้างกลางทาง</span><span class="tag">1_data_parallel/node3/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:444px"><img src="1_data_parallel/node3/results/images/loss.png" alt="DP 3 Node · Loss ลดลงราบรื่นตลอด 334 step แม้มีจังหวะเน็ตค้างกลางทาง" width="1760" height="768"></div><p class="cap">train loss ลดจาก <b>0.1504 → 0.0433</b> · test loss ลดจาก Base <b>1.8470</b> เหลือ <b>0.0639</b> และ <b>0.0564</b> หลังจบ Epoch 1 และ 2</p></div></section>
+<section class="slide " data-title="DP 3 Node · Exact Match จบ Epoch 2 ที่ 74.5% (test loss 0.0564) น้ำหนัก LoRA ตรงกันทั้ง 6 ตัว" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">DP 3 Node · Exact Match จบ Epoch 2 ที่ 74.5% (test loss 0.0564) น้ำหนัก LoRA ตรงกันทั้ง 6 ตัว</span><span class="tag">1_data_parallel/node3/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_data_parallel/node3/results/images/exact_match.png" alt="DP 3 Node · Exact Match จบ Epoch 2 ที่ 74.5% (test loss 0.0564) น้ำหนัก LoRA ตรงกันทั้ง 6 ตัว" width="1200" height="768"></div><p class="cap">Base <b>1.5%</b> → Epoch 1: <b>71.0%</b> (test loss 0.0639) → Epoch 2: <b>74.5%</b> (test loss 0.0564) · sha256 ของ LoRA ตรงกันทั้ง 6 Worker</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.1 ขั้นที่ 6 · สรุปผลและลบเครื่องทั้ง 3 Node (ห้ามข้าม)" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.1 ขั้นที่ 6 · สรุปผลและลบเครื่องทั้ง 3 Node (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 17 บรรทัด</span><button class="copy big" data-full="prompt5">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3dp-1 (Node 1) vapp-lab5-3dp-2 (Node 2) และ vapp-lab5-3dp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 3 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 3 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 3 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-3dp-1 vapp-lab5-3dp-2 และ vapp-lab5-3dp-3 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="สรุป LAB 5.1 (Data Parallelism): 1 Node เร็วกว่า 2 และ 3 Node ผ่านอินเทอร์เน็ตถึง 4 เท่า" data-group="LAB 5.1 · Data Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.1 (1_data_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">สรุป LAB 5.1 (Data Parallelism): 1 Node เร็วกว่า 2 และ 3 Node ผ่านอินเทอร์เน็ตถึง 4 เท่า</span><span class="tag">ตารางหลัก · LAB 5.1</span></h2></header><div class="body"><table class="c4"><thead><tr><th></th><th>1 Node (LAB 4.2)</th><th>2 Node</th><th>3 Node</th></tr></thead><tbody><tr><td>GPU ทั้งหมด</td><td>2</td><td>4</td><td>6</td></tr><tr><td>ทางที่ GPU ส่ง Gradient ถึงกัน</td><td>ในเครื่อง (PCIe)</td><td>อินเทอร์เน็ต · RTT 6 ms · 143 Mbps ในทิศที่ช้า</td><td>อินเทอร์เน็ต · RTT 74–81 ms · 73 Mbps ในทิศที่ช้า</td></tr><tr><td>batch ต่อ GPU / รวม</td><td>4 / 8</td><td>4 / 16</td><td>4 / 24</td></tr><tr><td>วินาทีต่อ step</td><td>0.419</td><td>3.56</td><td>5.34</td></tr><tr><td>– คำนวณ</td><td>–</td><td>0.43</td><td>0.36</td></tr><tr><td>– ส่งและรอ</td><td>สั้นมาก (GPU util ราว 98%)</td><td>3.11 (88%)</td><td>4.97 (93%)</td></tr><tr><td>ตัวอย่างต่อวินาที</td><td><b>19.08</b></td><td><b>4.50</b></td><td><b>4.49</b></td></tr><tr><td>Speedup เทียบ 1 Node</td><td>1.00</td><td><b>0.24</b></td><td><b>0.24</b></td></tr><tr><td>Efficiency</td><td>100%</td><td>12%</td><td>8%</td></tr><tr><td>GPU util เฉลี่ย</td><td>97.8% / 98.6%</td><td>12.7%</td><td>6.6%</td></tr><tr><td>Exact Match หลัง Epoch 1 → 2</td><td>70.0% → 77.5%</td><td>72.5% → 75.0%</td><td>71.0% → 74.5%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ถ้าเครือข่ายเร็วพอจน step เท่ากับเวลาคำนวณ (ไม่รอเน็ต) 2 Node จะได้ราว <b>37</b> และ 3 Node ราว <b>66</b> ตัวอย่าง/วิ (ตัวเลขคำนวณ) — คอขวดจึงอยู่ที่อินเทอร์เน็ต ไม่ใช่ GPU</span></div></div></section>
+<section class="slide divider photo" style="background-image:url(image/slides/s04-mp-cluster.jpg)" data-title="LAB 5.2 · Model Parallelism บนคลัสเตอร์ · แบ่งโมเดลในเครื่อง เฉลี่ยข้ามเครื่อง" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 2 จาก 2 ของภาค LAB · โฟลเดอร์ 2_model_parallel/</div><div class="big">LAB 5.2</div><h1>Model Parallelism บนคลัสเตอร์ · แบ่งโมเดลในเครื่อง เฉลี่ยข้ามเครื่อง</h1><div class="sub"><p>คำถาม: แต่ละเครื่องแบ่ง Layer ของโมเดลลง GPU 2 ใบ แล้วเฉลี่ย Gradient ข้าม 2 และ 3 Node จะเร็วขึ้นกี่เท่าเทียบกับ 1 Node ของ LAB 4.3</p><p class="dim">โฟลเดอร์: <code>2_model_parallel/</code> (ขั้น 1–3 · 2 Node = 2 โมเดล) และ <code>2_model_parallel/node3/</code> (ขั้น 4–6 · 3 Node = 3 โมเดล)</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ทบทวน Model Parallelism ในเครื่องเดียว: แบ่ง Layer ลง 2 ใบ ได้ที่ว่าง VRAM แต่ผลัดกันทำ" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · แนวคิด MP ในเครื่อง + ข้ามเครื่อง</div><h2><span class="tt">ทบทวน Model Parallelism ในเครื่องเดียว: แบ่ง Layer ลง 2 ใบ ได้ที่ว่าง VRAM แต่ผลัดกันทำ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="2_model_parallel/image/c-mp.png" alt="ทบทวน Model Parallelism ในเครื่องเดียว: แบ่ง Layer ลง 2 ใบ ได้ที่ว่าง VRAM แต่ผลัดกันทำ" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>โมเดล 1 ชุดแบ่งครึ่ง: <b>GPU 0 ถือ <code>embed</code> + Layer 0–17</b> และ <b>GPU 1 ถือ Layer 18–35 + <code>norm</code> + <code>lm_head</code></b></span></div><div class="stp"><span class="n">2</span><span>ได้พื้นที่ VRAM เพิ่มจนรับ <code>batch = 8</code> ต่อเครื่องได้สบาย (GPU ใบเดียวได้แค่ 4) แต่ GPU 2 ใบผลัดกันทำ util จึงอยู่ราว <b>49%</b></span></div><div class="stp"><span class="n">3</span><span><b>ทำไมไม่แบ่ง Layer ข้ามเครื่อง?</b> เพราะผลกลางทางระหว่าง Layer ใหญ่และต้องส่งไป-กลับทุก step ผ่านอินเทอร์เน็ตจะช้ากว่าส่ง Gradient LoRA มาก</span></div></div></div></div></section>
+<section class="slide " data-title="1 step ของ Model Parallelism ในเครื่องเดียว: GPU 0 และ GPU 1 ผลัดกันคำนวณทีละใบ" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · แนวคิด MP ในเครื่อง + ข้ามเครื่อง</div><h2><span class="tt">1 step ของ Model Parallelism ในเครื่องเดียว: GPU 0 และ GPU 1 ผลัดกันคำนวณทีละใบ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="2_model_parallel/image/c-mp-turns.png" alt="1 step ของ Model Parallelism ในเครื่องเดียว: GPU 0 และ GPU 1 ผลัดกันคำนวณทีละใบ" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Forward</b> GPU 0 ทำครึ่งแรกแล้วส่งผลกลางทางให้ GPU 1 ทำครึ่งหลังและคำนวณ loss (ระหว่างนั้น GPU 0 ว่างรอ)</span></div><div class="stp"><span class="n">2</span><span><b>Backward</b> GPU 1 หา Gradient ครึ่งหลังแล้วส่งกลับให้ GPU 0 ทำครึ่งแรก (ระหว่างนั้น GPU 1 ว่างรอ)</span></div><div class="stp"><span class="n">3</span><span>นี่คือสาเหตุที่ 1 Node ใน LAB 4.3 ได้ util เพียงราว 49% ต่อใบ ก่อนที่จะมีการรอเครือข่ายข้ามเครื่องซ้อนเพิ่มใน LAB 5.2</span></div></div></div></div></section>
+<section class="slide " data-title="ต่อ Model Parallelism ข้าม 2 Node: ในเครื่องแบ่ง Layer ข้ามเครื่องแบ่งข้อมูล (Hybrid)" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · แนวคิด MP ในเครื่อง + ข้ามเครื่อง</div><h2><span class="tt">ต่อ Model Parallelism ข้าม 2 Node: ในเครื่องแบ่ง Layer ข้ามเครื่องแบ่งข้อมูล (Hybrid)</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="2_model_parallel/image/c-mp-cluster.png" alt="ต่อ Model Parallelism ข้าม 2 Node: ในเครื่องแบ่ง Layer ข้ามเครื่องแบ่งข้อมูล (Hybrid)" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>แต่ละ Node เปิด Worker <b>1 ตัว</b> ถือโมเดล 1 ชุดคร่อม GPU 2 ใบ (2 Node = โมเดล 2 ชุด · <code>batch = 8</code> ต่อ Node · batch รวม = 16)</span></div><div class="stp"><span class="n">2</span><span>ระหว่าง Node ทำเหมือน Data Parallelism คือแบ่งข้อมูลคนละครึ่ง แล้วส่ง Gradient ของ LoRA ไปเฉลี่ยที่ Coordinator บน Node 1</span></div><div class="stp"><span class="n">3</span><span>เทียบกับ LAB 5.1 ที่ 2 Node มี Worker 4 ตัว แบบนี้มี Worker <b>ครึ่งเดียว</b> ปริมาณ Gradient ที่เข้า Coordinator จึงน้อยกว่าครึ่งหนึ่ง</span></div></div></div></div></section>
+<section class="slide " data-title="1 step ของ MP บน 2 Node: GPU ต้องรอ 2 ชั้น ทั้งรออีกใบในเครื่องและรอเน็ตข้ามเครื่อง" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · แนวคิด MP ในเครื่อง + ข้ามเครื่อง</div><h2><span class="tt">1 step ของ MP บน 2 Node: GPU ต้องรอ 2 ชั้น ทั้งรออีกใบในเครื่องและรอเน็ตข้ามเครื่อง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="2_model_parallel/image/c-mp-cluster-step.png" alt="1 step ของ MP บน 2 Node: GPU ต้องรอ 2 ชั้น ทั้งรออีกใบในเครื่องและรอเน็ตข้ามเครื่อง" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>รอชั้นที่ 1 (ในเครื่อง)</b> GPU 0 และ GPU 1 ผลัดกันทำ Forward และ Backward ทีละครึ่งโมเดล (เหมือน LAB 4.3 · คำนวณ ~0.70 วิ)</span></div><div class="stp"><span class="n">2</span><span><b>รอชั้นที่ 2 (ข้ามเครื่อง)</b> จบ Backward แล้วทั้ง 2 ใบหยุดรอส่ง Gradient ไปเฉลี่ยที่ Coordinator และรับค่าเฉลี่ยกลับ</span></div><div class="stp"><span class="n">3</span><span>เมื่อการรอ 2 ชั้นซ้อนกัน GPU util ที่เดิมอยู่ ~49% บน 1 Node จึงถูกบีบลงอีกมาก</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 1 · เช่า 2 Node เตรียมของ และวัดเน็ต" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 1 · เช่า 2 Node เตรียมของ และวัดเน็ต</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt6">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 2 เครื่อง (เรียกว่า Node 1 และ Node 2) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้งสอง Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 2 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-mp-1 และ vapp-lab5-mp-2
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 2 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 2 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 2 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง 2 Node: Node 2 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h04-mp2-net.jpg)" data-title="ผลวัดเน็ต MP 2 Node (ฝรั่งเศส–เช็กเกีย): วัดได้เพียง 81.7–82.7 Mbps ช้ากว่าประกาศ 8 เท่า" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ผลวัดเน็ต MP 2 Node (ฝรั่งเศส–เช็กเกีย): วัดได้เพียง 81.7–82.7 Mbps ช้ากว่าประกาศ 8 เท่า</span><span class="tag">2_model_parallel/results/network_test.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">30.0 ms</div><div class="txt"><div class="k">RTT (50 ครั้ง)</div><div class="s">ค่ากลาง 30.0 ms · เฉลี่ย 31.4 ms · สูงสุด 97.8 ms (ผ่านเกณฑ์ไม่เกิน 100 ms)</div></div></div><div class="tile bad"><div class="num">82.7 / 81.7 Mbps</div><div class="txt"><div class="k">ความเร็ว 1 สาย (ไป / กลับ)</div><div class="s">ตอนเลือกเครื่องกรองไว้ ≥ 700 Mbps แต่ระหว่างสองเครื่องได้ราว 82 Mbps เท่านั้น</div></div></div><div class="tile warn"><div class="num">92.5 / 90.1 Mbps</div><div class="txt"><div class="k">เปิดเพิ่มเป็น 8 สายพร้อมกัน</div><div class="s">เร็วขึ้นเพียงเล็กน้อย ยืนยันว่าคอขวดอยู่ที่เส้นทางเครือข่ายของ Node 1</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>สังเกตได้ตั้งแต่ตอนเตรียมเครื่อง: Node 1 โหลดโมเดล 16 GB นานราว <b>20 นาที</b> ส่วน Node 2 ใช้ไม่ถึง 1 นาที</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 2 · เทรนแบบ Model Parallelism ข้าม 2 Node" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 2 · เทรนแบบ Model Parallelism ข้าม 2 Node</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 27 บรรทัด</span><button class="copy big" data-full="prompt7">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-mp-1 (Node 1) และ vapp-lab5-mp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism บนคลัสเตอร์ 2 Node
+แนวคิด: แต่ละ Node ถือโมเดล 1 ชุด แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1 · สอง Node แบ่งข้อมูลคนละครึ่ง · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทั้งสอง Node ปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุก Node ให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ Node รวม 2 ตัว แต่ละตัวแบ่งโมเดลชุดเดียวลง GPU 2 ใบของ Node นั้น ต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละครึ่งไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 2 Node เท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 8 ต่อ Node (รวม 16) เท่ากับ batch ของ LAB 4.3 เพื่อเทียบกับผล 1 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ Node และรวม · Layer ไหนอยู่ใบไหน · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="รับมือปัญหาหน้างาน MP 2 Node: 4 สาย TCP และต่อจาก checkpoint" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">รับมือปัญหาหน้างาน MP 2 Node: 4 สาย TCP และต่อจาก checkpoint</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n05-mp2-recovery.jpg" alt="รับมือปัญหาหน้างาน MP 2 Node: 4 สาย TCP และต่อจาก checkpoint" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>แก้ปัญหาการส่งค้าง</b> รอบแรกส่งแบบ 1 สายแล้วค้างถึง <b>92 วินาที</b> AI จึงเปลี่ยนเป็น <b>4 สาย TCP</b> พร้อมแปลงขาขึ้นเป็น <code>bf16</code> (ขนาดครึ่งเดียว) และตัดต่อใหม่เมื่อข้อมูลนิ่ง 8 วินาที</span></div><div class="stp"><span class="n">2</span><span><b>โฮสต์ของ Node 1 reboot เองกลางรัน</b> เครื่องดับไปราว <b>5 นาที</b> ช่วง step 162–168 แสดงว่ายิ่งมีหลายเครื่อง โอกาสที่เครื่องใดเครื่องหนึ่งจะมีปัญหายิ่งสูง</span></div><div class="stp"><span class="n">3</span><span><b>กู้คืนจาก checkpoint สำเร็จ</b> เปิด Coordinator และ Worker ใหม่ให้ต่อจาก <b>step 150</b> จนครบ 500 step และยืนยันว่าน้ำหนัก LoRA ทั้ง 2 Node เท่ากันทุกค่า</span></div></div></div></div></section>
+<section class="slide " data-title="MP 2 Node · แบ่ง Layer 18+18 เหมือนกันทั้ง 2 เครื่อง ใช้ VRAM เพียง 14.0–14.4 GiB" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">MP 2 Node · แบ่ง Layer 18+18 เหมือนกันทั้ง 2 เครื่อง ใช้ VRAM เพียง 14.0–14.4 GiB</span><span class="tag">2_model_parallel/results/metrics.json</span></h2></header><div class="body"><table class="c3"><thead><tr><th>GPU</th><th>ถืออะไร</th><th>VRAM สูงสุด Node 1 / Node 2</th></tr></thead><tbody><tr><td>GPU 0</td><td><code>embed_tokens</code> + Layer 0–17 (18 Layer)</td><td>14,312 / 14,332 MiB</td></tr><tr><td>GPU 1</td><td>Layer 18–35 (18 Layer) + <code>norm</code> + <code>lm_head</code></td><td>14,694 / 14,696 MiB</td></tr></tbody></table><div class="note ok">นี่คือข้อดีเดิมของ Model Parallelism: <code>batch = 8</code> ต่อ Node ผ่านการลอง 3 step ตั้งแต่ครั้งแรก ไม่เกิด Out of Memory ต่างจาก DP ที่ชนเพดาน 22.2 GiB</div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h05-mp2-res.jpg)" data-title="ผล MP 2 Node: ได้ 4.90 ตัวอย่าง/วิ · ส่งและรอ 78.5% · GPU util เหลือราว 10%" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">ผล MP 2 Node: ได้ 4.90 ตัวอย่าง/วิ · ส่งและรอ 78.5% · GPU util เหลือราว 10%</span><span class="tag">2_model_parallel/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile warn"><div class="num">4.90<small>ตัวอย่าง/วินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 2 Epoch</div><div class="s">เทียบ 1 Node (10.13) ได้ Speedup = <b>0.48</b> (Efficiency <b>24%</b>) · เทรน 500 step ใน 27.2 นาที</div></div></div><div class="tile bad"><div class="num">3.27 วิ</div><div class="txt"><div class="k">เวลาต่อ step เฉลี่ย</div><div class="s">คำนวณ <b>0.70 วิ (21.5%)</b> · ส่งและรอ <b>2.56 วิ (78.5%)</b> · ค่ากลาง 2.61 วิ</div></div></div><div class="tile ok"><div class="num">10.4% / 74.0%</div><div class="txt"><div class="k">GPU util / Exact Match</div><div class="s">GPU 4 ใบอยู่ 9.4–10.8% (1 ใน 5 ของ 1 Node) · น้ำหนัก LoRA 2 Node ตรงกัน (sha256)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ส่ง Gradient ขาขึ้นเป็น <code>bf16</code> (7.67 MB) ผ่าน 4 สาย TCP และรับค่าเฉลี่ย <code>float32</code> (15.34 MB) · ตัวเลข 4.90 ไม่นับช่วงที่โฮสต์ Node 1 ดับ 5 นาที</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="MP 2 Node · ส่งและรอกิน 78.5% ของทุก step และมีช่วงพุ่งแตะ 13 วิช่วงกลาง Epoch 1" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">MP 2 Node · ส่งและรอกิน 78.5% ของทุก step และมีช่วงพุ่งแตะ 13 วิช่วงกลาง Epoch 1</span><span class="tag">2_model_parallel/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:373px"><img src="2_model_parallel/results/images/step_time.png" alt="MP 2 Node · ส่งและรอกิน 78.5% ของทุก step และมีช่วงพุ่งแตะ 13 วิช่วงกลาง Epoch 1" width="1800" height="660"></div><p class="cap">ด้านซ้าย: เวลาคำนวณ 0.69–0.71 วิ (ใกล้เคียง 0.79 วิ ของ 1 Node) แต่เวลาส่งและรอ 2.56 วิ · ด้านขวา: Epoch 2 เน็ตนิ่งกว่า Epoch 1 (5.76 เทียบ 4.27 ตัวอย่าง/วิ)</p></div></section>
+<section class="slide " data-title="MP 2 Node · GPU util เฉลี่ยเหลือ 9.4–10.8% เพราะรอทั้งในเครื่องและข้ามเครื่องซ้อนกัน" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">MP 2 Node · GPU util เฉลี่ยเหลือ 9.4–10.8% เพราะรอทั้งในเครื่องและข้ามเครื่องซ้อนกัน</span><span class="tag">2_model_parallel/results/run/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_model_parallel/results/images/gpu_util.png" alt="MP 2 Node · GPU util เฉลี่ยเหลือ 9.4–10.8% เพราะรอทั้งในเครื่องและข้ามเครื่องซ้อนกัน" width="1635" height="825"></div><p class="cap">1 Node ใน LAB 4.3 ได้ util ~49% จากการผลัดกันทำ พอเพิ่มเวลารอเน็ต 78.5% เข้าไป การ์ดจึงทำงานเพียงราว 1 ใน 10 ของเวลา</p></div></section>
+<section class="slide " data-title="MP 2 Node · Loss ลดต่อเนื่องตลอด 500 step แม้ผ่านการกู้คืนจาก checkpoint step 150" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">MP 2 Node · Loss ลดต่อเนื่องตลอด 500 step แม้ผ่านการกู้คืนจาก checkpoint step 150</span><span class="tag">2_model_parallel/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:426px"><img src="2_model_parallel/results/images/loss.png" alt="MP 2 Node · Loss ลดต่อเนื่องตลอด 500 step แม้ผ่านการกู้คืนจาก checkpoint step 150" width="1650" height="690"></div><p class="cap">train loss ลดจาก <b>0.121 → 0.038</b> · test loss ลดจาก Base <b>1.915</b> เหลือ <b>0.0604</b> และ <b>0.0544</b> โดยไม่มีรอยสะดุดหลังรีสตาร์ต</p></div></section>
+<section class="slide " data-title="MP 2 Node · Exact Match จบ Epoch 2 ที่ 74.0% ใกล้เคียง 1 Node (77.5%)" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">MP 2 Node · Exact Match จบ Epoch 2 ที่ 74.0% ใกล้เคียง 1 Node (77.5%)</span><span class="tag">2_model_parallel/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_model_parallel/results/images/exact_match.png" alt="MP 2 Node · Exact Match จบ Epoch 2 ที่ 74.0% ใกล้เคียง 1 Node (77.5%)" width="960" height="660"></div><p class="cap">Base <b>1.5%</b> (3/200) → Epoch 1: <b>69.5%</b> (139/200) → Epoch 2: <b>74.0%</b> (148/200) · ต่างจาก 1 Node เพียง 7 ข้อจาก 200</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 3 · สรุปผลและลบเครื่องทั้ง 2 Node (ห้ามข้าม)" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/) · ส่วนที่ 1: 2 Node (ขั้นที่ 1–3)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 3 · สรุปผลและลบเครื่องทั้ง 2 Node (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 17 บรรทัด</span><button class="copy big" data-full="prompt8">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-mp-1 (Node 1) และ vapp-lab5-mp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 2 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 2 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 2 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-mp-1 และ vapp-lab5-mp-2 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ขยาย MP จาก 2 Node เป็น 3 Node (3 โมเดล, 6 GPU): เพิ่ม Node เท่ากับเพิ่มชุดโมเดล" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ขยาย MP จาก 2 Node เป็น 3 Node (3 โมเดล, 6 GPU): เพิ่ม Node เท่ากับเพิ่มชุดโมเดล</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="2_model_parallel/image/c-mp-cluster3.png" alt="ขยาย MP จาก 2 Node เป็น 3 Node (3 โมเดล, 6 GPU): เพิ่ม Node เท่ากับเพิ่มชุดโมเดล" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เพิ่มเป็น <b>3 Node (โมเดล 3 ชุด, ชุดละ 2 GPU)</b> แบ่งข้อมูลเครื่องละ 1/3 · <code>batch = 8</code> ต่อ Node ทำให้ <b>batch รวม = 24</b> (167 step/Epoch)</span></div><div class="stp"><span class="n">2</span><span>เวลาคำนวณต่อ step ควรคงที่ (~0.7 วิ) แต่ Coordinator ต้องรอ Gradient ครบทั้ง 3 Node และเดินเร็วเท่าเครื่องที่ช้าที่สุด</span></div><div class="stp"><span class="n">3</span><span>เช่นเดียวกับ DP: ได้ตัวอย่างต่อ step เพิ่ม 1.5 เท่า ถ้าเวลาต่อ step นานขึ้นเกิน 1.5 เท่า ความเร็วรวมจะตกลง</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 4 · เช่า 3 Node เตรียมของ และวัดเน็ต" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 4 · เช่า 3 Node เตรียมของ และวัดเน็ต</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt9">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 3 เครื่อง (เรียกว่า Node 1 Node 2 และ Node 3) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้ง 3 Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 3 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-3mp-1 vapp-lab5-3mp-2 และ vapp-lab5-3mp-3
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 3 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 3 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 3 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง Node: Node 2 และ Node 3 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลวัดเน็ต MP 3 Node (อาร์เจนตินา–ชิลี) 2 รอบ: RTT นิ่ง 29–36 ms แต่ความเร็วแกว่งหนัก" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ผลวัดเน็ต MP 3 Node (อาร์เจนตินา–ชิลี) 2 รอบ: RTT นิ่ง 29–36 ms แต่ความเร็วแกว่งหนัก</span><span class="tag">node3/results/net_probe_run*.json</span></h2></header><div class="body"><table class="c4"><thead><tr><th>เส้นทาง</th><th>RTT เฉลี่ย</th><th>ส่งไป Node 1 (รอบ 1 / รอบ 2)</th><th>รับจาก Node 1 (รอบ 1 / รอบ 2)</th></tr></thead><tbody><tr><td>Node 2 ↔ Node 1</td><td>34–36 ms</td><td>644 / 210 Mbps</td><td>262 / 619 Mbps</td></tr><tr><td>Node 3 ↔ Node 1</td><td>29 ms</td><td><b>82</b> / 306 Mbps</td><td>198 / 148 Mbps</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>เส้นทางเดียวกันวัดห่างกันไม่กี่นาทีได้ <b>82 แล้วพุ่งเป็น 306 Mbps</b> (หรือ 644 แล้วหล่นเป็น 210 Mbps) · การวัดเพียงรอบเดียวจึงบอกได้แค่คร่าว ๆ</span></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 5 · เทรนแบบ Model Parallelism ข้าม 3 Node" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 5 · เทรนแบบ Model Parallelism ข้าม 3 Node</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 27 บรรทัด</span><button class="copy big" data-full="prompt10">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3mp-1 (Node 1) vapp-lab5-3mp-2 (Node 2) และ vapp-lab5-3mp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism บนคลัสเตอร์ 3 Node
+แนวคิด: แต่ละ Node ถือโมเดล 1 ชุด แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1 · สาม Node แบ่งข้อมูลคนละ 1 ใน 3 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทั้งสาม Node ปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุก Node ให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ Node รวม 3 ตัว แต่ละตัวแบ่งโมเดลชุดเดียวลง GPU 2 ใบของ Node นั้น ต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละ 1 ใน 3 ไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 3 Node เท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 8 ต่อ Node (รวม 24) เท่ากับ batch ของ LAB 4.3 เพื่อเทียบกับผล 1 Node และ 2 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ Node และรวม · Layer ไหนอยู่ใบไหน · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="แยกเวลา ส่ง / รอ / รับ ราย Node ของ MP 3 Node: เห็นชัดว่าใครกำลังรอใครอยู่" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">แยกเวลา ส่ง / รอ / รับ ราย Node ของ MP 3 Node: เห็นชัดว่าใครกำลังรอใครอยู่</span><span class="tag">ตารางหลัก · node3/results/metrics.json</span></h2></header><div class="body"><table class="c4"><thead><tr><th></th><th>Node 1</th><th>Node 2</th><th>Node 3</th></tr></thead><tbody><tr><td>วินาทีต่อ step (เฉลี่ย)</td><td>5.51</td><td>5.53</td><td>5.53</td></tr><tr><td>คำนวณบน GPU</td><td>0.77</td><td>0.70</td><td>0.72</td></tr><tr><td>ส่งและรอ Gradient</td><td>4.74</td><td>4.82</td><td>4.81</td></tr><tr><td>– ส่ง / รอ / รับ</td><td>0.01 / 4.69 / 0.02</td><td>0.49 / 2.63 / 1.68</td><td>1.26 / 0.83 / 2.69</td></tr><tr><td>VRAM สูงสุด GPU 0 / GPU 1 (MiB)</td><td>14,314 / 14,716</td><td>13,086 / 13,528</td><td>12,884 / 13,326</td></tr><tr><td>GPU util เฉลี่ย GPU 0 / GPU 1</td><td>7.3% / 6.6%</td><td>6.2% / 6.3%</td><td>6.9% / 6.1%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>Node 1 อยู่เครื่องเดียวกับ Coordinator จึงส่ง/รับเกือบทันที (0.01/0.02 วิ) แต่ต้อง <b>รอ 4.69 วิ</b> ให้ Node 2 และ Node 3 มาถึง · รอบนี้เจอบั๊กตั้ง socket buffer ซ้ำรอย (20–70 วิ → 3.5 วิ)</span></div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h06-mp3-res.jpg)" data-title="ผล MP 3 Node: ได้ 4.32 ตัวอย่าง/วิ (ช้ากว่า 2 Node) — ส่งและรอ 87%, GPU util 6.6%" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.25"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">ผล MP 3 Node: ได้ 4.32 ตัวอย่าง/วิ (ช้ากว่า 2 Node) — ส่งและรอ 87%, GPU util 6.6%</span><span class="tag">2_model_parallel/node3/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">4.32<small>ตัวอย่าง/วินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 2 Epoch</div><div class="s">เทียบ 1 Node (10.13) ได้ Speedup = <b>0.43</b> (Efficiency <b>14%</b>) · เทรน 334 step ใน 30.9 นาที</div></div></div><div class="tile warn"><div class="num">5.52 วิ</div><div class="txt"><div class="k">เวลาต่อ step เฉลี่ย</div><div class="s">คำนวณ <b>0.73 วิ (13%)</b> · ส่งและรอ <b>4.79 วิ (87%)</b> · ส่ง <code>float32</code> เต็มทั้งสองขา (15.34 MB)</div></div></div><div class="tile ok"><div class="num">6.6% / 71.0%</div><div class="txt"><div class="k">GPU util / Exact Match</div><div class="s">GPU 6 ใบอยู่ 6.1–7.3% · ใช้ VRAM เพียง 12.6–14.4 GiB · LoRA ตรงกันทั้ง 3 Node</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รอบนี้ AI ส่ง Gradient แบบ <code>float32</code> เต็มทั้งขาขึ้นและขาลง (ส่วน 2 Node ส่งขาขึ้น <code>bf16</code>) จึงเป็นส่วนหนึ่งที่ทำให้เวลาส่งและรอนานขึ้นเกือบ 2 เท่า</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="MP 3 Node · 87% ของเวลาต่อ step คือการส่งและรอ และมีจังหวะเน็ตค้างทะลุ 60 วินาที" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">MP 3 Node · 87% ของเวลาต่อ step คือการส่งและรอ และมีจังหวะเน็ตค้างทะลุ 60 วินาที</span><span class="tag">2_model_parallel/node3/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:389px"><img src="2_model_parallel/node3/results/images/step_time.png" alt="MP 3 Node · 87% ของเวลาต่อ step คือการส่งและรอ และมีจังหวะเน็ตค้างทะลุ 60 วินาที" width="1540" height="588"></div><p class="cap">ด้านซ้าย: ทั้ง 3 Node เฉลี่ยเท่ากันเป๊ะ (5.51–5.53 วิ) เพราะ Synchronous · ด้านขวา: ช่วง step 250 เน็ตค้างเกิน 60 วิ</p></div></section>
+<section class="slide " data-title="MP 3 Node · GPU ทั้ง 6 ใบเฉลี่ย 6.1–7.3% ตลอดการเทรน 30.9 นาที" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">MP 3 Node · GPU ทั้ง 6 ใบเฉลี่ย 6.1–7.3% ตลอดการเทรน 30.9 นาที</span><span class="tag">2_model_parallel/node3/results/train/</span></h2></header><div class="body"><div class="fig" style="--figmin:389px"><img src="2_model_parallel/node3/results/images/gpu_util.png" alt="MP 3 Node · GPU ทั้ง 6 ใบเฉลี่ย 6.1–7.3% ตลอดการเทรน 30.9 นาที" width="1540" height="588"></div><p class="cap">กราฟลักษณะเดียวกับ DP 3 Node คือ GPU ว่างราว 93% ของเวลา เพราะต้องรอการสื่อสารข้ามเครื่องแทบตลอดทุก step</p></div></section>
+<section class="slide " data-title="MP 3 Node · Loss ลดลงต่อเนื่องตลอด 334 step โดยไม่หลุดการเชื่อมต่อเลย" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">MP 3 Node · Loss ลดลงต่อเนื่องตลอด 334 step โดยไม่หลุดการเชื่อมต่อเลย</span><span class="tag">2_model_parallel/node3/results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_model_parallel/node3/results/images/loss.png" alt="MP 3 Node · Loss ลดลงต่อเนื่องตลอด 334 step โดยไม่หลุดการเชื่อมต่อเลย" width="1260" height="616"></div><p class="cap">train loss ลดจาก <b>0.152 → 0.043</b> · test loss ลดจาก Base <b>1.915</b> เหลือ <b>0.066</b> และ <b>0.059</b> หลังจบ Epoch 1 และ 2</p></div></section>
+<section class="slide " data-title="MP 3 Node · Exact Match จบ Epoch 2 ที่ 71.0% (ต่ำกว่า 2 Node 6 ข้อ จาก batch รวม 24)" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.10"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">MP 3 Node · Exact Match จบ Epoch 2 ที่ 71.0% (ต่ำกว่า 2 Node 6 ข้อ จาก batch รวม 24)</span><span class="tag">2_model_parallel/node3/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_model_parallel/node3/results/images/exact_match.png" alt="MP 3 Node · Exact Match จบ Epoch 2 ที่ 71.0% (ต่ำกว่า 2 Node 6 ข้อ จาก batch รวม 24)" width="896" height="616"></div><p class="cap">Base <b>1.5%</b> → Epoch 1: <b>69.0%</b> (test loss 0.066) → Epoch 2: <b>71.0%</b> (test loss 0.059) · ปรับน้ำหนักเพียง 167 ครั้ง/Epoch · LoRA 3 Node ตรงกันทุกค่า</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 5.2 ขั้นที่ 6 · สรุปผลและลบเครื่องทั้ง 3 Node (ห้ามข้าม)" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.35"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">พรอมต์ · LAB 5.2 ขั้นที่ 6 · สรุปผลและลบเครื่องทั้ง 3 Node (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 17 บรรทัด</span><button class="copy big" data-full="prompt11">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3mp-1 (Node 1) vapp-lab5-3mp-2 (Node 2) และ vapp-lab5-3mp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 3 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 3 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 3 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-3mp-1 vapp-lab5-3mp-2 และ vapp-lab5-3mp-3 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="สรุป LAB 5.2 (Model Parallelism): เพิ่มเครื่องแล้วช้าลงราวครึ่งหนึ่ง แต่ยังได้ข้อดีเรื่อง VRAM" data-group="LAB 5.2 · Model Parallelism บนคลัสเตอร์" data-max="1.40"><header class="hd"><div class="kicker">LAB 5.2 (2_model_parallel/node3/) · ส่วนที่ 2: 3 Node (ขั้นที่ 4–6)</div><h2><span class="tt">สรุป LAB 5.2 (Model Parallelism): เพิ่มเครื่องแล้วช้าลงราวครึ่งหนึ่ง แต่ยังได้ข้อดีเรื่อง VRAM</span><span class="tag">ตารางหลัก · LAB 5.2</span></h2></header><div class="body"><table class="c4"><thead><tr><th></th><th>1 Node (LAB 4.3)</th><th>2 Node</th><th>3 Node</th></tr></thead><tbody><tr><td>GPU ทั้งหมด / จำนวนโมเดล</td><td>2 / 1</td><td>4 / 2</td><td>6 / 3</td></tr><tr><td>ทางที่ Gradient เดินทาง</td><td>ไม่ต้องส่งข้ามเครื่อง</td><td>อินเทอร์เน็ต · RTT 30 ms · ราว 82–93 Mbps</td><td>อินเทอร์เน็ต · RTT 29–36 ms · 82–644 Mbps (แกว่ง)</td></tr><tr><td>batch ต่อ Node / รวม</td><td>8 / 8</td><td>8 / 16</td><td>8 / 24</td></tr><tr><td>วินาทีต่อ step</td><td>0.79</td><td>3.27</td><td>5.52</td></tr><tr><td>– คำนวณ</td><td>0.79</td><td>0.70</td><td>0.73</td></tr><tr><td>– ส่งและรอ</td><td>–</td><td>2.56 (78.5%)</td><td>4.79 (87%)</td></tr><tr><td>ตัวอย่างต่อวินาที</td><td><b>10.13</b></td><td><b>4.90</b></td><td><b>4.32</b></td></tr><tr><td>Speedup เทียบ 1 Node</td><td>1.00</td><td><b>0.48</b></td><td><b>0.43</b></td></tr><tr><td>Efficiency</td><td>100%</td><td>24%</td><td>14%</td></tr><tr><td>GPU util เฉลี่ย</td><td>46.5% / 51.8%</td><td>ราว 10%</td><td>6–7%</td></tr><tr><td>Exact Match หลัง Epoch 1 → 2</td><td>70.0% → 77.5%</td><td>69.5% → 74.0%</td><td>69.0% → 71.0%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ถ้าเครือข่ายเร็วพอจน step เท่าเวลาคำนวณ 2 Node จะได้ราว <b>23</b> และ 3 Node ราว <b>33</b> ตัวอย่าง/วิ (ตัวเลขคำนวณ) · ใช้ VRAM เพียง 12.6–14.4 GiB ต่อใบ</span></div></div></section>
+<section class="slide divider photo" style="background-image:url(image/slides/s05-summary.jpg)" data-title="บทสรุป LAB 5 · เทียบ 1 Node · 2 Node · 3 Node ทั้งสองแบบ และเมื่อไรควรใช้คลัสเตอร์" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ"><div class="shade"></div><div class="inner"><div class="small">บทสรุปรวมของทั้ง 2 LAB ย่อย</div><div class="big">บทสรุป LAB 5</div><h1>เทียบ 1 Node · 2 Node · 3 Node ทั้งสองแบบ และเมื่อไรควรใช้คลัสเตอร์</h1><div class="sub"><p>นำผลจริงของ LAB 5.1 (Data Parallelism) และ LAB 5.2 (Model Parallelism) มาวางคู่กัน สรุปบทเรียนหน้างาน และแนวทางตัดสินใจก่อนขยายเครื่อง</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ผลรวมทั้ง 2 LAB ในภาพเดียว: เพิ่มเครื่องผ่านอินเทอร์เน็ตแล้วช้าลงทั้ง DP และ MP" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.10"><header class="hd"><div class="kicker">บทสรุป · ภาพรวมผลจริงทั้ง 2 LAB</div><h2><span class="tt">ผลรวมทั้ง 2 LAB ในภาพเดียว: เพิ่มเครื่องผ่านอินเทอร์เน็ตแล้วช้าลงทั้ง DP และ MP</span><span class="tag">สรุปผลจริง LAB 5</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="image/r-compare-cluster.png" alt="ผลรวมทั้ง 2 LAB ในภาพเดียว: เพิ่มเครื่องผ่านอินเทอร์เน็ตแล้วช้าลงทั้ง DP และ MP" width="1672" height="941"></div><p class="cap">DP ลดจาก <b>19.08 → 4.50 / 4.49</b> ตัวอย่าง/วิ (Speedup 0.24) · MP ลดจาก <b>10.13 → 4.90 / 4.32</b> ตัวอย่าง/วิ (Speedup 0.48 / 0.43) เพราะส่งและรอกิน <b>78–93%</b></p></div></section>
+<section class="slide " data-title="ตารางสรุปตัวเลขวัดจริงทั้ง 6 กรณี: เทียบ 1, 2 และ 3 Node ของทั้ง DP และ MP" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.40"><header class="hd"><div class="kicker">บทสรุป · ภาพรวมผลจริงทั้ง 2 LAB</div><h2><span class="tt">ตารางสรุปตัวเลขวัดจริงทั้ง 6 กรณี: เทียบ 1, 2 และ 3 Node ของทั้ง DP และ MP</span><span class="tag">ตารางหลัก · 6 กรณี</span></h2></header><div class="body"><table class="c7"><thead><tr><th></th><th>Data Parallelism</th><th></th><th></th><th>Model Parallelism</th><th></th><th></th></tr></thead><tbody><tr><td></td><td><b>1 Node</b></td><td><b>2 Node</b></td><td><b>3 Node</b></td><td><b>1 Node</b></td><td><b>2 Node</b></td><td><b>3 Node</b></td></tr><tr><td>GPU ทั้งหมด / จำนวนโมเดล</td><td>2 / 2</td><td>4 / 4</td><td>6 / 6</td><td>2 / 1</td><td>4 / 2</td><td>6 / 3</td></tr><tr><td>batch รวม</td><td>8</td><td>16</td><td>24</td><td>8</td><td>16</td><td>24</td></tr><tr><td>วินาทีต่อ step</td><td>0.42</td><td>3.56</td><td>5.34</td><td>0.79</td><td>3.27</td><td>5.52</td></tr><tr><td>– คำนวณ</td><td>–</td><td>0.43</td><td>0.36</td><td>0.79</td><td>0.70</td><td>0.73</td></tr><tr><td>– ส่งและรอ Gradient</td><td>สั้นมาก</td><td>3.11 (88%)</td><td>4.97 (93%)</td><td>–</td><td>2.56 (78.5%)</td><td>4.79 (87%)</td></tr><tr><td>ตัวอย่างต่อวินาที</td><td><b>19.08</b></td><td><b>4.50</b></td><td><b>4.49</b></td><td><b>10.13</b></td><td><b>4.90</b></td><td><b>4.32</b></td></tr><tr><td>Speedup เทียบ 1 Node</td><td>1.00</td><td>0.24</td><td>0.24</td><td>1.00</td><td>0.48</td><td>0.43</td></tr><tr><td>Efficiency</td><td>100%</td><td>12%</td><td>8%</td><td>100%</td><td>24%</td><td>14%</td></tr><tr><td>GPU util เฉลี่ย</td><td>ราว 98%</td><td>12.7%</td><td>6.6%</td><td>ราว 49%</td><td>ราว 10%</td><td>6.6%</td></tr><tr><td>Exact Match หลัง Epoch 2</td><td>77.5%</td><td>75.0%</td><td>74.5%</td><td>77.5%</td><td>74.0%</td><td>71.0%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>1 Node มาจาก LAB 4 (GPU 2 ใบในเครื่องเดียว) · จะเห็นว่าบนคลัสเตอร์ทั้ง 2 แบบได้ความเร็วใกล้กันมาก (4.3–4.9 ตัวอย่าง/วิ) แม้บน 1 Node จะต่างกันเกือบ 2 เท่า</span></div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h07-network-wall.jpg)" data-title="คอขวดคืออินเทอร์เน็ต ไม่ใช่ GPU: เมื่อเน็ตช้ากว่าคำนวณ 4–14 เท่า วิธีจัดวางในเครื่องแทบไม่ต่างกัน" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · ภาพรวมผลจริงทั้ง 2 LAB</div><h2><span class="tt">คอขวดคืออินเทอร์เน็ต ไม่ใช่ GPU: เมื่อเน็ตช้ากว่าคำนวณ 4–14 เท่า วิธีจัดวางในเครื่องแทบไม่ต่างกัน</span><span class="tag">วิเคราะห์คอขวดเครือข่าย</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">78–93%</div><div class="txt"><div class="k">สัดส่วนเวลาส่งและรอเน็ต</div><div class="s">GPU คำนวณแค่ <b>0.36–0.73 วิ/step</b> แต่รอเน็ต <b>2.56–4.97 วิ/step</b> · GPU util จึงร่วงเหลือ <b>6.6–12.7%</b></div></div></div><div class="tile warn"><div class="num">4.3–4.9 / วิ</div><div class="txt"><div class="k">ความเร็วบนคลัสเตอร์ (ทุกแบบ)</div><div class="s">DP และ MP บนอินเทอร์เน็ตวิ่งพอ ๆ กัน และ <b>2 → 3 Node ไม่เร็วขึ้น</b> เพราะ Coordinator ต้องรอตัวที่ช้าที่สุดจากจำนวนที่มากขึ้น</div></div></div><div class="tile ok"><div class="num">37–66 / วิ</div><div class="txt"><div class="k">ถ้าเครือข่ายเร็วพอ (คำนวณ)</div><div class="s">หาก step ใช้เวลาเท่าเวลาคำนวณ (เช่น Data Center เดียวกัน) DP 2 Node จะได้ราว <b>37</b> และ 3 Node ราว <b>66</b> ตัวอย่าง/วิ</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>คลัสเตอร์จริงในระดับโปรดักชันจึงวางทุก Node ในห้องเดียวกันและเชื่อมด้วยเครือข่ายความเร็วสูง (เช่น InfiniBand / RoCE) ไม่ใช่ต่อข้ามอินเทอร์เน็ตสาธารณะ</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(image/slides/h08-quality-sync.jpg)" data-title="ด้านความถูกต้อง: การเฉลี่ย Gradient ข้ามเครื่องทำงานถูกทุกชุด น้ำหนัก LoRA ตรงกัน 100%" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · ภาพรวมผลจริงทั้ง 2 LAB</div><h2><span class="tt">ด้านความถูกต้อง: การเฉลี่ย Gradient ข้ามเครื่องทำงานถูกทุกชุด น้ำหนัก LoRA ตรงกัน 100%</span><span class="tag">สรุปด้านคุณภาพโมเดล</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">100% ทุกรอบ</div><div class="txt"><div class="k">ความเท่ากันของน้ำหนัก LoRA</div><div class="s">ตรวจหลังจบทุก Epoch ทั้ง 4 รอบ (4, 6, 2, 3 Worker) ยืนยันว่าน้ำหนัก LoRA ตรงกันทุกค่า (sha256 ตรงกัน)</div></div></div><div class="tile ok"><div class="num">71.0–75.0%</div><div class="txt"><div class="k">Exact Match หลัง Epoch 2</div><div class="s">DP2 <b>75.0%</b> · DP3 <b>74.5%</b> · MP2 <b>74.0%</b> · MP3 <b>71.0%</b> (เทียบ 1 Node LAB 4 ที่ <b>77.5%</b>)</div></div></div><div class="tile warn"><div class="num">8 → 16 → 24</div><div class="txt"><div class="k">ผลของ batch รวมที่ใหญ่ขึ้น</div><div class="s">batch รวมใหญ่ขึ้นทำให้จำนวน Update ต่อ Epoch ลดลง (500 → 250 → 167 ครั้ง) และ Test Set มี 200 ข้อ (1 ข้อ = 0.5 จุด)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>การกระจายงานข้ามเครื่องแบบ Synchronous ไม่ได้ทำลายคุณภาพของโมเดล ปัญหาเดียวที่เกิดขึ้นในการทดลองนี้คือประสิทธิภาพด้านเวลาและทรัพยากรจากเครือข่าย</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="5 ปัญหาจริงที่เจอระหว่างทำ LAB 5 และบทเรียนที่ต้องนำไปใช้กับงานคลัสเตอร์" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.40"><header class="hd"><div class="kicker">บทสรุป · ภาพรวมผลจริงทั้ง 2 LAB</div><h2><span class="tt">5 ปัญหาจริงที่เจอระหว่างทำ LAB 5 และบทเรียนที่ต้องนำไปใช้กับงานคลัสเตอร์</span><span class="tag">ตารางหลัก · บทเรียนหน้างาน</span></h2></header><div class="body"><table class="c3"><thead><tr><th>เรื่อง</th><th>เกิดที่</th><th>บทเรียน</th></tr></thead><tbody><tr><td>ความเร็วระหว่างเครื่องต่ำกว่าที่หน้าเช่าบอกมาก (82–143 Mbps เทียบกับที่กรองไว้ 700 Mbps)</td><td>ทั้งสอง LAB ย่อย</td><td>ต้องวัดเน็ตระหว่าง Node เองก่อนเทรน</td></tr><tr><td>ความเร็วเน็ตแกว่ง บาง step ค้างเป็นสิบถึงร้อยวินาที</td><td>ทุกรอบ</td><td>ดูค่ากลางคู่กับค่าเฉลี่ย · ต้องมีการต่อใหม่และรันต่อจาก checkpoint</td></tr><tr><td>AI ตั้งขนาด buffer ของ socket เอง ทำให้ช้า 16–70 วินาทีต่อ step</td><td>3 Node ทั้งสอง LAB ย่อย</td><td>การตั้งค่าเครือข่ายเล็กน้อยเปลี่ยนความเร็วได้หลายเท่า</td></tr><tr><td>เครื่องเช่า reboot เองกลางการเทรน</td><td>LAB 5.2 ส่วน 2 Node</td><td>ยิ่งมากเครื่อง ยิ่งมีโอกาสที่เครื่องใดเครื่องหนึ่งจะมีปัญหา</td></tr><tr><td>batch ที่ตรึงไว้ Out of Memory ตอนลอง 3 step</td><td>LAB 5.1 ส่วน 2 Node</td><td>ลองด้วย batch ที่มี padding ก่อนเทรนจริงเสมอ</td></tr></tbody></table><div class="note info">ทุกปัญหาในตารางนี้เกิดขึ้นจริงในการรัน LAB 5.1 และ 5.2 และถูกออกแบบวิธีป้องกันไว้ในพรอมต์ของทั้งสอง LAB แล้ว</div></div></section>
+<section class="slide " data-title="ก่อนเพิ่มเครื่องให้ถาม 3 ข้อ และวัดความเร็วเน็ตเทียบเวลาคำนวณเสมอ" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.10"><header class="hd"><div class="kicker">บทสรุป · แนวทางตัดสินใจและข้อจำกัด</div><h2><span class="tt">ก่อนเพิ่มเครื่องให้ถาม 3 ข้อ และวัดความเร็วเน็ตเทียบเวลาคำนวณเสมอ</span><span class="tag">แนวทางตัดสินใจ</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="image/r-choose-cluster.png" alt="ก่อนเพิ่มเครื่องให้ถาม 3 ข้อ และวัดความเร็วเน็ตเทียบเวลาคำนวณเสมอ" width="1672" height="941"></div><p class="cap">เริ่มที่ <b>1 Node ก่อนเสมอ</b> → ถ้าไม่พอให้ดูว่า Node อยู่ใน <b>เครือข่ายเร็วเดียวกันไหม</b> → ถ้าผ่านอินเทอร์เน็ตต้องคำนวณ <b>ขนาด Gradient ÷ ความเร็วเน็ต</b> เทียบเวลาคำนวณ</p></div></section>
+<section class="slide " data-title="สรุป 4 สถานการณ์: เมื่อไรควรอยู่บน 1 Node เมื่อไรใช้คลัสเตอร์ และต้องปรับอะไรถ้าจำเป็นต้องผ่านเน็ต" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.40"><header class="hd"><div class="kicker">บทสรุป · แนวทางตัดสินใจและข้อจำกัด</div><h2><span class="tt">สรุป 4 สถานการณ์: เมื่อไรควรอยู่บน 1 Node เมื่อไรใช้คลัสเตอร์ และต้องปรับอะไรถ้าจำเป็นต้องผ่านเน็ต</span><span class="tag">ตารางหลัก · การเลือกใช้</span></h2></header><div class="body"><table class="c3"><thead><tr><th>สถานการณ์</th><th>ควรทำ</th><th>เหตุผล</th></tr></thead><tbody><tr><td>งานเทรนบน 1 Node ได้</td><td>อยู่บน 1 Node · อยากเร็วขึ้นให้เพิ่ม GPU ในเครื่องเดียว</td><td>ใน <a href="../lab4_multigpu/README.md" target="_blank" rel="noopener">LAB 4</a> Data Parallelism 4 ใบในเครื่องเดียวเร็วกว่า 2 ใบ 1.87 เท่า</td></tr><tr><td>GPU ในเครื่องเดียวไม่พอ และ Node อยู่ในเครือข่ายเร็วเดียวกัน</td><td>ใช้คลัสเตอร์</td><td>เวลาส่ง Gradient สั้นเมื่อเทียบกับเวลาคำนวณ</td></tr><tr><td>มีแต่ Node ที่ต่อกันผ่านอินเทอร์เน็ต</td><td>วัดก่อน: ขนาด Gradient ÷ ความเร็วเน็ต เทียบกับเวลาคำนวณต่อ step</td><td>ถ้าเวลาส่งนานกว่าเวลาคำนวณ เพิ่มเครื่องแล้วช้าลงและแพงขึ้น (ผลของ LAB นี้)</td></tr><tr><td>ต้องใช้ผ่านอินเทอร์เน็ตจริง ๆ</td><td>ส่งให้เล็กลง (เช่น แปลง Gradient เป็น bf16) หรือส่งให้ห่างขึ้น (เฉลี่ยทุกหลาย step)</td><td>ลดเวลาส่งและรอต่อ step</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>หากจำเป็นต้องเทรนผ่านอินเทอร์เน็ตจริง ๆ ทางแก้หลักคือ <b>ส่งให้เล็กลง</b> (บีบ Gradient เช่น <code>bf16</code>) หรือ <b>ส่งให้ห่างขึ้น</b> (Gradient Accumulation / เฉลี่ยทุกหลาย step)</span></div></div></section>
+<section class="slide " data-title="ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบข้ามรอบใน LAB 5" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · แนวทางตัดสินใจและข้อจำกัด</div><h2><span class="tt">ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบข้ามรอบใน LAB 5</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="image/slides/n06-cluster-caveats.jpg" alt="ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบข้ามรอบใน LAB 5" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>เครื่องเช่าคนละชุด คนละประเทศ</b> ความเร็วเน็ตของแต่ละรอบต่างกันมากและแกว่งระหว่างวัน จึงเทียบข้ามรอบได้คร่าว ๆ และรอบของผู้เรียนอาจได้เลขต่างออกไป</span></div><div class="stp"><span class="n">2</span><span><b>โค้ดและ batch รวมไม่เท่ากัน</b> 1 Node ใช้ PyTorch ในเครื่อง ส่วนคลัสเตอร์ใช้ Coordinator ที่ AI เขียนใหม่ทีละรอบ (บางรอบส่งขาขึ้น <code>bf16</code> บางรอบ <code>float32</code>) และ batch รวมต่างกัน (8, 16, 24)</span></div><div class="stp"><span class="n">3</span><span><b>Epoch และขนาด Test Set</b> 1 Node เทรน 3 Epoch (เทียบ Exact Match ที่ Epoch 2) และ Test Set มี 200 ข้อ (1 ข้อ = 0.5 จุด) ส่วนต่าง 2–3 จุดจึงยังสรุปไม่ได้ว่าแบบใดแม่นกว่า</span></div></div></div></div></section>
+<section class="slide stmt" data-title="จบ LAB 5" data-group="บทสรุปทั้ง 2 LAB · เปรียบเทียบและแนวทางตัดสินใจ"><img class="bg" src="image/slides/s05-summary.jpg" alt="จบ LAB 5"><div class="shade"></div><div class="inner"><div class="q">ขยายบน 1 Node ก่อน · วัดเน็ตก่อนขยายคลัสเตอร์ · และลบเครื่องทุก Node เสมอ</div><div class="sub2">LAB 5 พิสูจน์ด้วยตัวเลขจริงว่า <b>เครือข่ายคือตัวกำหนดความคุ้มค่าของคลัสเตอร์</b> — ใช้สูตร <code>ขนาด Gradient ÷ ความเร็วเน็ต</code> เช็กก่อนเทรนทุกครั้ง และเลือกวิธีจัดวางให้ตรงคอขวด</div><div class="links"><a href="README.md" target="_blank">หน้ารวม LAB 5</a><a href="1_data_parallel/README.md" target="_blank">LAB 5.1 (1_data_parallel/)</a><a href="2_model_parallel/README.md" target="_blank">LAB 5.2 (2_model_parallel/)</a></div></div><div class="imgnote">ภาพจำลอง</div></section>
+</div></div>
+<pre class="full" id="prompt0">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 2 เครื่อง (เรียกว่า Node 1 และ Node 2) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้งสอง Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 2 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-dp-1 และ vapp-lab5-dp-2
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 2 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 2 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 2 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง 2 Node: Node 2 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt1">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-dp-1 (Node 1) และ vapp-lab5-dp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism บนคลัสเตอร์ 2 Node
+แนวคิด: GPU ทั้ง 4 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 4 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทุกใบปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุกโปรแกรมเทรนให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ GPU รวม 4 ตัว แต่ละตัวต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละส่วนไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 4 ตัวเท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 4 ต่อ GPU (รวม 16) เท่ากับ batch ต่อ GPU ของ LAB 4.2 เพื่อเทียบกับผล 1 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU และรวม · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt2">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-dp-1 (Node 1) และ vapp-lab5-dp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 2 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 2 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 2 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-dp-1 และ vapp-lab5-dp-2 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt3">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 3 เครื่อง (เรียกว่า Node 1 Node 2 และ Node 3) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้ง 3 Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 3 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-3dp-1 vapp-lab5-3dp-2 และ vapp-lab5-3dp-3
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 3 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 3 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 3 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง Node: Node 2 และ Node 3 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt4">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3dp-1 (Node 1) vapp-lab5-3dp-2 (Node 2) และ vapp-lab5-3dp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism บนคลัสเตอร์ 3 Node
+แนวคิด: GPU ทั้ง 6 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 6 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทุกใบปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุกโปรแกรมเทรนให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ GPU รวม 6 ตัว แต่ละตัวต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละส่วนไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 6 ตัวเท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 4 ต่อ GPU (รวม 24) เท่ากับ batch ต่อ GPU ของ LAB 4.2 เพื่อเทียบกับผล 1 Node และ 2 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU และรวม · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt5">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3dp-1 (Node 1) vapp-lab5-3dp-2 (Node 2) และ vapp-lab5-3dp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/1_data_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 3 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 3 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 3 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-3dp-1 vapp-lab5-3dp-2 และ vapp-lab5-3dp-3 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt6">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 2 เครื่อง (เรียกว่า Node 1 และ Node 2) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้งสอง Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 2 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-mp-1 และ vapp-lab5-mp-2
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 2 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 2 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 2 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง 2 Node: Node 2 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt7">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-mp-1 (Node 1) และ vapp-lab5-mp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism บนคลัสเตอร์ 2 Node
+แนวคิด: แต่ละ Node ถือโมเดล 1 ชุด แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1 · สอง Node แบ่งข้อมูลคนละครึ่ง · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทั้งสอง Node ปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุก Node ให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ Node รวม 2 ตัว แต่ละตัวแบ่งโมเดลชุดเดียวลง GPU 2 ใบของ Node นั้น ต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละครึ่งไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 2 Node เท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 8 ต่อ Node (รวม 16) เท่ากับ batch ของ LAB 4.3 เพื่อเทียบกับผล 1 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ Node และรวม · Layer ไหนอยู่ใบไหน · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt8">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-mp-1 (Node 1) และ vapp-lab5-mp-2 (Node 2) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 2 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 2 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 2 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-mp-1 และ vapp-lab5-mp-2 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt9">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง 3 เครื่อง (เรียกว่า Node 1 Node 2 และ Node 3) เครื่องละ GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset ให้ทั้ง 3 Node
+
+[เครื่องที่ต้องการ]
+จำนวน: 3 เครื่อง ที่มี IP สาธารณะต่างกัน · ป้าย vapp-lab5-3mp-1 vapp-lab5-3mp-2 และ vapp-lab5-3mp-3
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมงต่อเครื่อง
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB · Node 1 เปิด port ให้เครื่องอื่นต่อเข้ามาได้ 1 port
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไขทั้ง 3 เครื่อง โดยเลือกให้อยู่ใกล้กัน ถ้าเครื่องไหนเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงทั้ง 3 Node
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง ให้ทั้ง 3 Node ได้ชุดเดียวกัน
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดเน็ตระหว่าง Node: Node 2 และ Node 3 ต่อเข้า port ของ Node 1 ได้หรือไม่ · เวลาไปกลับ (RTT) · ความเร็วส่งข้อมูลทั้งสองทิศ
+   ถ้า RTT ของ Node ใดเกิน 100 ms ให้ลบเครื่องนั้นแล้วเช่าเครื่องใหม่แทน แล้ววัดซ้ำ (เปลี่ยนได้ไม่เกิน 2 ครั้ง)
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ของแต่ละ Node · ราคาต่อชั่วโมง · เน็ตระหว่าง Node (RTT และความเร็ว) · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt10">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3mp-1 (Node 1) vapp-lab5-3mp-2 (Node 2) และ vapp-lab5-3mp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism บนคลัสเตอร์ 3 Node
+แนวคิด: แต่ละ Node ถือโมเดล 1 ชุด แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1 · สาม Node แบ่งข้อมูลคนละ 1 ใน 3 · ทุก step ส่ง Gradient ของ LoRA ไปเฉลี่ยที่โปรแกรมกลางบน Node 1 แล้วทั้งสาม Node ปรับน้ำหนักด้วยค่าเฉลี่ยเดียวกัน
+
+[ขั้นตอน]
+1. เขียนโปรแกรมกลาง code/coordinator.py รันบน Node 1 เปิด port เดียว: รอ Gradient จากทุก Node ให้ครบ เฉลี่ย แล้วส่งค่าเฉลี่ยกลับ (Synchronous)
+2. เขียนโปรแกรมเทรน code/worker.py เปิด 1 ตัวต่อ Node รวม 3 ตัว แต่ละตัวแบ่งโมเดลชุดเดียวลง GPU 2 ใบของ Node นั้น ต่อออกไปหาโปรแกรมกลาง และได้ข้อมูลคนละ 1 ใน 3 ไม่ซ้ำกัน
+3. ลอง 3 step ด้วย batch ที่มีตัวอย่างยาวที่สุดปนกับตัวอย่างสั้น (มี padding เหมือนตอนเทรนจริง) ถ้า Out of Memory ให้แก้โค้ดให้ใช้หน่วยความจำน้อยลง โดยไม่เปลี่ยนค่าที่ตรึง
+4. เทรน 2 Epoch และจับเวลาของทุก step แยกเป็น 2 ส่วน: เวลาคำนวณบน GPU และเวลาส่งกับรอ Gradient
+5. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch (ไม่นับ ; ท้ายคำสั่งเป็นข้อผิด)
+6. หลังจบแต่ละ Epoch ตรวจว่าน้ำหนัก LoRA ของทั้ง 3 Node เท่ากัน
+7. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 2 Epoch
+batch: 8 ต่อ Node (รวม 24) เท่ากับ batch ของ LAB 4.3 เพื่อเทียบกับผล 1 Node และ 2 Node ได้
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ Node และรวม · Layer ไหนอยู่ใบไหน · VRAM สูงสุดของแต่ละใบ · วินาทีต่อ step (แยกเวลาคำนวณ กับเวลาส่งและรอ) · ขนาด Gradient ที่ส่งต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt11">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab5-3mp-1 (Node 1) vapp-lab5-3mp-2 (Node 2) และ vapp-lab5-3mp-3 (Node 3) · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab5_cluster/2_model_parallel/node3 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่องทั้ง 3 Node
+
+[ขั้นตอน]
+1. นำผลดิบของทั้ง 3 Node กลับมาที่ results/raw
+2. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง (คิดจากราคาของ 3 เครื่องรวมกัน)
+3. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): เวลาต่อ step แยกเวลาคำนวณกับเวลาส่งและรอ · GPU util ของแต่ละใบ · loss ตลอด 2 Epoch · Exact Match ของแต่ละ Epoch
+4. ลบเครื่องป้าย vapp-lab5-3mp-1 vapp-lab5-3mp-2 และ vapp-lab5-3mp-3 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: ตัวอย่างต่อวินาที · สัดส่วนเวลาที่ใช้ส่งและรอ · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของแต่ละเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<div id="bar"></div>
+<div id="hud"><button id="bo" title="สารบัญ (O)">☰</button><button id="bp" title="ก่อนหน้า (←)">‹</button><span id="count"></span><button id="bn" title="ถัดไป (→)">›</button><button id="bf" title="เต็มจอ (F)">⛶</button></div>
+<div id="ov"></div>
+<div id="lb"><img alt=""></div>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const N=slides.length; let cur=0;
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const n=document.createElement('div'); n.className='no'; n.textContent=(k+1)+' / '+N; s.appendChild(n);} });
+  function fit(){ deck.style.transform='scale('+Math.min(innerWidth/1600,innerHeight/900)+')'; }
+  /* ปรับขนาดตัวอักษรของแต่ละสไลด์ให้พอดีหน้า: เริ่มที่ค่าสูงสุด แล้วลดจนไม่ล้น */
+  function fitSlide(s){
+    const body=s.querySelector('.body'); if(!body) return;
+    const on=s.classList.contains('active'); if(!on) s.classList.add('measure');
+    body.classList.remove('scroll');
+    let fs=parseFloat(s.dataset.max||'1.4');
+    const boxes=[body,...body.querySelectorAll('.fitbox')];
+    const over=()=>boxes.some(b=>b.scrollHeight>b.clientHeight+3||b.scrollWidth>b.clientWidth+1);
+    s.style.setProperty('--fs',fs);
+    while(over()&&fs>0.62){ fs=Math.round((fs-0.03)*100)/100; s.style.setProperty('--fs',fs); }
+    s.dataset.fs=fs; s.dataset.over=over()?'1':'0';
+    if(over()) body.classList.add('scroll');
+    if(!on) s.classList.remove('measure');
+  }
+  function fitAll(){ slides.forEach(fitSlide); document.documentElement.dataset.fitted='1'; }
+  function go(i,push){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+N;
+    document.getElementById('bar').style.width=((cur+1)/N*100)+'%';
+    if(push!==false){ try{ history.replaceState(null,'','#'+(cur+1)); }catch(e){} }
+    document.querySelectorAll('#ov .th').forEach((t,k)=>t.classList.toggle('cur',k===cur));
+  }
+  const next=()=>go(cur+1), prev=()=>go(cur-1);
+  function fs(){ if(!document.fullscreenElement){ const r=document.documentElement; r.requestFullscreen&&r.requestFullscreen(); } else document.exitFullscreen&&document.exitFullscreen(); }
+  const ovEl=document.getElementById('ov'); let grid=null,last=null;
+  slides.forEach((s,k)=>{
+    if(s.dataset.group!==last){ last=s.dataset.group; const h=document.createElement('h4'); h.textContent=last; ovEl.appendChild(h); grid=document.createElement('div'); grid.className='grid'; ovEl.appendChild(grid); }
+    const d=document.createElement('div'); d.className='th';
+    const n=document.createElement('span'); n.textContent=k+1; d.appendChild(n); d.appendChild(document.createTextNode(s.dataset.title||''));
+    d.onclick=()=>{ go(k); ov(false); }; grid.appendChild(d);
+  });
+  function ov(on){ const v=on===undefined?!document.body.classList.contains('ov'):on; document.body.classList.toggle('ov',v);
+    if(v){ const c=ovEl.querySelector('.th.cur'); c&&c.scrollIntoView({block:'center'}); } }
+  const lb=document.getElementById('lb'), lbi=lb.querySelector('img');
+  deck.addEventListener('click',e=>{ const im=e.target.closest('.fig img'); if(im){ lbi.src=im.src; lbi.alt=im.alt; lb.classList.add('on'); lb.scrollTop=0; } });
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey) return;
+    const k=e.key;
+    if(lb.classList.contains('on')){ if(k==='Escape'||k==='Enter'||k===' '){ e.preventDefault(); lb.classList.remove('on'); } return; }
+    if(['ArrowRight','PageDown',' ','Enter'].includes(k)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(k)){ e.preventDefault(); prev(); }
+    else if(k==='Home') go(0); else if(k==='End') go(N-1);
+    else if(k==='f'||k==='F') fs(); else if(k==='o'||k==='O') ov();
+    else if(k==='Escape'&&document.body.classList.contains('ov')) ov(false);
+  });
+  document.getElementById('bn').onclick=next; document.getElementById('bp').onclick=prev;
+  document.getElementById('bf').onclick=fs; document.getElementById('bo').onclick=()=>ov();
+  let tx=null;
+  document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>60)(dx<0?next:prev)(); });
+  function copyText(text,btn,label){
+    const done=()=>{ btn.textContent='คัดลอกแล้ว ✓'; btn.classList.add('done'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('done'); },1600); };
+    const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); done(); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback();
+  }
+  window.promptText=id=>document.getElementById(id).textContent;
+  document.querySelectorAll('.copy').forEach(b=>{
+    const label=b.textContent;
+    b.addEventListener('click',ev=>{ ev.stopPropagation();
+      const text=b.dataset.full?window.promptText(b.dataset.full):b.parentElement.querySelector('.t').textContent;
+      copyText(text,b,label); });
+  });
+  document.querySelectorAll('.chk input').forEach(c=>{
+    const key='slides:'+location.pathname+':'+c.dataset.k;
+    try{ c.checked=localStorage.getItem(key)==='1'; }catch(e){}
+    c.addEventListener('change',()=>{ try{ localStorage.setItem(key,c.checked?'1':'0'); }catch(e){} });
+  });
+  addEventListener('resize',fit);
+  addEventListener('hashchange',()=>{ const n=parseInt(location.hash.slice(1)); if(n) go(n-1,false); });
+  fit(); const start=parseInt(location.hash.slice(1)); go(start?start-1:0,false);
+  fitAll();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
+  addEventListener('load',fitAll);
+})();
+</script>
+</body>
+</html>

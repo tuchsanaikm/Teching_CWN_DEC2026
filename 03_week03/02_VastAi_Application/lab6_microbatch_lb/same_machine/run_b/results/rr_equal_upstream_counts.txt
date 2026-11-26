@@ -1,0 +1,8 @@
+25432 upstream=127.0.0.1:8101 status=200
+25433 upstream=127.0.0.1:8102 status=200
+25431 upstream=127.0.0.1:8103 status=200
+25433 upstream=127.0.0.1:8104 status=200
+25431 upstream=127.0.0.1:8201 status=200
+25430 upstream=127.0.0.1:8202 status=200
+25431 upstream=127.0.0.1:8203 status=200
+25429 upstream=127.0.0.1:8204 status=200

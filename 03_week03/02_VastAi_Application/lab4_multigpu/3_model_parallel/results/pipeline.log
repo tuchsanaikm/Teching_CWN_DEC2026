@@ -1,0 +1,200 @@
+===== 06:33:42 1/4 eval base =====
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[eval] {"tag": "base", "n": 200, "test_loss": 1.91369, "exact_match": 0.0, "em_count": 0, "exact_match_loose": 54.5, "eval_sec": 44.1}
+===== 06:34:37 2/4 probe batch =====
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[probe] batch=1 step=1/3 loss=0.1296 t=0.874s
+[probe] batch=1 step=2/3 loss=0.0449 t=0.279s
+[probe] batch=1 step=3/3 loss=0.0029 t=0.269s
+[probe] {"batch": 1, "steps": 3, "seq_len": 256, "max_len": 256, "vram_model_only": {"gpu0": {"allocated_mib": 7820, "reserved_mib": 7820}, "gpu1": {"allocated_mib": 7820, "reserved_mib": 7820}}, "status": "ok", "step_sec": [0.874, 0.279, 0.269], "loss": [0.1296, 0.0449, 0.0029], "vram_peak": {"gpu0": {"allocated_mib": 8645, "reserved_mib": 8676}, "gpu1": {"allocated_mib": 9027, "reserved_mib": 9130}}, "smi_mem_used_mib": {"gpu0": 9008, "gpu1": 9462}}
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[probe] batch=2 step=1/3 loss=0.1579 t=0.916s
+[probe] batch=2 step=2/3 loss=0.0319 t=0.364s
+[probe] batch=2 step=3/3 loss=0.0023 t=0.365s
+[probe] {"batch": 2, "steps": 3, "seq_len": 256, "max_len": 256, "vram_model_only": {"gpu0": {"allocated_mib": 7820, "reserved_mib": 7820}, "gpu1": {"allocated_mib": 7820, "reserved_mib": 7820}}, "status": "ok", "step_sec": [0.916, 0.364, 0.365], "loss": [0.1579, 0.0319, 0.0023], "vram_peak": {"gpu0": {"allocated_mib": 9436, "reserved_mib": 9484}, "gpu1": {"allocated_mib": 10198, "reserved_mib": 10388}}, "smi_mem_used_mib": {"gpu0": 9816, "gpu1": 10720}}
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[probe] batch=4 step=1/3 loss=0.1579 t=1.229s
+[probe] batch=4 step=2/3 loss=0.0495 t=0.701s
+[probe] batch=4 step=3/3 loss=0.0023 t=0.706s
+[probe] {"batch": 4, "steps": 3, "seq_len": 256, "max_len": 256, "vram_model_only": {"gpu0": {"allocated_mib": 7820, "reserved_mib": 7820}, "gpu1": {"allocated_mib": 7820, "reserved_mib": 7820}}, "status": "ok", "step_sec": [1.229, 0.701, 0.706], "loss": [0.1579, 0.0495, 0.0023], "vram_peak": {"gpu0": {"allocated_mib": 11017, "reserved_mib": 11406}, "gpu1": {"allocated_mib": 12540, "reserved_mib": 12914}}, "smi_mem_used_mib": {"gpu0": 11738, "gpu1": 13246}}
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[probe] batch=8 step=1/3 loss=0.1869 t=1.899s
+[probe] batch=8 step=2/3 loss=0.0475 t=1.35s
+[probe] batch=8 step=3/3 loss=0.0023 t=1.365s
+[probe] {"batch": 8, "steps": 3, "seq_len": 256, "max_len": 256, "vram_model_only": {"gpu0": {"allocated_mib": 7820, "reserved_mib": 7820}, "gpu1": {"allocated_mib": 7820, "reserved_mib": 7820}}, "status": "ok", "step_sec": [1.899, 1.35, 1.365], "loss": [0.1869, 0.0475, 0.0023], "vram_peak": {"gpu0": {"allocated_mib": 14180, "reserved_mib": 14350}, "gpu1": {"allocated_mib": 17224, "reserved_mib": 17948}}, "smi_mem_used_mib": {"gpu0": 14682, "gpu1": 18280}}
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[probe] batch=16 OUT OF MEMORY at step 1: CUDA out of memory. Tried to allocate 2.32 GiB. GPU 1 has a total capacity of 23.56 GiB of which 711.06 MiB is free. Inc
+[probe] {"batch": 16, "steps": 3, "seq_len": 256, "max_len": 256, "vram_model_only": {"gpu0": {"allocated_mib": 7820, "reserved_mib": 7820}, "gpu1": {"allocated_mib": 7820, "reserved_mib": 7820}}, "status": "oom", "error": "CUDA out of memory. Tried to allocate 2.32 GiB. GPU 1 has a total capacity of 23.56 GiB of which 711.06 MiB is free. Including non-PyTorch memory, this process has 22.86 GiB memory in use. Of the allocated memory 22.49 GiB is allocated by PyTorch, and 57.22 MiB is reserved by PyTorch but unallocated", "steps_done": 0, "step_sec": [], "loss": [], "vram_peak": {"gpu0": {"allocated_mib": 19551, "reserved_mib": 19656}, "gpu1": {"allocated_mib": 23035, "reserved_mib": 23284}}, "smi_mem_used_mib": {"gpu0": 19980, "gpu1": 23416}}
+max batch = 8
+===== 06:35:58 3/4 train batch 8 =====
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[train] placement {"cuda:0": {"layers": "0-17", "n_layers": 18, "others": ["model.embed_tokens"], "params": 4095365632, "weights_gb": 8.19}, "cuda:1": {"layers": "18-35", "n_layers": 18, "others": ["model.norm", "lm_head"], "params": 4095369728, "weights_gb": 8.19}}
+[train] trainable=3,833,856 batch=8 steps/epoch=500
+[train] ep 1 step 10/500 loss 0.1996 avg 1.0744 0.886s/step 9.02 smp/s eta 22.0m
+[train] ep 1 step 20/500 loss 0.1229 avg 0.6674 0.849s/step 9.42 smp/s eta 20.9m
+[train] ep 1 step 30/500 loss 0.3476 avg 0.5064 0.829s/step 9.65 smp/s eta 20.3m
+[train] ep 1 step 40/500 loss 0.1045 avg 0.4058 0.823s/step 9.72 smp/s eta 20.0m
+[train] ep 1 step 50/500 loss 0.0413 avg 0.3483 0.819s/step 9.77 smp/s eta 19.8m
+[train] ep 1 step 60/500 loss 0.0681 avg 0.3101 0.817s/step 9.8 smp/s eta 19.6m
+[train] ep 1 step 70/500 loss 0.0341 avg 0.2794 0.816s/step 9.81 smp/s eta 19.4m
+[train] ep 1 step 80/500 loss 0.0693 avg 0.2572 0.807s/step 9.91 smp/s eta 19.1m
+[train] ep 1 step 90/500 loss 0.0545 avg 0.2374 0.811s/step 9.87 smp/s eta 19.0m
+[train] ep 1 step 100/500 loss 0.0644 avg 0.2225 0.810s/step 9.88 smp/s eta 18.9m
+[train] ep 1 step 110/500 loss 0.1234 avg 0.2109 0.815s/step 9.82 smp/s eta 18.9m
+[train] ep 1 step 120/500 loss 0.0952 avg 0.1975 0.810s/step 9.87 smp/s eta 18.6m
+[train] ep 1 step 130/500 loss 0.1557 avg 0.1862 0.807s/step 9.91 smp/s eta 18.4m
+[train] ep 1 step 140/500 loss 0.0210 avg 0.1754 0.803s/step 9.96 smp/s eta 18.2m
+[train] ep 1 step 150/500 loss 0.1637 avg 0.1684 0.803s/step 9.96 smp/s eta 18.1m
+[train] ep 1 step 160/500 loss 0.0315 avg 0.1617 0.800s/step 10.0 smp/s eta 17.9m
+[train] ep 1 step 170/500 loss 0.0841 avg 0.1561 0.798s/step 10.02 smp/s eta 17.7m
+[train] ep 1 step 180/500 loss 0.0254 avg 0.1513 0.797s/step 10.03 smp/s eta 17.5m
+[train] ep 1 step 190/500 loss 0.0865 avg 0.1459 0.796s/step 10.05 smp/s eta 17.4m
+[train] ep 1 step 200/500 loss 0.0166 avg 0.1411 0.795s/step 10.06 smp/s eta 17.2m
+[train] ep 1 step 210/500 loss 0.0235 avg 0.1368 0.794s/step 10.07 smp/s eta 17.1m
+[train] ep 1 step 220/500 loss 0.0495 avg 0.1336 0.794s/step 10.07 smp/s eta 16.9m
+[train] ep 1 step 230/500 loss 0.0552 avg 0.1308 0.797s/step 10.04 smp/s eta 16.9m
+[train] ep 1 step 240/500 loss 0.0820 avg 0.1282 0.799s/step 10.02 smp/s eta 16.8m
+[train] ep 1 step 250/500 loss 0.0745 avg 0.1258 0.797s/step 10.03 smp/s eta 16.6m
+[train] ep 1 step 260/500 loss 0.0528 avg 0.1233 0.796s/step 10.05 smp/s eta 16.5m
+[train] ep 1 step 270/500 loss 0.0137 avg 0.1201 0.795s/step 10.06 smp/s eta 16.3m
+[train] ep 1 step 280/500 loss 0.0517 avg 0.1176 0.794s/step 10.08 smp/s eta 16.1m
+[train] ep 1 step 290/500 loss 0.0237 avg 0.1152 0.793s/step 10.09 smp/s eta 16.0m
+[train] ep 1 step 300/500 loss 0.0813 avg 0.1133 0.794s/step 10.08 smp/s eta 15.9m
+[train] ep 1 step 310/500 loss 0.0218 avg 0.1112 0.792s/step 10.1 smp/s eta 15.7m
+[train] ep 1 step 320/500 loss 0.1240 avg 0.1093 0.791s/step 10.11 smp/s eta 15.6m
+[train] ep 1 step 330/500 loss 0.1170 avg 0.1081 0.793s/step 10.09 smp/s eta 15.5m
+[train] ep 1 step 340/500 loss 0.0430 avg 0.1064 0.793s/step 10.09 smp/s eta 15.3m
+[train] ep 1 step 350/500 loss 0.0375 avg 0.1047 0.793s/step 10.09 smp/s eta 15.2m
+[train] ep 1 step 360/500 loss 0.0368 avg 0.1027 0.792s/step 10.1 smp/s eta 15.0m
+[train] ep 1 step 370/500 loss 0.0141 avg 0.1015 0.793s/step 10.09 smp/s eta 14.9m
+[train] ep 1 step 380/500 loss 0.0561 avg 0.1002 0.794s/step 10.08 smp/s eta 14.8m
+[train] ep 1 step 390/500 loss 0.0406 avg 0.0985 0.793s/step 10.09 smp/s eta 14.7m
+[train] ep 1 step 400/500 loss 0.0259 avg 0.0971 0.793s/step 10.08 smp/s eta 14.5m
+[train] ep 1 step 410/500 loss 0.1246 avg 0.0963 0.793s/step 10.09 smp/s eta 14.4m
+[train] ep 1 step 420/500 loss 0.0962 avg 0.0952 0.792s/step 10.11 smp/s eta 14.2m
+[train] ep 1 step 430/500 loss 0.0076 avg 0.0937 0.791s/step 10.11 smp/s eta 14.1m
+[train] ep 1 step 440/500 loss 0.0594 avg 0.0928 0.792s/step 10.1 smp/s eta 14.0m
+[train] ep 1 step 450/500 loss 0.0065 avg 0.0921 0.791s/step 10.12 smp/s eta 13.8m
+[train] ep 1 step 460/500 loss 0.0653 avg 0.0914 0.791s/step 10.11 smp/s eta 13.7m
+[train] ep 1 step 470/500 loss 0.0319 avg 0.0911 0.791s/step 10.12 smp/s eta 13.6m
+[train] ep 1 step 480/500 loss 0.0157 avg 0.0900 0.791s/step 10.11 smp/s eta 13.4m
+[train] ep 1 step 490/500 loss 0.0053 avg 0.0889 0.791s/step 10.11 smp/s eta 13.3m
+[train] ep 1 step 500/500 loss 0.0274 avg 0.0876 0.791s/step 10.12 smp/s eta 13.2m
+[train] EPOCH DONE {"epoch": 1, "steps": 500, "samples": 4000, "train_loss": 0.08764, "train_loss_token_avg": 0.08997, "sec_per_step": 0.7907, "samples_per_sec": 10.118, "epoch_wall_sec": 395.6, "gpu": {"gpu0": {"util_mean": 44.7, "util_max": 100, "smi_mem_max_mib": 18640}, "gpu1": {"util_mean": 53.4, "util_max": 100, "smi_mem_max_mib": 23826}, "n_samples": 378}, "vram_peak": {"gpu0": {"allocated_mib": 14630, "reserved_mib": 18306}, "gpu1": {"allocated_mib": 17674, "reserved_mib": 23502}}, "lr_end": 0.00013333333333333337}
+[train] ep 2 step 10/500 loss 0.0405 avg 0.0459 0.934s/step 8.56 smp/s eta 15.4m
+[train] ep 2 step 20/500 loss 0.0252 avg 0.0376 0.854s/step 9.37 smp/s eta 14.0m
+[train] ep 2 step 30/500 loss 0.0672 avg 0.0341 0.838s/step 9.54 smp/s eta 13.6m
+[train] ep 2 step 40/500 loss 0.0215 avg 0.0317 0.818s/step 9.78 smp/s eta 13.1m
+[train] ep 2 step 50/500 loss 0.0620 avg 0.0320 0.810s/step 9.88 smp/s eta 12.8m
+[train] ep 2 step 60/500 loss 0.0493 avg 0.0319 0.805s/step 9.93 smp/s eta 12.6m
+[train] ep 2 step 70/500 loss 0.0178 avg 0.0306 0.798s/step 10.03 smp/s eta 12.4m
+[train] ep 2 step 80/500 loss 0.0515 avg 0.0312 0.792s/step 10.09 smp/s eta 12.2m
+[train] ep 2 step 90/500 loss 0.0946 avg 0.0313 0.787s/step 10.16 smp/s eta 11.9m
+[train] ep 2 step 100/500 loss 0.0048 avg 0.0300 0.784s/step 10.2 smp/s eta 11.8m
+[train] ep 2 step 110/500 loss 0.0482 avg 0.0298 0.782s/step 10.23 smp/s eta 11.6m
+[train] ep 2 step 120/500 loss 0.0102 avg 0.0302 0.782s/step 10.23 smp/s eta 11.5m
+[train] ep 2 step 130/500 loss 0.0528 avg 0.0297 0.782s/step 10.23 smp/s eta 11.3m
+[train] ep 2 step 140/500 loss 0.0214 avg 0.0289 0.779s/step 10.27 smp/s eta 11.2m
+[train] ep 2 step 150/500 loss 0.0153 avg 0.0302 0.779s/step 10.26 smp/s eta 11.0m
+[train] ep 2 step 160/500 loss 0.0393 avg 0.0299 0.783s/step 10.21 smp/s eta 11.0m
+[train] ep 2 step 170/500 loss 0.0048 avg 0.0298 0.783s/step 10.22 smp/s eta 10.8m
+[train] ep 2 step 180/500 loss 0.0063 avg 0.0301 0.784s/step 10.21 smp/s eta 10.7m
+[train] ep 2 step 190/500 loss 0.0125 avg 0.0299 0.785s/step 10.19 smp/s eta 10.6m
+[train] ep 2 step 200/500 loss 0.1067 avg 0.0311 0.784s/step 10.2 smp/s eta 10.5m
+[train] ep 2 step 210/500 loss 0.0149 avg 0.0318 0.783s/step 10.21 smp/s eta 10.3m
+[train] ep 2 step 220/500 loss 0.0447 avg 0.0319 0.784s/step 10.21 smp/s eta 10.2m
+[train] ep 2 step 230/500 loss 0.0209 avg 0.0314 0.782s/step 10.23 smp/s eta 10.0m
+[train] ep 2 step 240/500 loss 0.0588 avg 0.0311 0.781s/step 10.24 smp/s eta 9.9m
+[train] ep 2 step 250/500 loss 0.0091 avg 0.0308 0.782s/step 10.23 smp/s eta 9.8m
+[train] ep 2 step 260/500 loss 0.0109 avg 0.0310 0.782s/step 10.23 smp/s eta 9.6m
+[train] ep 2 step 270/500 loss 0.0433 avg 0.0310 0.783s/step 10.22 smp/s eta 9.5m
+[train] ep 2 step 280/500 loss 0.0156 avg 0.0314 0.782s/step 10.23 smp/s eta 9.4m
+[train] ep 2 step 290/500 loss 0.0153 avg 0.0313 0.783s/step 10.22 smp/s eta 9.3m
+[train] ep 2 step 300/500 loss 0.0029 avg 0.0310 0.783s/step 10.22 smp/s eta 9.1m
+[train] ep 2 step 310/500 loss 0.0999 avg 0.0308 0.784s/step 10.2 smp/s eta 9.0m
+[train] ep 2 step 320/500 loss 0.0404 avg 0.0311 0.784s/step 10.2 smp/s eta 8.9m
+[train] ep 2 step 330/500 loss 0.0295 avg 0.0312 0.786s/step 10.18 smp/s eta 8.8m
+[train] ep 2 step 340/500 loss 0.0977 avg 0.0316 0.784s/step 10.2 smp/s eta 8.6m
+[train] ep 2 step 350/500 loss 0.0259 avg 0.0323 0.788s/step 10.16 smp/s eta 8.5m
+[train] ep 2 step 360/500 loss 0.0143 avg 0.0318 0.787s/step 10.16 smp/s eta 8.4m
+[train] ep 2 step 370/500 loss 0.0451 avg 0.0318 0.788s/step 10.15 smp/s eta 8.3m
+[train] ep 2 step 380/500 loss 0.0500 avg 0.0321 0.788s/step 10.16 smp/s eta 8.1m
+[train] ep 2 step 390/500 loss 0.0375 avg 0.0319 0.789s/step 10.14 smp/s eta 8.0m
+[train] ep 2 step 400/500 loss 0.0670 avg 0.0319 0.789s/step 10.14 smp/s eta 7.9m
+[train] ep 2 step 410/500 loss 0.0636 avg 0.0319 0.789s/step 10.14 smp/s eta 7.8m
+[train] ep 2 step 420/500 loss 0.0245 avg 0.0316 0.790s/step 10.12 smp/s eta 7.6m
+[train] ep 2 step 430/500 loss 0.0511 avg 0.0316 0.790s/step 10.13 smp/s eta 7.5m
+[train] ep 2 step 440/500 loss 0.0719 avg 0.0315 0.791s/step 10.11 smp/s eta 7.4m
+[train] ep 2 step 450/500 loss 0.0263 avg 0.0314 0.790s/step 10.12 smp/s eta 7.2m
+[train] ep 2 step 460/500 loss 0.0099 avg 0.0314 0.791s/step 10.12 smp/s eta 7.1m
+[train] ep 2 step 470/500 loss 0.0335 avg 0.0313 0.792s/step 10.11 smp/s eta 7.0m
+[train] ep 2 step 480/500 loss 0.0210 avg 0.0311 0.791s/step 10.11 smp/s eta 6.9m
+[train] ep 2 step 490/500 loss 0.0141 avg 0.0307 0.791s/step 10.11 smp/s eta 6.7m
+[train] ep 2 step 500/500 loss 0.0234 avg 0.0304 0.791s/step 10.11 smp/s eta 6.6m
+[train] EPOCH DONE {"epoch": 2, "steps": 500, "samples": 4000, "train_loss": 0.03045, "train_loss_token_avg": 0.03115, "sec_per_step": 0.7914, "samples_per_sec": 10.108, "epoch_wall_sec": 396.0, "gpu": {"gpu0": {"util_mean": 45.9, "util_max": 100, "smi_mem_max_mib": 18640}, "gpu1": {"util_mean": 53.2, "util_max": 100, "smi_mem_max_mib": 19368}, "n_samples": 378}, "vram_peak": {"gpu0": {"allocated_mib": 14630, "reserved_mib": 18306}, "gpu1": {"allocated_mib": 17674, "reserved_mib": 19034}}, "lr_end": 6.666666666666668e-05}
+[train] ep 3 step 10/500 loss 0.0243 avg 0.0290 0.761s/step 10.52 smp/s eta 6.2m
+[train] ep 3 step 20/500 loss 0.0515 avg 0.0244 0.766s/step 10.45 smp/s eta 6.1m
+[train] ep 3 step 30/500 loss 0.0497 avg 0.0218 0.776s/step 10.31 smp/s eta 6.1m
+[train] ep 3 step 40/500 loss 0.0285 avg 0.0206 0.778s/step 10.28 smp/s eta 6.0m
+[train] ep 3 step 50/500 loss 0.0053 avg 0.0184 0.787s/step 10.17 smp/s eta 5.9m
+[train] ep 3 step 60/500 loss 0.0020 avg 0.0173 0.783s/step 10.22 smp/s eta 5.7m
+[train] ep 3 step 70/500 loss 0.0337 avg 0.0186 0.802s/step 9.97 smp/s eta 5.7m
+[train] ep 3 step 80/500 loss 0.0016 avg 0.0177 0.800s/step 10.0 smp/s eta 5.6m
+[train] ep 3 step 90/500 loss 0.0174 avg 0.0175 0.803s/step 9.97 smp/s eta 5.5m
+[train] ep 3 step 100/500 loss 0.0226 avg 0.0176 0.804s/step 9.95 smp/s eta 5.4m
+[train] ep 3 step 110/500 loss 0.0201 avg 0.0169 0.803s/step 9.97 smp/s eta 5.2m
+[train] ep 3 step 120/500 loss 0.0057 avg 0.0168 0.799s/step 10.02 smp/s eta 5.1m
+[train] ep 3 step 130/500 loss 0.0073 avg 0.0164 0.796s/step 10.05 smp/s eta 4.9m
+[train] ep 3 step 140/500 loss 0.0022 avg 0.0161 0.795s/step 10.06 smp/s eta 4.8m
+[train] ep 3 step 150/500 loss 0.0654 avg 0.0169 0.792s/step 10.1 smp/s eta 4.6m
+[train] ep 3 step 160/500 loss 0.0221 avg 0.0170 0.792s/step 10.1 smp/s eta 4.5m
+[train] ep 3 step 170/500 loss 0.0174 avg 0.0176 0.792s/step 10.1 smp/s eta 4.4m
+[train] ep 3 step 180/500 loss 0.0213 avg 0.0175 0.790s/step 10.13 smp/s eta 4.2m
+[train] ep 3 step 190/500 loss 0.0264 avg 0.0178 0.792s/step 10.1 smp/s eta 4.1m
+[train] ep 3 step 200/500 loss 0.0458 avg 0.0178 0.793s/step 10.09 smp/s eta 4.0m
+[train] ep 3 step 210/500 loss 0.0183 avg 0.0176 0.790s/step 10.12 smp/s eta 3.8m
+[train] ep 3 step 220/500 loss 0.0072 avg 0.0173 0.789s/step 10.14 smp/s eta 3.7m
+[train] ep 3 step 230/500 loss 0.0048 avg 0.0173 0.788s/step 10.15 smp/s eta 3.5m
+[train] ep 3 step 240/500 loss 0.0057 avg 0.0169 0.787s/step 10.17 smp/s eta 3.4m
+[train] ep 3 step 250/500 loss 0.0099 avg 0.0167 0.785s/step 10.19 smp/s eta 3.3m
+[train] ep 3 step 260/500 loss 0.0023 avg 0.0167 0.784s/step 10.2 smp/s eta 3.1m
+[train] ep 3 step 270/500 loss 0.0106 avg 0.0166 0.783s/step 10.21 smp/s eta 3.0m
+[train] ep 3 step 280/500 loss 0.0130 avg 0.0167 0.786s/step 10.17 smp/s eta 2.9m
+[train] ep 3 step 290/500 loss 0.0299 avg 0.0167 0.785s/step 10.18 smp/s eta 2.7m
+[train] ep 3 step 300/500 loss 0.1138 avg 0.0171 0.788s/step 10.15 smp/s eta 2.6m
+[train] ep 3 step 310/500 loss 0.0066 avg 0.0168 0.787s/step 10.16 smp/s eta 2.5m
+[train] ep 3 step 320/500 loss 0.0475 avg 0.0168 0.787s/step 10.17 smp/s eta 2.4m
+[train] ep 3 step 330/500 loss 0.0313 avg 0.0170 0.787s/step 10.17 smp/s eta 2.2m
+[train] ep 3 step 340/500 loss 0.0200 avg 0.0170 0.787s/step 10.17 smp/s eta 2.1m
+[train] ep 3 step 350/500 loss 0.0245 avg 0.0169 0.787s/step 10.17 smp/s eta 2.0m
+[train] ep 3 step 360/500 loss 0.0455 avg 0.0169 0.787s/step 10.16 smp/s eta 1.8m
+[train] ep 3 step 370/500 loss 0.0250 avg 0.0169 0.787s/step 10.16 smp/s eta 1.7m
+[train] ep 3 step 380/500 loss 0.0009 avg 0.0168 0.787s/step 10.17 smp/s eta 1.6m
+[train] ep 3 step 390/500 loss 0.0119 avg 0.0166 0.786s/step 10.17 smp/s eta 1.4m
+[train] ep 3 step 400/500 loss 0.0142 avg 0.0165 0.786s/step 10.18 smp/s eta 1.3m
+[train] ep 3 step 410/500 loss 0.0079 avg 0.0163 0.785s/step 10.19 smp/s eta 1.2m
+[train] ep 3 step 420/500 loss 0.0059 avg 0.0164 0.787s/step 10.17 smp/s eta 1.0m
+[train] ep 3 step 430/500 loss 0.0242 avg 0.0164 0.787s/step 10.17 smp/s eta 0.9m
+[train] ep 3 step 440/500 loss 0.0098 avg 0.0165 0.787s/step 10.16 smp/s eta 0.8m
+[train] ep 3 step 450/500 loss 0.0006 avg 0.0166 0.788s/step 10.15 smp/s eta 0.7m
+[train] ep 3 step 460/500 loss 0.0097 avg 0.0169 0.788s/step 10.15 smp/s eta 0.5m
+[train] ep 3 step 470/500 loss 0.0128 avg 0.0168 0.787s/step 10.17 smp/s eta 0.4m
+[train] ep 3 step 480/500 loss 0.0043 avg 0.0169 0.786s/step 10.17 smp/s eta 0.3m
+[train] ep 3 step 490/500 loss 0.0187 avg 0.0168 0.785s/step 10.19 smp/s eta 0.1m
+[train] ep 3 step 500/500 loss 0.0188 avg 0.0168 0.785s/step 10.2 smp/s eta 0.0m
+[train] EPOCH DONE {"epoch": 3, "steps": 500, "samples": 4000, "train_loss": 0.01682, "train_loss_token_avg": 0.01714, "sec_per_step": 0.7846, "samples_per_sec": 10.197, "epoch_wall_sec": 392.5, "gpu": {"gpu0": {"util_mean": 49.0, "util_max": 100, "smi_mem_max_mib": 18640}, "gpu1": {"util_mean": 48.7, "util_max": 100, "smi_mem_max_mib": 19368}, "n_samples": 377}, "vram_peak": {"gpu0": {"allocated_mib": 14630, "reserved_mib": 18306}, "gpu1": {"allocated_mib": 17674, "reserved_mib": 19034}}, "lr_end": 0.0}
+[train] DONE
+===== 06:55:56 4/4 eval epochs =====
+/venv/main/lib/python3.12/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[eval] {"tag": "epoch1", "n": 200, "test_loss": 0.05801, "exact_match": 70.0, "em_count": 140, "exact_match_loose": 72.5, "eval_sec": 47.2}
+[eval] {"tag": "epoch2", "n": 200, "test_loss": 0.05064, "exact_match": 77.5, "em_count": 155, "exact_match_loose": 79.5, "eval_sec": 48.2}
+[eval] {"tag": "epoch3", "n": 200, "test_loss": 0.05287, "exact_match": 77.0, "em_count": 154, "exact_match_loose": 79.5, "eval_sec": 46.6}
+===== 06:58:30 DONE =====

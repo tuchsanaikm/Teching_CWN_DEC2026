@@ -1,0 +1,138 @@
+{
+ "batch": 16,
+ "epochs_done": 3,
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 250,
+   "train_loss_mean": 0.1233,
+   "train_sec": 406.4,
+   "sec_per_step": 1.6255,
+   "samples_per_sec": 9.84,
+   "tokens_per_sec": 1045.2,
+   "gpu_util_mean_pct": {
+    "gpu0": 24.6,
+    "gpu1": 21.4,
+    "gpu2": 22.3,
+    "gpu3": 29.7
+   },
+   "gpu_util_samples": 407,
+   "smi_mem_used_max_mib": {
+    "gpu0": 12530,
+    "gpu1": 10468,
+    "gpu2": 10468,
+    "gpu3": 19748
+   },
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 11.72,
+     "peak_reserved_gb": 11.91
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 17.52,
+     "peak_reserved_gb": 18.96
+    }
+   ]
+  },
+  {
+   "epoch": 2,
+   "steps": 250,
+   "train_loss_mean": 0.0382,
+   "train_sec": 405.1,
+   "sec_per_step": 1.6202,
+   "samples_per_sec": 9.88,
+   "tokens_per_sec": 1048.6,
+   "gpu_util_mean_pct": {
+    "gpu0": 24.8,
+    "gpu1": 24.7,
+    "gpu2": 25.2,
+    "gpu3": 30.0
+   },
+   "gpu_util_samples": 405,
+   "smi_mem_used_max_mib": {
+    "gpu0": 12530,
+    "gpu1": 10468,
+    "gpu2": 10468,
+    "gpu3": 19748
+   },
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 11.72,
+     "peak_reserved_gb": 11.91
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 17.52,
+     "peak_reserved_gb": 18.96
+    }
+   ]
+  },
+  {
+   "epoch": 3,
+   "steps": 250,
+   "train_loss_mean": 0.0252,
+   "train_sec": 400.0,
+   "sec_per_step": 1.6002,
+   "samples_per_sec": 10.0,
+   "tokens_per_sec": 1061.8,
+   "gpu_util_mean_pct": {
+    "gpu0": 25.2,
+    "gpu1": 19.4,
+    "gpu2": 21.8,
+    "gpu3": 31.4
+   },
+   "gpu_util_samples": 400,
+   "smi_mem_used_max_mib": {
+    "gpu0": 12530,
+    "gpu1": 10468,
+    "gpu2": 10468,
+    "gpu3": 19748
+   },
+   "mem": [
+    {
+     "gpu": 0,
+     "peak_alloc_gb": 11.72,
+     "peak_reserved_gb": 11.91
+    },
+    {
+     "gpu": 1,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 2,
+     "peak_alloc_gb": 9.7,
+     "peak_reserved_gb": 9.9
+    },
+    {
+     "gpu": 3,
+     "peak_alloc_gb": 17.52,
+     "peak_reserved_gb": 18.96
+    }
+   ]
+  }
+ ]
+}

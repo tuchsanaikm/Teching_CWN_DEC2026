@@ -1,0 +1,9 @@
+{
+ "role": "mp4",
+ "vllm": "0.34.0",
+ "torch": "2.14.0+cu130",
+ "install_vllm_s": 26.1,
+ "download_model_s": 22.3,
+ "install_nginx_udocker_s": 30.8,
+ "model_bytes": 8061162597
+}

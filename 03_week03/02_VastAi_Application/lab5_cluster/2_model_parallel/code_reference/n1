@@ -1,0 +1,2 @@
+#!/bin/bash
+exec ssh -i /workspace/vastai_lab/Devtool_SSH/devtoolSSH -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=20 -o ServerAliveInterval=30 -p <N1_SSH_PORT> root@<N1_IP> "$@"

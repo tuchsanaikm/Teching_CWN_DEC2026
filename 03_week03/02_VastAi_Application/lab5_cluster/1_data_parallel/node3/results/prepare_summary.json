@@ -1,0 +1,107 @@
+{
+ "nodes": {
+  "node1": {
+   "dataset": "b-mc2/sql-create-context",
+   "dataset_rows": 78577,
+   "seed": 0,
+   "train_n": 4000,
+   "test_n": 200,
+   "train_sha256": "3909c13e48e09b01caea072cc438e8b36adb6c20332559208401950db31bcfe5",
+   "test_sha256": "dc94781a397bf2389bced2038e88c0ffa37a20aa9c5d8c7d514704b14900904a",
+   "model": "Qwen/Qwen3-8B",
+   "model_dir": "/workspace/models/Qwen3-8B",
+   "model_weight_files": 5,
+   "model_weight_gb": 16.38,
+   "shards_complete": true,
+   "hidden_size": 4096,
+   "num_layers": 36,
+   "vocab": 151669,
+   "torch": "2.8.0+cu128",
+   "cuda": "12.8",
+   "gpus": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ]
+  },
+  "node2": {
+   "dataset": "b-mc2/sql-create-context",
+   "dataset_rows": 78577,
+   "seed": 0,
+   "train_n": 4000,
+   "test_n": 200,
+   "train_sha256": "3909c13e48e09b01caea072cc438e8b36adb6c20332559208401950db31bcfe5",
+   "test_sha256": "dc94781a397bf2389bced2038e88c0ffa37a20aa9c5d8c7d514704b14900904a",
+   "model": "Qwen/Qwen3-8B",
+   "model_dir": "/workspace/models/Qwen3-8B",
+   "model_weight_files": 5,
+   "model_weight_gb": 16.38,
+   "shards_complete": true,
+   "hidden_size": 4096,
+   "num_layers": 36,
+   "vocab": 151669,
+   "torch": "2.8.0+cu128",
+   "cuda": "12.8",
+   "gpus": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ]
+  },
+  "node3": {
+   "dataset": "b-mc2/sql-create-context",
+   "dataset_rows": 78577,
+   "seed": 0,
+   "train_n": 4000,
+   "test_n": 200,
+   "train_sha256": "3909c13e48e09b01caea072cc438e8b36adb6c20332559208401950db31bcfe5",
+   "test_sha256": "dc94781a397bf2389bced2038e88c0ffa37a20aa9c5d8c7d514704b14900904a",
+   "model": "Qwen/Qwen3-8B",
+   "model_dir": "/workspace/models/Qwen3-8B",
+   "model_weight_files": 5,
+   "model_weight_gb": 16.38,
+   "shards_complete": true,
+   "hidden_size": 4096,
+   "num_layers": 36,
+   "vocab": 151669,
+   "torch": "2.8.0+cu128",
+   "cuda": "12.8",
+   "gpus": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ]
+  }
+ },
+ "network_to_node1": {
+  "node2": {
+   "target": "203.0.113.10:<ext_port>",
+   "connect_ms": 75.24,
+   "reachable": true,
+   "rtt_ms": {
+    "n": 50,
+    "min": 73.39,
+    "avg": 73.58,
+    "median": 73.58,
+    "max": 73.78
+   },
+   "send_to_server_mbps": 281.6,
+   "send_bytes": 352059392,
+   "recv_from_server_mbps": 185.8,
+   "recv_bytes": 235929600
+  },
+  "node3": {
+   "target": "203.0.113.10:<ext_port>",
+   "connect_ms": 82.49,
+   "reachable": true,
+   "rtt_ms": {
+    "n": 50,
+    "min": 79.53,
+    "avg": 81.15,
+    "median": 81.4,
+    "max": 82.43
+   },
+   "send_to_server_mbps": 233.9,
+   "send_bytes": 292814848,
+   "recv_from_server_mbps": 73.2,
+   "recv_bytes": 94896128
+  }
+ }
+}

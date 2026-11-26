@@ -1,0 +1,41 @@
+[
+  {
+    "id": "TC-25",
+    "name": "Bug Hunt #1 (BR-02): จับบัก H=0, V=2 ได้ WARN แทน FAIL",
+    "category": "Bug Hunt (BUG_MODE=1)",
+    "rule": "BR-02",
+    "mode": "Mock (BUG_MODE=1)",
+    "expected": "ตรวจพบบัก: ระบบตอบ WARN แทน FAIL",
+    "actual": "จับได้! h0_v2.jpg ตอบ WARN แทน FAIL",
+    "status": "BUG_CAUGHT",
+    "duration_ms": 3547,
+    "gif": "images/tests/TC-25.gif",
+    "gif_kb": 103
+  },
+  {
+    "id": "TC-26",
+    "name": "Bug Hunt #2 (BR-04): จับบักอัตราผ่าน 90.00% พอดีเป็นสีแดง",
+    "category": "Bug Hunt (BUG_MODE=1)",
+    "rule": "BR-04",
+    "mode": "Mock (BUG_MODE=1)",
+    "expected": "ตรวจพบบัก: SITE-B 90.00% แสดงสีแดง",
+    "actual": "จับได้! SITE-B 90.00% ได้ red=true",
+    "status": "BUG_CAUGHT",
+    "duration_ms": 2133,
+    "gif": "images/tests/TC-26.gif",
+    "gif_kb": 63
+  },
+  {
+    "id": "TC-27",
+    "name": "Bug Hunt #3 (BR-06): จับบักเปิดชุด 51 รูปแล้วรับ 201 แทน 422",
+    "category": "Bug Hunt (BUG_MODE=1)",
+    "rule": "BR-06",
+    "mode": "Mock (BUG_MODE=1)",
+    "expected": "ตรวจพบบัก: count=51 ตอบ HTTP 201",
+    "actual": "จับได้! count=51 ตอบ HTTP 201",
+    "status": "BUG_CAUGHT",
+    "duration_ms": 2144,
+    "gif": "images/tests/TC-27.gif",
+    "gif_kb": 112
+  }
+]

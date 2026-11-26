@@ -1,0 +1,28 @@
+{
+ "model": "Qwen/Qwen3-8B",
+ "model_dir": "/workspace/models/Qwen3-8B",
+ "model_bytes": 16397461266,
+ "model_files": [
+  "LICENSE",
+  "README.md",
+  "config.json",
+  "generation_config.json",
+  "merges.txt",
+  "model-00001-of-00005.safetensors",
+  "model-00002-of-00005.safetensors",
+  "model-00003-of-00005.safetensors",
+  "model-00004-of-00005.safetensors",
+  "model-00005-of-00005.safetensors",
+  "model.safetensors.index.json",
+  "tokenizer.json",
+  "tokenizer_config.json",
+  "vocab.json"
+ ],
+ "dataset": "b-mc2/sql-create-context",
+ "dataset_total": 78577,
+ "seed": 0,
+ "train_n": 4000,
+ "test_n": 200,
+ "train_sha256": "e1533104f37bdd7afbca8ee255fd8c4beb60a68e0a73c2a6e97c7089bfa0456c",
+ "test_sha256": "a36fd8bc1d29b2b5f5c339f855b97ea9a4bb65d103a238fb393504489731a0c4"
+}

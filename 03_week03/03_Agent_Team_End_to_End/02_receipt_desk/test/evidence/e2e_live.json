@@ -1,0 +1,52 @@
+{
+  "mode": "live",
+  "base_url": "http://127.0.0.1:3420",
+  "total": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate_pct": 100.0,
+  "results": [
+    {
+      "id": "TC-23",
+      "group": "8. Live 2× RTX 4090",
+      "rule": "Live VLM OCR",
+      "mode": "live",
+      "title": "อ่านใบเสร็จ CORD-v2 จริง 3 ใบผ่าน NGINX least_conn → 2× vLLM",
+      "expected": "อ่าน JSON ครบ 3 ใบและเปิดตรวจได้",
+      "actual": "Live 2× RTX 4090 OCR: te0021.jpg=38000.00, te0022.jpg=40000.00, te0023.jpg=63000.00",
+      "status": "PASS",
+      "seconds": 9.44,
+      "gif": "images/tests/TC-23.gif",
+      "gif_sec": 4.76,
+      "gif_kb": 325
+    },
+    {
+      "id": "TC-24",
+      "group": "8. Live 2× RTX 4090",
+      "rule": "SSE Streaming",
+      "mode": "live",
+      "title": "สตรีมสดผู้ช่วยบัญชี AI (/copilot) ผ่าน NGINX proxy_buffering off",
+      "expected": "แสดงโทเคนสด + TTFT, tok/s, X-Replica",
+      "actual": "สตรีมสด 2×4090: TTFT=547 ms, Speed=210.6 tok/s, Replica=gpu0",
+      "status": "PASS",
+      "seconds": 6.56,
+      "gif": "images/tests/TC-24.gif",
+      "gif_sec": 6.13,
+      "gif_kb": 229
+    },
+    {
+      "id": "TC-25",
+      "group": "8. Live 2× RTX 4090",
+      "rule": "Cluster Health",
+      "mode": "live",
+      "title": "หน้า /telemetry ตรวจสุขภาพคลัสเตอร์ 2× RTX 4090 สด",
+      "expected": "สถานะ ONLINE พร้อม gpu0 / gpu1",
+      "actual": "คลัสเตอร์ 2× RTX 4090 สถานะ ONLINE · ● gpu0● gpu1",
+      "status": "PASS",
+      "seconds": 3.0,
+      "gif": "images/tests/TC-25.gif",
+      "gif_sec": 2.51,
+      "gif_kb": 108
+    }
+  ]
+}

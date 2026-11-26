@@ -1,0 +1,52 @@
+{
+  "nodes": [
+    {
+      "node": 1,
+      "label": "vapp-lab5-dp-1",
+      "instance_id": "<id>",
+      "offer_id": "<id>",
+      "machine_id": "<id>",
+      "host_id": "<id>",
+      "public_ip": "203.0.113.10",
+      "ssh_port": "<port>",
+      "geolocation": "Taiwan, TW",
+      "gpu": "2x RTX 3090",
+      "dph_total": 0.4862222222222222,
+      "cpu_cores": 128,
+      "cpu_cores_effective": 32.0,
+      "reliability": 0.9678902,
+      "inet_down": 704.5,
+      "inet_up": 753.1,
+      "inet_down_cost": 0.004,
+      "cuda_max_good": 13.3,
+      "image": "pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime",
+      "disk_gb": 60,
+      "open_port_internal": 5201,
+      "open_port_external": "<port>",
+      "ready_seconds": 255
+    },
+    {
+      "node": 2,
+      "label": "vapp-lab5-dp-2",
+      "instance_id": "<id>",
+      "offer_id": "<id>",
+      "machine_id": "<id>",
+      "host_id": "<id>",
+      "public_ip": "203.0.113.10",
+      "ssh_port": "<port>",
+      "geolocation": "Taiwan, TW",
+      "gpu": "2x RTX 3090",
+      "dph_total": 0.494,
+      "cpu_cores": 96,
+      "cpu_cores_effective": 24.0,
+      "reliability": 0.9913377,
+      "inet_down": 921.0,
+      "inet_up": 138.1,
+      "inet_down_cost": 0.0026041666666666665,
+      "cuda_max_good": 13.3,
+      "image": "pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime",
+      "disk_gb": 60,
+      "ready_seconds": 256
+    }
+  ]
+}

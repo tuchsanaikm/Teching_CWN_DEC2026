@@ -1,0 +1,7922 @@
+{
+ "generated_utc": "2026-11-23T02:50:37+00:00",
+ "pass_rule": {
+  "p95_ms_max": 500.0,
+  "error_pct_below": 1.0
+ },
+ "note": "capacity = largest number of concurrent users N that passes the rule; one machine, 2x RTX 3090",
+ "summary_table": [
+  {
+   "layout": 1,
+   "name": "base",
+   "gpus": 1,
+   "description": "1 base: 1 GPU, 1 server, 1 image per call",
+   "capacity_users": 29,
+   "max_throughput_rps": 62.6,
+   "max_throughput_at_users": 29,
+   "p95_ms_at_capacity": 494.4,
+   "capacity_x_layout1": 1.0,
+   "max_throughput_x_layout1": 1.0
+  },
+  {
+   "layout": 2,
+   "name": "batch",
+   "gpus": 1,
+   "description": "2 batch: 1 GPU, 1 server, micro-batching",
+   "capacity_users": 52,
+   "max_throughput_rps": 142.93,
+   "max_throughput_at_users": 64,
+   "p95_ms_at_capacity": 490.0,
+   "capacity_x_layout1": 1.79,
+   "max_throughput_x_layout1": 2.28
+  },
+  {
+   "layout": 3,
+   "name": "multi",
+   "gpus": 1,
+   "description": "3 multi: 1 GPU, 4 servers, micro-batching",
+   "capacity_users": 90,
+   "max_throughput_rps": 278.73,
+   "max_throughput_at_users": 128,
+   "p95_ms_at_capacity": 468.4,
+   "capacity_x_layout1": 3.1,
+   "max_throughput_x_layout1": 4.45
+  },
+  {
+   "layout": 4,
+   "name": "gpu2",
+   "gpus": 2,
+   "description": "4 gpu2: 2 GPUs x 4 servers, micro-batching",
+   "capacity_users": 180,
+   "max_throughput_rps": 566.47,
+   "max_throughput_at_users": 512,
+   "p95_ms_at_capacity": 490.3,
+   "capacity_x_layout1": 6.21,
+   "max_throughput_x_layout1": 9.05
+  }
+ ],
+ "layouts": {
+  "base": {
+   "name": "base",
+   "started_utc": "2026-11-23T01:20:22+00:00",
+   "finished_utc": "2026-11-23T01:25:04+00:00",
+   "gpus_used": 1,
+   "servers": 1,
+   "server_mode": [
+    "single"
+   ],
+   "cpu_count": 64,
+   "gpu_names": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ],
+   "level_seconds": 20.0,
+   "warmup_s": 5.0,
+   "pass_rule": {
+    "p95_ms_max": 500.0,
+    "error_pct_below": 1.0
+   },
+   "capacity_users": 29,
+   "capacity_closed": true,
+   "first_fail_users": 30,
+   "max_throughput_rps": 62.6,
+   "max_throughput_at_users": 29,
+   "at_capacity": {
+    "users": 29,
+    "attempt": 2,
+    "pass": true,
+    "p50_ms": 459.4,
+    "p95_ms": 494.4,
+    "p99_ms": 515.1,
+    "throughput_rps": 62.6,
+    "requests": 939,
+    "errors": 0,
+    "error_pct": 0.0,
+    "images_per_model_call": 1.0,
+    "queue_ms_mean": 437.26,
+    "model_ms_mean": 15.57,
+    "gpu_util_pct": [
+     22.1,
+     0.0
+    ],
+    "cpu_server_pct": 135.8,
+    "cpu_nginx_pct": 2.3,
+    "cpu_loadgen_pct": 3.1,
+    "server_procs": 1,
+    "requests_by_gpu": {
+     "gpu0": 939
+    },
+    "share_pct_by_gpu": {
+     "gpu0": 100.0
+    },
+    "runs": 2
+   },
+   "gpu_util_pct_used_gpus_at_capacity": [
+    22.1
+   ],
+   "runs": 13,
+   "measured_requests": 11640,
+   "errors": 0,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 24.9,
+     "p95_ms": 31.0,
+     "p99_ms": 33.2,
+     "throughput_rps": 38.8,
+     "requests": 582,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 0.07,
+     "model_ms_mean": 16.58,
+     "gpu_util_pct": [
+      13.8,
+      0.0
+     ],
+     "cpu_server_pct": 100.2,
+     "cpu_nginx_pct": 1.1,
+     "cpu_loadgen_pct": 1.2,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 582
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.1,
+     "p95_ms": 41.5,
+     "p99_ms": 44.3,
+     "throughput_rps": 59.4,
+     "requests": 891,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 7.79,
+     "model_ms_mean": 16.46,
+     "gpu_util_pct": [
+      20.8,
+      0.0
+     ],
+     "cpu_server_pct": 132.2,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 2.8,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 891
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 64.1,
+     "p95_ms": 72.7,
+     "p99_ms": 77.3,
+     "throughput_rps": 61.8,
+     "requests": 927,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 39.28,
+     "model_ms_mean": 15.81,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "cpu_server_pct": 135.5,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.0,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 927
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 128.8,
+     "p95_ms": 159.0,
+     "p99_ms": 168.4,
+     "throughput_rps": 60.33,
+     "requests": 905,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 106.64,
+     "model_ms_mean": 16.19,
+     "gpu_util_pct": [
+      21.3,
+      0.0
+     ],
+     "cpu_server_pct": 134.8,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 3.0,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 905
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 255.3,
+     "p95_ms": 273.6,
+     "p99_ms": 285.5,
+     "throughput_rps": 62.13,
+     "requests": 932,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 231.95,
+     "model_ms_mean": 15.7,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "cpu_server_pct": 135.7,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 932
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 29,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 459.4,
+     "p95_ms": 494.4,
+     "p99_ms": 515.1,
+     "throughput_rps": 62.6,
+     "requests": 939,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 437.26,
+     "model_ms_mean": 15.57,
+     "gpu_util_pct": [
+      22.1,
+      0.0
+     ],
+     "cpu_server_pct": 135.8,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 939
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 30,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 476.2,
+     "p95_ms": 521.5,
+     "p99_ms": 642.8,
+     "throughput_rps": 62.0,
+     "requests": 930,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 457.44,
+     "model_ms_mean": 15.71,
+     "gpu_util_pct": [
+      21.9,
+      0.0
+     ],
+     "cpu_server_pct": 135.7,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 930
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 517.9,
+     "p95_ms": 558.2,
+     "p99_ms": 669.8,
+     "throughput_rps": 60.87,
+     "requests": 913,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 498.29,
+     "model_ms_mean": 15.97,
+     "gpu_util_pct": [
+      21.6,
+      0.0
+     ],
+     "cpu_server_pct": 135.4,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 913
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 1017.3,
+     "p95_ms": 1068.3,
+     "p99_ms": 1079.8,
+     "throughput_rps": 62.33,
+     "requests": 935,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 999.09,
+     "model_ms_mean": 15.62,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "cpu_server_pct": 136.2,
+     "cpu_nginx_pct": 2.0,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 935
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    }
+   ],
+   "all_runs": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 24.9,
+     "p95_ms": 31.0,
+     "p99_ms": 33.2,
+     "throughput_rps": 38.8,
+     "requests": 582,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 0.07,
+     "model_ms_mean": 16.58,
+     "gpu_util_pct": [
+      13.8,
+      0.0
+     ],
+     "cpu_server_pct": 100.2,
+     "cpu_nginx_pct": 1.1,
+     "cpu_loadgen_pct": 1.2,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 582
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.1,
+     "p95_ms": 41.5,
+     "p99_ms": 44.3,
+     "throughput_rps": 59.4,
+     "requests": 891,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 7.79,
+     "model_ms_mean": 16.46,
+     "gpu_util_pct": [
+      20.8,
+      0.0
+     ],
+     "cpu_server_pct": 132.2,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 2.8,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 891
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 64.1,
+     "p95_ms": 72.7,
+     "p99_ms": 77.3,
+     "throughput_rps": 61.8,
+     "requests": 927,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 39.28,
+     "model_ms_mean": 15.81,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "cpu_server_pct": 135.5,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.0,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 927
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 128.8,
+     "p95_ms": 159.0,
+     "p99_ms": 168.4,
+     "throughput_rps": 60.33,
+     "requests": 905,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 106.64,
+     "model_ms_mean": 16.19,
+     "gpu_util_pct": [
+      21.3,
+      0.0
+     ],
+     "cpu_server_pct": 134.8,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 3.0,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 905
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 255.3,
+     "p95_ms": 273.6,
+     "p99_ms": 285.5,
+     "throughput_rps": 62.13,
+     "requests": 932,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 231.95,
+     "model_ms_mean": 15.7,
+     "gpu_util_pct": [
+      21.8,
+      0.0
+     ],
+     "cpu_server_pct": 135.7,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 932
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 517.9,
+     "p95_ms": 558.2,
+     "p99_ms": 669.8,
+     "throughput_rps": 60.87,
+     "requests": 913,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 498.29,
+     "model_ms_mean": 15.97,
+     "gpu_util_pct": [
+      21.6,
+      0.0
+     ],
+     "cpu_server_pct": 135.4,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 913
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 32,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 507.4,
+     "p95_ms": 559.8,
+     "p99_ms": 577.4,
+     "throughput_rps": 62.4,
+     "requests": 936,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 486.13,
+     "model_ms_mean": 15.57,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "cpu_server_pct": 135.9,
+     "cpu_nginx_pct": 2.2,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 936
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 1017.3,
+     "p95_ms": 1068.3,
+     "p99_ms": 1079.8,
+     "throughput_rps": 62.33,
+     "requests": 935,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 999.09,
+     "model_ms_mean": 15.62,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "cpu_server_pct": 136.2,
+     "cpu_nginx_pct": 2.0,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 935
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 1057.8,
+     "p95_ms": 1168.5,
+     "p99_ms": 1181.2,
+     "throughput_rps": 59.8,
+     "requests": 897,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 1037.81,
+     "model_ms_mean": 16.06,
+     "gpu_util_pct": [
+      20.8,
+      0.0
+     ],
+     "cpu_server_pct": 131.6,
+     "cpu_nginx_pct": 1.7,
+     "cpu_loadgen_pct": 2.3,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 897
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 29,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 465.3,
+     "p95_ms": 507.4,
+     "p99_ms": 593.2,
+     "throughput_rps": 61.47,
+     "requests": 922,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 445.38,
+     "model_ms_mean": 15.84,
+     "gpu_util_pct": [
+      21.7,
+      0.0
+     ],
+     "cpu_server_pct": 135.7,
+     "cpu_nginx_pct": 1.9,
+     "cpu_loadgen_pct": 2.8,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 922
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 29,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 459.4,
+     "p95_ms": 494.4,
+     "p99_ms": 515.1,
+     "throughput_rps": 62.6,
+     "requests": 939,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 437.26,
+     "model_ms_mean": 15.57,
+     "gpu_util_pct": [
+      22.1,
+      0.0
+     ],
+     "cpu_server_pct": 135.8,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 939
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 30,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 476.1,
+     "p95_ms": 525.8,
+     "p99_ms": 580.9,
+     "throughput_rps": 62.07,
+     "requests": 931,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 456.56,
+     "model_ms_mean": 15.66,
+     "gpu_util_pct": [
+      22.0,
+      0.0
+     ],
+     "cpu_server_pct": 135.3,
+     "cpu_nginx_pct": 2.2,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 931
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 30,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 476.2,
+     "p95_ms": 521.5,
+     "p99_ms": 642.8,
+     "throughput_rps": 62.0,
+     "requests": 930,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 457.44,
+     "model_ms_mean": 15.71,
+     "gpu_util_pct": [
+      21.9,
+      0.0
+     ],
+     "cpu_server_pct": 135.7,
+     "cpu_nginx_pct": 2.1,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 930
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    }
+   ],
+   "label": "1 base: 1 GPU, 1 server, 1 image per call",
+   "capacity_x_layout1": 1.0,
+   "max_throughput_x_layout1": 1.0
+  },
+  "batch": {
+   "name": "batch",
+   "started_utc": "2026-11-23T01:27:38+00:00",
+   "finished_utc": "2026-11-23T01:37:31+00:00",
+   "gpus_used": 1,
+   "servers": 1,
+   "server_mode": [
+    "micro"
+   ],
+   "cpu_count": 64,
+   "gpu_names": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ],
+   "level_seconds": 20.0,
+   "warmup_s": 5.0,
+   "pass_rule": {
+    "p95_ms_max": 500.0,
+    "error_pct_below": 1.0
+   },
+   "capacity_users": 52,
+   "capacity_closed": true,
+   "first_fail_users": 54,
+   "max_throughput_rps": 142.93,
+   "max_throughput_at_users": 64,
+   "at_capacity": {
+    "users": 52,
+    "attempt": 2,
+    "pass": true,
+    "p50_ms": 368.6,
+    "p95_ms": 490.0,
+    "p99_ms": 523.5,
+    "throughput_rps": 135.2,
+    "requests": 2028,
+    "errors": 0,
+    "error_pct": 0.0,
+    "images_per_model_call": 26.0,
+    "queue_ms_mean": 123.84,
+    "model_ms_mean": 174.04,
+    "gpu_util_pct": [
+     31.3,
+     0.0
+    ],
+    "cpu_server_pct": 181.1,
+    "cpu_nginx_pct": 3.2,
+    "cpu_loadgen_pct": 3.9,
+    "server_procs": 1,
+    "requests_by_gpu": {
+     "gpu0": 2028
+    },
+    "share_pct_by_gpu": {
+     "gpu0": 100.0
+    },
+    "runs": 2
+   },
+   "gpu_util_pct_used_gpus_at_capacity": [
+    31.3
+   ],
+   "runs": 17,
+   "measured_requests": 29877,
+   "errors": 0,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 30.0,
+     "p95_ms": 36.2,
+     "p99_ms": 38.0,
+     "throughput_rps": 32.67,
+     "requests": 490,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.17,
+     "model_ms_mean": 16.94,
+     "gpu_util_pct": [
+      11.4,
+      0.0
+     ],
+     "cpu_server_pct": 83.4,
+     "cpu_nginx_pct": 1.0,
+     "cpu_loadgen_pct": 1.3,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 490
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 40.0,
+     "p95_ms": 46.4,
+     "p99_ms": 48.9,
+     "throughput_rps": 50.4,
+     "requests": 756,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.2,
+     "queue_ms_mean": 13.37,
+     "model_ms_mean": 16.55,
+     "gpu_util_pct": [
+      16.4,
+      0.0
+     ],
+     "cpu_server_pct": 109.2,
+     "cpu_nginx_pct": 1.5,
+     "cpu_loadgen_pct": 2.3,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 756
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 45.9,
+     "p95_ms": 57.2,
+     "p99_ms": 62.7,
+     "throughput_rps": 84.07,
+     "requests": 1261,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 3.3,
+     "queue_ms_mean": 7.32,
+     "model_ms_mean": 22.88,
+     "gpu_util_pct": [
+      20.9,
+      0.0
+     ],
+     "cpu_server_pct": 123.3,
+     "cpu_nginx_pct": 2.2,
+     "cpu_loadgen_pct": 2.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1261
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 71.1,
+     "p95_ms": 80.6,
+     "p99_ms": 85.7,
+     "throughput_rps": 110.4,
+     "requests": 1656,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.0,
+     "queue_ms_mean": 24.85,
+     "model_ms_mean": 28.62,
+     "gpu_util_pct": [
+      27.8,
+      0.0
+     ],
+     "cpu_server_pct": 154.5,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1656
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 112.0,
+     "p95_ms": 136.6,
+     "p99_ms": 261.6,
+     "throughput_rps": 136.93,
+     "requests": 2054,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 7.99,
+     "queue_ms_mean": 38.5,
+     "model_ms_mean": 47.75,
+     "gpu_util_pct": [
+      32.4,
+      0.0
+     ],
+     "cpu_server_pct": 166.3,
+     "cpu_nginx_pct": 2.7,
+     "cpu_loadgen_pct": 4.5,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2054
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 222.8,
+     "p95_ms": 336.4,
+     "p99_ms": 367.9,
+     "throughput_rps": 137.4,
+     "requests": 2061,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.98,
+     "queue_ms_mean": 77.31,
+     "model_ms_mean": 98.94,
+     "gpu_util_pct": [
+      32.2,
+      0.0
+     ],
+     "cpu_server_pct": 171.9,
+     "cpu_nginx_pct": 3.1,
+     "cpu_loadgen_pct": 4.4,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2061
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 50,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 362.7,
+     "p95_ms": 492.7,
+     "p99_ms": 520.7,
+     "throughput_rps": 132.0,
+     "requests": 1980,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.06,
+     "queue_ms_mean": 123.35,
+     "model_ms_mean": 171.84,
+     "gpu_util_pct": [
+      31.5,
+      0.0
+     ],
+     "cpu_server_pct": 174.9,
+     "cpu_nginx_pct": 3.1,
+     "cpu_loadgen_pct": 4.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1980
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 51,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 366.2,
+     "p95_ms": 484.0,
+     "p99_ms": 495.0,
+     "throughput_rps": 134.2,
+     "requests": 2013,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.48,
+     "queue_ms_mean": 131.27,
+     "model_ms_mean": 166.24,
+     "gpu_util_pct": [
+      30.0,
+      0.1
+     ],
+     "cpu_server_pct": 177.5,
+     "cpu_nginx_pct": 2.9,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2013
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 52,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 368.6,
+     "p95_ms": 490.0,
+     "p99_ms": 523.5,
+     "throughput_rps": 135.2,
+     "requests": 2028,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 26.0,
+     "queue_ms_mean": 123.84,
+     "model_ms_mean": 174.04,
+     "gpu_util_pct": [
+      31.3,
+      0.0
+     ],
+     "cpu_server_pct": 181.1,
+     "cpu_nginx_pct": 3.2,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2028
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 54,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 386.2,
+     "p95_ms": 538.0,
+     "p99_ms": 596.0,
+     "throughput_rps": 133.2,
+     "requests": 1998,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 27.0,
+     "queue_ms_mean": 137.36,
+     "model_ms_mean": 180.27,
+     "gpu_util_pct": [
+      31.1,
+      0.0
+     ],
+     "cpu_server_pct": 177.2,
+     "cpu_nginx_pct": 2.9,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1998
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 64,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 449.2,
+     "p95_ms": 575.0,
+     "p99_ms": 619.2,
+     "throughput_rps": 138.67,
+     "requests": 2080,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 149.67,
+     "model_ms_mean": 217.0,
+     "gpu_util_pct": [
+      31.7,
+      0.0
+     ],
+     "cpu_server_pct": 181.5,
+     "cpu_nginx_pct": 3.3,
+     "cpu_loadgen_pct": 4.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2080
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 128,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 940.0,
+     "p95_ms": 1118.8,
+     "p99_ms": 1162.0,
+     "throughput_rps": 130.13,
+     "requests": 1952,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 637.81,
+     "model_ms_mean": 228.84,
+     "gpu_util_pct": [
+      30.0,
+      0.0
+     ],
+     "cpu_server_pct": 180.7,
+     "cpu_nginx_pct": 2.5,
+     "cpu_loadgen_pct": 3.8,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1952
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    }
+   ],
+   "all_runs": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 30.0,
+     "p95_ms": 36.2,
+     "p99_ms": 38.0,
+     "throughput_rps": 32.67,
+     "requests": 490,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.17,
+     "model_ms_mean": 16.94,
+     "gpu_util_pct": [
+      11.4,
+      0.0
+     ],
+     "cpu_server_pct": 83.4,
+     "cpu_nginx_pct": 1.0,
+     "cpu_loadgen_pct": 1.3,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 490
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 40.0,
+     "p95_ms": 46.4,
+     "p99_ms": 48.9,
+     "throughput_rps": 50.4,
+     "requests": 756,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.2,
+     "queue_ms_mean": 13.37,
+     "model_ms_mean": 16.55,
+     "gpu_util_pct": [
+      16.4,
+      0.0
+     ],
+     "cpu_server_pct": 109.2,
+     "cpu_nginx_pct": 1.5,
+     "cpu_loadgen_pct": 2.3,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 756
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 45.9,
+     "p95_ms": 57.2,
+     "p99_ms": 62.7,
+     "throughput_rps": 84.07,
+     "requests": 1261,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 3.3,
+     "queue_ms_mean": 7.32,
+     "model_ms_mean": 22.88,
+     "gpu_util_pct": [
+      20.9,
+      0.0
+     ],
+     "cpu_server_pct": 123.3,
+     "cpu_nginx_pct": 2.2,
+     "cpu_loadgen_pct": 2.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1261
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 71.1,
+     "p95_ms": 80.6,
+     "p99_ms": 85.7,
+     "throughput_rps": 110.4,
+     "requests": 1656,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.0,
+     "queue_ms_mean": 24.85,
+     "model_ms_mean": 28.62,
+     "gpu_util_pct": [
+      27.8,
+      0.0
+     ],
+     "cpu_server_pct": 154.5,
+     "cpu_nginx_pct": 2.3,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1656
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 112.0,
+     "p95_ms": 136.6,
+     "p99_ms": 261.6,
+     "throughput_rps": 136.93,
+     "requests": 2054,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 7.99,
+     "queue_ms_mean": 38.5,
+     "model_ms_mean": 47.75,
+     "gpu_util_pct": [
+      32.4,
+      0.0
+     ],
+     "cpu_server_pct": 166.3,
+     "cpu_nginx_pct": 2.7,
+     "cpu_loadgen_pct": 4.5,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2054
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 222.8,
+     "p95_ms": 336.4,
+     "p99_ms": 367.9,
+     "throughput_rps": 137.4,
+     "requests": 2061,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.98,
+     "queue_ms_mean": 77.31,
+     "model_ms_mean": 98.94,
+     "gpu_util_pct": [
+      32.2,
+      0.0
+     ],
+     "cpu_server_pct": 171.9,
+     "cpu_nginx_pct": 3.1,
+     "cpu_loadgen_pct": 4.4,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2061
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 423.2,
+     "p95_ms": 594.9,
+     "p99_ms": 611.2,
+     "throughput_rps": 142.93,
+     "requests": 2144,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 140.22,
+     "model_ms_mean": 212.52,
+     "gpu_util_pct": [
+      32.9,
+      0.0
+     ],
+     "cpu_server_pct": 191.1,
+     "cpu_nginx_pct": 3.3,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2144
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 449.2,
+     "p95_ms": 575.0,
+     "p99_ms": 619.2,
+     "throughput_rps": 138.67,
+     "requests": 2080,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 149.67,
+     "model_ms_mean": 217.0,
+     "gpu_util_pct": [
+      31.7,
+      0.0
+     ],
+     "cpu_server_pct": 181.5,
+     "cpu_nginx_pct": 3.3,
+     "cpu_loadgen_pct": 4.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2080
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 935.0,
+     "p95_ms": 1158.9,
+     "p99_ms": 1177.0,
+     "throughput_rps": 130.13,
+     "requests": 1952,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 642.68,
+     "model_ms_mean": 229.26,
+     "gpu_util_pct": [
+      27.8,
+      0.0
+     ],
+     "cpu_server_pct": 180.9,
+     "cpu_nginx_pct": 2.5,
+     "cpu_loadgen_pct": 4.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1952
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 128,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 940.0,
+     "p95_ms": 1118.8,
+     "p99_ms": 1162.0,
+     "throughput_rps": 130.13,
+     "requests": 1952,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 637.81,
+     "model_ms_mean": 228.84,
+     "gpu_util_pct": [
+      30.0,
+      0.0
+     ],
+     "cpu_server_pct": 180.7,
+     "cpu_nginx_pct": 2.5,
+     "cpu_loadgen_pct": 3.8,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1952
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 54,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 398.3,
+     "p95_ms": 562.8,
+     "p99_ms": 578.3,
+     "throughput_rps": 129.6,
+     "requests": 1944,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 27.0,
+     "queue_ms_mean": 138.82,
+     "model_ms_mean": 186.09,
+     "gpu_util_pct": [
+      28.6,
+      0.0
+     ],
+     "cpu_server_pct": 174.8,
+     "cpu_nginx_pct": 2.9,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1944
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 54,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 386.2,
+     "p95_ms": 538.0,
+     "p99_ms": 596.0,
+     "throughput_rps": 133.2,
+     "requests": 1998,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 27.0,
+     "queue_ms_mean": 137.36,
+     "model_ms_mean": 180.27,
+     "gpu_util_pct": [
+      31.1,
+      0.0
+     ],
+     "cpu_server_pct": 177.2,
+     "cpu_nginx_pct": 2.9,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1998
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 50,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 363.3,
+     "p95_ms": 531.7,
+     "p99_ms": 7687.1,
+     "throughput_rps": 100.0,
+     "requests": 1500,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.0,
+     "queue_ms_mean": 249.92,
+     "model_ms_mean": 290.1,
+     "gpu_util_pct": [
+      23.9,
+      0.0
+     ],
+     "cpu_server_pct": 135.5,
+     "cpu_nginx_pct": 2.2,
+     "cpu_loadgen_pct": 3.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1500
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 50,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 362.7,
+     "p95_ms": 492.7,
+     "p99_ms": 520.7,
+     "throughput_rps": 132.0,
+     "requests": 1980,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.06,
+     "queue_ms_mean": 123.35,
+     "model_ms_mean": 171.84,
+     "gpu_util_pct": [
+      31.5,
+      0.0
+     ],
+     "cpu_server_pct": 174.9,
+     "cpu_nginx_pct": 3.1,
+     "cpu_loadgen_pct": 4.1,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 1980
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 51,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 366.2,
+     "p95_ms": 484.0,
+     "p99_ms": 495.0,
+     "throughput_rps": 134.2,
+     "requests": 2013,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.48,
+     "queue_ms_mean": 131.27,
+     "model_ms_mean": 166.24,
+     "gpu_util_pct": [
+      30.0,
+      0.1
+     ],
+     "cpu_server_pct": 177.5,
+     "cpu_nginx_pct": 2.9,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2013
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 52,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 364.2,
+     "p95_ms": 511.5,
+     "p99_ms": 606.8,
+     "throughput_rps": 133.93,
+     "requests": 2008,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 25.74,
+     "queue_ms_mean": 138.99,
+     "model_ms_mean": 164.45,
+     "gpu_util_pct": [
+      28.7,
+      0.0
+     ],
+     "cpu_server_pct": 180.3,
+     "cpu_nginx_pct": 3.3,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2008
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 52,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 368.6,
+     "p95_ms": 490.0,
+     "p99_ms": 523.5,
+     "throughput_rps": 135.2,
+     "requests": 2028,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 26.0,
+     "queue_ms_mean": 123.84,
+     "model_ms_mean": 174.04,
+     "gpu_util_pct": [
+      31.3,
+      0.0
+     ],
+     "cpu_server_pct": 181.1,
+     "cpu_nginx_pct": 3.2,
+     "cpu_loadgen_pct": 3.9,
+     "server_procs": 1,
+     "requests_by_gpu": {
+      "gpu0": 2028
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    }
+   ],
+   "label": "2 batch: 1 GPU, 1 server, micro-batching",
+   "capacity_x_layout1": 1.79,
+   "max_throughput_x_layout1": 2.28
+  },
+  "multi": {
+   "name": "multi",
+   "started_utc": "2026-11-23T01:55:13+00:00",
+   "finished_utc": "2026-11-23T02:02:26+00:00",
+   "gpus_used": 1,
+   "servers": 4,
+   "server_mode": [
+    "micro"
+   ],
+   "cpu_count": 64,
+   "gpu_names": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ],
+   "level_seconds": 20.0,
+   "warmup_s": 5.0,
+   "pass_rule": {
+    "p95_ms_max": 500.0,
+    "error_pct_below": 1.0
+   },
+   "capacity_users": 90,
+   "capacity_closed": true,
+   "first_fail_users": 91,
+   "max_throughput_rps": 278.73,
+   "max_throughput_at_users": 128,
+   "at_capacity": {
+    "users": 90,
+    "attempt": 1,
+    "pass": true,
+    "p50_ms": 333.9,
+    "p95_ms": 468.4,
+    "p99_ms": 546.9,
+    "throughput_rps": 268.67,
+    "requests": 4030,
+    "errors": 0,
+    "error_pct": 0.0,
+    "images_per_model_call": 11.01,
+    "queue_ms_mean": 126.14,
+    "model_ms_mean": 147.29,
+    "gpu_util_pct": [
+     81.9,
+     0.0
+    ],
+    "cpu_server_pct": 534.7,
+    "cpu_nginx_pct": 6.1,
+    "cpu_loadgen_pct": 8.3,
+    "server_procs": 4,
+    "requests_by_gpu": {
+     "gpu0": 4030
+    },
+    "share_pct_by_gpu": {
+     "gpu0": 100.0
+    },
+    "runs": 1
+   },
+   "gpu_util_pct_used_gpus_at_capacity": [
+    81.9
+   ],
+   "runs": 20,
+   "measured_requests": 69962,
+   "errors": 3,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 31.8,
+     "p95_ms": 37.6,
+     "p99_ms": 42.1,
+     "throughput_rps": 30.93,
+     "requests": 464,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 18.16,
+     "gpu_util_pct": [
+      11.2,
+      0.0
+     ],
+     "cpu_server_pct": 84.6,
+     "cpu_nginx_pct": 1.1,
+     "cpu_loadgen_pct": 1.6,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 464
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 31.9,
+     "p95_ms": 38.3,
+     "p99_ms": 40.2,
+     "throughput_rps": 61.13,
+     "requests": 917,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.17,
+     "gpu_util_pct": [
+      50.7,
+      0.0
+     ],
+     "cpu_server_pct": 169.7,
+     "cpu_nginx_pct": 1.7,
+     "cpu_loadgen_pct": 2.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 917
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.7,
+     "p95_ms": 39.1,
+     "p99_ms": 40.8,
+     "throughput_rps": 118.73,
+     "requests": 1781,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.21,
+     "gpu_util_pct": [
+      58.7,
+      0.0
+     ],
+     "cpu_server_pct": 331.0,
+     "cpu_nginx_pct": 3.5,
+     "cpu_loadgen_pct": 4.9,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 1781
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 46.2,
+     "p95_ms": 55.0,
+     "p99_ms": 68.2,
+     "throughput_rps": 169.53,
+     "requests": 2543,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.04,
+     "queue_ms_mean": 18.2,
+     "model_ms_mean": 18.16,
+     "gpu_util_pct": [
+      80.2,
+      0.0
+     ],
+     "cpu_server_pct": 447.1,
+     "cpu_nginx_pct": 5.1,
+     "cpu_loadgen_pct": 7.1,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 2543
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 70.0,
+     "p95_ms": 88.8,
+     "p99_ms": 106.1,
+     "throughput_rps": 225.93,
+     "requests": 3389,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.09,
+     "queue_ms_mean": 25.57,
+     "model_ms_mean": 29.56,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ],
+     "cpu_server_pct": 501.5,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3389
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 121.6,
+     "p95_ms": 135.6,
+     "p99_ms": 196.5,
+     "throughput_rps": 260.47,
+     "requests": 3907,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 3.94,
+     "queue_ms_mean": 47.58,
+     "model_ms_mean": 51.09,
+     "gpu_util_pct": [
+      83.4,
+      0.0
+     ],
+     "cpu_server_pct": 531.5,
+     "cpu_nginx_pct": 7.1,
+     "cpu_loadgen_pct": 8.8,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3907
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 239.5,
+     "p95_ms": 272.1,
+     "p99_ms": 431.5,
+     "throughput_rps": 266.87,
+     "requests": 4004,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 7.83,
+     "queue_ms_mean": 95.54,
+     "model_ms_mean": 103.44,
+     "gpu_util_pct": [
+      81.8,
+      0.0
+     ],
+     "cpu_server_pct": 533.6,
+     "cpu_nginx_pct": 6.7,
+     "cpu_loadgen_pct": 8.2,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4004
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 81,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 293.9,
+     "p95_ms": 466.1,
+     "p99_ms": 510.0,
+     "throughput_rps": 272.33,
+     "requests": 4085,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 9.75,
+     "queue_ms_mean": 109.18,
+     "model_ms_mean": 125.27,
+     "gpu_util_pct": [
+      82.3,
+      0.0
+     ],
+     "cpu_server_pct": 536.3,
+     "cpu_nginx_pct": 6.4,
+     "cpu_loadgen_pct": 8.9,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4085
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 88,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 323.1,
+     "p95_ms": 452.2,
+     "p99_ms": 543.3,
+     "throughput_rps": 272.33,
+     "requests": 4085,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 10.8,
+     "queue_ms_mean": 122.09,
+     "model_ms_mean": 137.25,
+     "gpu_util_pct": [
+      81.0,
+      0.0
+     ],
+     "cpu_server_pct": 536.1,
+     "cpu_nginx_pct": 6.4,
+     "cpu_loadgen_pct": 8.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4085
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 90,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 333.9,
+     "p95_ms": 468.4,
+     "p99_ms": 546.9,
+     "throughput_rps": 268.67,
+     "requests": 4030,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.01,
+     "queue_ms_mean": 126.14,
+     "model_ms_mean": 147.29,
+     "gpu_util_pct": [
+      81.9,
+      0.0
+     ],
+     "cpu_server_pct": 534.7,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.3,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4030
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 91,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 327.4,
+     "p95_ms": 513.3,
+     "p99_ms": 576.3,
+     "throughput_rps": 271.67,
+     "requests": 4075,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.01,
+     "queue_ms_mean": 125.0,
+     "model_ms_mean": 141.48,
+     "gpu_util_pct": [
+      82.6,
+      0.0
+     ],
+     "cpu_server_pct": 532.5,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.4,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4075
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 98,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 354.2,
+     "p95_ms": 525.1,
+     "p99_ms": 600.6,
+     "throughput_rps": 275.53,
+     "requests": 4133,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.05,
+     "queue_ms_mean": 134.5,
+     "model_ms_mean": 158.53,
+     "gpu_util_pct": [
+      82.4,
+      0.0
+     ],
+     "cpu_server_pct": 538.1,
+     "cpu_nginx_pct": 6.0,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4133
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 102,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 368.0,
+     "p95_ms": 523.4,
+     "p99_ms": 622.7,
+     "throughput_rps": 276.93,
+     "requests": 4154,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.54,
+     "queue_ms_mean": 143.96,
+     "model_ms_mean": 160.21,
+     "gpu_util_pct": [
+      82.7,
+      0.0
+     ],
+     "cpu_server_pct": 542.3,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.6,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4154
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 454.4,
+     "p95_ms": 652.0,
+     "p99_ms": 746.8,
+     "throughput_rps": 278.73,
+     "requests": 4181,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.64,
+     "queue_ms_mean": 162.8,
+     "model_ms_mean": 208.39,
+     "gpu_util_pct": [
+      80.3,
+      0.0
+     ],
+     "cpu_server_pct": 538.9,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.3,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4181
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 256,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 943.0,
+     "p95_ms": 1006.4,
+     "p99_ms": 1106.2,
+     "throughput_rps": 268.8,
+     "requests": 4032,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 372.81,
+     "model_ms_mean": 436.52,
+     "gpu_util_pct": [
+      76.7,
+      0.0
+     ],
+     "cpu_server_pct": 537.8,
+     "cpu_nginx_pct": 5.3,
+     "cpu_loadgen_pct": 8.1,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4032
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     },
+     "runs": 2
+    }
+   ],
+   "all_runs": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 31.8,
+     "p95_ms": 37.6,
+     "p99_ms": 42.1,
+     "throughput_rps": 30.93,
+     "requests": 464,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 18.16,
+     "gpu_util_pct": [
+      11.2,
+      0.0
+     ],
+     "cpu_server_pct": 84.6,
+     "cpu_nginx_pct": 1.1,
+     "cpu_loadgen_pct": 1.6,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 464
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 31.9,
+     "p95_ms": 38.3,
+     "p99_ms": 40.2,
+     "throughput_rps": 61.13,
+     "requests": 917,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.17,
+     "gpu_util_pct": [
+      50.7,
+      0.0
+     ],
+     "cpu_server_pct": 169.7,
+     "cpu_nginx_pct": 1.7,
+     "cpu_loadgen_pct": 2.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 917
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.7,
+     "p95_ms": 39.1,
+     "p99_ms": 40.8,
+     "throughput_rps": 118.73,
+     "requests": 1781,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.21,
+     "gpu_util_pct": [
+      58.7,
+      0.0
+     ],
+     "cpu_server_pct": 331.0,
+     "cpu_nginx_pct": 3.5,
+     "cpu_loadgen_pct": 4.9,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 1781
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 46.2,
+     "p95_ms": 55.0,
+     "p99_ms": 68.2,
+     "throughput_rps": 169.53,
+     "requests": 2543,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.04,
+     "queue_ms_mean": 18.2,
+     "model_ms_mean": 18.16,
+     "gpu_util_pct": [
+      80.2,
+      0.0
+     ],
+     "cpu_server_pct": 447.1,
+     "cpu_nginx_pct": 5.1,
+     "cpu_loadgen_pct": 7.1,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 2543
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 70.0,
+     "p95_ms": 88.8,
+     "p99_ms": 106.1,
+     "throughput_rps": 225.93,
+     "requests": 3389,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.09,
+     "queue_ms_mean": 25.57,
+     "model_ms_mean": 29.56,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ],
+     "cpu_server_pct": 501.5,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3389
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 121.6,
+     "p95_ms": 135.6,
+     "p99_ms": 196.5,
+     "throughput_rps": 260.47,
+     "requests": 3907,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 3.94,
+     "queue_ms_mean": 47.58,
+     "model_ms_mean": 51.09,
+     "gpu_util_pct": [
+      83.4,
+      0.0
+     ],
+     "cpu_server_pct": 531.5,
+     "cpu_nginx_pct": 7.1,
+     "cpu_loadgen_pct": 8.8,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3907
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 239.5,
+     "p95_ms": 272.1,
+     "p99_ms": 431.5,
+     "throughput_rps": 266.87,
+     "requests": 4004,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 7.83,
+     "queue_ms_mean": 95.54,
+     "model_ms_mean": 103.44,
+     "gpu_util_pct": [
+      81.8,
+      0.0
+     ],
+     "cpu_server_pct": 533.6,
+     "cpu_nginx_pct": 6.7,
+     "cpu_loadgen_pct": 8.2,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4004
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 454.4,
+     "p95_ms": 652.0,
+     "p99_ms": 746.8,
+     "throughput_rps": 278.73,
+     "requests": 4181,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.64,
+     "queue_ms_mean": 162.8,
+     "model_ms_mean": 208.39,
+     "gpu_util_pct": [
+      80.3,
+      0.0
+     ],
+     "cpu_server_pct": 538.9,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.3,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4181
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 128,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 571.3,
+     "p95_ms": 700.4,
+     "p99_ms": 768.2,
+     "throughput_rps": 261.07,
+     "requests": 3916,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 17.18,
+     "queue_ms_mean": 172.86,
+     "model_ms_mean": 223.56,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ],
+     "cpu_server_pct": 472.2,
+     "cpu_nginx_pct": 5.7,
+     "cpu_loadgen_pct": 7.7,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3916
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 256,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 933.5,
+     "p95_ms": 1216.0,
+     "p99_ms": 1319.9,
+     "throughput_rps": 261.6,
+     "requests": 3927,
+     "errors": 3,
+     "error_pct": 0.076,
+     "images_per_model_call": 31.65,
+     "queue_ms_mean": 483.13,
+     "model_ms_mean": 350.44,
+     "gpu_util_pct": [
+      78.4,
+      0.0
+     ],
+     "cpu_server_pct": 473.3,
+     "cpu_nginx_pct": 5.3,
+     "cpu_loadgen_pct": 8.1,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 3924
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 256,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 943.0,
+     "p95_ms": 1006.4,
+     "p99_ms": 1106.2,
+     "throughput_rps": 268.8,
+     "requests": 4032,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 32.0,
+     "queue_ms_mean": 372.81,
+     "model_ms_mean": 436.52,
+     "gpu_util_pct": [
+      76.7,
+      0.0
+     ],
+     "cpu_server_pct": 537.8,
+     "cpu_nginx_pct": 5.3,
+     "cpu_loadgen_pct": 8.1,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4032
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 102,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 351.0,
+     "p95_ms": 604.5,
+     "p99_ms": 639.7,
+     "throughput_rps": 275.47,
+     "requests": 4132,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.21,
+     "queue_ms_mean": 133.96,
+     "model_ms_mean": 161.44,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ],
+     "cpu_server_pct": 538.9,
+     "cpu_nginx_pct": 6.3,
+     "cpu_loadgen_pct": 8.4,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4132
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 102,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 368.0,
+     "p95_ms": 523.4,
+     "p99_ms": 622.7,
+     "throughput_rps": 276.93,
+     "requests": 4154,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.54,
+     "queue_ms_mean": 143.96,
+     "model_ms_mean": 160.21,
+     "gpu_util_pct": [
+      82.7,
+      0.0
+     ],
+     "cpu_server_pct": 542.3,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.6,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4154
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 98,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 358.8,
+     "p95_ms": 531.3,
+     "p99_ms": 598.9,
+     "throughput_rps": 269.4,
+     "requests": 4041,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.98,
+     "queue_ms_mean": 138.69,
+     "model_ms_mean": 158.53,
+     "gpu_util_pct": [
+      81.3,
+      0.0
+     ],
+     "cpu_server_pct": 538.8,
+     "cpu_nginx_pct": 6.3,
+     "cpu_loadgen_pct": 8.2,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4041
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 98,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 354.2,
+     "p95_ms": 525.1,
+     "p99_ms": 600.6,
+     "throughput_rps": 275.53,
+     "requests": 4133,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.05,
+     "queue_ms_mean": 134.5,
+     "model_ms_mean": 158.53,
+     "gpu_util_pct": [
+      82.4,
+      0.0
+     ],
+     "cpu_server_pct": 538.1,
+     "cpu_nginx_pct": 6.0,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4133
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 81,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 293.9,
+     "p95_ms": 466.1,
+     "p99_ms": 510.0,
+     "throughput_rps": 272.33,
+     "requests": 4085,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 9.75,
+     "queue_ms_mean": 109.18,
+     "model_ms_mean": 125.27,
+     "gpu_util_pct": [
+      82.3,
+      0.0
+     ],
+     "cpu_server_pct": 536.3,
+     "cpu_nginx_pct": 6.4,
+     "cpu_loadgen_pct": 8.9,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4085
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 91,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 300.4,
+     "p95_ms": 537.2,
+     "p99_ms": 580.0,
+     "throughput_rps": 277.73,
+     "requests": 4166,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.05,
+     "queue_ms_mean": 119.09,
+     "model_ms_mean": 139.39,
+     "gpu_util_pct": [
+      83.9,
+      0.0
+     ],
+     "cpu_server_pct": 540.9,
+     "cpu_nginx_pct": 6.5,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4166
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 91,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 327.4,
+     "p95_ms": 513.3,
+     "p99_ms": 576.3,
+     "throughput_rps": 271.67,
+     "requests": 4075,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.01,
+     "queue_ms_mean": 125.0,
+     "model_ms_mean": 141.48,
+     "gpu_util_pct": [
+      82.6,
+      0.0
+     ],
+     "cpu_server_pct": 532.5,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.4,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4075
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 88,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 323.1,
+     "p95_ms": 452.2,
+     "p99_ms": 543.3,
+     "throughput_rps": 272.33,
+     "requests": 4085,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 10.8,
+     "queue_ms_mean": 122.09,
+     "model_ms_mean": 137.25,
+     "gpu_util_pct": [
+      81.0,
+      0.0
+     ],
+     "cpu_server_pct": 536.1,
+     "cpu_nginx_pct": 6.4,
+     "cpu_loadgen_pct": 8.5,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4085
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    },
+    {
+     "users": 90,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 333.9,
+     "p95_ms": 468.4,
+     "p99_ms": 546.9,
+     "throughput_rps": 268.67,
+     "requests": 4030,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.01,
+     "queue_ms_mean": 126.14,
+     "model_ms_mean": 147.29,
+     "gpu_util_pct": [
+      81.9,
+      0.0
+     ],
+     "cpu_server_pct": 534.7,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 8.3,
+     "server_procs": 4,
+     "requests_by_gpu": {
+      "gpu0": 4030
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 100.0
+     }
+    }
+   ],
+   "label": "3 multi: 1 GPU, 4 servers, micro-batching",
+   "capacity_x_layout1": 3.1,
+   "max_throughput_x_layout1": 4.45
+  },
+  "gpu2": {
+   "name": "gpu2",
+   "started_utc": "2026-11-23T02:06:15+00:00",
+   "finished_utc": "2026-11-23T02:13:07+00:00",
+   "gpus_used": 2,
+   "servers": 8,
+   "server_mode": [
+    "micro"
+   ],
+   "cpu_count": 64,
+   "gpu_names": [
+    "NVIDIA GeForce RTX 3090",
+    "NVIDIA GeForce RTX 3090"
+   ],
+   "level_seconds": 20.0,
+   "warmup_s": 5.0,
+   "pass_rule": {
+    "p95_ms_max": 500.0,
+    "error_pct_below": 1.0
+   },
+   "capacity_users": 180,
+   "capacity_closed": true,
+   "first_fail_users": 183,
+   "max_throughput_rps": 566.47,
+   "max_throughput_at_users": 512,
+   "at_capacity": {
+    "users": 180,
+    "attempt": 1,
+    "pass": true,
+    "p50_ms": 312.6,
+    "p95_ms": 490.3,
+    "p99_ms": 592.7,
+    "throughput_rps": 553.4,
+    "requests": 8299,
+    "errors": 0,
+    "error_pct": 0.0,
+    "images_per_model_call": 12.12,
+    "queue_ms_mean": 113.55,
+    "model_ms_mean": 155.61,
+    "gpu_util_pct": [
+     85.4,
+     82.6
+    ],
+    "cpu_server_pct": 1089.8,
+    "cpu_nginx_pct": 12.1,
+    "cpu_loadgen_pct": 18.6,
+    "server_procs": 8,
+    "requests_by_gpu": {
+     "gpu0": 4149,
+     "gpu1": 4150
+    },
+    "share_pct_by_gpu": {
+     "gpu0": 50.0,
+     "gpu1": 50.0
+    },
+    "runs": 1
+   },
+   "gpu_util_pct_used_gpus_at_capacity": [
+    85.4,
+    82.6
+   ],
+   "runs": 19,
+   "measured_requests": 125249,
+   "errors": 2,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.1,
+     "p95_ms": 39.2,
+     "p99_ms": 41.7,
+     "throughput_rps": 29.47,
+     "requests": 442,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 19.51,
+     "gpu_util_pct": [
+      5.0,
+      4.9
+     ],
+     "cpu_server_pct": 87.1,
+     "cpu_nginx_pct": 0.9,
+     "cpu_loadgen_pct": 1.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 221,
+      "gpu1": 221
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.5,
+     "p99_ms": 40.5,
+     "throughput_rps": 60.8,
+     "requests": 912,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.41,
+     "gpu_util_pct": [
+      11.0,
+      10.7
+     ],
+     "cpu_server_pct": 170.7,
+     "cpu_nginx_pct": 1.9,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 456,
+      "gpu1": 456
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.1,
+     "p99_ms": 41.5,
+     "throughput_rps": 121.53,
+     "requests": 1823,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.64,
+     "gpu_util_pct": [
+      40.1,
+      44.9
+     ],
+     "cpu_server_pct": 337.9,
+     "cpu_nginx_pct": 3.5,
+     "cpu_loadgen_pct": 5.0,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 911,
+      "gpu1": 912
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.5,
+     "p95_ms": 43.1,
+     "p99_ms": 46.8,
+     "throughput_rps": 229.67,
+     "requests": 3445,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.23,
+     "model_ms_mean": 18.89,
+     "gpu_util_pct": [
+      62.0,
+      60.2
+     ],
+     "cpu_server_pct": 656.9,
+     "cpu_nginx_pct": 6.7,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1722,
+      "gpu1": 1723
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 48.1,
+     "p95_ms": 68.6,
+     "p99_ms": 80.6,
+     "throughput_rps": 320.87,
+     "requests": 4813,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.08,
+     "queue_ms_mean": 17.63,
+     "model_ms_mean": 20.74,
+     "gpu_util_pct": [
+      85.5,
+      86.7
+     ],
+     "cpu_server_pct": 885.7,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 12.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 2407,
+      "gpu1": 2406
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 70.1,
+     "p95_ms": 95.8,
+     "p99_ms": 110.3,
+     "throughput_rps": 450.8,
+     "requests": 6762,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.19,
+     "queue_ms_mean": 24.07,
+     "model_ms_mean": 31.18,
+     "gpu_util_pct": [
+      85.5,
+      85.3
+     ],
+     "cpu_server_pct": 995.9,
+     "cpu_nginx_pct": 12.0,
+     "cpu_loadgen_pct": 15.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3381,
+      "gpu1": 3381
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 117.9,
+     "p95_ms": 148.4,
+     "p99_ms": 177.7,
+     "throughput_rps": 527.07,
+     "requests": 7906,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.52,
+     "queue_ms_mean": 41.27,
+     "model_ms_mean": 57.86,
+     "gpu_util_pct": [
+      85.7,
+      84.9
+     ],
+     "cpu_server_pct": 1082.2,
+     "cpu_nginx_pct": 13.8,
+     "cpu_loadgen_pct": 16.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3953,
+      "gpu1": 3953
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 235.5,
+     "p95_ms": 476.1,
+     "p99_ms": 589.6,
+     "throughput_rps": 497.8,
+     "requests": 7469,
+     "errors": 2,
+     "error_pct": 0.027,
+     "images_per_model_call": 7.31,
+     "queue_ms_mean": 87.49,
+     "model_ms_mean": 121.47,
+     "gpu_util_pct": [
+      78.6,
+      82.4
+     ],
+     "cpu_server_pct": 974.2,
+     "cpu_nginx_pct": 11.7,
+     "cpu_loadgen_pct": 16.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3358,
+      "gpu1": 4109
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 45.0,
+      "gpu1": 55.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 142,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 254.3,
+     "p95_ms": 354.0,
+     "p99_ms": 495.2,
+     "throughput_rps": 550.33,
+     "requests": 8255,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 9.78,
+     "queue_ms_mean": 91.17,
+     "model_ms_mean": 124.7,
+     "gpu_util_pct": [
+      84.5,
+      84.7
+     ],
+     "cpu_server_pct": 1095.5,
+     "cpu_nginx_pct": 12.7,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4127,
+      "gpu1": 4128
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 162,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 284.6,
+     "p95_ms": 416.3,
+     "p99_ms": 580.4,
+     "throughput_rps": 552.53,
+     "requests": 8288,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.07,
+     "queue_ms_mean": 102.83,
+     "model_ms_mean": 141.2,
+     "gpu_util_pct": [
+      84.7,
+      83.4
+     ],
+     "cpu_server_pct": 1088.4,
+     "cpu_nginx_pct": 12.5,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4144,
+      "gpu1": 4144
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 180,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 312.6,
+     "p95_ms": 490.3,
+     "p99_ms": 592.7,
+     "throughput_rps": 553.4,
+     "requests": 8299,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.12,
+     "queue_ms_mean": 113.55,
+     "model_ms_mean": 155.61,
+     "gpu_util_pct": [
+      85.4,
+      82.6
+     ],
+     "cpu_server_pct": 1089.8,
+     "cpu_nginx_pct": 12.1,
+     "cpu_loadgen_pct": 18.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4149,
+      "gpu1": 4150
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 183,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 312.5,
+     "p95_ms": 514.0,
+     "p99_ms": 685.6,
+     "throughput_rps": 558.93,
+     "requests": 8384,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.57,
+     "queue_ms_mean": 114.57,
+     "model_ms_mean": 160.43,
+     "gpu_util_pct": [
+      82.9,
+      84.2
+     ],
+     "cpu_server_pct": 1100.0,
+     "cpu_nginx_pct": 12.2,
+     "cpu_loadgen_pct": 18.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4192,
+      "gpu1": 4192
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 191,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 335.7,
+     "p95_ms": 529.1,
+     "p99_ms": 634.1,
+     "throughput_rps": 552.93,
+     "requests": 8292,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.84,
+     "queue_ms_mean": 121.46,
+     "model_ms_mean": 168.12,
+     "gpu_util_pct": [
+      84.8,
+      83.3
+     ],
+     "cpu_server_pct": 1083.9,
+     "cpu_nginx_pct": 11.9,
+     "cpu_loadgen_pct": 17.9,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4146,
+      "gpu1": 4146
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 256,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 448.5,
+     "p95_ms": 693.1,
+     "p99_ms": 800.9,
+     "throughput_rps": 549.47,
+     "requests": 8242,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 16.43,
+     "queue_ms_mean": 159.61,
+     "model_ms_mean": 227.91,
+     "gpu_util_pct": [
+      82.3,
+      82.3
+     ],
+     "cpu_server_pct": 1077.4,
+     "cpu_nginx_pct": 11.4,
+     "cpu_loadgen_pct": 18.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4121,
+      "gpu1": 4121
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 512,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 901.7,
+     "p95_ms": 1280.5,
+     "p99_ms": 1415.0,
+     "throughput_rps": 559.6,
+     "requests": 8394,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 31.1,
+     "queue_ms_mean": 398.92,
+     "model_ms_mean": 412.08,
+     "gpu_util_pct": [
+      81.4,
+      81.1
+     ],
+     "cpu_server_pct": 1095.8,
+     "cpu_nginx_pct": 10.8,
+     "cpu_loadgen_pct": 19.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4197,
+      "gpu1": 4197
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    }
+   ],
+   "all_runs": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.1,
+     "p95_ms": 39.2,
+     "p99_ms": 41.7,
+     "throughput_rps": 29.47,
+     "requests": 442,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 19.51,
+     "gpu_util_pct": [
+      5.0,
+      4.9
+     ],
+     "cpu_server_pct": 87.1,
+     "cpu_nginx_pct": 0.9,
+     "cpu_loadgen_pct": 1.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 221,
+      "gpu1": 221
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.5,
+     "p99_ms": 40.5,
+     "throughput_rps": 60.8,
+     "requests": 912,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.41,
+     "gpu_util_pct": [
+      11.0,
+      10.7
+     ],
+     "cpu_server_pct": 170.7,
+     "cpu_nginx_pct": 1.9,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 456,
+      "gpu1": 456
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.1,
+     "p99_ms": 41.5,
+     "throughput_rps": 121.53,
+     "requests": 1823,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.64,
+     "gpu_util_pct": [
+      40.1,
+      44.9
+     ],
+     "cpu_server_pct": 337.9,
+     "cpu_nginx_pct": 3.5,
+     "cpu_loadgen_pct": 5.0,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 911,
+      "gpu1": 912
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.5,
+     "p95_ms": 43.1,
+     "p99_ms": 46.8,
+     "throughput_rps": 229.67,
+     "requests": 3445,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.23,
+     "model_ms_mean": 18.89,
+     "gpu_util_pct": [
+      62.0,
+      60.2
+     ],
+     "cpu_server_pct": 656.9,
+     "cpu_nginx_pct": 6.7,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1722,
+      "gpu1": 1723
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 48.1,
+     "p95_ms": 68.6,
+     "p99_ms": 80.6,
+     "throughput_rps": 320.87,
+     "requests": 4813,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.08,
+     "queue_ms_mean": 17.63,
+     "model_ms_mean": 20.74,
+     "gpu_util_pct": [
+      85.5,
+      86.7
+     ],
+     "cpu_server_pct": 885.7,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 12.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 2407,
+      "gpu1": 2406
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 70.1,
+     "p95_ms": 95.8,
+     "p99_ms": 110.3,
+     "throughput_rps": 450.8,
+     "requests": 6762,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.19,
+     "queue_ms_mean": 24.07,
+     "model_ms_mean": 31.18,
+     "gpu_util_pct": [
+      85.5,
+      85.3
+     ],
+     "cpu_server_pct": 995.9,
+     "cpu_nginx_pct": 12.0,
+     "cpu_loadgen_pct": 15.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3381,
+      "gpu1": 3381
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 117.9,
+     "p95_ms": 148.4,
+     "p99_ms": 177.7,
+     "throughput_rps": 527.07,
+     "requests": 7906,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.52,
+     "queue_ms_mean": 41.27,
+     "model_ms_mean": 57.86,
+     "gpu_util_pct": [
+      85.7,
+      84.9
+     ],
+     "cpu_server_pct": 1082.2,
+     "cpu_nginx_pct": 13.8,
+     "cpu_loadgen_pct": 16.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3953,
+      "gpu1": 3953
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 235.5,
+     "p95_ms": 476.1,
+     "p99_ms": 589.6,
+     "throughput_rps": 497.8,
+     "requests": 7469,
+     "errors": 2,
+     "error_pct": 0.027,
+     "images_per_model_call": 7.31,
+     "queue_ms_mean": 87.49,
+     "model_ms_mean": 121.47,
+     "gpu_util_pct": [
+      78.6,
+      82.4
+     ],
+     "cpu_server_pct": 974.2,
+     "cpu_nginx_pct": 11.7,
+     "cpu_loadgen_pct": 16.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3358,
+      "gpu1": 4109
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 45.0,
+      "gpu1": 55.0
+     }
+    },
+    {
+     "users": 256,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 419.5,
+     "p95_ms": 740.8,
+     "p99_ms": 829.7,
+     "throughput_rps": 554.4,
+     "requests": 8316,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.95,
+     "queue_ms_mean": 159.76,
+     "model_ms_mean": 228.59,
+     "gpu_util_pct": [
+      83.0,
+      77.7
+     ],
+     "cpu_server_pct": 1079.5,
+     "cpu_nginx_pct": 11.5,
+     "cpu_loadgen_pct": 18.5,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4158,
+      "gpu1": 4158
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 256,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 448.5,
+     "p95_ms": 693.1,
+     "p99_ms": 800.9,
+     "throughput_rps": 549.47,
+     "requests": 8242,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 16.43,
+     "queue_ms_mean": 159.61,
+     "model_ms_mean": 227.91,
+     "gpu_util_pct": [
+      82.3,
+      82.3
+     ],
+     "cpu_server_pct": 1077.4,
+     "cpu_nginx_pct": 11.4,
+     "cpu_loadgen_pct": 18.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4121,
+      "gpu1": 4121
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 512,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 894.3,
+     "p95_ms": 1354.2,
+     "p99_ms": 1429.1,
+     "throughput_rps": 566.47,
+     "requests": 8498,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 30.87,
+     "queue_ms_mean": 397.08,
+     "model_ms_mean": 407.66,
+     "gpu_util_pct": [
+      85.4,
+      83.7
+     ],
+     "cpu_server_pct": 1098.9,
+     "cpu_nginx_pct": 11.1,
+     "cpu_loadgen_pct": 20.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4250,
+      "gpu1": 4248
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 512,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 901.7,
+     "p95_ms": 1280.5,
+     "p99_ms": 1415.0,
+     "throughput_rps": 559.6,
+     "requests": 8394,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 31.1,
+     "queue_ms_mean": 398.92,
+     "model_ms_mean": 412.08,
+     "gpu_util_pct": [
+      81.4,
+      81.1
+     ],
+     "cpu_server_pct": 1095.8,
+     "cpu_nginx_pct": 10.8,
+     "cpu_loadgen_pct": 19.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4197,
+      "gpu1": 4197
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 142,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 254.3,
+     "p95_ms": 354.0,
+     "p99_ms": 495.2,
+     "throughput_rps": 550.33,
+     "requests": 8255,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 9.78,
+     "queue_ms_mean": 91.17,
+     "model_ms_mean": 124.7,
+     "gpu_util_pct": [
+      84.5,
+      84.7
+     ],
+     "cpu_server_pct": 1095.5,
+     "cpu_nginx_pct": 12.7,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4127,
+      "gpu1": 4128
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 191,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 335.7,
+     "p95_ms": 529.1,
+     "p99_ms": 634.1,
+     "throughput_rps": 552.93,
+     "requests": 8292,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.84,
+     "queue_ms_mean": 121.46,
+     "model_ms_mean": 168.12,
+     "gpu_util_pct": [
+      84.8,
+      83.3
+     ],
+     "cpu_server_pct": 1083.9,
+     "cpu_nginx_pct": 11.9,
+     "cpu_loadgen_pct": 17.9,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4146,
+      "gpu1": 4146
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 191,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 318.4,
+     "p95_ms": 530.7,
+     "p99_ms": 653.2,
+     "throughput_rps": 559.27,
+     "requests": 8389,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 13.0,
+     "queue_ms_mean": 118.92,
+     "model_ms_mean": 164.8,
+     "gpu_util_pct": [
+      84.3,
+      82.7
+     ],
+     "cpu_server_pct": 1098.7,
+     "cpu_nginx_pct": 12.1,
+     "cpu_loadgen_pct": 18.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4194,
+      "gpu1": 4195
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 183,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 317.5,
+     "p95_ms": 520.1,
+     "p99_ms": 644.5,
+     "throughput_rps": 554.67,
+     "requests": 8320,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.52,
+     "queue_ms_mean": 115.33,
+     "model_ms_mean": 160.37,
+     "gpu_util_pct": [
+      83.0,
+      82.8
+     ],
+     "cpu_server_pct": 1091.6,
+     "cpu_nginx_pct": 12.3,
+     "cpu_loadgen_pct": 18.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4160,
+      "gpu1": 4160
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 183,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 312.5,
+     "p95_ms": 514.0,
+     "p99_ms": 685.6,
+     "throughput_rps": 558.93,
+     "requests": 8384,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.57,
+     "queue_ms_mean": 114.57,
+     "model_ms_mean": 160.43,
+     "gpu_util_pct": [
+      82.9,
+      84.2
+     ],
+     "cpu_server_pct": 1100.0,
+     "cpu_nginx_pct": 12.2,
+     "cpu_loadgen_pct": 18.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4192,
+      "gpu1": 4192
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 162,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 284.6,
+     "p95_ms": 416.3,
+     "p99_ms": 580.4,
+     "throughput_rps": 552.53,
+     "requests": 8288,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.07,
+     "queue_ms_mean": 102.83,
+     "model_ms_mean": 141.2,
+     "gpu_util_pct": [
+      84.7,
+      83.4
+     ],
+     "cpu_server_pct": 1088.4,
+     "cpu_nginx_pct": 12.5,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4144,
+      "gpu1": 4144
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    },
+    {
+     "users": 180,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 312.6,
+     "p95_ms": 490.3,
+     "p99_ms": 592.7,
+     "throughput_rps": 553.4,
+     "requests": 8299,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.12,
+     "queue_ms_mean": 113.55,
+     "model_ms_mean": 155.61,
+     "gpu_util_pct": [
+      85.4,
+      82.6
+     ],
+     "cpu_server_pct": 1089.8,
+     "cpu_nginx_pct": 12.1,
+     "cpu_loadgen_pct": 18.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4149,
+      "gpu1": 4150
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     }
+    }
+   ],
+   "label": "4 gpu2: 2 GPUs x 4 servers, micro-batching",
+   "capacity_x_layout1": 6.21,
+   "max_throughput_x_layout1": 9.05
+  }
+ },
+ "load_balancing": {
+  "gpu2": {
+   "case": "Equal GPUs",
+   "method": "Round Robin",
+   "capacity_users": 180,
+   "first_fail_users": 183,
+   "max_throughput_rps": 566.47,
+   "max_throughput_at_users": 512,
+   "throughput_at_capacity_rps": 553.4,
+   "p95_ms_at_capacity": 490.3,
+   "share_pct_by_gpu_at_capacity": {
+    "gpu0": 50.0,
+    "gpu1": 50.0
+   },
+   "requests_by_gpu_at_capacity": {
+    "gpu0": 4149,
+    "gpu1": 4150
+   },
+   "gpu_util_pct_at_capacity": [
+    85.4,
+    82.6
+   ],
+   "runs": 19,
+   "measured_requests": 125249,
+   "errors": 2,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.1,
+     "p95_ms": 39.2,
+     "p99_ms": 41.7,
+     "throughput_rps": 29.47,
+     "requests": 442,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 19.51,
+     "gpu_util_pct": [
+      5.0,
+      4.9
+     ],
+     "cpu_server_pct": 87.1,
+     "cpu_nginx_pct": 0.9,
+     "cpu_loadgen_pct": 1.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 221,
+      "gpu1": 221
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.5,
+     "p99_ms": 40.5,
+     "throughput_rps": 60.8,
+     "requests": 912,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.41,
+     "gpu_util_pct": [
+      11.0,
+      10.7
+     ],
+     "cpu_server_pct": 170.7,
+     "cpu_nginx_pct": 1.9,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 456,
+      "gpu1": 456
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.2,
+     "p95_ms": 38.1,
+     "p99_ms": 41.5,
+     "throughput_rps": 121.53,
+     "requests": 1823,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.64,
+     "gpu_util_pct": [
+      40.1,
+      44.9
+     ],
+     "cpu_server_pct": 337.9,
+     "cpu_nginx_pct": 3.5,
+     "cpu_loadgen_pct": 5.0,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 911,
+      "gpu1": 912
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 33.5,
+     "p95_ms": 43.1,
+     "p99_ms": 46.8,
+     "throughput_rps": 229.67,
+     "requests": 3445,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.23,
+     "model_ms_mean": 18.89,
+     "gpu_util_pct": [
+      62.0,
+      60.2
+     ],
+     "cpu_server_pct": 656.9,
+     "cpu_nginx_pct": 6.7,
+     "cpu_loadgen_pct": 8.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1722,
+      "gpu1": 1723
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 48.1,
+     "p95_ms": 68.6,
+     "p99_ms": 80.6,
+     "throughput_rps": 320.87,
+     "requests": 4813,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.08,
+     "queue_ms_mean": 17.63,
+     "model_ms_mean": 20.74,
+     "gpu_util_pct": [
+      85.5,
+      86.7
+     ],
+     "cpu_server_pct": 885.7,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 12.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 2407,
+      "gpu1": 2406
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 70.1,
+     "p95_ms": 95.8,
+     "p99_ms": 110.3,
+     "throughput_rps": 450.8,
+     "requests": 6762,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.19,
+     "queue_ms_mean": 24.07,
+     "model_ms_mean": 31.18,
+     "gpu_util_pct": [
+      85.5,
+      85.3
+     ],
+     "cpu_server_pct": 995.9,
+     "cpu_nginx_pct": 12.0,
+     "cpu_loadgen_pct": 15.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3381,
+      "gpu1": 3381
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 117.9,
+     "p95_ms": 148.4,
+     "p99_ms": 177.7,
+     "throughput_rps": 527.07,
+     "requests": 7906,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.52,
+     "queue_ms_mean": 41.27,
+     "model_ms_mean": 57.86,
+     "gpu_util_pct": [
+      85.7,
+      84.9
+     ],
+     "cpu_server_pct": 1082.2,
+     "cpu_nginx_pct": 13.8,
+     "cpu_loadgen_pct": 16.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3953,
+      "gpu1": 3953
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 235.5,
+     "p95_ms": 476.1,
+     "p99_ms": 589.6,
+     "throughput_rps": 497.8,
+     "requests": 7469,
+     "errors": 2,
+     "error_pct": 0.027,
+     "images_per_model_call": 7.31,
+     "queue_ms_mean": 87.49,
+     "model_ms_mean": 121.47,
+     "gpu_util_pct": [
+      78.6,
+      82.4
+     ],
+     "cpu_server_pct": 974.2,
+     "cpu_nginx_pct": 11.7,
+     "cpu_loadgen_pct": 16.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3358,
+      "gpu1": 4109
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 45.0,
+      "gpu1": 55.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 142,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 254.3,
+     "p95_ms": 354.0,
+     "p99_ms": 495.2,
+     "throughput_rps": 550.33,
+     "requests": 8255,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 9.78,
+     "queue_ms_mean": 91.17,
+     "model_ms_mean": 124.7,
+     "gpu_util_pct": [
+      84.5,
+      84.7
+     ],
+     "cpu_server_pct": 1095.5,
+     "cpu_nginx_pct": 12.7,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4127,
+      "gpu1": 4128
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 162,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 284.6,
+     "p95_ms": 416.3,
+     "p99_ms": 580.4,
+     "throughput_rps": 552.53,
+     "requests": 8288,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 11.07,
+     "queue_ms_mean": 102.83,
+     "model_ms_mean": 141.2,
+     "gpu_util_pct": [
+      84.7,
+      83.4
+     ],
+     "cpu_server_pct": 1088.4,
+     "cpu_nginx_pct": 12.5,
+     "cpu_loadgen_pct": 18.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4144,
+      "gpu1": 4144
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 180,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 312.6,
+     "p95_ms": 490.3,
+     "p99_ms": 592.7,
+     "throughput_rps": 553.4,
+     "requests": 8299,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.12,
+     "queue_ms_mean": 113.55,
+     "model_ms_mean": 155.61,
+     "gpu_util_pct": [
+      85.4,
+      82.6
+     ],
+     "cpu_server_pct": 1089.8,
+     "cpu_nginx_pct": 12.1,
+     "cpu_loadgen_pct": 18.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4149,
+      "gpu1": 4150
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 183,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 312.5,
+     "p95_ms": 514.0,
+     "p99_ms": 685.6,
+     "throughput_rps": 558.93,
+     "requests": 8384,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.57,
+     "queue_ms_mean": 114.57,
+     "model_ms_mean": 160.43,
+     "gpu_util_pct": [
+      82.9,
+      84.2
+     ],
+     "cpu_server_pct": 1100.0,
+     "cpu_nginx_pct": 12.2,
+     "cpu_loadgen_pct": 18.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4192,
+      "gpu1": 4192
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 191,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 335.7,
+     "p95_ms": 529.1,
+     "p99_ms": 634.1,
+     "throughput_rps": 552.93,
+     "requests": 8292,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 12.84,
+     "queue_ms_mean": 121.46,
+     "model_ms_mean": 168.12,
+     "gpu_util_pct": [
+      84.8,
+      83.3
+     ],
+     "cpu_server_pct": 1083.9,
+     "cpu_nginx_pct": 11.9,
+     "cpu_loadgen_pct": 17.9,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4146,
+      "gpu1": 4146
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 256,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 448.5,
+     "p95_ms": 693.1,
+     "p99_ms": 800.9,
+     "throughput_rps": 549.47,
+     "requests": 8242,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 16.43,
+     "queue_ms_mean": 159.61,
+     "model_ms_mean": 227.91,
+     "gpu_util_pct": [
+      82.3,
+      82.3
+     ],
+     "cpu_server_pct": 1077.4,
+     "cpu_nginx_pct": 11.4,
+     "cpu_loadgen_pct": 18.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4121,
+      "gpu1": 4121
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 512,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 901.7,
+     "p95_ms": 1280.5,
+     "p99_ms": 1415.0,
+     "throughput_rps": 559.6,
+     "requests": 8394,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 31.1,
+     "queue_ms_mean": 398.92,
+     "model_ms_mean": 412.08,
+     "gpu_util_pct": [
+      81.4,
+      81.1
+     ],
+     "cpu_server_pct": 1095.8,
+     "cpu_nginx_pct": 10.8,
+     "cpu_loadgen_pct": 19.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4197,
+      "gpu1": 4197
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    }
+   ]
+  },
+  "lc_equal": {
+   "case": "Equal GPUs",
+   "method": "Least Connections",
+   "capacity_users": 250,
+   "first_fail_users": 253,
+   "max_throughput_rps": 561.07,
+   "max_throughput_at_users": 512,
+   "throughput_at_capacity_rps": 560.67,
+   "p95_ms_at_capacity": 493.3,
+   "share_pct_by_gpu_at_capacity": {
+    "gpu0": 49.8,
+    "gpu1": 50.2
+   },
+   "requests_by_gpu_at_capacity": {
+    "gpu0": 4185,
+    "gpu1": 4225
+   },
+   "gpu_util_pct_at_capacity": [
+    81.9,
+    82.7
+   ],
+   "runs": 18,
+   "measured_requests": 117905,
+   "errors": 1,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.8,
+     "p95_ms": 38.3,
+     "p99_ms": 40.2,
+     "throughput_rps": 29.73,
+     "requests": 446,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 18.88,
+     "gpu_util_pct": [
+      5.0,
+      5.1
+     ],
+     "cpu_server_pct": 87.2,
+     "cpu_nginx_pct": 0.9,
+     "cpu_loadgen_pct": 1.5,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 223,
+      "gpu1": 223
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.1,
+     "p95_ms": 38.3,
+     "p99_ms": 42.0,
+     "throughput_rps": 61.0,
+     "requests": 915,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.23,
+     "gpu_util_pct": [
+      15.2,
+      15.8
+     ],
+     "cpu_server_pct": 169.5,
+     "cpu_nginx_pct": 2.0,
+     "cpu_loadgen_pct": 2.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 457,
+      "gpu1": 458
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 49.9,
+      "gpu1": 50.1
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.1,
+     "p95_ms": 38.9,
+     "p99_ms": 42.7,
+     "throughput_rps": 120.73,
+     "requests": 1811,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 18.32,
+     "gpu_util_pct": [
+      36.2,
+      36.6
+     ],
+     "cpu_server_pct": 338.9,
+     "cpu_nginx_pct": 3.7,
+     "cpu_loadgen_pct": 5.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 907,
+      "gpu1": 904
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.1,
+      "gpu1": 49.9
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 32.5,
+     "p95_ms": 38.9,
+     "p99_ms": 41.7,
+     "throughput_rps": 239.87,
+     "requests": 3598,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.18,
+     "model_ms_mean": 18.29,
+     "gpu_util_pct": [
+      63.2,
+      65.2
+     ],
+     "cpu_server_pct": 675.0,
+     "cpu_nginx_pct": 7.3,
+     "cpu_loadgen_pct": 9.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1807,
+      "gpu1": 1791
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.2,
+      "gpu1": 49.8
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 46.3,
+     "p95_ms": 55.3,
+     "p99_ms": 60.0,
+     "throughput_rps": 345.6,
+     "requests": 5184,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.22,
+     "queue_ms_mean": 14.92,
+     "model_ms_mean": 19.81,
+     "gpu_util_pct": [
+      83.7,
+      84.9
+     ],
+     "cpu_server_pct": 870.0,
+     "cpu_nginx_pct": 9.9,
+     "cpu_loadgen_pct": 13.5,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 2570,
+      "gpu1": 2614
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 49.6,
+      "gpu1": 50.4
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 68.9,
+     "p95_ms": 84.9,
+     "p99_ms": 94.9,
+     "throughput_rps": 466.13,
+     "requests": 6992,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.2,
+     "queue_ms_mean": 23.91,
+     "model_ms_mean": 28.27,
+     "gpu_util_pct": [
+      86.2,
+      87.3
+     ],
+     "cpu_server_pct": 986.0,
+     "cpu_nginx_pct": 12.4,
+     "cpu_loadgen_pct": 15.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3536,
+      "gpu1": 3456
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.6,
+      "gpu1": 49.4
+     },
+     "runs": 1
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 121.4,
+     "p95_ms": 133.9,
+     "p99_ms": 140.0,
+     "throughput_rps": 526.47,
+     "requests": 7897,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.0,
+     "queue_ms_mean": 45.88,
+     "model_ms_mean": 52.57,
+     "gpu_util_pct": [
+      88.2,
+      83.9
+     ],
+     "cpu_server_pct": 1038.6,
+     "cpu_nginx_pct": 14.0,
+     "cpu_loadgen_pct": 16.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4005,
+      "gpu1": 3892
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.7,
+      "gpu1": 49.3
+     },
+     "runs": 1
+    },
+    {
+     "users": 128,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 237.8,
+     "p95_ms": 253.3,
+     "p99_ms": 378.7,
+     "throughput_rps": 535.93,
+     "requests": 8039,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 8.0,
+     "queue_ms_mean": 98.16,
+     "model_ms_mean": 103.5,
+     "gpu_util_pct": [
+      82.8,
+      82.2
+     ],
+     "cpu_server_pct": 1056.2,
+     "cpu_nginx_pct": 12.6,
+     "cpu_loadgen_pct": 17.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3999,
+      "gpu1": 4040
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 49.7,
+      "gpu1": 50.3
+     },
+     "runs": 1
+    },
+    {
+     "users": 237,
+     "attempt": 2,
+     "pass": true,
+     "p50_ms": 433.2,
+     "p95_ms": 465.1,
+     "p99_ms": 599.8,
+     "throughput_rps": 550.53,
+     "requests": 8258,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 14.9,
+     "queue_ms_mean": 176.15,
+     "model_ms_mean": 194.08,
+     "gpu_util_pct": [
+      82.0,
+      80.6
+     ],
+     "cpu_server_pct": 1065.5,
+     "cpu_nginx_pct": 11.1,
+     "cpu_loadgen_pct": 17.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4126,
+      "gpu1": 4132
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 245,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 447.0,
+     "p95_ms": 482.9,
+     "p99_ms": 626.6,
+     "throughput_rps": 548.33,
+     "requests": 8225,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.46,
+     "queue_ms_mean": 182.04,
+     "model_ms_mean": 198.5,
+     "gpu_util_pct": [
+      82.3,
+      81.5
+     ],
+     "cpu_server_pct": 1068.9,
+     "cpu_nginx_pct": 10.7,
+     "cpu_loadgen_pct": 17.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4123,
+      "gpu1": 4102
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.1,
+      "gpu1": 49.9
+     },
+     "runs": 1
+    },
+    {
+     "users": 250,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 443.6,
+     "p95_ms": 493.3,
+     "p99_ms": 628.6,
+     "throughput_rps": 560.67,
+     "requests": 8410,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.63,
+     "queue_ms_mean": 179.39,
+     "model_ms_mean": 200.05,
+     "gpu_util_pct": [
+      81.9,
+      82.7
+     ],
+     "cpu_server_pct": 1074.1,
+     "cpu_nginx_pct": 11.5,
+     "cpu_loadgen_pct": 18.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4185,
+      "gpu1": 4225
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 49.8,
+      "gpu1": 50.2
+     },
+     "runs": 1
+    },
+    {
+     "users": 253,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 459.7,
+     "p95_ms": 551.6,
+     "p99_ms": 626.0,
+     "throughput_rps": 554.93,
+     "requests": 8324,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 15.94,
+     "queue_ms_mean": 186.75,
+     "model_ms_mean": 205.27,
+     "gpu_util_pct": [
+      81.7,
+      81.4
+     ],
+     "cpu_server_pct": 1075.1,
+     "cpu_nginx_pct": 11.1,
+     "cpu_loadgen_pct": 17.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4159,
+      "gpu1": 4165
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 256,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 459.7,
+     "p95_ms": 543.5,
+     "p99_ms": 619.3,
+     "throughput_rps": 554.6,
+     "requests": 8319,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 16.0,
+     "queue_ms_mean": 189.15,
+     "model_ms_mean": 205.6,
+     "gpu_util_pct": [
+      82.2,
+      81.9
+     ],
+     "cpu_server_pct": 1075.2,
+     "cpu_nginx_pct": 10.9,
+     "cpu_loadgen_pct": 18.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4166,
+      "gpu1": 4153
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.1,
+      "gpu1": 49.9
+     },
+     "runs": 2
+    },
+    {
+     "users": 512,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 924.8,
+     "p95_ms": 949.1,
+     "p99_ms": 956.5,
+     "throughput_rps": 550.73,
+     "requests": 8258,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 31.88,
+     "queue_ms_mean": 372.8,
+     "model_ms_mean": 429.09,
+     "gpu_util_pct": [
+      78.7,
+      77.4
+     ],
+     "cpu_server_pct": 1082.3,
+     "cpu_nginx_pct": 9.9,
+     "cpu_loadgen_pct": 17.9,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4162,
+      "gpu1": 4096
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.4,
+      "gpu1": 49.6
+     },
+     "runs": 2
+    }
+   ]
+  },
+  "rr_slow": {
+   "case": "GPU 1 is 3x slower",
+   "method": "Round Robin",
+   "capacity_users": 52,
+   "first_fail_users": 53,
+   "max_throughput_rps": 223.4,
+   "max_throughput_at_users": 128,
+   "throughput_at_capacity_rps": 219.87,
+   "p95_ms_at_capacity": 495.9,
+   "share_pct_by_gpu_at_capacity": {
+    "gpu0": 50.0,
+    "gpu1": 50.0
+   },
+   "requests_by_gpu_at_capacity": {
+    "gpu0": 1649,
+    "gpu1": 1649
+   },
+   "gpu_util_pct_at_capacity": [
+    54.8,
+    95.0
+   ],
+   "runs": 13,
+   "measured_requests": 33290,
+   "errors": 0,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 51.7,
+     "p95_ms": 67.7,
+     "p99_ms": 72.7,
+     "throughput_rps": 20.4,
+     "requests": 306,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.22,
+     "model_ms_mean": 33.53,
+     "gpu_util_pct": [
+      3.9,
+      10.4
+     ],
+     "cpu_server_pct": 90.5,
+     "cpu_nginx_pct": 0.6,
+     "cpu_loadgen_pct": 1.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 153,
+      "gpu1": 153
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 55.7,
+     "p95_ms": 67.5,
+     "p99_ms": 70.3,
+     "throughput_rps": 41.27,
+     "requests": 619,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.2,
+     "model_ms_mean": 33.54,
+     "gpu_util_pct": [
+      7.4,
+      26.6
+     ],
+     "cpu_server_pct": 181.1,
+     "cpu_nginx_pct": 1.3,
+     "cpu_loadgen_pct": 1.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 309,
+      "gpu1": 310
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 49.9,
+      "gpu1": 50.1
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 50.3,
+     "p95_ms": 73.2,
+     "p99_ms": 78.7,
+     "throughput_rps": 82.4,
+     "requests": 1236,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 33.68,
+     "gpu_util_pct": [
+      20.3,
+      80.1
+     ],
+     "cpu_server_pct": 359.3,
+     "cpu_nginx_pct": 2.6,
+     "cpu_loadgen_pct": 3.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 618,
+      "gpu1": 618
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 51.5,
+     "p95_ms": 106.8,
+     "p99_ms": 119.8,
+     "throughput_rps": 140.13,
+     "requests": 2102,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 12.77,
+     "model_ms_mean": 34.05,
+     "gpu_util_pct": [
+      46.2,
+      96.6
+     ],
+     "cpu_server_pct": 603.2,
+     "cpu_nginx_pct": 4.6,
+     "cpu_loadgen_pct": 5.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1051,
+      "gpu1": 1051
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 68.7,
+     "p95_ms": 166.5,
+     "p99_ms": 203.7,
+     "throughput_rps": 188.27,
+     "requests": 2824,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.3,
+     "queue_ms_mean": 26.67,
+     "model_ms_mean": 45.6,
+     "gpu_util_pct": [
+      60.6,
+      95.7
+     ],
+     "cpu_server_pct": 715.0,
+     "cpu_nginx_pct": 5.4,
+     "cpu_loadgen_pct": 7.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1412,
+      "gpu1": 1412
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 118.8,
+     "p95_ms": 302.2,
+     "p99_ms": 353.3,
+     "throughput_rps": 212.07,
+     "requests": 3182,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.76,
+     "queue_ms_mean": 55.55,
+     "model_ms_mean": 78.83,
+     "gpu_util_pct": [
+      58.3,
+      94.1
+     ],
+     "cpu_server_pct": 750.3,
+     "cpu_nginx_pct": 5.9,
+     "cpu_loadgen_pct": 7.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1591,
+      "gpu1": 1591
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 52,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 139.4,
+     "p95_ms": 495.9,
+     "p99_ms": 628.3,
+     "throughput_rps": 219.87,
+     "requests": 3298,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.1,
+     "queue_ms_mean": 90.32,
+     "model_ms_mean": 122.23,
+     "gpu_util_pct": [
+      54.8,
+      95.0
+     ],
+     "cpu_server_pct": 753.3,
+     "cpu_nginx_pct": 6.3,
+     "cpu_loadgen_pct": 8.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1649,
+      "gpu1": 1649
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 53,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 158.8,
+     "p95_ms": 501.5,
+     "p99_ms": 549.5,
+     "throughput_rps": 214.87,
+     "requests": 3222,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.22,
+     "queue_ms_mean": 98.33,
+     "model_ms_mean": 128.04,
+     "gpu_util_pct": [
+      54.2,
+      92.5
+     ],
+     "cpu_server_pct": 740.0,
+     "cpu_nginx_pct": 6.1,
+     "cpu_loadgen_pct": 7.5,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1611,
+      "gpu1": 1611
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 112.3,
+     "p95_ms": 597.5,
+     "p99_ms": 622.6,
+     "throughput_rps": 219.93,
+     "requests": 3299,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.36,
+     "queue_ms_mean": 114.75,
+     "model_ms_mean": 151.36,
+     "gpu_util_pct": [
+      53.7,
+      94.8
+     ],
+     "cpu_server_pct": 743.3,
+     "cpu_nginx_pct": 5.8,
+     "cpu_loadgen_pct": 7.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1650,
+      "gpu1": 1649
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    },
+    {
+     "users": 128,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 183.8,
+     "p95_ms": 1185.0,
+     "p99_ms": 1479.3,
+     "throughput_rps": 222.07,
+     "requests": 3331,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 3.72,
+     "queue_ms_mean": 225.74,
+     "model_ms_mean": 306.19,
+     "gpu_util_pct": [
+      47.4,
+      92.5
+     ],
+     "cpu_server_pct": 724.7,
+     "cpu_nginx_pct": 5.7,
+     "cpu_loadgen_pct": 7.9,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1666,
+      "gpu1": 1665
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 2
+    }
+   ]
+  },
+  "lc_slow": {
+   "case": "GPU 1 is 3x slower",
+   "method": "Least Connections",
+   "capacity_users": 103,
+   "first_fail_users": 107,
+   "max_throughput_rps": 389.33,
+   "max_throughput_at_users": 256,
+   "throughput_at_capacity_rps": 370.0,
+   "p95_ms_at_capacity": 493.5,
+   "share_pct_by_gpu_at_capacity": {
+    "gpu0": 70.8,
+    "gpu1": 29.2
+   },
+   "requests_by_gpu_at_capacity": {
+    "gpu0": 3931,
+    "gpu1": 1619
+   },
+   "gpu_util_pct_at_capacity": [
+    82.5,
+    93.4
+   ],
+   "runs": 14,
+   "measured_requests": 59232,
+   "errors": 0,
+   "curve": [
+    {
+     "users": 1,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 48.4,
+     "p95_ms": 66.1,
+     "p99_ms": 68.7,
+     "throughput_rps": 21.07,
+     "requests": 316,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.21,
+     "model_ms_mean": 32.78,
+     "gpu_util_pct": [
+      4.0,
+      10.7
+     ],
+     "cpu_server_pct": 91.3,
+     "cpu_nginx_pct": 0.7,
+     "cpu_loadgen_pct": 1.2,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 158,
+      "gpu1": 158
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.0,
+      "gpu1": 50.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 2,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 40.3,
+     "p95_ms": 64.9,
+     "p99_ms": 67.6,
+     "throughput_rps": 42.8,
+     "requests": 642,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 32.2,
+     "gpu_util_pct": [
+      10.1,
+      34.0
+     ],
+     "cpu_server_pct": 178.9,
+     "cpu_nginx_pct": 1.3,
+     "cpu_loadgen_pct": 1.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 327,
+      "gpu1": 315
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 50.9,
+      "gpu1": 49.1
+     },
+     "runs": 1
+    },
+    {
+     "users": 4,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 37.6,
+     "p95_ms": 73.6,
+     "p99_ms": 78.2,
+     "throughput_rps": 83.93,
+     "requests": 1259,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.19,
+     "model_ms_mean": 32.51,
+     "gpu_util_pct": [
+      29.4,
+      64.5
+     ],
+     "cpu_server_pct": 358.3,
+     "cpu_nginx_pct": 2.4,
+     "cpu_loadgen_pct": 3.8,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 702,
+      "gpu1": 557
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 55.8,
+      "gpu1": 44.2
+     },
+     "runs": 1
+    },
+    {
+     "users": 8,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 34.5,
+     "p95_ms": 75.4,
+     "p99_ms": 81.5,
+     "throughput_rps": 178.2,
+     "requests": 2673,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.0,
+     "queue_ms_mean": 5.18,
+     "model_ms_mean": 29.7,
+     "gpu_util_pct": [
+      64.9,
+      92.1
+     ],
+     "cpu_server_pct": 708.1,
+     "cpu_nginx_pct": 5.5,
+     "cpu_loadgen_pct": 7.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 1790,
+      "gpu1": 883
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 67.0,
+      "gpu1": 33.0
+     },
+     "runs": 1
+    },
+    {
+     "users": 16,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 48.9,
+     "p95_ms": 118.2,
+     "p99_ms": 129.6,
+     "throughput_rps": 254.73,
+     "requests": 3821,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 1.29,
+     "queue_ms_mean": 18.44,
+     "model_ms_mean": 32.16,
+     "gpu_util_pct": [
+      85.3,
+      94.6
+     ],
+     "cpu_server_pct": 845.7,
+     "cpu_nginx_pct": 6.9,
+     "cpu_loadgen_pct": 10.1,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 2619,
+      "gpu1": 1202
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 68.5,
+      "gpu1": 31.5
+     },
+     "runs": 1
+    },
+    {
+     "users": 32,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 69.1,
+     "p95_ms": 193.3,
+     "p99_ms": 213.9,
+     "throughput_rps": 340.6,
+     "requests": 5109,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 2.24,
+     "queue_ms_mean": 32.37,
+     "model_ms_mean": 44.34,
+     "gpu_util_pct": [
+      85.0,
+      97.3
+     ],
+     "cpu_server_pct": 933.3,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 11.7,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3643,
+      "gpu1": 1466
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 71.3,
+      "gpu1": 28.7
+     },
+     "runs": 1
+    },
+    {
+     "users": 64,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 126.5,
+     "p95_ms": 309.0,
+     "p99_ms": 331.5,
+     "throughput_rps": 364.87,
+     "requests": 5473,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 4.0,
+     "queue_ms_mean": 73.96,
+     "model_ms_mean": 77.8,
+     "gpu_util_pct": [
+      82.9,
+      94.3
+     ],
+     "cpu_server_pct": 967.4,
+     "cpu_nginx_pct": 9.6,
+     "cpu_loadgen_pct": 11.6,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3889,
+      "gpu1": 1584
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 71.1,
+      "gpu1": 28.9
+     },
+     "runs": 1
+    },
+    {
+     "users": 103,
+     "attempt": 1,
+     "pass": true,
+     "p50_ms": 199.1,
+     "p95_ms": 493.5,
+     "p99_ms": 510.2,
+     "throughput_rps": 370.0,
+     "requests": 5550,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 6.44,
+     "queue_ms_mean": 119.34,
+     "model_ms_mean": 126.88,
+     "gpu_util_pct": [
+      82.5,
+      93.4
+     ],
+     "cpu_server_pct": 974.5,
+     "cpu_nginx_pct": 8.6,
+     "cpu_loadgen_pct": 12.3,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 3931,
+      "gpu1": 1619
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 70.8,
+      "gpu1": 29.2
+     },
+     "runs": 1
+    },
+    {
+     "users": 107,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 202.0,
+     "p95_ms": 521.8,
+     "p99_ms": 530.2,
+     "throughput_rps": 375.6,
+     "requests": 5634,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 6.7,
+     "queue_ms_mean": 121.79,
+     "model_ms_mean": 131.3,
+     "gpu_util_pct": [
+      84.1,
+      91.9
+     ],
+     "cpu_server_pct": 975.0,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 12.5,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4030,
+      "gpu1": 1604
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 71.5,
+      "gpu1": 28.5
+     },
+     "runs": 2
+    },
+    {
+     "users": 128,
+     "attempt": 2,
+     "pass": false,
+     "p50_ms": 238.1,
+     "p95_ms": 596.4,
+     "p99_ms": 607.9,
+     "throughput_rps": 382.8,
+     "requests": 5742,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 8.0,
+     "queue_ms_mean": 147.39,
+     "model_ms_mean": 150.54,
+     "gpu_util_pct": [
+      80.1,
+      91.6
+     ],
+     "cpu_server_pct": 979.3,
+     "cpu_nginx_pct": 8.9,
+     "cpu_loadgen_pct": 12.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4088,
+      "gpu1": 1654
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 71.2,
+      "gpu1": 28.8
+     },
+     "runs": 2
+    },
+    {
+     "users": 256,
+     "attempt": 1,
+     "pass": false,
+     "p50_ms": 475.8,
+     "p95_ms": 1176.3,
+     "p99_ms": 1219.4,
+     "throughput_rps": 389.33,
+     "requests": 5840,
+     "errors": 0,
+     "error_pct": 0.0,
+     "images_per_model_call": 16.0,
+     "queue_ms_mean": 288.41,
+     "model_ms_mean": 309.73,
+     "gpu_util_pct": [
+      80.0,
+      93.3
+     ],
+     "cpu_server_pct": 992.6,
+     "cpu_nginx_pct": 8.0,
+     "cpu_loadgen_pct": 12.4,
+     "server_procs": 8,
+     "requests_by_gpu": {
+      "gpu0": 4109,
+      "gpu1": 1731
+     },
+     "share_pct_by_gpu": {
+      "gpu0": 70.4,
+      "gpu1": 29.6
+     },
+     "runs": 2
+    }
+   ]
+  }
+ },
+ "gpu_failure": {
+  "fail_off": {
+   "name": "fail_off",
+   "users": 60,
+   "level_seconds": 60.0,
+   "warmup_s": 5.0,
+   "failover": "off",
+   "event": {
+    "cmd": "bash cluster.sh kill-gpu 1",
+    "started_s": 20.0,
+    "ended_s": 20.349,
+    "kill_utc": "2026-11-23T02:43:30.250Z",
+    "test_start_utc": "2026-11-23T02:43:10.250000+00:00"
+   },
+   "all_requests": {
+    "requests": 32769,
+    "ok": 21563,
+    "errors": 11206,
+    "error_pct": 34.197,
+    "error_kinds": {
+     "http_502": 11206
+    }
+   },
+   "in_flight_at_event": {
+    "requests": 60,
+    "errors": 21,
+    "error_kinds": {
+     "http_502": 21
+    }
+   },
+   "before": {
+    "window_s": [
+     5.0,
+     20.0
+    ],
+    "requests": 7832,
+    "ok": 7811,
+    "errors": 21,
+    "error_pct": 0.268,
+    "error_kinds": {
+     "http_502": 21
+    },
+    "throughput_ok_rps": 522.13,
+    "latency_ms": {
+     "p50": 110.1,
+     "p95": 153.4,
+     "p99": 335.7,
+     "max": 569.6
+    },
+    "ok_by_gpu": {
+     "gpu0": 3916,
+     "gpu1": 3895
+    }
+   },
+   "during_event": {
+    "window_s": [
+     20.0,
+     20.349
+    ],
+    "requests": 195,
+    "ok": 97,
+    "errors": 98,
+    "error_pct": 50.256,
+    "error_kinds": {
+     "http_502": 98
+    },
+    "throughput_ok_rps": 249.28,
+    "latency_ms": {
+     "p50": 137.0,
+     "p95": 199.0,
+     "p99": 205.3,
+     "max": 212.1
+    },
+    "ok_by_gpu": {
+     "gpu0": 97
+    }
+   },
+   "after": {
+    "window_s": [
+     20.349,
+     60.0
+    ],
+    "requests": 22175,
+    "ok": 11088,
+    "errors": 11087,
+    "error_pct": 49.998,
+    "error_kinds": {
+     "http_502": 11087
+    },
+    "throughput_ok_rps": 279.61,
+    "latency_ms": {
+     "p50": 165.5,
+     "p95": 197.4,
+     "p99": 350.5,
+     "max": 577.6
+    },
+    "ok_by_gpu": {
+     "gpu0": 11088
+    }
+   },
+   "after_passes_rule": false,
+   "loadgen_per_second": [
+    {
+     "second": 1,
+     "warmup": true,
+     "ok": 355,
+     "errors": 0,
+     "p95_ms": 130.3,
+     "gpu_util_pct": [
+      44.5,
+      44.5
+     ]
+    },
+    {
+     "second": 2,
+     "warmup": true,
+     "ok": 536,
+     "errors": 0,
+     "p95_ms": 138.4,
+     "gpu_util_pct": [
+      84.5,
+      85.0
+     ]
+    },
+    {
+     "second": 3,
+     "warmup": true,
+     "ok": 535,
+     "errors": 0,
+     "p95_ms": 140.5,
+     "gpu_util_pct": [
+      87.0,
+      82.0
+     ]
+    },
+    {
+     "second": 4,
+     "warmup": true,
+     "ok": 539,
+     "errors": 0,
+     "p95_ms": 139.5,
+     "gpu_util_pct": [
+      85.0,
+      87.0
+     ]
+    },
+    {
+     "second": 5,
+     "warmup": true,
+     "ok": 542,
+     "errors": 0,
+     "p95_ms": 137.2,
+     "gpu_util_pct": [
+      84.5,
+      86.0
+     ]
+    },
+    {
+     "second": 6,
+     "warmup": false,
+     "ok": 541,
+     "errors": 0,
+     "p95_ms": 134.3,
+     "gpu_util_pct": [
+      84.5,
+      85.5
+     ]
+    },
+    {
+     "second": 7,
+     "warmup": false,
+     "ok": 522,
+     "errors": 0,
+     "p95_ms": 144.8,
+     "gpu_util_pct": [
+      86.0,
+      81.5
+     ]
+    },
+    {
+     "second": 8,
+     "warmup": false,
+     "ok": 546,
+     "errors": 0,
+     "p95_ms": 137.5,
+     "gpu_util_pct": [
+      87.0,
+      84.5
+     ]
+    },
+    {
+     "second": 9,
+     "warmup": false,
+     "ok": 547,
+     "errors": 0,
+     "p95_ms": 137.5,
+     "gpu_util_pct": [
+      86.5,
+      86.5
+     ]
+    },
+    {
+     "second": 10,
+     "warmup": false,
+     "ok": 539,
+     "errors": 0,
+     "p95_ms": 138.3,
+     "gpu_util_pct": [
+      84.0,
+      86.5
+     ]
+    },
+    {
+     "second": 11,
+     "warmup": false,
+     "ok": 521,
+     "errors": 0,
+     "p95_ms": 143.8,
+     "gpu_util_pct": [
+      86.5,
+      86.0
+     ]
+    },
+    {
+     "second": 12,
+     "warmup": false,
+     "ok": 545,
+     "errors": 0,
+     "p95_ms": 137.7,
+     "gpu_util_pct": [
+      86.5,
+      86.0
+     ]
+    },
+    {
+     "second": 13,
+     "warmup": false,
+     "ok": 523,
+     "errors": 0,
+     "p95_ms": 136.2,
+     "gpu_util_pct": [
+      84.0,
+      84.5
+     ]
+    },
+    {
+     "second": 14,
+     "warmup": false,
+     "ok": 548,
+     "errors": 0,
+     "p95_ms": 143.8,
+     "gpu_util_pct": [
+      86.5,
+      89.0
+     ]
+    },
+    {
+     "second": 15,
+     "warmup": false,
+     "ok": 520,
+     "errors": 0,
+     "p95_ms": 151.0,
+     "gpu_util_pct": [
+      84.5,
+      86.0
+     ]
+    },
+    {
+     "second": 16,
+     "warmup": false,
+     "ok": 462,
+     "errors": 0,
+     "p95_ms": 345.3,
+     "gpu_util_pct": [
+      84.0,
+      84.0
+     ]
+    },
+    {
+     "second": 17,
+     "warmup": false,
+     "ok": 451,
+     "errors": 0,
+     "p95_ms": 390.2,
+     "gpu_util_pct": [
+      87.5,
+      77.5
+     ]
+    },
+    {
+     "second": 18,
+     "warmup": false,
+     "ok": 499,
+     "errors": 0,
+     "p95_ms": 304.4,
+     "gpu_util_pct": [
+      79.0,
+      84.0
+     ]
+    },
+    {
+     "second": 19,
+     "warmup": false,
+     "ok": 531,
+     "errors": 0,
+     "p95_ms": 157.6,
+     "gpu_util_pct": [
+      88.0,
+      86.5
+     ]
+    },
+    {
+     "second": 20,
+     "warmup": false,
+     "ok": 537,
+     "errors": 0,
+     "p95_ms": 141.8,
+     "gpu_util_pct": [
+      85.5,
+      86.0
+     ]
+    },
+    {
+     "second": 21,
+     "warmup": false,
+     "ok": 262,
+     "errors": 296,
+     "p95_ms": 197.4,
+     "gpu_util_pct": [
+      85.5,
+      83.0
+     ]
+    },
+    {
+     "second": 22,
+     "warmup": false,
+     "ok": 278,
+     "errors": 278,
+     "p95_ms": 193.3,
+     "gpu_util_pct": [
+      85.5,
+      0.0
+     ]
+    },
+    {
+     "second": 23,
+     "warmup": false,
+     "ok": 290,
+     "errors": 277,
+     "p95_ms": 195.1,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ]
+    },
+    {
+     "second": 24,
+     "warmup": false,
+     "ok": 275,
+     "errors": 287,
+     "p95_ms": 179.4,
+     "gpu_util_pct": [
+      87.0,
+      0.0
+     ]
+    },
+    {
+     "second": 25,
+     "warmup": false,
+     "ok": 279,
+     "errors": 279,
+     "p95_ms": 193.1,
+     "gpu_util_pct": [
+      87.5,
+      0.0
+     ]
+    },
+    {
+     "second": 26,
+     "warmup": false,
+     "ok": 281,
+     "errors": 281,
+     "p95_ms": 195.8,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 27,
+     "warmup": false,
+     "ok": 279,
+     "errors": 279,
+     "p95_ms": 194.8,
+     "gpu_util_pct": [
+      85.0,
+      0.0
+     ]
+    },
+    {
+     "second": 28,
+     "warmup": false,
+     "ok": 277,
+     "errors": 278,
+     "p95_ms": 192.0,
+     "gpu_util_pct": [
+      84.0,
+      0.0
+     ]
+    },
+    {
+     "second": 29,
+     "warmup": false,
+     "ok": 305,
+     "errors": 296,
+     "p95_ms": 189.6,
+     "gpu_util_pct": [
+      88.5,
+      0.0
+     ]
+    },
+    {
+     "second": 30,
+     "warmup": false,
+     "ok": 280,
+     "errors": 287,
+     "p95_ms": 185.0,
+     "gpu_util_pct": [
+      89.0,
+      0.0
+     ]
+    },
+    {
+     "second": 31,
+     "warmup": false,
+     "ok": 292,
+     "errors": 286,
+     "p95_ms": 183.0,
+     "gpu_util_pct": [
+      89.0,
+      0.0
+     ]
+    },
+    {
+     "second": 32,
+     "warmup": false,
+     "ok": 282,
+     "errors": 290,
+     "p95_ms": 177.8,
+     "gpu_util_pct": [
+      90.0,
+      0.0
+     ]
+    },
+    {
+     "second": 33,
+     "warmup": false,
+     "ok": 304,
+     "errors": 295,
+     "p95_ms": 188.8,
+     "gpu_util_pct": [
+      90.0,
+      0.0
+     ]
+    },
+    {
+     "second": 34,
+     "warmup": false,
+     "ok": 278,
+     "errors": 287,
+     "p95_ms": 187.4,
+     "gpu_util_pct": [
+      93.0,
+      0.0
+     ]
+    },
+    {
+     "second": 35,
+     "warmup": false,
+     "ok": 281,
+     "errors": 280,
+     "p95_ms": 195.3,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 36,
+     "warmup": false,
+     "ok": 281,
+     "errors": 274,
+     "p95_ms": 198.2,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 37,
+     "warmup": false,
+     "ok": 281,
+     "errors": 278,
+     "p95_ms": 195.9,
+     "gpu_util_pct": [
+      85.5,
+      0.0
+     ]
+    },
+    {
+     "second": 38,
+     "warmup": false,
+     "ok": 246,
+     "errors": 250,
+     "p95_ms": 328.8,
+     "gpu_util_pct": [
+      82.0,
+      0.0
+     ]
+    },
+    {
+     "second": 39,
+     "warmup": false,
+     "ok": 292,
+     "errors": 289,
+     "p95_ms": 356.4,
+     "gpu_util_pct": [
+      91.0,
+      0.0
+     ]
+    },
+    {
+     "second": 40,
+     "warmup": false,
+     "ok": 248,
+     "errors": 256,
+     "p95_ms": 376.3,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ]
+    },
+    {
+     "second": 41,
+     "warmup": false,
+     "ok": 279,
+     "errors": 275,
+     "p95_ms": 441.6,
+     "gpu_util_pct": [
+      88.5,
+      0.0
+     ]
+    },
+    {
+     "second": 42,
+     "warmup": false,
+     "ok": 274,
+     "errors": 277,
+     "p95_ms": 239.4,
+     "gpu_util_pct": [
+      87.0,
+      0.0
+     ]
+    },
+    {
+     "second": 43,
+     "warmup": false,
+     "ok": 283,
+     "errors": 277,
+     "p95_ms": 198.4,
+     "gpu_util_pct": [
+      91.0,
+      0.0
+     ]
+    },
+    {
+     "second": 44,
+     "warmup": false,
+     "ok": 279,
+     "errors": 279,
+     "p95_ms": 191.8,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 45,
+     "warmup": false,
+     "ok": 277,
+     "errors": 267,
+     "p95_ms": 183.6,
+     "gpu_util_pct": [
+      88.5,
+      0.0
+     ]
+    },
+    {
+     "second": 46,
+     "warmup": false,
+     "ok": 275,
+     "errors": 291,
+     "p95_ms": 189.6,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ]
+    },
+    {
+     "second": 47,
+     "warmup": false,
+     "ok": 280,
+     "errors": 280,
+     "p95_ms": 191.0,
+     "gpu_util_pct": [
+      88.5,
+      0.0
+     ]
+    },
+    {
+     "second": 48,
+     "warmup": false,
+     "ok": 285,
+     "errors": 280,
+     "p95_ms": 192.8,
+     "gpu_util_pct": [
+      85.0,
+      0.0
+     ]
+    },
+    {
+     "second": 49,
+     "warmup": false,
+     "ok": 270,
+     "errors": 277,
+     "p95_ms": 198.1,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ]
+    },
+    {
+     "second": 50,
+     "warmup": false,
+     "ok": 283,
+     "errors": 269,
+     "p95_ms": 196.8,
+     "gpu_util_pct": [
+      88.0,
+      0.0
+     ]
+    },
+    {
+     "second": 51,
+     "warmup": false,
+     "ok": 271,
+     "errors": 283,
+     "p95_ms": 182.9,
+     "gpu_util_pct": [
+      88.0,
+      0.0
+     ]
+    },
+    {
+     "second": 52,
+     "warmup": false,
+     "ok": 299,
+     "errors": 292,
+     "p95_ms": 190.7,
+     "gpu_util_pct": [
+      83.5,
+      0.0
+     ]
+    },
+    {
+     "second": 53,
+     "warmup": false,
+     "ok": 261,
+     "errors": 268,
+     "p95_ms": 195.7,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 54,
+     "warmup": false,
+     "ok": 289,
+     "errors": 285,
+     "p95_ms": 195.7,
+     "gpu_util_pct": [
+      87.5,
+      0.0
+     ]
+    },
+    {
+     "second": 55,
+     "warmup": false,
+     "ok": 297,
+     "errors": 293,
+     "p95_ms": 192.3,
+     "gpu_util_pct": [
+      90.0,
+      0.0
+     ]
+    },
+    {
+     "second": 56,
+     "warmup": false,
+     "ok": 283,
+     "errors": 292,
+     "p95_ms": 198.6,
+     "gpu_util_pct": [
+      90.0,
+      0.0
+     ]
+    },
+    {
+     "second": 57,
+     "warmup": false,
+     "ok": 279,
+     "errors": 281,
+     "p95_ms": 192.2,
+     "gpu_util_pct": [
+      89.0,
+      0.0
+     ]
+    },
+    {
+     "second": 58,
+     "warmup": false,
+     "ok": 297,
+     "errors": 284,
+     "p95_ms": 190.8,
+     "gpu_util_pct": [
+      86.0,
+      0.0
+     ]
+    },
+    {
+     "second": 59,
+     "warmup": false,
+     "ok": 254,
+     "errors": 265,
+     "p95_ms": 190.8,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ]
+    },
+    {
+     "second": 60,
+     "warmup": false,
+     "ok": 268,
+     "errors": 266,
+     "p95_ms": 402.8,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ]
+    }
+   ],
+   "nginx_per_second": {
+    "source": "fail_off_nginx_access.log.gz",
+    "note": "time = end of request, 1 s bins of the NGINX clock; warm-up included",
+    "totals": {
+     "gpu0": 16385,
+     "gpu1": 5178,
+     "error": 11206
+    },
+    "sent_to_a_second_server": 0,
+    "per_second": [
+     {
+      "t_mid_s": 0.25,
+      "gpu0": 128,
+      "gpu1": 124,
+      "error": 0
+     },
+     {
+      "t_mid_s": 1.25,
+      "gpu0": 257,
+      "gpu1": 269,
+      "error": 0
+     },
+     {
+      "t_mid_s": 2.25,
+      "gpu0": 278,
+      "gpu1": 263,
+      "error": 0
+     },
+     {
+      "t_mid_s": 3.25,
+      "gpu0": 260,
+      "gpu1": 269,
+      "error": 0
+     },
+     {
+      "t_mid_s": 4.25,
+      "gpu0": 271,
+      "gpu1": 273,
+      "error": 0
+     },
+     {
+      "t_mid_s": 5.25,
+      "gpu0": 269,
+      "gpu1": 273,
+      "error": 0
+     },
+     {
+      "t_mid_s": 6.25,
+      "gpu0": 277,
+      "gpu1": 270,
+      "error": 0
+     },
+     {
+      "t_mid_s": 7.25,
+      "gpu0": 266,
+      "gpu1": 264,
+      "error": 0
+     },
+     {
+      "t_mid_s": 8.25,
+      "gpu0": 269,
+      "gpu1": 272,
+      "error": 0
+     },
+     {
+      "t_mid_s": 9.25,
+      "gpu0": 270,
+      "gpu1": 275,
+      "error": 0
+     },
+     {
+      "t_mid_s": 10.25,
+      "gpu0": 269,
+      "gpu1": 254,
+      "error": 0
+     },
+     {
+      "t_mid_s": 11.25,
+      "gpu0": 264,
+      "gpu1": 264,
+      "error": 0
+     },
+     {
+      "t_mid_s": 12.25,
+      "gpu0": 270,
+      "gpu1": 272,
+      "error": 0
+     },
+     {
+      "t_mid_s": 13.25,
+      "gpu0": 265,
+      "gpu1": 269,
+      "error": 0
+     },
+     {
+      "t_mid_s": 14.25,
+      "gpu0": 268,
+      "gpu1": 260,
+      "error": 0
+     },
+     {
+      "t_mid_s": 15.25,
+      "gpu0": 238,
+      "gpu1": 231,
+      "error": 0
+     },
+     {
+      "t_mid_s": 16.25,
+      "gpu0": 207,
+      "gpu1": 243,
+      "error": 0
+     },
+     {
+      "t_mid_s": 17.25,
+      "gpu0": 244,
+      "gpu1": 242,
+      "error": 0
+     },
+     {
+      "t_mid_s": 18.25,
+      "gpu0": 274,
+      "gpu1": 263,
+      "error": 0
+     },
+     {
+      "t_mid_s": 19.25,
+      "gpu0": 274,
+      "gpu1": 260,
+      "error": 0
+     },
+     {
+      "t_mid_s": 20.25,
+      "gpu0": 253,
+      "gpu1": 68,
+      "error": 243
+     },
+     {
+      "t_mid_s": 21.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 279
+     },
+     {
+      "t_mid_s": 22.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 274
+     },
+     {
+      "t_mid_s": 23.25,
+      "gpu0": 287,
+      "gpu1": 0,
+      "error": 283
+     },
+     {
+      "t_mid_s": 24.25,
+      "gpu0": 276,
+      "gpu1": 0,
+      "error": 284
+     },
+     {
+      "t_mid_s": 25.25,
+      "gpu0": 281,
+      "gpu1": 0,
+      "error": 282
+     },
+     {
+      "t_mid_s": 26.25,
+      "gpu0": 279,
+      "gpu1": 0,
+      "error": 274
+     },
+     {
+      "t_mid_s": 27.25,
+      "gpu0": 278,
+      "gpu1": 0,
+      "error": 284
+     },
+     {
+      "t_mid_s": 28.25,
+      "gpu0": 291,
+      "gpu1": 0,
+      "error": 287
+     },
+     {
+      "t_mid_s": 29.25,
+      "gpu0": 293,
+      "gpu1": 0,
+      "error": 290
+     },
+     {
+      "t_mid_s": 30.25,
+      "gpu0": 297,
+      "gpu1": 0,
+      "error": 290
+     },
+     {
+      "t_mid_s": 31.25,
+      "gpu0": 277,
+      "gpu1": 0,
+      "error": 291
+     },
+     {
+      "t_mid_s": 32.25,
+      "gpu0": 304,
+      "gpu1": 0,
+      "error": 296
+     },
+     {
+      "t_mid_s": 33.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 283
+     },
+     {
+      "t_mid_s": 34.25,
+      "gpu0": 279,
+      "gpu1": 0,
+      "error": 278
+     },
+     {
+      "t_mid_s": 35.25,
+      "gpu0": 281,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 36.25,
+      "gpu0": 262,
+      "gpu1": 0,
+      "error": 268
+     },
+     {
+      "t_mid_s": 37.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 270
+     },
+     {
+      "t_mid_s": 38.25,
+      "gpu0": 270,
+      "gpu1": 0,
+      "error": 274
+     },
+     {
+      "t_mid_s": 39.25,
+      "gpu0": 248,
+      "gpu1": 0,
+      "error": 258
+     },
+     {
+      "t_mid_s": 40.25,
+      "gpu0": 286,
+      "gpu1": 0,
+      "error": 275
+     },
+     {
+      "t_mid_s": 41.25,
+      "gpu0": 274,
+      "gpu1": 0,
+      "error": 276
+     },
+     {
+      "t_mid_s": 42.25,
+      "gpu0": 282,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 43.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 44.25,
+      "gpu0": 278,
+      "gpu1": 0,
+      "error": 268
+     },
+     {
+      "t_mid_s": 45.25,
+      "gpu0": 268,
+      "gpu1": 0,
+      "error": 287
+     },
+     {
+      "t_mid_s": 46.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 281
+     },
+     {
+      "t_mid_s": 47.25,
+      "gpu0": 280,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 48.25,
+      "gpu0": 281,
+      "gpu1": 0,
+      "error": 274
+     },
+     {
+      "t_mid_s": 49.25,
+      "gpu0": 278,
+      "gpu1": 0,
+      "error": 269
+     },
+     {
+      "t_mid_s": 50.25,
+      "gpu0": 277,
+      "gpu1": 0,
+      "error": 283
+     },
+     {
+      "t_mid_s": 51.25,
+      "gpu0": 285,
+      "gpu1": 0,
+      "error": 286
+     },
+     {
+      "t_mid_s": 52.25,
+      "gpu0": 268,
+      "gpu1": 0,
+      "error": 277
+     },
+     {
+      "t_mid_s": 53.25,
+      "gpu0": 281,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 54.25,
+      "gpu0": 300,
+      "gpu1": 0,
+      "error": 294
+     },
+     {
+      "t_mid_s": 55.25,
+      "gpu0": 295,
+      "gpu1": 0,
+      "error": 292
+     },
+     {
+      "t_mid_s": 56.25,
+      "gpu0": 279,
+      "gpu1": 0,
+      "error": 287
+     },
+     {
+      "t_mid_s": 57.25,
+      "gpu0": 286,
+      "gpu1": 0,
+      "error": 278
+     },
+     {
+      "t_mid_s": 58.25,
+      "gpu0": 271,
+      "gpu1": 0,
+      "error": 280
+     },
+     {
+      "t_mid_s": 59.25,
+      "gpu0": 248,
+      "gpu1": 0,
+      "error": 249
+     },
+     {
+      "t_mid_s": 60.25,
+      "gpu0": 114,
+      "gpu1": 0,
+      "error": 62
+     }
+    ]
+   }
+  },
+  "fail_on": {
+   "name": "fail_on",
+   "users": 60,
+   "level_seconds": 60.0,
+   "warmup_s": 5.0,
+   "failover": "on",
+   "event": {
+    "cmd": "bash cluster.sh kill-gpu 1",
+    "started_s": 20.0,
+    "ended_s": 20.309,
+    "kill_utc": "2026-11-23T02:45:01.996Z",
+    "test_start_utc": "2026-11-23T02:44:41.996000+00:00"
+   },
+   "all_requests": {
+    "requests": 20413,
+    "ok": 20413,
+    "errors": 0,
+    "error_pct": 0.0,
+    "error_kinds": {}
+   },
+   "in_flight_at_event": {
+    "requests": 60,
+    "errors": 0,
+    "error_kinds": {}
+   },
+   "before": {
+    "window_s": [
+     5.0,
+     20.0
+    ],
+    "requests": 7595,
+    "ok": 7595,
+    "errors": 0,
+    "error_pct": 0.0,
+    "error_kinds": {},
+    "throughput_ok_rps": 506.33,
+    "latency_ms": {
+     "p50": 111.7,
+     "p95": 168.7,
+     "p99": 412.4,
+     "max": 642.8
+    },
+    "ok_by_gpu": {
+     "gpu0": 3815,
+     "gpu1": 3780
+    }
+   },
+   "during_event": {
+    "window_s": [
+     20.0,
+     20.309
+    ],
+    "requests": 68,
+    "ok": 68,
+    "errors": 0,
+    "error_pct": 0.0,
+    "error_kinds": {},
+    "throughput_ok_rps": 220.06,
+    "latency_ms": {
+     "p50": 239.1,
+     "p95": 385.9,
+     "p99": 392.6,
+     "max": 397.0
+    },
+    "ok_by_gpu": {
+     "gpu0": 68
+    }
+   },
+   "after": {
+    "window_s": [
+     20.309,
+     60.0
+    ],
+    "requests": 10218,
+    "ok": 10218,
+    "errors": 0,
+    "error_pct": 0.0,
+    "error_kinds": {},
+    "throughput_ok_rps": 257.44,
+    "latency_ms": {
+     "p50": 232.2,
+     "p95": 346.3,
+     "p99": 467.4,
+     "max": 653.2
+    },
+    "ok_by_gpu": {
+     "gpu0": 10218
+    }
+   },
+   "after_passes_rule": true,
+   "loadgen_per_second": [
+    {
+     "second": 1,
+     "warmup": true,
+     "ok": 352,
+     "errors": 0,
+     "p95_ms": 126.8,
+     "gpu_util_pct": [
+      44.0,
+      45.5
+     ]
+    },
+    {
+     "second": 2,
+     "warmup": true,
+     "ok": 514,
+     "errors": 0,
+     "p95_ms": 158.2,
+     "gpu_util_pct": [
+      86.0,
+      90.0
+     ]
+    },
+    {
+     "second": 3,
+     "warmup": true,
+     "ok": 546,
+     "errors": 0,
+     "p95_ms": 137.2,
+     "gpu_util_pct": [
+      85.0,
+      83.0
+     ]
+    },
+    {
+     "second": 4,
+     "warmup": true,
+     "ok": 536,
+     "errors": 0,
+     "p95_ms": 134.8,
+     "gpu_util_pct": [
+      86.5,
+      84.0
+     ]
+    },
+    {
+     "second": 5,
+     "warmup": true,
+     "ok": 524,
+     "errors": 0,
+     "p95_ms": 142.6,
+     "gpu_util_pct": [
+      85.0,
+      82.5
+     ]
+    },
+    {
+     "second": 6,
+     "warmup": false,
+     "ok": 529,
+     "errors": 0,
+     "p95_ms": 137.9,
+     "gpu_util_pct": [
+      86.0,
+      83.5
+     ]
+    },
+    {
+     "second": 7,
+     "warmup": false,
+     "ok": 532,
+     "errors": 0,
+     "p95_ms": 142.8,
+     "gpu_util_pct": [
+      84.5,
+      87.0
+     ]
+    },
+    {
+     "second": 8,
+     "warmup": false,
+     "ok": 512,
+     "errors": 0,
+     "p95_ms": 162.1,
+     "gpu_util_pct": [
+      81.5,
+      84.5
+     ]
+    },
+    {
+     "second": 9,
+     "warmup": false,
+     "ok": 509,
+     "errors": 0,
+     "p95_ms": 147.9,
+     "gpu_util_pct": [
+      82.5,
+      84.5
+     ]
+    },
+    {
+     "second": 10,
+     "warmup": false,
+     "ok": 528,
+     "errors": 0,
+     "p95_ms": 141.9,
+     "gpu_util_pct": [
+      84.5,
+      83.5
+     ]
+    },
+    {
+     "second": 11,
+     "warmup": false,
+     "ok": 525,
+     "errors": 0,
+     "p95_ms": 139.8,
+     "gpu_util_pct": [
+      87.0,
+      87.0
+     ]
+    },
+    {
+     "second": 12,
+     "warmup": false,
+     "ok": 540,
+     "errors": 0,
+     "p95_ms": 138.7,
+     "gpu_util_pct": [
+      86.0,
+      85.0
+     ]
+    },
+    {
+     "second": 13,
+     "warmup": false,
+     "ok": 525,
+     "errors": 0,
+     "p95_ms": 137.3,
+     "gpu_util_pct": [
+      84.0,
+      83.0
+     ]
+    },
+    {
+     "second": 14,
+     "warmup": false,
+     "ok": 502,
+     "errors": 0,
+     "p95_ms": 163.8,
+     "gpu_util_pct": [
+      84.5,
+      87.5
+     ]
+    },
+    {
+     "second": 15,
+     "warmup": false,
+     "ok": 540,
+     "errors": 0,
+     "p95_ms": 141.3,
+     "gpu_util_pct": [
+      81.0,
+      85.0
+     ]
+    },
+    {
+     "second": 16,
+     "warmup": false,
+     "ok": 495,
+     "errors": 0,
+     "p95_ms": 290.2,
+     "gpu_util_pct": [
+      86.0,
+      86.5
+     ]
+    },
+    {
+     "second": 17,
+     "warmup": false,
+     "ok": 448,
+     "errors": 0,
+     "p95_ms": 334.5,
+     "gpu_util_pct": [
+      83.5,
+      77.0
+     ]
+    },
+    {
+     "second": 18,
+     "warmup": false,
+     "ok": 467,
+     "errors": 0,
+     "p95_ms": 321.6,
+     "gpu_util_pct": [
+      84.0,
+      86.0
+     ]
+    },
+    {
+     "second": 19,
+     "warmup": false,
+     "ok": 447,
+     "errors": 0,
+     "p95_ms": 410.3,
+     "gpu_util_pct": [
+      79.0,
+      84.5
+     ]
+    },
+    {
+     "second": 20,
+     "warmup": false,
+     "ok": 496,
+     "errors": 0,
+     "p95_ms": 267.2,
+     "gpu_util_pct": [
+      82.0,
+      82.5
+     ]
+    },
+    {
+     "second": 21,
+     "warmup": false,
+     "ok": 248,
+     "errors": 0,
+     "p95_ms": 420.9,
+     "gpu_util_pct": [
+      85.5,
+      88.5
+     ]
+    },
+    {
+     "second": 22,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 256.2,
+     "gpu_util_pct": [
+      80.0,
+      0.0
+     ]
+    },
+    {
+     "second": 23,
+     "warmup": false,
+     "ok": 246,
+     "errors": 0,
+     "p95_ms": 255.2,
+     "gpu_util_pct": [
+      79.0,
+      0.0
+     ]
+    },
+    {
+     "second": 24,
+     "warmup": false,
+     "ok": 279,
+     "errors": 0,
+     "p95_ms": 249.3,
+     "gpu_util_pct": [
+      80.5,
+      0.0
+     ]
+    },
+    {
+     "second": 25,
+     "warmup": false,
+     "ok": 261,
+     "errors": 0,
+     "p95_ms": 259.8,
+     "gpu_util_pct": [
+      77.5,
+      0.0
+     ]
+    },
+    {
+     "second": 26,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 257.6,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 27,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 252.9,
+     "gpu_util_pct": [
+      80.5,
+      0.0
+     ]
+    },
+    {
+     "second": 28,
+     "warmup": false,
+     "ok": 250,
+     "errors": 0,
+     "p95_ms": 265.1,
+     "gpu_util_pct": [
+      81.5,
+      0.0
+     ]
+    },
+    {
+     "second": 29,
+     "warmup": false,
+     "ok": 287,
+     "errors": 0,
+     "p95_ms": 249.3,
+     "gpu_util_pct": [
+      80.0,
+      0.0
+     ]
+    },
+    {
+     "second": 30,
+     "warmup": false,
+     "ok": 253,
+     "errors": 0,
+     "p95_ms": 242.2,
+     "gpu_util_pct": [
+      79.0,
+      0.0
+     ]
+    },
+    {
+     "second": 31,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 245.9,
+     "gpu_util_pct": [
+      79.5,
+      0.0
+     ]
+    },
+    {
+     "second": 32,
+     "warmup": false,
+     "ok": 287,
+     "errors": 0,
+     "p95_ms": 247.3,
+     "gpu_util_pct": [
+      77.0,
+      0.0
+     ]
+    },
+    {
+     "second": 33,
+     "warmup": false,
+     "ok": 225,
+     "errors": 0,
+     "p95_ms": 506.7,
+     "gpu_util_pct": [
+      76.0,
+      0.0
+     ]
+    },
+    {
+     "second": 34,
+     "warmup": false,
+     "ok": 285,
+     "errors": 0,
+     "p95_ms": 271.2,
+     "gpu_util_pct": [
+      80.5,
+      0.0
+     ]
+    },
+    {
+     "second": 35,
+     "warmup": false,
+     "ok": 254,
+     "errors": 0,
+     "p95_ms": 471.1,
+     "gpu_util_pct": [
+      73.5,
+      0.0
+     ]
+    },
+    {
+     "second": 36,
+     "warmup": false,
+     "ok": 260,
+     "errors": 0,
+     "p95_ms": 373.2,
+     "gpu_util_pct": [
+      85.0,
+      0.0
+     ]
+    },
+    {
+     "second": 37,
+     "warmup": false,
+     "ok": 237,
+     "errors": 0,
+     "p95_ms": 532.9,
+     "gpu_util_pct": [
+      83.5,
+      0.0
+     ]
+    },
+    {
+     "second": 38,
+     "warmup": false,
+     "ok": 282,
+     "errors": 0,
+     "p95_ms": 375.4,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ]
+    },
+    {
+     "second": 39,
+     "warmup": false,
+     "ok": 262,
+     "errors": 0,
+     "p95_ms": 327.6,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 40,
+     "warmup": false,
+     "ok": 269,
+     "errors": 0,
+     "p95_ms": 359.9,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 41,
+     "warmup": false,
+     "ok": 271,
+     "errors": 0,
+     "p95_ms": 250.8,
+     "gpu_util_pct": [
+      73.0,
+      0.0
+     ]
+    },
+    {
+     "second": 42,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 252.3,
+     "gpu_util_pct": [
+      89.0,
+      0.0
+     ]
+    },
+    {
+     "second": 43,
+     "warmup": false,
+     "ok": 269,
+     "errors": 0,
+     "p95_ms": 249.3,
+     "gpu_util_pct": [
+      74.0,
+      0.0
+     ]
+    },
+    {
+     "second": 44,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 245.4,
+     "gpu_util_pct": [
+      82.5,
+      0.0
+     ]
+    },
+    {
+     "second": 45,
+     "warmup": false,
+     "ok": 271,
+     "errors": 0,
+     "p95_ms": 247.4,
+     "gpu_util_pct": [
+      77.0,
+      0.0
+     ]
+    },
+    {
+     "second": 46,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 249.0,
+     "gpu_util_pct": [
+      86.5,
+      0.0
+     ]
+    },
+    {
+     "second": 47,
+     "warmup": false,
+     "ok": 269,
+     "errors": 0,
+     "p95_ms": 249.5,
+     "gpu_util_pct": [
+      76.0,
+      0.0
+     ]
+    },
+    {
+     "second": 48,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 253.4,
+     "gpu_util_pct": [
+      87.5,
+      0.5
+     ]
+    },
+    {
+     "second": 49,
+     "warmup": false,
+     "ok": 271,
+     "errors": 0,
+     "p95_ms": 248.4,
+     "gpu_util_pct": [
+      77.0,
+      0.0
+     ]
+    },
+    {
+     "second": 50,
+     "warmup": false,
+     "ok": 235,
+     "errors": 0,
+     "p95_ms": 252.4,
+     "gpu_util_pct": [
+      84.5,
+      0.0
+     ]
+    },
+    {
+     "second": 51,
+     "warmup": false,
+     "ok": 277,
+     "errors": 0,
+     "p95_ms": 491.0,
+     "gpu_util_pct": [
+      79.5,
+      0.0
+     ]
+    },
+    {
+     "second": 52,
+     "warmup": false,
+     "ok": 240,
+     "errors": 0,
+     "p95_ms": 249.3,
+     "gpu_util_pct": [
+      83.0,
+      0.0
+     ]
+    },
+    {
+     "second": 53,
+     "warmup": false,
+     "ok": 270,
+     "errors": 0,
+     "p95_ms": 250.6,
+     "gpu_util_pct": [
+      76.0,
+      0.0
+     ]
+    },
+    {
+     "second": 54,
+     "warmup": false,
+     "ok": 236,
+     "errors": 0,
+     "p95_ms": 397.5,
+     "gpu_util_pct": [
+      82.0,
+      0.0
+     ]
+    },
+    {
+     "second": 55,
+     "warmup": false,
+     "ok": 268,
+     "errors": 0,
+     "p95_ms": 422.0,
+     "gpu_util_pct": [
+      81.0,
+      0.0
+     ]
+    },
+    {
+     "second": 56,
+     "warmup": false,
+     "ok": 250,
+     "errors": 0,
+     "p95_ms": 395.5,
+     "gpu_util_pct": [
+      80.5,
+      0.0
+     ]
+    },
+    {
+     "second": 57,
+     "warmup": false,
+     "ok": 247,
+     "errors": 0,
+     "p95_ms": 384.6,
+     "gpu_util_pct": [
+      80.5,
+      0.0
+     ]
+    },
+    {
+     "second": 58,
+     "warmup": false,
+     "ok": 267,
+     "errors": 0,
+     "p95_ms": 378.4,
+     "gpu_util_pct": [
+      81.0,
+      0.0
+     ]
+    },
+    {
+     "second": 59,
+     "warmup": false,
+     "ok": 275,
+     "errors": 0,
+     "p95_ms": 244.1,
+     "gpu_util_pct": [
+      76.0,
+      0.0
+     ]
+    },
+    {
+     "second": 60,
+     "warmup": false,
+     "ok": 265,
+     "errors": 0,
+     "p95_ms": 250.4,
+     "gpu_util_pct": [
+      85.5,
+      0.0
+     ]
+    }
+   ],
+   "nginx_per_second": {
+    "source": "fail_on_nginx_access.log.gz",
+    "note": "time = end of request, 1 s bins of the NGINX clock; warm-up included",
+    "totals": {
+     "gpu0": 15367,
+     "gpu1": 5046,
+     "error": 0
+    },
+    "sent_to_a_second_server": 55,
+    "per_second": [
+     {
+      "t_mid_s": 0.504,
+      "gpu0": 186,
+      "gpu1": 191,
+      "error": 0
+     },
+     {
+      "t_mid_s": 1.504,
+      "gpu0": 261,
+      "gpu1": 264,
+      "error": 0
+     },
+     {
+      "t_mid_s": 2.504,
+      "gpu0": 272,
+      "gpu1": 264,
+      "error": 0
+     },
+     {
+      "t_mid_s": 3.504,
+      "gpu0": 271,
+      "gpu1": 273,
+      "error": 0
+     },
+     {
+      "t_mid_s": 4.504,
+      "gpu0": 259,
+      "gpu1": 261,
+      "error": 0
+     },
+     {
+      "t_mid_s": 5.504,
+      "gpu0": 261,
+      "gpu1": 269,
+      "error": 0
+     },
+     {
+      "t_mid_s": 6.504,
+      "gpu0": 262,
+      "gpu1": 258,
+      "error": 0
+     },
+     {
+      "t_mid_s": 7.504,
+      "gpu0": 266,
+      "gpu1": 258,
+      "error": 0
+     },
+     {
+      "t_mid_s": 8.504,
+      "gpu0": 249,
+      "gpu1": 249,
+      "error": 0
+     },
+     {
+      "t_mid_s": 9.504,
+      "gpu0": 267,
+      "gpu1": 275,
+      "error": 0
+     },
+     {
+      "t_mid_s": 10.504,
+      "gpu0": 268,
+      "gpu1": 255,
+      "error": 0
+     },
+     {
+      "t_mid_s": 11.504,
+      "gpu0": 263,
+      "gpu1": 272,
+      "error": 0
+     },
+     {
+      "t_mid_s": 12.504,
+      "gpu0": 266,
+      "gpu1": 269,
+      "error": 0
+     },
+     {
+      "t_mid_s": 13.504,
+      "gpu0": 258,
+      "gpu1": 242,
+      "error": 0
+     },
+     {
+      "t_mid_s": 14.504,
+      "gpu0": 265,
+      "gpu1": 275,
+      "error": 0
+     },
+     {
+      "t_mid_s": 15.504,
+      "gpu0": 248,
+      "gpu1": 238,
+      "error": 0
+     },
+     {
+      "t_mid_s": 16.504,
+      "gpu0": 220,
+      "gpu1": 242,
+      "error": 0
+     },
+     {
+      "t_mid_s": 17.504,
+      "gpu0": 216,
+      "gpu1": 231,
+      "error": 0
+     },
+     {
+      "t_mid_s": 18.504,
+      "gpu0": 249,
+      "gpu1": 200,
+      "error": 0
+     },
+     {
+      "t_mid_s": 19.504,
+      "gpu0": 248,
+      "gpu1": 260,
+      "error": 0
+     },
+     {
+      "t_mid_s": 20.504,
+      "gpu0": 214,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 21.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 22.504,
+      "gpu0": 297,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 23.504,
+      "gpu0": 249,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 24.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 25.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 26.504,
+      "gpu0": 294,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 27.504,
+      "gpu0": 243,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 28.504,
+      "gpu0": 253,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 29.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 30.504,
+      "gpu0": 287,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 31.504,
+      "gpu0": 253,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 32.504,
+      "gpu0": 256,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 33.504,
+      "gpu0": 256,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 34.504,
+      "gpu0": 239,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 35.504,
+      "gpu0": 263,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 36.504,
+      "gpu0": 266,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 37.504,
+      "gpu0": 254,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 38.504,
+      "gpu0": 297,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 39.504,
+      "gpu0": 261,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 40.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 41.504,
+      "gpu0": 269,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 42.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 43.504,
+      "gpu0": 271,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 44.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 45.504,
+      "gpu0": 269,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 46.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 47.504,
+      "gpu0": 271,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 48.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 49.504,
+      "gpu0": 273,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 50.504,
+      "gpu0": 239,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 51.504,
+      "gpu0": 270,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 52.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 53.504,
+      "gpu0": 275,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 54.504,
+      "gpu0": 229,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 55.504,
+      "gpu0": 262,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 56.504,
+      "gpu0": 278,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 57.504,
+      "gpu0": 259,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 58.504,
+      "gpu0": 265,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 59.504,
+      "gpu0": 240,
+      "gpu1": 0,
+      "error": 0
+     },
+     {
+      "t_mid_s": 60.504,
+      "gpu0": 60,
+      "gpu1": 0,
+      "error": 0
+     }
+    ]
+   }
+  }
+ }
+}

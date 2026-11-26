@@ -1,0 +1,44 @@
+{
+ "node": 2,
+ "steps": 350,
+ "wall_s": 1050.6,
+ "placement": {
+  "gpu0": "embed_tokens + layers 0-17",
+  "gpu1": "layers 18-35 + norm + lm_head"
+ },
+ "lora_params": 3833856,
+ "grad_bytes": 15335424,
+ "batch_per_node": 8,
+ "reconnects": 0,
+ "stalls": 0,
+ "lanes": 4,
+ "truncated_examples": 1,
+ "token_len": [
+  64,
+  107.188,
+  256
+ ],
+ "peak_alloc_mib": [
+  13907,
+  14224
+ ],
+ "peak_reserved_mib": [
+  13996,
+  14360
+ ],
+ "gpu": {
+  "0": {
+   "util_mean": 11.7,
+   "util_max": 100,
+   "mem_used_max_mib": 14332,
+   "samples": 1050
+  },
+  "1": {
+   "util_mean": 10.8,
+   "util_max": 100,
+   "mem_used_max_mib": 14696,
+   "samples": 1050
+  }
+ },
+ "smoke": false
+}

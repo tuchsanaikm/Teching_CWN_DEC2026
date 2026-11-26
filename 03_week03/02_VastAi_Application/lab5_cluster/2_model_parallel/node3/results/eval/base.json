@@ -1,0 +1,1216 @@
+{
+ "name": "base",
+ "lora": null,
+ "lora_sha256": null,
+ "n": 200,
+ "exact": 3,
+ "exact_match": 0.015,
+ "test_loss": 1.91541,
+ "answer_tokens": 5266,
+ "max_len": 256,
+ "max_new_tokens": 200,
+ "gen_seconds": 59.9,
+ "seconds": 79.5,
+ "items": [
+  {
+   "question": "What is Record, when High Points is \"Ray Allen (20)\"?",
+   "reference": "SELECT record FROM table_name_98 WHERE high_points = \"ray allen (20)\"",
+   "prediction": "SELECT record FROM table_name_98 WHERE high_points = 'Ray Allen (20)'",
+   "exact": false
+  },
+  {
+   "question": "If the stadium name is the Thuwunna Stadium, what is the date?",
+   "reference": "SELECT date FROM table_25428629_1 WHERE stadium = \"Thuwunna stadium\"",
+   "prediction": "SELECT date FROM table_25428629_1 WHERE stadium = 'Thuwunna Stadium'",
+   "exact": false
+  },
+  {
+   "question": "Which distinctive models are produced by maker with the full name General Motors or weighing more than 3500?",
+   "reference": "SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model = T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker = T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId = T4.Id WHERE T3.FullName = 'General Motors' OR T4.weight > 3500",
+   "prediction": "SELECT DISTINCT Model FROM CAR_NAMES WHERE MakeId = (SELECT Id FROM CAR_MAKERS WHERE FullName = 'General Motors') OR Id IN (SELECT Id FROM CARS_DATA WHERE weight > '3500');",
+   "exact": false
+  },
+  {
+   "question": "What is the position of the player from the Ukraine?",
+   "reference": "SELECT position FROM table_name_1 WHERE nationality = \"ukraine\"",
+   "prediction": "SELECT position FROM table_name_1 WHERE nationality = 'Ukraine';",
+   "exact": false
+  },
+  {
+   "question": "What was the Result on September 24?",
+   "reference": "SELECT result FROM table_name_21 WHERE date = \"september 24\"",
+   "prediction": "SELECT result FROM table_name_21 WHERE date = 'September 24'",
+   "exact": false
+  },
+  {
+   "question": "How many scores where achieved on January 19?",
+   "reference": "SELECT COUNT(score) FROM table_27734769_9 WHERE date = \"January 19\"",
+   "prediction": "SELECT COUNT(*) FROM table_27734769_9 WHERE date = 'January 19'",
+   "exact": false
+  },
+  {
+   "question": "What was the qualification with more than 162 laps in 1953?",
+   "reference": "SELECT qual FROM table_name_35 WHERE laps > 162 AND year = \"1953\"",
+   "prediction": "SELECT qual FROM table_name_35 WHERE laps > '162' AND year = '1953';",
+   "exact": false
+  },
+  {
+   "question": "Name the city for kanjiža",
+   "reference": "SELECT city___municipality FROM table_2562572_5 WHERE urban_settlement = \"Kanjiža\"",
+   "prediction": "SELECT city___municipality FROM table_2562572_5 WHERE urban_settlement = 'kanjiža'",
+   "exact": false
+  },
+  {
+   "question": "How many counties have people before profit as the party, and a borough greater than 0?",
+   "reference": "SELECT SUM(county) FROM table_name_16 WHERE party = \"people before profit\" AND borough > 0",
+   "prediction": "SELECT COUNT(DISTINCT county) FROM table_name_16 WHERE party = 'people before profit' AND borough > 0;",
+   "exact": false
+  },
+  {
+   "question": "What is the number of electorates when the name is badnawar?",
+   "reference": "SELECT number_of_electorates__2009_ FROM table_name_61 WHERE name = \"badnawar\"",
+   "prediction": "SELECT number_of_electorates__2009_ FROM table_name_61 WHERE name = 'badnawar';",
+   "exact": false
+  },
+  {
+   "question": "Which teams were in the central division and located in livonia?",
+   "reference": "SELECT team FROM table_11094950_1 WHERE division = \"Central\" AND location = \"Livonia\"",
+   "prediction": "SELECT team FROM table_11094950_1 WHERE division = 'central' AND location = 'livonia'",
+   "exact": false
+  },
+  {
+   "question": "What was the kickoff time on week 1?",
+   "reference": "SELECT kickoff_time FROM table_name_53 WHERE week = 1",
+   "prediction": "SELECT kickoff_time FROM table_name_53 WHERE week = '1'",
+   "exact": false
+  },
+  {
+   "question": "What is the total number of points when draw is 4?",
+   "reference": "SELECT COUNT(points) FROM table_name_71 WHERE draw = 4",
+   "prediction": "SELECT SUM(CAST(points AS INTEGER)) FROM table_name_71 WHERE draw = '4';",
+   "exact": false
+  },
+  {
+   "question": "How many byes did they have against smaller than 1544, 13 wins, and draws larger than 0?",
+   "reference": "SELECT COUNT(byes) FROM table_name_48 WHERE against < 1544 AND wins = 13 AND draws > 0",
+   "prediction": "SELECT COUNT(*) FROM table_name_48 WHERE byes < 1544 AND wins = '13' AND draws > '0'",
+   "exact": false
+  },
+  {
+   "question": "If the NFL team is the Houston Oilers and the position is DT, who is the Pro team?",
+   "reference": "SELECT pro_team FROM table_27132791_3 WHERE position = \"DT\" AND nfl_team = \"Houston Oilers\"",
+   "prediction": "SELECT pro_team FROM table_27132791_3 WHERE nfl_team = 'Houston Oilers' AND position = 'DT'",
+   "exact": false
+  },
+  {
+   "question": "What date is for Venue of jjb stadium, and a Result of w?",
+   "reference": "SELECT date FROM table_name_14 WHERE venue = \"jjb stadium\" AND result = \"w\"",
+   "prediction": "SELECT date FROM table_name_14 WHERE venue = 'jjb stadium' AND result = 'w'",
+   "exact": false
+  },
+  {
+   "question": "What final was ranked 4?",
+   "reference": "SELECT final FROM table_name_96 WHERE rank = \"4\"",
+   "prediction": "SELECT final FROM table_name_96 WHERE rank = '4'",
+   "exact": false
+  },
+  {
+   "question": "The rounds of 1-2, 4-10, 12 belong to which entrant?",
+   "reference": "SELECT entrant FROM table_name_96 WHERE rounds = \"1-2, 4-10, 12\"",
+   "prediction": "SELECT entrant FROM table_name_96 WHERE rounds IN ('1-2', '4-10', '12')",
+   "exact": false
+  },
+  {
+   "question": "How many players are on this list?",
+   "reference": "SELECT MAX(_number) FROM table_197638_6",
+   "prediction": "SELECT COUNT(*) FROM table_197638_6;",
+   "exact": false
+  },
+  {
+   "question": "When was the game played at the Western Oval venue?",
+   "reference": "SELECT date FROM table_name_23 WHERE venue = \"western oval\"",
+   "prediction": "SELECT date FROM table_name_23 WHERE venue = 'Western Oval';",
+   "exact": false
+  },
+  {
+   "question": "What is the position of the player who has ongoing first-team goals and currently plays for the Aston Villa club?",
+   "reference": "SELECT position FROM table_name_79 WHERE first_team_goals = \"ongoing\" AND current_club = \"aston villa\"",
+   "prediction": "SELECT position FROM table_name_79 WHERE first_team_goals = 'ongoing' AND current_club = 'Aston Villa';",
+   "exact": false
+  },
+  {
+   "question": "Which entrant has Ferrari 038 3.5 v12 engine?",
+   "reference": "SELECT entrant FROM table_name_72 WHERE engine = \"ferrari 038 3.5 v12\"",
+   "prediction": "SELECT entrant FROM table_name_72 WHERE engine = 'Ferrari 038 3.5 v12';",
+   "exact": false
+  },
+  {
+   "question": "How many players belong to Notre Dame?",
+   "reference": "SELECT COUNT(player) FROM table_15621965_7 WHERE school_club_team = \"Notre Dame\"",
+   "prediction": "SELECT COUNT(*) FROM table_15621965_7 WHERE school_club_team = 'Notre Dame';",
+   "exact": false
+  },
+  {
+   "question": "What is the country that has the format of cd, the label of sony music and the catalogue no sicp-2055?",
+   "reference": "SELECT country FROM table_name_61 WHERE format = \"cd\" AND label = \"sony music\" AND catalogue_no = \"sicp-2055\"",
+   "prediction": "SELECT country FROM table_name_61 WHERE format = 'cd' AND label = 'sony music' AND catalogue_no = 'sicp-2055';",
+   "exact": false
+  },
+  {
+   "question": "Which Event has a Resolution of loss, and a Record of 12–2?",
+   "reference": "SELECT event FROM table_name_56 WHERE res = \"loss\" AND record = \"12–2\"",
+   "prediction": "SELECT event FROM table_name_56 WHERE res = 'loss' AND record = '12–2';",
+   "exact": false
+  },
+  {
+   "question": "What is the title of Melsrose Place episode number 168?",
+   "reference": "SELECT title FROM table_name_90 WHERE no_in_series = 168",
+   "prediction": "SELECT title FROM table_name_90 WHERE no_in_series = '168';",
+   "exact": false
+  },
+  {
+   "question": "Which party has a first elected of 1966, qld as the state, and donald milner cameron as the member?",
+   "reference": "SELECT party FROM table_name_25 WHERE first_elected = \"1966\" AND state = \"qld\" AND member = \"donald milner cameron\"",
+   "prediction": "SELECT party FROM table_name_25 WHERE first_elected = '1966' AND state = 'qld' AND member = 'donald milner cameron'",
+   "exact": false
+  },
+  {
+   "question": "What is Score, when Tournament is \"Tampere , Finland\"?",
+   "reference": "SELECT score FROM table_name_24 WHERE tournament = \"tampere , finland\"",
+   "prediction": "SELECT score FROM table_name_24 WHERE tournament = 'Tampere , Finland'",
+   "exact": false
+  },
+  {
+   "question": "Which name has a Roll of 270?",
+   "reference": "SELECT name FROM table_name_97 WHERE roll = 270",
+   "prediction": "SELECT name FROM table_name_97 WHERE roll = '270'",
+   "exact": false
+  },
+  {
+   "question": " how many ↓ function / genus → with escherichia being espd",
+   "reference": "SELECT COUNT AS ↓_function___genus_→ FROM table_10321124_1 WHERE escherichia = \"EspD\"",
+   "prediction": "SELECT COUNT(*) FROM table_10321124_1 WHERE escherichia = 'espd';",
+   "exact": false
+  },
+  {
+   "question": "Which week was the game played on December 8, 1974?",
+   "reference": "SELECT week FROM table_name_39 WHERE date = \"december 8, 1974\"",
+   "prediction": "SELECT week FROM table_name_39 WHERE date = 'December 8, 1974';",
+   "exact": false
+  },
+  {
+   "question": "Show all city with a branch opened in 2001 and a branch with more than 100 membership.",
+   "reference": "SELECT city FROM branch WHERE open_year = 2001 AND membership_amount > 100",
+   "prediction": "SELECT city\nFROM branch\nWHERE open_year = '2001' AND membership_amount > '100';",
+   "exact": false
+  },
+  {
+   "question": "What school/club team has tim kempton as the player?",
+   "reference": "SELECT school_club_team FROM table_name_25 WHERE player = \"tim kempton\"",
+   "prediction": "SELECT school_club_team FROM table_name_25 WHERE player = 'tim kempton'",
+   "exact": false
+  },
+  {
+   "question": "What school did Paul Dawkins play for?",
+   "reference": "SELECT school_club_team FROM table_name_34 WHERE player = \"paul dawkins\"",
+   "prediction": "SELECT school_club_team FROM table_name_34 WHERE player = 'Paul Dawkins'",
+   "exact": false
+  },
+  {
+   "question": "What Category has a Result of Nominated, Year of 2006, and the Title of Pierrepoint?",
+   "reference": "SELECT category FROM table_name_64 WHERE result = \"nominated\" AND year = 2006 AND title = \"pierrepoint\"",
+   "prediction": "SELECT category FROM table_name_64 WHERE result = 'Nominated' AND year = '2006' AND title = 'Pierrepoint';",
+   "exact": false
+  },
+  {
+   "question": "What week was the Original artist, the police ?",
+   "reference": "SELECT week FROM table_name_5 WHERE original_artist = \"the police\"",
+   "prediction": "SELECT week FROM table_name_5 WHERE original_artist = 'the police';",
+   "exact": false
+  },
+  {
+   "question": "When did the fourth episode of the season (4 1-04) first air?",
+   "reference": "SELECT original_airdate FROM table_24222929_3 WHERE episode_number_production_number = \"4 1-04\"",
+   "prediction": "SELECT original_airdate FROM table_24222929_3 WHERE episode_number_production_number = '4 1-04';",
+   "exact": false
+  },
+  {
+   "question": "Which poll had a week 10 larger than 2, a week 2 of exactly 12, and a week 13 of 8?",
+   "reference": "SELECT poll FROM table_name_10 WHERE wk_10 > 2 AND wk_2 = \"12\" AND wk_13 = 8",
+   "prediction": "SELECT poll \nFROM table_name_10 \nWHERE wk_10 > wk_2 \n  AND wk_2 = '12' \n  AND wk_13 = '8';",
+   "exact": false
+  },
+  {
+   "question": "When was the station WLS-TV owned since?",
+   "reference": "SELECT owned_since FROM table_22329326_1 WHERE station = \"WLS-TV\"",
+   "prediction": "SELECT owned_since FROM table_22329326_1 WHERE station = 'WLS-TV';",
+   "exact": false
+  },
+  {
+   "question": "Which Set 2 has a Set 3 of 20–25?",
+   "reference": "SELECT set_2 FROM table_name_70 WHERE set_3 = \"20–25\"",
+   "prediction": "SELECT set_2 FROM table_name_70 WHERE set_3 = '20–25';",
+   "exact": false
+  },
+  {
+   "question": "Which Record has a Game smaller than 19, and Points smaller than 19, and a Score of 4–6?",
+   "reference": "SELECT record FROM table_name_24 WHERE game < 19 AND points < 19 AND score = \"4–6\"",
+   "prediction": "SELECT record FROM table_name_24 WHERE game < '19' AND points < '19' AND score = '4–6';",
+   "exact": false
+  },
+  {
+   "question": "What number in the series are the episodes with production code 5016/5017?",
+   "reference": "SELECT no_in_series FROM table_17482534_1 WHERE production_code = \"5016/5017\"",
+   "prediction": "SELECT no_in_series FROM table_17482534_1 WHERE production_code IN ('5016', '5017')",
+   "exact": false
+  },
+  {
+   "question": "What is the player from England's To Par?",
+   "reference": "SELECT to_par FROM table_name_68 WHERE country = \"england\"",
+   "prediction": "SELECT to_par FROM table_name_68 WHERE country = 'England'",
+   "exact": false
+  },
+  {
+   "question": "What is the high grid for ferrari's with 2 laps?",
+   "reference": "SELECT MAX(grid) FROM table_name_45 WHERE constructor = \"ferrari\" AND laps = 2",
+   "prediction": "SELECT MAX(grid) FROM table_name_45 WHERE constructor = 'ferrari' AND laps = '2';",
+   "exact": false
+  },
+  {
+   "question": "What was the production code of the episode that was written by michael dante dimartino and directed by lauren macmullan?",
+   "reference": "SELECT production_code FROM table_14562722_1 WHERE written_by = \"Michael Dante DiMartino\" AND directed_by = \"Lauren MacMullan\"",
+   "prediction": "SELECT production_code FROM table_14562722_1 WHERE written_by = 'michael dante dimartino' AND directed_by = 'lauren macmullan'",
+   "exact": false
+  },
+  {
+   "question": "Name the D 44 √ for when it has D 41 √ of r 41 +",
+   "reference": "SELECT d_44_√ FROM table_name_93 WHERE d_41_√ = \"r 41 +\"",
+   "prediction": "SELECT d_44_√ FROM table_name_93 WHERE d_41_√ = 'r 41 +';",
+   "exact": false
+  },
+  {
+   "question": "What year has the time of 55:29:20?",
+   "reference": "SELECT COUNT(year) FROM table_name_16 WHERE time = \"55:29:20\"",
+   "prediction": "SELECT year FROM table_name_16 WHERE time = '55:29:20';",
+   "exact": false
+  },
+  {
+   "question": "How many years were there with 348 attempts?",
+   "reference": "SELECT COUNT(yards) FROM table_1037590_1 WHERE attempts = 348",
+   "prediction": "SELECT COUNT(*) FROM table_1037590_1 WHERE attempts = '348';",
+   "exact": false
+  },
+  {
+   "question": "What is the average number of Gold medals when there are 5 bronze medals?",
+   "reference": "SELECT AVG(gold) FROM table_name_82 WHERE bronze = 5",
+   "prediction": "SELECT AVG(gold) FROM table_name_82 WHERE bronze = '5';",
+   "exact": false
+  },
+  {
+   "question": "Which Programming has a Video of audio only?",
+   "reference": "SELECT programming FROM table_name_62 WHERE video = \"audio only\"",
+   "prediction": "SELECT programming FROM table_name_62 WHERE video = 'audio only';",
+   "exact": false
+  },
+  {
+   "question": "What was the score of the match against duk-hee lee?",
+   "reference": "SELECT score FROM table_name_43 WHERE opponent = \"duk-hee lee\"",
+   "prediction": "SELECT score FROM table_name_43 WHERE opponent = 'duk-hee lee';",
+   "exact": false
+  },
+  {
+   "question": "Which episode had Lavern Baker?",
+   "reference": "SELECT episode FROM table_26250151_1 WHERE original_recording_artist = \"LaVern Baker\"",
+   "prediction": "SELECT episode FROM table_26250151_1 WHERE original_recording_artist = 'Lavern Baker'",
+   "exact": false
+  },
+  {
+   "question": "What team was the winner when the result was 90–86?",
+   "reference": "SELECT winner FROM table_name_35 WHERE result = \"90–86\"",
+   "prediction": "SELECT winner FROM table_name_35 WHERE result = '90–86';",
+   "exact": false
+  },
+  {
+   "question": "How many bands are there?",
+   "reference": "SELECT COUNT(*) FROM Band",
+   "prediction": "SELECT COUNT(*) FROM Band;",
+   "exact": true
+  },
+  {
+   "question": "Name the FCC info for frequency Mhz of 95.3 fm",
+   "reference": "SELECT fcc_info FROM table_name_34 WHERE frequency_mhz = \"95.3 fm\"",
+   "prediction": "SELECT fcc_info FROM table_name_34 WHERE frequency_mhz = '95.3'",
+   "exact": false
+  },
+  {
+   "question": "What did Alex Tagliani get for Qual 1?",
+   "reference": "SELECT qual_1 FROM table_name_93 WHERE name = \"alex tagliani\"",
+   "prediction": "SELECT qual_1 FROM table_name_93 WHERE name = 'Alex Tagliani'",
+   "exact": false
+  },
+  {
+   "question": "Who wrote the episode that has a production code 3x7557?",
+   "reference": "SELECT written_by FROM table_22347090_6 WHERE production_code = \"3X7557\"",
+   "prediction": "SELECT written_by FROM table_22347090_6 WHERE production_code = '3x7557';",
+   "exact": false
+  },
+  {
+   "question": "Who directed the episode with the production code 10?",
+   "reference": "SELECT directed_by FROM table_25679312_2 WHERE prod_code = 10",
+   "prediction": "SELECT directed_by FROM table_25679312_2 WHERE prod_code = '10'",
+   "exact": false
+  },
+  {
+   "question": "What is the method when the time was 5:00, and the round higher than 4?",
+   "reference": "SELECT method FROM table_name_86 WHERE time = \"5:00\" AND round > 4",
+   "prediction": "SELECT method FROM table_name_86 WHERE time = '5:00' AND CAST(round AS INTEGER) > 4;",
+   "exact": false
+  },
+  {
+   "question": "When Richmond is the away team, what is the crowd size?",
+   "reference": "SELECT crowd FROM table_name_23 WHERE away_team = \"richmond\"",
+   "prediction": "SELECT crowd FROM table_name_23 WHERE away_team = 'Richmond';",
+   "exact": false
+  },
+  {
+   "question": "What is Ivan Ciernik's average points with less than 11 goals?",
+   "reference": "SELECT AVG(points) FROM table_name_29 WHERE player = \"ivan ciernik\" AND goals < 11",
+   "prediction": "SELECT AVG(points) FROM table_name_29 WHERE player = 'Ivan Ciernik' AND goals < '11'",
+   "exact": false
+  },
+  {
+   "question": "Name the Time which has a Manufacturer of aprilia, and a Grid smaller than 16, and a Rider of sandro cortese?",
+   "reference": "SELECT time FROM table_name_13 WHERE manufacturer = \"aprilia\" AND grid < 16 AND rider = \"sandro cortese\"",
+   "prediction": "SELECT Time FROM table_name_13 WHERE manufacturer = 'aprilia' AND Grid < 16 AND rider = 'sandro cortese'",
+   "exact": false
+  },
+  {
+   "question": "WHAT IS THE SCORE WITH A DATE OF NOVEMBER 18?",
+   "reference": "SELECT score FROM table_name_80 WHERE date = \"november 18\"",
+   "prediction": "SELECT score FROM table_name_80 WHERE date = 'NOVEMBER 18'",
+   "exact": false
+  },
+  {
+   "question": "Why was Otago formed?",
+   "reference": "SELECT reason FROM table_275023_1 WHERE province = \"Otago\"",
+   "prediction": "SELECT reason FROM table_275023_1 WHERE province = 'Otago';",
+   "exact": false
+  },
+  {
+   "question": "Find the top 3 artists who have the largest number of songs works whose language is Bangla.",
+   "reference": "SELECT T1.artist_name FROM artist AS T1 JOIN song AS T2 ON T1.artist_name = T2.artist_name WHERE T2.languages = \"bangla\" GROUP BY T2.artist_name ORDER BY COUNT(*) DESC LIMIT 3",
+   "prediction": "SELECT a.artist_name, COUNT(*) AS song_count\nFROM artist a\nJOIN song s ON a.artist_name = s.artist_name\nWHERE s.languages = 'Bangla'\nGROUP BY a.artist_name\nORDER BY song_count DESC\nLIMIT 3;",
+   "exact": false
+  },
+  {
+   "question": "Name the latitude for  3810536900",
+   "reference": "SELECT latitude FROM table_18600760_8 WHERE geo_id = 3810536900",
+   "prediction": "SELECT latitude FROM table_18600760_8 WHERE geo_id = '3810536900'",
+   "exact": false
+  },
+  {
+   "question": "in 1990, how many wins had an avg finish of 35 and a start less than 1?",
+   "reference": "SELECT MAX(wins) FROM table_name_90 WHERE avg_finish = 35 AND year = 1990 AND starts < 1",
+   "prediction": "SELECT wins FROM table_name_90 WHERE year = '1990' AND avg_finish = '35' AND starts < '1'",
+   "exact": false
+  },
+  {
+   "question": "what is the points against when the losing bonus is 0 and the club is banwen rfc?",
+   "reference": "SELECT points_against FROM table_name_32 WHERE losing_bonus = \"0\" AND club = \"banwen rfc\"",
+   "prediction": "SELECT points_against FROM table_name_32 WHERE losing_bonus = '0' AND club = 'banwen rfc';",
+   "exact": false
+  },
+  {
+   "question": "Tell me the race name for ferrari on 25 april",
+   "reference": "SELECT race_name FROM table_name_17 WHERE constructor = \"ferrari\" AND date = \"25 april\"",
+   "prediction": "SELECT race_name FROM table_name_17 WHERE constructor = 'ferrari' AND date = '25 april'",
+   "exact": false
+  },
+  {
+   "question": "Record of 3-3-1 had what lowest game?",
+   "reference": "SELECT MIN(game) FROM table_name_81 WHERE record = \"3-3-1\"",
+   "prediction": "SELECT game FROM table_name_81 WHERE record = '3-3-1' ORDER BY game ASC LIMIT 1;",
+   "exact": false
+  },
+  {
+   "question": "Find the ids and names of stations from which at least 200 trips started.",
+   "reference": "SELECT start_station_id, start_station_name FROM trip GROUP BY start_station_name HAVING COUNT(*) >= 200",
+   "prediction": "SELECT start_station_id, start_station_name\nFROM trip\nGROUP BY start_station_id, start_station_name\nHAVING COUNT(*) >= 200;",
+   "exact": false
+  },
+  {
+   "question": "Who is in the south-west next to Vishnu on the east, Durga on the west, and in the center of Ganapati?",
+   "reference": "SELECT south_west FROM table_name_73 WHERE north_east = \"vishnu\" AND north_west = \"durga\" AND center = \"ganapati\"",
+   "prediction": "SELECT south_west FROM table_name_73 WHERE center = 'Ganapati' AND north_east = 'Vishnu' AND north_west = 'Durga';",
+   "exact": false
+  },
+  {
+   "question": "Opponent of @ edmonton oilers, and a Game larger than 1, and a Series of oilers lead 3–2 had what score?",
+   "reference": "SELECT score FROM table_name_30 WHERE opponent = \"@ edmonton oilers\" AND game > 1 AND series = \"oilers lead 3–2\"",
+   "prediction": "SELECT score FROM table_name_30 WHERE opponent = '@ edmonton oilers' AND game > 1 AND series = 'oilers lead 3–2';",
+   "exact": false
+  },
+  {
+   "question": "Name the T. Wyka has a Precincts of 51/55?",
+   "reference": "SELECT t_wyka FROM table_name_1 WHERE precincts = \"51/55\"",
+   "prediction": "SELECT t_wyka FROM table_name_1 WHERE precincts = '51/55';",
+   "exact": false
+  },
+  {
+   "question": "What is the location shared by most counties?",
+   "reference": "SELECT LOCATION FROM county_public_safety GROUP BY LOCATION ORDER BY COUNT(*) DESC LIMIT 1",
+   "prediction": "SELECT LOCATION FROM county_public_safety GROUP BY LOCATION ORDER BY COUNT(*) DESC LIMIT 1;",
+   "exact": true
+  },
+  {
+   "question": "How many teams were established at University of Maryland?",
+   "reference": "SELECT COUNT(established) FROM table_16432543_3 WHERE institution = \"University of Maryland\"",
+   "prediction": "SELECT COUNT(*) FROM table_16432543_3 WHERE institution = 'University of Maryland';",
+   "exact": false
+  },
+  {
+   "question": "For which Game 4 did Michael O'Connor play during Game 1?",
+   "reference": "SELECT game_4 FROM table_name_27 WHERE game_1 = \"michael o'connor\"",
+   "prediction": "SELECT game_4 FROM table_name_27 WHERE game_1 = 'Michael O Connor';",
+   "exact": false
+  },
+  {
+   "question": "Which Total has a Score of 1–3, and a Set 1 of 29–31?",
+   "reference": "SELECT total FROM table_name_9 WHERE score = \"1–3\" AND set_1 = \"29–31\"",
+   "prediction": "SELECT Total FROM table_name_9 WHERE score = '1–3' AND set_1 = '29–31';",
+   "exact": false
+  },
+  {
+   "question": "What is Mult, when Model Number is Pentium II 450?",
+   "reference": "SELECT mult FROM table_name_85 WHERE model_number = \"pentium ii 450\"",
+   "prediction": "SELECT mult FROM table_name_85 WHERE model_number = 'Pentium II 450';",
+   "exact": false
+  },
+  {
+   "question": "What is the total number of wins that has byes less than 0?",
+   "reference": "SELECT COUNT(wins) FROM table_name_84 WHERE byes < 0",
+   "prediction": "SELECT SUM(CAST(wins AS INTEGER)) FROM table_name_84 WHERE byes < 0;",
+   "exact": false
+  },
+  {
+   "question": "What's the island with a summit of Haleakalā?",
+   "reference": "SELECT island FROM table_name_74 WHERE summit = \"haleakalā\"",
+   "prediction": "SELECT island FROM table_name_74 WHERE summit = 'Haleakalā';",
+   "exact": false
+  },
+  {
+   "question": "What Golden point(s) scorer has the Away Brisbane Broncos and Home South Sydney Rabbitohs?",
+   "reference": "SELECT golden_point_s__scorer FROM table_name_14 WHERE away = \"brisbane broncos\" AND home = \"south sydney rabbitohs\"",
+   "prediction": "SELECT golden_point_s__scorer FROM table_name_14 WHERE away = 'Brisbane Broncos' AND home = 'South Sydney Rabbitohs';",
+   "exact": false
+  },
+  {
+   "question": "When was the marriage of the person who died on 17 December 1471?",
+   "reference": "SELECT marriage FROM table_name_90 WHERE death = \"17 december 1471\"",
+   "prediction": "SELECT marriage FROM table_name_90 WHERE death = '17 December 1471'",
+   "exact": false
+  },
+  {
+   "question": "Tell me the totla number of goal difference for goals against of 30 and played less than 18",
+   "reference": "SELECT COUNT(goal_difference) FROM table_name_4 WHERE goals_against = 30 AND played < 18",
+   "prediction": "SELECT SUM(CAST(goal_difference AS INTEGER)) FROM table_name_4 WHERE goals_against = '30' AND played < '18';",
+   "exact": false
+  },
+  {
+   "question": "Show the names of conductors that have conducted more than one orchestras.",
+   "reference": "SELECT T1.Name FROM conductor AS T1 JOIN orchestra AS T2 ON T1.Conductor_ID = T2.Conductor_ID GROUP BY T2.Conductor_ID HAVING COUNT(*) > 1",
+   "prediction": "SELECT c.Name\nFROM conductor c\nJOIN orchestra o ON c.Conductor_ID = o.Conductor_ID\nGROUP BY c.Name\nHAVING COUNT(DISTINCT o.Conductor_ID) > 1;",
+   "exact": false
+  },
+  {
+   "question": "What circuit was the race named international trophy raced at by the winning driver eliseo salazar?",
+   "reference": "SELECT circuit FROM table_name_63 WHERE winning_driver = \"eliseo salazar\" AND name = \"international trophy\"",
+   "prediction": "SELECT circuit FROM table_name_63 WHERE winning_driver = 'eliseo salazar' AND name = 'international trophy';",
+   "exact": false
+  },
+  {
+   "question": "What is the D 50 when the D 41 is d 41?",
+   "reference": "SELECT d_50 FROM table_name_65 WHERE d_41 = \"d 41\"",
+   "prediction": "SELECT d_50 FROM table_name_65 WHERE d_41 = 'd 41'",
+   "exact": false
+  },
+  {
+   "question": "Name the date for series 2-2",
+   "reference": "SELECT date FROM table_17622423_12 WHERE series = \"2-2\"",
+   "prediction": "SELECT date FROM table_17622423_12 WHERE series = '2-2'",
+   "exact": false
+  },
+  {
+   "question": "Who is the winner and score of the tournament with semifinalists goran prpić sergi bruguera?",
+   "reference": "SELECT winner_and_score FROM table_name_43 WHERE semifinalists = \"goran prpić sergi bruguera\"",
+   "prediction": "SELECT winner_and_score FROM table_name_43 WHERE semifinalists = 'goran prpić sergi bruguera';",
+   "exact": false
+  },
+  {
+   "question": "What date has a set 4 of 25-19?",
+   "reference": "SELECT date FROM table_name_33 WHERE set_4 = \"25-19\"",
+   "prediction": "SELECT date FROM table_name_33 WHERE set_4 = '25-19';",
+   "exact": false
+  },
+  {
+   "question": "WHAT WAS HER SONG CHOICE WHEN THE WEEK WAS TOP 10?",
+   "reference": "SELECT song_choice FROM table_15778392_1 WHERE week__number = \"Top 10\"",
+   "prediction": "SELECT song_choice FROM table_15778392_1 WHERE week__number = 'TOP 10';",
+   "exact": false
+  },
+  {
+   "question": "How many # were written by david hoselton?",
+   "reference": "SELECT MAX(_number) FROM table_22904752_1 WHERE written_by = \"David Hoselton\"",
+   "prediction": "SELECT COUNT(*) FROM table_22904752_1 WHERE written_by = 'david hoselton';",
+   "exact": false
+  },
+  {
+   "question": "what's the winner with purse( $ ) value of bigger than 964017.2297960471 and date value of may 28",
+   "reference": "SELECT winner FROM table_11621915_1 WHERE purse__$__ > 964017.2297960471 AND date = \"May 28\"",
+   "prediction": "SELECT winner FROM table_11621915_1 WHERE purse__$__ > 964017.2297960471 AND date = 'may 28'",
+   "exact": false
+  },
+  {
+   "question": "What was the score of the Browns game against the San Francisco 49ers?",
+   "reference": "SELECT result FROM table_name_7 WHERE opponent = \"san francisco 49ers\"",
+   "prediction": "SELECT result FROM table_name_7 WHERE opponent = 'San Francisco 49ers' AND result LIKE '%Browns%';",
+   "exact": false
+  },
+  {
+   "question": "Who was the opponent at the League Cup competition with a score of 3-1?",
+   "reference": "SELECT opponents FROM table_name_91 WHERE competition = \"league cup\" AND score = \"3-1\"",
+   "prediction": "SELECT opponents FROM table_name_91 WHERE competition = 'League Cup' AND score = '3-1';",
+   "exact": false
+  },
+  {
+   "question": "What conference has the Wichita State school?",
+   "reference": "SELECT conference FROM table_name_26 WHERE school = \"wichita state\"",
+   "prediction": "SELECT conference FROM table_name_26 WHERE school = 'Wichita State';",
+   "exact": false
+  },
+  {
+   "question": "What seasons does Nick Lucas appear in?",
+   "reference": "SELECT recurring_cast_seasons FROM table_12441518_1 WHERE character = \"Nick Lucas\"",
+   "prediction": "SELECT recurring_cast_seasons FROM table_12441518_1 WHERE character = 'Nick Lucas';",
+   "exact": false
+  },
+  {
+   "question": "On which episode number is event 4 The Wall and event 1 the Pendulum?",
+   "reference": "SELECT COUNT(episode_number) FROM table_17257687_1 WHERE event_4 = \"The Wall\" AND event_1 = \"Pendulum\"",
+   "prediction": "SELECT episode_number FROM table_17257687_1 WHERE event_4 = 'The Wall' AND event_1 = 'The Pendulum'",
+   "exact": false
+  },
+  {
+   "question": "What year was the composition by Mejo Joseph?",
+   "reference": "SELECT COUNT(year) FROM table_name_7 WHERE composer = \"mejo joseph\"",
+   "prediction": "SELECT year FROM table_name_7 WHERE composer = 'Mejo Joseph';",
+   "exact": false
+  },
+  {
+   "question": "How much Total has a Silver smaller than 0?",
+   "reference": "SELECT COUNT(total) FROM table_name_38 WHERE silver < 0",
+   "prediction": "SELECT total FROM table_name_38 WHERE silver < 0;",
+   "exact": false
+  },
+  {
+   "question": "What is the Player that has a To standard of –4?",
+   "reference": "SELECT player FROM table_name_71 WHERE to_par = \"–4\"",
+   "prediction": "SELECT player FROM table_name_71 WHERE to_par = '-4'",
+   "exact": false
+  },
+  {
+   "question": "What form factor has capacities at 60/120/180/240?",
+   "reference": "SELECT form_factor FROM table_name_65 WHERE capacities__gb_ = \"60/120/180/240\"",
+   "prediction": "SELECT form_factor FROM table_name_65 WHERE capacities__gb_ = '60/120/180/240';",
+   "exact": false
+  },
+  {
+   "question": "Name the gt 2.0 winning team for sports 2.0 winning team for #16 trans ocean motors for castle rock",
+   "reference": "SELECT COUNT(gt_20_winning_team) FROM table_27561503_2 WHERE sports_20_winning_team = \"#16 Trans Ocean Motors\" AND circuit = \"Castle Rock\"",
+   "prediction": "SELECT gt_20_winning_team FROM table_27561503_2 WHERE sports_20_winning_team = '#16 trans ocean motors for castle rock';",
+   "exact": false
+  },
+  {
+   "question": "What is the total sum of bronze medals for the Soviet Union when there are more than 0 silver medals and more than 3 total medals?",
+   "reference": "SELECT SUM(bronze) FROM table_name_39 WHERE silver > 0 AND nation = \"soviet union\" AND total > 3",
+   "prediction": "SELECT SUM(bronze) FROM table_name_39 WHERE nation = 'Soviet Union' AND silver > 0 AND total > 3;",
+   "exact": false
+  },
+  {
+   "question": "Which Team has a Score of 108-105 (ot)?",
+   "reference": "SELECT team FROM table_name_9 WHERE score = \"108-105 (ot)\"",
+   "prediction": "SELECT team FROM table_name_9 WHERE score = '108-105 (ot)';",
+   "exact": false
+  },
+  {
+   "question": "what is the date when the site is memorial stadium • minneapolis, mn, and the Attendance is 53,192?",
+   "reference": "SELECT date FROM table_name_70 WHERE site = \"memorial stadium • minneapolis, mn\" AND attendance = \"53,192\"",
+   "prediction": "SELECT date FROM table_name_70 WHERE site = 'memorial stadium • minneapolis, mn' AND attendance = '53,192'",
+   "exact": false
+  },
+  {
+   "question": "What was the original air date of the episode directed by frederick e. o. toye?",
+   "reference": "SELECT original_air_date FROM table_25923164_1 WHERE directed_by = \"Frederick E. O. Toye\"",
+   "prediction": "SELECT original_air_date FROM table_25923164_1 WHERE directed_by = 'frederick e. o. toye';",
+   "exact": false
+  },
+  {
+   "question": "How many bronze medals did the team have with 0 total silver and less than 3 total medals?",
+   "reference": "SELECT bronze FROM table_name_4 WHERE total < 3 AND silver > 0",
+   "prediction": "SELECT COUNT(*) FROM table_name_4 WHERE silver = '0' AND total < '3';",
+   "exact": false
+  },
+  {
+   "question": "Candidate John Mccain had how many delegates?",
+   "reference": "SELECT delegates FROM table_16186152_1 WHERE candidate = \"John McCain\"",
+   "prediction": "SELECT COUNT(*) FROM table_16186152_1 WHERE candidate = 'John Mccain' AND delegates IS NOT NULL;",
+   "exact": false
+  },
+  {
+   "question": "Who is the spouse of the queen who is the daughter of Ferdinand I of the two sicilies?",
+   "reference": "SELECT spouse FROM table_name_54 WHERE father = \"ferdinand i of the two sicilies\"",
+   "prediction": "SELECT spouse FROM table_name_54 WHERE father = 'Ferdinand I of the two sicilies';",
+   "exact": false
+  },
+  {
+   "question": "Which country had a cad 4011 catalogue #?",
+   "reference": "SELECT country FROM table_name_66 WHERE catalogue__number = \"cad 4011\"",
+   "prediction": "SELECT country FROM table_name_66 WHERE catalogue__number = '4011';",
+   "exact": false
+  },
+  {
+   "question": "What is the total for player karrie webb?",
+   "reference": "SELECT COUNT(total) FROM table_name_1 WHERE player = \"karrie webb\"",
+   "prediction": "SELECT total FROM table_name_1 WHERE player = 'karrie webb'",
+   "exact": false
+  },
+  {
+   "question": "How many numbers were recorded under miles for the 3:00:46 race time?",
+   "reference": "SELECT COUNT(miles__km_) FROM table_2196127_1 WHERE race_time = \"3:00:46\"",
+   "prediction": "SELECT COUNT(*) FROM table_2196127_1 WHERE race_time = '3:00:46';",
+   "exact": false
+  },
+  {
+   "question": "Can you tell me the average Weight that has Height of 6-9?",
+   "reference": "SELECT AVG(weight) FROM table_name_69 WHERE height = \"6-9\"",
+   "prediction": "SELECT AVG(weight) FROM table_name_69 WHERE height BETWEEN '6' AND '9';",
+   "exact": false
+  },
+  {
+   "question": "When was Mario Elie picked in a round before 7?",
+   "reference": "SELECT MAX(pick) FROM table_name_75 WHERE player = \"mario elie\" AND round < 7",
+   "prediction": "SELECT pick, round FROM table_name_75 WHERE player = 'Mario Elie' AND round < '7';",
+   "exact": false
+  },
+  {
+   "question": "For Stellenbosch, which has a population larger than 155,733, what is the average area?",
+   "reference": "SELECT AVG(area__km_2__) FROM table_name_38 WHERE name = \"stellenbosch\" AND population__2011_ > 155 OFFSET 733",
+   "prediction": "SELECT AVG(area__km_2__) FROM table_name_38 WHERE name = 'Stellenbosch' AND population__2011_ > '155733';",
+   "exact": false
+  },
+  {
+   "question": "What is the Rank that has a Venue of bellerive oval , hobart, and a Margin of 115 runs?",
+   "reference": "SELECT rank FROM table_name_31 WHERE venue = \"bellerive oval , hobart\" AND margin = \"115 runs\"",
+   "prediction": "SELECT rank FROM table_name_31 WHERE venue = 'bellerive oval , hobart' AND margin = '115 runs'",
+   "exact": false
+  },
+  {
+   "question": "What is Opponent In The Final, when Outcome is \"Winner\", when Surface is \"Carpet (I)\", and when Tournament is \"Lyon, France\"?",
+   "reference": "SELECT opponent_in_the_final FROM table_name_67 WHERE outcome = \"winner\" AND surface = \"carpet (i)\" AND tournament = \"lyon, france\"",
+   "prediction": "SELECT opponent_in_the_final \nFROM table_name_67 \nWHERE outcome = 'Winner' \nAND surface = 'Carpet (I)' \nAND tournament = 'Lyon, France';",
+   "exact": false
+  },
+  {
+   "question": "Oklahoma State produced a player in which position in the draft?",
+   "reference": "SELECT position FROM table_name_26 WHERE school_club_team = \"oklahoma state\"",
+   "prediction": "SELECT position FROM table_name_26 WHERE school_club_team = 'Oklahoma State';",
+   "exact": false
+  },
+  {
+   "question": "Which Rank has a Qual of 145.144?",
+   "reference": "SELECT rank FROM table_name_68 WHERE qual = \"145.144\"",
+   "prediction": "SELECT rank FROM table_name_68 WHERE qual = '145.144'",
+   "exact": false
+  },
+  {
+   "question": "What score has october 16, 2000 as the date?",
+   "reference": "SELECT score FROM table_name_71 WHERE date = \"october 16, 2000\"",
+   "prediction": "SELECT score FROM table_name_71 WHERE date = 'october 16, 2000'",
+   "exact": false
+  },
+  {
+   "question": "Who is the head coach for the club from Aveiro?",
+   "reference": "SELECT head_coach FROM table_name_71 WHERE city = \"aveiro\"",
+   "prediction": "SELECT head_coach FROM table_name_71 WHERE city = 'Aveiro';",
+   "exact": false
+  },
+  {
+   "question": "What season had an acquisition of free agency, and was higher than 9?",
+   "reference": "SELECT season FROM table_name_89 WHERE acquisition_via = \"free agency\" AND number > 9",
+   "prediction": "SELECT season FROM table_name_89 WHERE acquisition_via = 'free agency' AND number > '9';",
+   "exact": false
+  },
+  {
+   "question": "When the person died May 22, 1895 is the reason for vacancy what is the district?",
+   "reference": "SELECT district FROM table_2417445_4 WHERE reason_for_vacancy = \"Died May 22, 1895\"",
+   "prediction": "SELECT district FROM table_2417445_4 WHERE reason_for_vacancy = 'death on May 22, 1895';",
+   "exact": false
+  },
+  {
+   "question": "What is the in-state area with an outlet of South Platte River and Big Thompson river as the basin?",
+   "reference": "SELECT in_state_area FROM table_name_81 WHERE outlet = \"south platte river\" AND basin = \"big thompson river\"",
+   "prediction": "SELECT in_state_area FROM table_name_81 WHERE outlet = 'South Platte River' AND basin = 'Big Thompson river'",
+   "exact": false
+  },
+  {
+   "question": "How many networks are there that include the judges pete goffe-wood andrew atkinson benny masekwameng?",
+   "reference": "SELECT COUNT(network) FROM table_28190363_1 WHERE judges = \"Pete Goffe-Wood Andrew Atkinson Benny Masekwameng\"",
+   "prediction": "SELECT COUNT(DISTINCT network) FROM table_28190363_1 WHERE judges = 'pete goffe-wood andrew atkinson benny masekwameng';",
+   "exact": false
+  },
+  {
+   "question": "Who had the pole position(s) when rob guiver won and kyle ryde had the fastest lap?",
+   "reference": "SELECT pole_position FROM table_29162856_1 WHERE winning_rider = \"Rob Guiver\" AND fastest_lap = \"Kyle Ryde\"",
+   "prediction": "SELECT pole_position\nFROM table_29162856_1\nWHERE winning_rider = 'rob guiver' AND fastest_lap = 'kyle ryde';",
+   "exact": false
+  },
+  {
+   "question": "What is the Population of Tshepiso with a Code of 70409 or smaller and an Area (km 2) smaller than 5.97?",
+   "reference": "SELECT MIN(population) FROM table_name_66 WHERE code < 70409 AND area__km_2__ < 5.97 AND place = \"tshepiso\"",
+   "prediction": "SELECT population FROM table_name_66 WHERE code <= '70409' AND area__km_2__ < '5.97' AND place = 'Tshepiso';",
+   "exact": false
+  },
+  {
+   "question": "What is Tournament, when Outcome is Winner, and when Date is 13 July 2013?",
+   "reference": "SELECT tournament FROM table_name_63 WHERE outcome = \"winner\" AND date = \"13 july 2013\"",
+   "prediction": "SELECT tournament FROM table_name_63 WHERE outcome = 'Winner' AND date = '13 July 2013'",
+   "exact": false
+  },
+  {
+   "question": "How many years have a Form album of the thing?",
+   "reference": "SELECT SUM(year) FROM table_name_39 WHERE from_album = \"the thing\"",
+   "prediction": "SELECT COUNT(DISTINCT year) FROM table_name_39 WHERE from_album = 'Form';",
+   "exact": false
+  },
+  {
+   "question": "What golfer has 281 as their total?",
+   "reference": "SELECT player FROM table_name_52 WHERE total = 281",
+   "prediction": "SELECT player FROM table_name_52 WHERE total = '281'",
+   "exact": false
+  },
+  {
+   "question": "What year had 134 laps?",
+   "reference": "SELECT year FROM table_name_75 WHERE laps = 134",
+   "prediction": "SELECT year FROM table_name_75 WHERE laps = '134'",
+   "exact": false
+  },
+  {
+   "question": "How many total itv viewers were there for the episode with official itv hd ratings of 1.12 million?",
+   "reference": "SELECT total_itv_viewers__millions_ FROM table_27319183_7 WHERE official_itv_hd_rating__millions_ = \"1.12\"",
+   "prediction": "SELECT total_itv_viewers__millions_ FROM table_27319183_7 WHERE official_itv_hd_rating__millions_ = '1.12'",
+   "exact": false
+  },
+  {
+   "question": "Which Player attended George Washington High School?",
+   "reference": "SELECT player FROM table_name_8 WHERE school = \"george washington high school\"",
+   "prediction": "SELECT player FROM table_name_8 WHERE school = 'George Washington High School';",
+   "exact": false
+  },
+  {
+   "question": "Which club was founded in 1962?",
+   "reference": "SELECT club FROM table_name_25 WHERE founded = 1962",
+   "prediction": "SELECT club FROM table_name_25 WHERE founded = '1962'",
+   "exact": false
+  },
+  {
+   "question": "What is the African Spoonbill when the Ostrich is Brown-hooded Kingfisher?",
+   "reference": "SELECT african_spoonbill FROM table_20042805_2 WHERE ostrich = \"Brown-hooded Kingfisher\"",
+   "prediction": "SELECT african_spoonbill FROM table_20042805_2 WHERE ostrich = 'Brown-hooded Kingfisher';",
+   "exact": false
+  },
+  {
+   "question": "Which constructor makes the ej15 ej15b chassis?",
+   "reference": "SELECT constructor FROM table_name_98 WHERE chassis = \"ej15 ej15b\"",
+   "prediction": "SELECT constructor FROM table_name_98 WHERE chassis = 'ej15 ej15b';",
+   "exact": false
+  },
+  {
+   "question": "Which Directed by has an Original air date of april 29, 2000?",
+   "reference": "SELECT directed_by FROM table_name_27 WHERE original_air_date = \"april 29, 2000\"",
+   "prediction": "SELECT directed_by FROM table_name_27 WHERE original_air_date = 'april 29, 2000';",
+   "exact": false
+  },
+  {
+   "question": "Name the song choice for michael jackson",
+   "reference": "SELECT song_choice FROM table_19508635_1 WHERE original_artist = \"Michael Jackson\"",
+   "prediction": "SELECT song_choice FROM table_19508635_1 WHERE original_artist = 'michael jackson'",
+   "exact": false
+  },
+  {
+   "question": "Name the parent unit for ludwig franzisket",
+   "reference": "SELECT parent_unit FROM table_28342423_1 WHERE commanding_officer = \"Ludwig Franzisket\"",
+   "prediction": "SELECT parent_unit FROM table_28342423_1 WHERE commanding_officer = 'ludwig franzisket'",
+   "exact": false
+  },
+  {
+   "question": "For the game where the opponent is listed as At Los Angeles Rams, what was the final score?",
+   "reference": "SELECT score FROM table_name_65 WHERE opponent = \"at los angeles rams\"",
+   "prediction": "SELECT score FROM table_name_65 WHERE opponent = 'At Los Angeles Rams';",
+   "exact": false
+  },
+  {
+   "question": "What position was the player who was drafted by the Washington Capitals? ",
+   "reference": "SELECT position FROM table_2850912_10 WHERE nhl_team = \"Washington Capitals\"",
+   "prediction": "SELECT position FROM table_2850912_10 WHERE nhl_team = 'Washington Capitals';",
+   "exact": false
+  },
+  {
+   "question": "Name the D 41 √ when it has D 43 √ of r 18",
+   "reference": "SELECT d_41_√ FROM table_name_35 WHERE d_43_√ = \"r 18\"",
+   "prediction": "SELECT d_41_√ FROM table_name_35 WHERE d_43_√ = 'r 18'",
+   "exact": false
+  },
+  {
+   "question": "How many ranks have an industry of health care?",
+   "reference": "SELECT COUNT(rank) FROM table_name_42 WHERE primary_industry = \"health care\"",
+   "prediction": "SELECT COUNT(DISTINCT rank) FROM table_name_42 WHERE primary_industry = 'health care';",
+   "exact": false
+  },
+  {
+   "question": "Which college or team has a pick of 196?",
+   "reference": "SELECT college_junior_club_team FROM table_name_59 WHERE pick = \"196\"",
+   "prediction": "SELECT college_junior_club_team FROM table_name_59 WHERE pick = '196'",
+   "exact": false
+  },
+  {
+   "question": "Who is the December playmate with a February playmate Anne-Marie Fox?",
+   "reference": "SELECT december FROM table_name_76 WHERE february = \"anne-marie fox\"",
+   "prediction": "SELECT december FROM table_name_76 WHERE february = 'Anne-Marie Fox';",
+   "exact": false
+  },
+  {
+   "question": "What is Howard Payne University's total enrollment?",
+   "reference": "SELECT total_enrollment FROM table_name_67 WHERE institution_name = \"howard payne university\"",
+   "prediction": "SELECT total_enrollment FROM table_name_67 WHERE institution_name = 'Howard Payne University'",
+   "exact": false
+  },
+  {
+   "question": "What is the weekly rank for the episode with a share over 7 and a rating/share of 2.3/7?",
+   "reference": "SELECT rank__week_ FROM table_name_77 WHERE share > 7 AND rating / SHARE(18 - 49) = 2.3 / 7",
+   "prediction": "SELECT rank__week_ FROM table_name_77 WHERE share > '7' AND rating = '2.3/7'",
+   "exact": false
+  },
+  {
+   "question": "What is the total of countys where Obama is popular by 35.44%?",
+   "reference": "SELECT COUNT(county) FROM table_20688030_1 WHERE obama_percentage = \"35.44%\"",
+   "prediction": "SELECT SUM(CAST(obama_percentage AS DECIMAL)) FROM table_20688030_1 WHERE obama_percentage >= '35.44';",
+   "exact": false
+  },
+  {
+   "question": "What is the frequency when radio station branding is 106.3 energy fm naga?",
+   "reference": "SELECT frequency FROM table_23915973_1 WHERE branding = \"106.3 Energy FM Naga\"",
+   "prediction": "SELECT frequency FROM table_23915973_1 WHERE branding = '106.3 energy fm naga';",
+   "exact": false
+  },
+  {
+   "question": "What is the length of the First Union six hours at the Glen?",
+   "reference": "SELECT length FROM table_name_95 WHERE race = \"first union six hours at the glen\"",
+   "prediction": "SELECT length FROM table_name_95 WHERE race = 'First Union six hours at the Glen';",
+   "exact": false
+  },
+  {
+   "question": "What Band has a Frequency of 0 99.7 in the Area of Newcastle?",
+   "reference": "SELECT band FROM table_name_34 WHERE frequency = \"0 99.7\" AND area_served = \"newcastle\"",
+   "prediction": "SELECT Band FROM table_name_34 WHERE Frequency = '0 99.7' AND Area_served = 'Newcastle';",
+   "exact": false
+  },
+  {
+   "question": "Name the winner for jan 24",
+   "reference": "SELECT winner FROM table_25938117_1 WHERE date = \"Jan 24\"",
+   "prediction": "SELECT winner FROM table_25938117_1 WHERE date = 'jan 24'",
+   "exact": false
+  },
+  {
+   "question": "Name the horizontal 0 for  明弦（ry日月）",
+   "reference": "SELECT horizontal_0_a FROM table_25519358_1 WHERE hypotenuse_0_c = \"明弦（RY日月）\"",
+   "prediction": "SELECT horizontal_0_a FROM table_25519358_1 WHERE hypotenuse_0_c = '明弦（ry日月）'",
+   "exact": false
+  },
+  {
+   "question": "How many years of NBA experience does the player who plays position g for the Portland Trail Blazers?",
+   "reference": "SELECT years_of_nba_experience_[a_] FROM table_name_28 WHERE pos = \"g\" AND team = \"portland trail blazers\"",
+   "prediction": "SELECT years_of_nba_experience_ FROM table_name_28 WHERE pos = 'g' AND team = 'Portland Trail Blazers';",
+   "exact": false
+  },
+  {
+   "question": "What subtitles have 15 as the classification?",
+   "reference": "SELECT subtitles FROM table_name_85 WHERE classifaction = \"15\"",
+   "prediction": "SELECT subtitles FROM table_name_85 WHERE classifaction = '15';",
+   "exact": false
+  },
+  {
+   "question": "What is the person's name that is from the country of SCO?",
+   "reference": "SELECT name FROM table_name_19 WHERE country = \"sco\"",
+   "prediction": "SELECT name FROM table_name_19 WHERE country = 'SCO';",
+   "exact": false
+  },
+  {
+   "question": "What rank has a status of proposed, with 80 floors for Celestia Spaces 4?",
+   "reference": "SELECT AVG(rank) FROM table_name_79 WHERE status = \"proposed\" AND floors = 80 AND name = \"celestia spaces 4\"",
+   "prediction": "SELECT rank FROM table_name_79 WHERE name = 'Celestia Spaces 4' AND status = 'proposed' AND floors = '80';",
+   "exact": false
+  },
+  {
+   "question": "What name was listed 02/21/1990, and a CERCLIS ID of scd980844005?",
+   "reference": "SELECT name FROM table_name_97 WHERE listed = \"02/21/1990\" AND cerclis_id = \"scd980844005\"",
+   "prediction": "SELECT name FROM table_name_97 WHERE listed = '02/21/1990' AND cerclis_id = 'scd980844005';",
+   "exact": false
+  },
+  {
+   "question": "Teerasil Dangda who had a to club of released plays what position?",
+   "reference": "SELECT pos FROM table_name_76 WHERE to_club = \"released\" AND player = \"teerasil dangda\"",
+   "prediction": "SELECT pos FROM table_name_76 WHERE player = 'Teerasil Dangda' AND to_club = 'released';",
+   "exact": false
+  },
+  {
+   "question": "What was the score of the game when Sheffield Wednesday was the home team?",
+   "reference": "SELECT score FROM table_name_32 WHERE home_team = \"sheffield wednesday\"",
+   "prediction": "SELECT score FROM table_name_32 WHERE home_team = 'Sheffield Wednesday';",
+   "exact": false
+  },
+  {
+   "question": "How many draws are there when there are 11 wins, and more than 7 losses?",
+   "reference": "SELECT SUM(draws) FROM table_name_92 WHERE wins = 11 AND losses > 7",
+   "prediction": "SELECT draws FROM table_name_92 WHERE wins = '11' AND losses > '7';",
+   "exact": false
+  },
+  {
+   "question": "What is the Friday 4 June if the Wednesday 2 June is 20' 50.62 108.608mph?",
+   "reference": "SELECT fri_4_june FROM table_25220821_3 WHERE wed_2_june = \"20' 50.62 108.608mph\"",
+   "prediction": "SELECT fri_4_june FROM table_25220821_3 WHERE wed_2_june = '20'' 50.62 108.608mph';",
+   "exact": false
+  },
+  {
+   "question": "How many have SHT number 5?",
+   "reference": "SELECT MAX(quantity) FROM table_name_49 WHERE sht_nos = \"5\"",
+   "prediction": "SELECT COUNT(*) FROM table_name_49 WHERE sht_nos = '5'",
+   "exact": false
+  },
+  {
+   "question": "When the Score was 4-10, what was the Attendance?",
+   "reference": "SELECT attendance FROM table_name_13 WHERE score = \"4-10\"",
+   "prediction": "SELECT attendance FROM table_name_13 WHERE score = '4-10'",
+   "exact": false
+  },
+  {
+   "question": "What happened in week 14 when week 11's result was Michigan (7-2)?",
+   "reference": "SELECT week_14_dec_3 FROM table_name_17 WHERE week_11_nov_12 = \"michigan (7-2)\"",
+   "prediction": "SELECT week_14_dec_3 FROM table_name_17 WHERE week_11_nov_12 = 'Michigan (7-2)';",
+   "exact": false
+  },
+  {
+   "question": "What Reserved for (SC / ST /None) with a Name of goverdhan?",
+   "reference": "SELECT reserved_for___sc___st__none_ FROM table_name_31 WHERE name = \"goverdhan\"",
+   "prediction": "SELECT reserved_for___sc___st__none_ FROM table_name_31 WHERE name = 'goverdhan'",
+   "exact": false
+  },
+  {
+   "question": "what is the highest round when the college is penn state?",
+   "reference": "SELECT MAX(round) FROM table_name_72 WHERE college = \"penn state\"",
+   "prediction": "SELECT MAX(round) FROM table_name_72 WHERE college = 'penn state';",
+   "exact": false
+  },
+  {
+   "question": "Which Against has more than 11 wins, and a Geelong FL of st josephs?",
+   "reference": "SELECT MIN(against) FROM table_name_35 WHERE wins > 11 AND geelong_fl = \"st josephs\"",
+   "prediction": "SELECT Against FROM table_name_35 WHERE wins > '11' AND geelong_fl = 'st josephs';",
+   "exact": false
+  },
+  {
+   "question": "What was Trevard Lindley's number?",
+   "reference": "SELECT MAX(number) FROM table_14624447_33 WHERE name = \"Trevard Lindley\"",
+   "prediction": "SELECT number FROM table_14624447_33 WHERE name = 'Trevard Lindley'",
+   "exact": false
+  },
+  {
+   "question": "What was Spain's score?",
+   "reference": "SELECT score FROM table_name_24 WHERE country = \"spain\"",
+   "prediction": "SELECT score FROM table_name_24 WHERE country = 'Spain'",
+   "exact": false
+  },
+  {
+   "question": "What percentage of free/reduced lunch  are there when the hispanic percentage is 3.7?",
+   "reference": "SELECT free_reduced_lunch___percentage_ FROM table_14754471_1 WHERE hispanic___percentage_ = \"3.7\"",
+   "prediction": "SELECT free_reduced_lunch___percentage_ FROM table_14754471_1 WHERE hispanic___percentage_ = '3.7'",
+   "exact": false
+  },
+  {
+   "question": "What's #14 FitzBradshaw Racing's top 5 result?",
+   "reference": "SELECT MAX(top_5) FROM table_1909647_2 WHERE team_s_ = \"#14 FitzBradshaw Racing\"",
+   "prediction": "SELECT top_5 FROM table_1909647_2 WHERE team_s_ = 'FitzBradshaw Racing';",
+   "exact": false
+  },
+  {
+   "question": "What was the format for the 4 disc season that had less than 22 episodes and n/a for region 4?",
+   "reference": "SELECT format FROM table_name_86 WHERE _number_episodes < 22 AND _number_disc_s_ = 4 AND region_4 = \"n/a\"",
+   "prediction": "SELECT format \nFROM table_name_86 \nWHERE _number_disc_s_ = '4' \n  AND CAST(_number_episodes AS INTEGER) < 22 \n  AND region_4 = 'n/a';",
+   "exact": false
+  },
+  {
+   "question": "What was the number of high assists for game 1?",
+   "reference": "SELECT high_assists FROM table_name_94 WHERE game = 1",
+   "prediction": "SELECT high_assists FROM table_name_94 WHERE game = '1';",
+   "exact": false
+  },
+  {
+   "question": "How many FTE teachers are there when the student:teacher ration is 19?",
+   "reference": "SELECT fte_teachers FROM table_1414743_1 WHERE pupil_teacher_ratio = \"19\"",
+   "prediction": "SELECT fte_teachers FROM table_1414743_1 WHERE pupil_teacher_ratio = '19'",
+   "exact": false
+  },
+  {
+   "question": "What was the date of the game where the indians record was 37-44?",
+   "reference": "SELECT date FROM table_name_95 WHERE record = \"37-44\"",
+   "prediction": "SELECT date FROM table_name_95 WHERE record = '37-44';",
+   "exact": false
+  },
+  {
+   "question": "Which Name has a Round smaller than 5, and a Pick # larger than 13?",
+   "reference": "SELECT name FROM table_name_50 WHERE round < 5 AND pick__number > 13",
+   "prediction": "SELECT name FROM table_name_50 WHERE CAST(round AS INTEGER) < 5 AND CAST(pick__number AS INTEGER) > 13;",
+   "exact": false
+  },
+  {
+   "question": "What was the earlier round where Takashi Kogure got the fastest lap?",
+   "reference": "SELECT MIN(round) FROM table_22379931_2 WHERE fastest_lap = \"Takashi Kogure\"",
+   "prediction": "SELECT MIN(round) FROM table_22379931_2 WHERE fastest_lap = 'Takashi Kogure';",
+   "exact": false
+  },
+  {
+   "question": "What was the most recent year that Kathy Ahern was a runner-up?",
+   "reference": "SELECT MAX(year) FROM table_name_12 WHERE runner_s__up = \"kathy ahern\"",
+   "prediction": "SELECT MAX(year) FROM table_name_12 WHERE runner_s__up = 'Kathy Ahern';",
+   "exact": false
+  },
+  {
+   "question": "What is the highest year premiered for the TV2 network when main present is øyvind mund?",
+   "reference": "SELECT MAX(year_premiered) FROM table_24224647_2 WHERE network = \"TV2\" AND main_presenter = \"Øyvind Mund\"",
+   "prediction": "SELECT MAX(year_premiered) FROM table_24224647_2 WHERE network = 'TV2' AND main_presenter = 'øyvind mund';",
+   "exact": false
+  },
+  {
+   "question": "What is the Longitude of the 61.0s Latitude?",
+   "reference": "SELECT longitude FROM table_name_27 WHERE latitude = \"61.0s\"",
+   "prediction": "SELECT longitude FROM table_name_27 WHERE latitude = '61.0';",
+   "exact": false
+  },
+  {
+   "question": "What is the lowest population in 2011 for the settlement of čortanovci?",
+   "reference": "SELECT MIN(population__2011_) FROM table_2562572_54 WHERE settlement = \"Čortanovci\"",
+   "prediction": "SELECT MIN(population__2011_) FROM table_2562572_54 WHERE settlement = 'čortanovci';",
+   "exact": false
+  },
+  {
+   "question": "What is the SZDSZ percentage with an MSZP of 25% on 25/2/2009?",
+   "reference": "SELECT szdsz FROM table_name_8 WHERE mszp = \"25%\" AND date = \"25/2/2009\"",
+   "prediction": "SELECT (COUNT(CASE WHEN mszp = '25%' THEN 1 END) * 100.0 / COUNT(*)) AS szdsz_percentage\nFROM table_name_8\nWHERE date = '25/2/2009';",
+   "exact": false
+  },
+  {
+   "question": "Who is the player associated with the Esher venue?",
+   "reference": "SELECT player FROM table_name_63 WHERE venue = \"esher\"",
+   "prediction": "SELECT player FROM table_name_63 WHERE venue = 'Esher'",
+   "exact": false
+  },
+  {
+   "question": "What is the year when sigourney weaver was nominated for best actress?",
+   "reference": "SELECT year__ceremony_ FROM table_name_26 WHERE category = \"best actress\" AND actor_actress = \"sigourney weaver\"",
+   "prediction": "SELECT DISTINCT year__ceremony_ FROM table_name_26 WHERE actor_actress = 'sigourney weaver' AND category = 'best actress';",
+   "exact": false
+  },
+  {
+   "question": "What is the Essendon Home Team's venue?",
+   "reference": "SELECT venue FROM table_name_61 WHERE home_team = \"essendon\"",
+   "prediction": "SELECT venue FROM table_name_61 WHERE home_team = 'Essendon';",
+   "exact": false
+  },
+  {
+   "question": "What place has a score under 68?",
+   "reference": "SELECT place FROM table_name_9 WHERE score < 68",
+   "prediction": "SELECT place FROM table_name_9 WHERE score < 68;",
+   "exact": true
+  },
+  {
+   "question": "How many assets in billions US$, for the company that ranked 1532 overall in 2013?",
+   "reference": "SELECT assets__bil_usd__ FROM table_23950611_2 WHERE rank__all__2013 = 1532",
+   "prediction": "SELECT assets__bil_usd__ FROM table_23950611_2 WHERE rank__all__2013 = '1532' LIMIT 1;",
+   "exact": false
+  },
+  {
+   "question": "what is the game on june 29?",
+   "reference": "SELECT SUM(game) FROM table_name_75 WHERE date = \"june 29\"",
+   "prediction": "SELECT game FROM table_name_75 WHERE date = 'June 29';",
+   "exact": false
+  },
+  {
+   "question": "What percentage of users were using Internet Explorer according to the source that reported 20.01% used Firefox?",
+   "reference": "SELECT internet_explorer FROM table_name_53 WHERE firefox = \"20.01%\"",
+   "prediction": "SELECT (100 - CAST(firefox AS DECIMAL(10,2))) AS percentage_internet_explorer FROM table_name_53 WHERE firefox = 20.01;",
+   "exact": false
+  },
+  {
+   "question": "Find the names of the clubs that have at least a member from the city with city code \"HOU\".",
+   "reference": "SELECT DISTINCT t1.clubname FROM club AS t1 JOIN member_of_club AS t2 ON t1.clubid = t2.clubid JOIN student AS t3 ON t2.stuid = t3.stuid WHERE t3.city_code = \"HOU\"",
+   "prediction": "SELECT DISTINCT c.clubname\nFROM club c\nJOIN member_of_club m ON c.clubid = m.clubid\nJOIN student s ON m.stuid = s.stuid\nWHERE s.city_code = 'HOU';",
+   "exact": false
+  },
+  {
+   "question": "What's the callsign of Mom's Radio 101.9 Zamboanga?",
+   "reference": "SELECT callsign FROM table_name_34 WHERE branding = \"mom's radio 101.9 zamboanga\"",
+   "prediction": "SELECT callsign FROM table_name_34 WHERE branding = 'Mom's Radio 101.9 Zamboanga';",
+   "exact": false
+  },
+  {
+   "question": "What p;layer attended Concordia College?",
+   "reference": "SELECT player FROM table_name_40 WHERE college = \"concordia\"",
+   "prediction": "SELECT player FROM table_name_40 WHERE college = 'Concordia College';",
+   "exact": false
+  },
+  {
+   "question": "How many stories were done in 2008 with a 16 rank?",
+   "reference": "SELECT COUNT(stories) FROM table_name_85 WHERE completed = 2008 AND rank = \"16\"",
+   "prediction": "SELECT COUNT(*) FROM table_name_85 WHERE completed = '2008' AND rank = '16'",
+   "exact": false
+  },
+  {
+   "question": "How many people had high rebounds during the game with a record of 34-32?",
+   "reference": "SELECT COUNT(high_rebounds) FROM table_23248940_10 WHERE record = \"34-32\"",
+   "prediction": "SELECT COUNT(*) FROM table_23248940_10 WHERE record = '34-32';",
+   "exact": false
+  },
+  {
+   "question": "What was the score of the game for April 16?",
+   "reference": "SELECT loss FROM table_name_62 WHERE date = \"april 16\"",
+   "prediction": "SELECT loss FROM table_name_62 WHERE date = 'April 16'",
+   "exact": false
+  },
+  {
+   "question": "What is the Place of the Player with a Score of 68-73-76=217?",
+   "reference": "SELECT place FROM table_name_86 WHERE score = 68 - 73 - 76 = 217",
+   "prediction": "SELECT place FROM table_name_86 WHERE score = '68-73-76=217';",
+   "exact": false
+  },
+  {
+   "question": "What is the average number for a final episode featuring maxine valera?",
+   "reference": "SELECT AVG(final_episode) AS Count FROM table_name_99 WHERE character = \"maxine valera\"",
+   "prediction": "SELECT AVG(final_episode) FROM table_name_99 WHERE character = 'maxine valera';",
+   "exact": false
+  },
+  {
+   "question": "How  many of the  series # when the original airdate is september 25, 1967?",
+   "reference": "SELECT COUNT(series__number) FROM table_21146729_6 WHERE original_airdate = \"September 25, 1967\"",
+   "prediction": "SELECT COUNT(*) FROM table_21146729_6 WHERE original_airdate = 'september 25, 1967';",
+   "exact": false
+  }
+ ]
+}

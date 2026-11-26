@@ -1,0 +1,224 @@
+{
+ "lab": "lab4_multigpu/3_model_parallel",
+ "model": "Qwen/Qwen3-8B (bf16) + LoRA, one model split across 2 GPUs",
+ "dataset": "b-mc2/sql-create-context (train 4000 / test 200)",
+ "machine": {
+  "label": "vapp-lab4-mp",
+  "instance_id": "<id>",
+  "gpu": "RTX 3090",
+  "num_gpus": 2,
+  "gpu_ram_mib": 24576,
+  "geolocation": "United States, US",
+  "verification": "verified",
+  "dph_total": 0.4067,
+  "dph_gpu": 0.3733
+ },
+ "placement": {
+  "cuda:0": {
+   "layers": "0-17",
+   "n_layers": 18,
+   "others": [
+    "model.embed_tokens"
+   ],
+   "params": 4095365632,
+   "weights_gb": 8.19
+  },
+  "cuda:1": {
+   "layers": "18-35",
+   "n_layers": 18,
+   "others": [
+    "model.norm",
+    "lm_head"
+   ],
+   "params": 4095369728,
+   "weights_gb": 8.19
+  }
+ },
+ "batch_probe": [
+  {
+   "batch": 1,
+   "status": "ok",
+   "vram_smi_mib": {
+    "gpu0": 9008,
+    "gpu1": 9462
+   },
+   "vram_torch_peak_allocated_mib": {
+    "gpu0": 8645,
+    "gpu1": 9027
+   },
+   "sec_per_step": 0.274
+  },
+  {
+   "batch": 2,
+   "status": "ok",
+   "vram_smi_mib": {
+    "gpu0": 9816,
+    "gpu1": 10720
+   },
+   "vram_torch_peak_allocated_mib": {
+    "gpu0": 9436,
+    "gpu1": 10198
+   },
+   "sec_per_step": 0.364
+  },
+  {
+   "batch": 4,
+   "status": "ok",
+   "vram_smi_mib": {
+    "gpu0": 11738,
+    "gpu1": 13246
+   },
+   "vram_torch_peak_allocated_mib": {
+    "gpu0": 11017,
+    "gpu1": 12540
+   },
+   "sec_per_step": 0.704
+  },
+  {
+   "batch": 8,
+   "status": "ok",
+   "vram_smi_mib": {
+    "gpu0": 14682,
+    "gpu1": 18280
+   },
+   "vram_torch_peak_allocated_mib": {
+    "gpu0": 14180,
+    "gpu1": 17224
+   },
+   "sec_per_step": 1.357
+  },
+  {
+   "batch": 16,
+   "status": "oom",
+   "vram_smi_mib": {
+    "gpu0": 19980,
+    "gpu1": 23416
+   },
+   "vram_torch_peak_allocated_mib": {
+    "gpu0": 19551,
+    "gpu1": 23035
+   },
+   "sec_per_step": null
+  }
+ ],
+ "max_batch": 8,
+ "first_oom_batch": 16,
+ "train": {
+  "batch": 8,
+  "epochs": 3,
+  "total_samples": 12000,
+  "train_wall_sec": 1184.1,
+  "samples_per_sec": 10.134,
+  "sec_per_step": 0.7889,
+  "gpu_util_mean_pct": {
+   "gpu0": 46.5,
+   "gpu1": 51.8
+  },
+  "vram_smi_max_mib": {
+   "gpu0": 18640,
+   "gpu1": 23826
+  },
+  "vram_torch_peak_allocated_mib": {
+   "gpu0": 14630,
+   "gpu1": 17674
+  }
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "train_loss": 0.08764,
+   "samples_per_sec": 10.118,
+   "sec_per_step": 0.7907,
+   "epoch_wall_sec": 395.6,
+   "gpu_util_mean_pct": {
+    "gpu0": 44.7,
+    "gpu1": 53.4
+   },
+   "test_loss": 0.05801,
+   "exact_match": 70.0,
+   "exact_match_loose": 72.5
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.03045,
+   "samples_per_sec": 10.108,
+   "sec_per_step": 0.7914,
+   "epoch_wall_sec": 396.0,
+   "gpu_util_mean_pct": {
+    "gpu0": 45.9,
+    "gpu1": 53.2
+   },
+   "test_loss": 0.05064,
+   "exact_match": 77.5,
+   "exact_match_loose": 79.5
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.01682,
+   "samples_per_sec": 10.197,
+   "sec_per_step": 0.7846,
+   "epoch_wall_sec": 392.5,
+   "gpu_util_mean_pct": {
+    "gpu0": 49.0,
+    "gpu1": 48.7
+   },
+   "test_loss": 0.05287,
+   "exact_match": 77.0,
+   "exact_match_loose": 79.5
+  }
+ ],
+ "base": {
+  "test_loss": 1.91369,
+  "exact_match": 0.0,
+  "exact_match_loose": 54.5
+ },
+ "exact_match_final": 77.0,
+ "exact_match_best": 77.5,
+ "exact_match_best_epoch": 2,
+ "n_test": 200,
+ "market_price": {
+  "searched_at": "2026-11-22T07:07:29Z",
+  "what": "cheapest on-demand offer, RTX 3090 x2, $/hour (dph_total)",
+  "cheapest_verified": {
+   "dph_total": 0.2947,
+   "offer_id": 55885976,
+   "geolocation": "Hong Kong, HK",
+   "n_offers": 29
+  },
+  "cheapest_any": {
+   "dph_total": 0.2414,
+   "offer_id": 38849860,
+   "geolocation": "Quebec, CA",
+   "verification": "deverified",
+   "n_offers": 48
+  }
+ },
+ "usd_per_1000_samples": {
+  "formula": "price_per_hour / 3600 / samples_per_sec * 1000",
+  "at_market_cheapest_verified": 0.00808,
+  "at_market_cheapest_any": 0.00662,
+  "at_rented_price": 0.01115
+ },
+ "actual_cost": {
+  "age_sec": 3302,
+  "age_min": 55.0,
+  "age_hours": 0.917,
+  "start_unix": 1795327981.230524,
+  "destroyed_unix": 1795331283.0,
+  "estimate_age_x_dph_total_usd": 0.373,
+  "billed_usd": 0.356,
+  "billed_items_usd": {
+   "gpu": 0.287,
+   "disk": 0.03,
+   "bwd": 0.038,
+   "bwu": 0.001
+  },
+  "billed_detail": [
+   "0.770 hours at $0.373/hour",
+   "0.914 hours at $0.033/hour",
+   "14.7 GB Downloaded at $0.003/GB",
+   "0.2 GB Uploaded at $0.004/GB"
+  ],
+  "billing_fetched_unix": 1795331413.8240163
+ }
+}

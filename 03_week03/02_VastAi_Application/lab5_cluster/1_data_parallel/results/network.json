@@ -1,0 +1,39 @@
+{
+  "node1": "203.0.113.10:<ext_port> (container port 5201)",
+  "direction_note": "client = Node 2, server = Node 1; all traffic uses Node 1's one open port",
+  "tcp_test": {
+    "target": "203.0.113.10:<ext_port>",
+    "connect_ok": true,
+    "tcp_connect_ms": 8.867,
+    "rtt_ms": {
+      "min": 3.664,
+      "avg": 5.95,
+      "median": 5.809,
+      "max": 10.078,
+      "samples": 59
+    },
+    "client_to_server": {
+      "bytes": 180355072,
+      "seconds": 10.1,
+      "mbps": 142.9
+    },
+    "server_to_client": {
+      "bytes": 982515712,
+      "seconds": 10.03,
+      "mbps": 783.5
+    }
+  },
+  "icmp_ping_node2_to_node1": "bash: line 1: /usr/bin/ping: Operation not permitted",
+  "iperf3_4streams": {
+    "node2_to_node1": {
+      "mbps_received": 137.4,
+      "mbps_sent": 139.5,
+      "retransmits": 938
+    },
+    "node1_to_node2": {
+      "mbps_received": 736.1,
+      "mbps_sent": 742.4,
+      "retransmits": 199
+    }
+  }
+}

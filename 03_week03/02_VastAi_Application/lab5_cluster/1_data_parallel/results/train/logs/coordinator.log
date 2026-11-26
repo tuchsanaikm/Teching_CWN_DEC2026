@@ -1,0 +1,60 @@
+10:54:01 coordinator listening on 0.0.0.0:5201, waiting for 4 workers
+10:54:10 connection #1 from 127.0.0.1:56970
+10:54:10 connection #2 from 127.0.0.1:56980
+10:54:15 connection #3 from 203.0.113.10:38800
+10:54:15 connection #4 from 203.0.113.10:38816
+10:54:15 init: 4 workers, n_params=3833856, identical_init=True, resume_step=0
+10:54:18 step 0 loss 1.7098 spread 2.11s avg 47ms dup 0
+10:54:21 step 1 loss 1.9394 spread 2.16s avg 39ms dup 0
+10:54:24 step 2 loss 1.6657 spread 2.07s avg 11ms dup 0
+10:54:45 step 10 loss 0.3012 spread 2.16s avg 10ms dup 0
+10:55:11 step 20 loss 0.1357 spread 2.32s avg 10ms dup 0
+10:55:38 step 30 loss 0.2350 spread 2.26s avg 10ms dup 0
+10:56:04 step 40 loss 0.1014 spread 2.23s avg 11ms dup 0
+10:56:31 step 50 loss 0.0899 spread 2.12s avg 11ms dup 0
+10:56:57 step 60 loss 0.0925 spread 2.22s avg 11ms dup 0
+10:57:24 step 70 loss 0.0653 spread 2.15s avg 11ms dup 0
+10:57:50 step 80 loss 0.1550 spread 2.18s avg 41ms dup 0
+10:58:16 step 90 loss 0.0679 spread 2.29s avg 11ms dup 0
+10:58:43 step 100 loss 0.0928 spread 2.17s avg 11ms dup 0
+10:59:09 step 110 loss 0.0374 spread 2.16s avg 11ms dup 0
+10:59:35 step 120 loss 0.0194 spread 2.12s avg 11ms dup 0
+11:02:44 step 130 loss 0.0469 spread 2.76s avg 11ms dup 0
+11:03:11 step 140 loss 0.0402 spread 2.23s avg 11ms dup 0
+11:04:54 step 150 loss 0.0560 spread 40.49s avg 11ms dup 0
+11:07:23 step 160 loss 0.0711 spread 40.06s avg 10ms dup 0
+11:08:02 step 170 loss 0.0554 spread 2.17s avg 11ms dup 0
+11:08:29 step 180 loss 0.0644 spread 2.30s avg 11ms dup 0
+11:09:59 step 190 loss 0.0744 spread 2.37s avg 10ms dup 0
+11:10:25 step 200 loss 0.0290 spread 2.32s avg 11ms dup 0
+11:10:52 step 210 loss 0.0681 spread 2.23s avg 31ms dup 0
+11:11:19 step 220 loss 0.0941 spread 2.22s avg 10ms dup 0
+11:11:46 step 230 loss 0.1064 spread 2.18s avg 11ms dup 0
+11:12:13 step 240 loss 0.0494 spread 2.28s avg 41ms dup 0
+11:12:39 weights check epoch 1: identical=True max_abs_diff=0.0
+11:12:42 step 250 loss 0.0266 spread 1.83s avg 30ms dup 0
+11:13:09 step 260 loss 0.0300 spread 2.08s avg 16ms dup 0
+11:13:35 step 270 loss 0.0149 spread 2.13s avg 11ms dup 0
+11:14:02 step 280 loss 0.0189 spread 2.47s avg 11ms dup 0
+11:14:30 step 290 loss 0.0273 spread 2.31s avg 11ms dup 0
+11:14:57 step 300 loss 0.0448 spread 2.27s avg 11ms dup 0
+11:15:24 step 310 loss 0.0313 spread 2.37s avg 11ms dup 0
+11:15:51 step 320 loss 0.0484 spread 2.38s avg 10ms dup 0
+11:16:19 step 330 loss 0.0255 spread 2.44s avg 11ms dup 0
+11:16:46 step 340 loss 0.0744 spread 2.25s avg 11ms dup 0
+11:17:13 step 350 loss 0.1545 spread 2.28s avg 10ms dup 0
+11:17:40 step 360 loss 0.0372 spread 2.17s avg 11ms dup 0
+11:18:07 step 370 loss 0.0326 spread 2.15s avg 41ms dup 0
+11:18:34 step 380 loss 0.0241 spread 2.32s avg 11ms dup 0
+11:19:00 step 390 loss 0.0443 spread 2.33s avg 11ms dup 0
+11:19:28 step 400 loss 0.0555 spread 2.26s avg 11ms dup 0
+11:19:55 step 410 loss 0.0216 spread 2.32s avg 11ms dup 0
+11:20:22 step 420 loss 0.0265 spread 2.16s avg 11ms dup 0
+11:20:50 step 430 loss 0.0418 spread 2.32s avg 11ms dup 0
+11:21:17 step 440 loss 0.0210 spread 2.18s avg 30ms dup 0
+11:21:43 step 450 loss 0.0124 spread 2.17s avg 11ms dup 0
+11:22:09 step 460 loss 0.0234 spread 2.21s avg 11ms dup 0
+11:22:35 step 470 loss 0.0296 spread 2.35s avg 40ms dup 0
+11:23:02 step 480 loss 0.0271 spread 2.19s avg 10ms dup 0
+11:23:29 step 490 loss 0.0666 spread 2.24s avg 40ms dup 0
+11:23:55 weights check epoch 2: identical=True max_abs_diff=0.0

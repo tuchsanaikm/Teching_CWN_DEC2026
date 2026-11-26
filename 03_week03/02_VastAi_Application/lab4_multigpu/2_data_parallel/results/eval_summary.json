@@ -1,0 +1,34 @@
+[
+  {
+    "tag": "base",
+    "n_test": 200,
+    "test_loss": 1.8453,
+    "em_count": 0,
+    "exact_match_pct": 0.0,
+    "em_relaxed_pct": 54.5
+  },
+  {
+    "tag": "epoch1",
+    "n_test": 200,
+    "test_loss": 0.0581,
+    "em_count": 140,
+    "exact_match_pct": 70.0,
+    "em_relaxed_pct": 72.0
+  },
+  {
+    "tag": "epoch2",
+    "n_test": 200,
+    "test_loss": 0.052,
+    "em_count": 155,
+    "exact_match_pct": 77.5,
+    "em_relaxed_pct": 79.5
+  },
+  {
+    "tag": "epoch3",
+    "n_test": 200,
+    "test_loss": 0.0578,
+    "em_count": 158,
+    "exact_match_pct": 79.0,
+    "em_relaxed_pct": 81.0
+  }
+]

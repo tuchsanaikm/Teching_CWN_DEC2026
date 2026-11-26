@@ -1,0 +1,6 @@
+{
+  "n_questions": 10,
+  "ttft_mean_s": 0.0346,
+  "speed_mean_tps": 100.14,
+  "fast_slo_speed_min_tps": 50.07
+}

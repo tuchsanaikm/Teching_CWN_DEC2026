@@ -1,0 +1,254 @@
+{
+ "run": {
+  "workers": 4,
+  "nodes": 2,
+  "gpu": "2x RTX 3090 per node",
+  "batch_per_gpu": 4,
+  "batch_total": 16,
+  "epochs": 2,
+  "steps": 500,
+  "steps_per_epoch": 250,
+  "examples": 8000,
+  "train_seconds": 1777.5210421085358,
+  "gradient_bytes_per_worker_per_step": 15335424
+ },
+ "throughput": {
+  "examples_per_second": 4.500649956025398,
+  "seconds_per_step_mean": 3.5550420842170714,
+  "seconds_per_step_median": 2.6686573028564453
+ },
+ "time_per_step": {
+  "compute_s": 0.432957769515011,
+  "send_wait_s": 3.114153934648948,
+  "send_wait_share": 0.8779407569807398,
+  "compute_share": 0.12205924301926026,
+  "note": "mean over the 4 workers; send_wait = pack gradient + send + wait for the averaged gradient (incl. waiting for the slowest worker) + receive + unpack"
+ },
+ "gpus": [
+  {
+   "rank": 0,
+   "node": 1,
+   "gpu": 0,
+   "compute_s_per_step": 0.4271416010860412,
+   "send_wait_s_per_step": 3.1190364679938356,
+   "send_wait_share": 0.87954874437626,
+   "gpu_util_mean_pct": 12.371975239167135,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_max_pct": 100.0,
+   "gpu_util_samples": 1777,
+   "share_of_seconds_above_50pct_util": 0.12492965672481711,
+   "vram_peak_nvidia_smi_mib": 22772.0,
+   "vram_peak_torch_allocated_mib": 22143.82373046875,
+   "reconnects": 0
+  },
+  {
+   "rank": 1,
+   "node": 1,
+   "gpu": 1,
+   "compute_s_per_step": 0.4314253222920379,
+   "send_wait_s_per_step": 3.1148142351339194,
+   "send_wait_share": 0.8783428712849877,
+   "gpu_util_mean_pct": 12.785593697242543,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_max_pct": 100.0,
+   "gpu_util_samples": 1777,
+   "share_of_seconds_above_50pct_util": 0.13280810354530106,
+   "vram_peak_nvidia_smi_mib": 21404.0,
+   "vram_peak_torch_allocated_mib": 20782.21923828125,
+   "reconnects": 0
+  },
+  {
+   "rank": 2,
+   "node": 2,
+   "gpu": 0,
+   "compute_s_per_step": 0.4353129972840543,
+   "send_wait_s_per_step": 3.1130573339500116,
+   "send_wait_share": 0.8773203029423765,
+   "gpu_util_mean_pct": 12.675858187957232,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_max_pct": 100.0,
+   "gpu_util_samples": 1777,
+   "share_of_seconds_above_50pct_util": 0.13168261114237478,
+   "vram_peak_nvidia_smi_mib": 22776.0,
+   "vram_peak_torch_allocated_mib": 22143.82373046875,
+   "reconnects": 0
+  },
+  {
+   "rank": 3,
+   "node": 2,
+   "gpu": 1,
+   "compute_s_per_step": 0.43795115739791074,
+   "send_wait_s_per_step": 3.1097077015180257,
+   "send_wait_share": 0.8765520657948109,
+   "gpu_util_mean_pct": 12.774901519414744,
+   "gpu_util_median_pct": 0.0,
+   "gpu_util_max_pct": 100.0,
+   "gpu_util_samples": 1777,
+   "share_of_seconds_above_50pct_util": 0.13505908835115363,
+   "vram_peak_nvidia_smi_mib": 21642.0,
+   "vram_peak_torch_allocated_mib": 20992.353515625,
+   "reconnects": 0
+  }
+ ],
+ "gpu_util_mean_pct_all": 12.652082160945413,
+ "epochs": [
+  {
+   "epoch": 1,
+   "steps": 250,
+   "seconds": 1102.3249807357788,
+   "examples": 4000,
+   "examples_per_second": 3.628693960405473,
+   "train_loss_mean": 0.1198157135307556,
+   "train_loss_last20": 0.04785754534532316,
+   "test_loss": 0.060276856949426263,
+   "exact_match": 0.725,
+   "exact_match_count": 145,
+   "test_n": 200,
+   "lora_weights_identical_on_all_workers": true
+  },
+  {
+   "epoch": 2,
+   "steps": 250,
+   "seconds": 675.196061372757,
+   "examples": 4000,
+   "examples_per_second": 5.924205173631354,
+   "train_loss_mean": 0.037074137321382296,
+   "train_loss_last20": 0.045506333124649245,
+   "test_loss": 0.05146241613635082,
+   "exact_match": 0.75,
+   "exact_match_count": 150,
+   "test_n": 200,
+   "lora_weights_identical_on_all_workers": true
+  }
+ ],
+ "eval": {
+  "base": {
+   "name": "base",
+   "adapter": null,
+   "n": 200,
+   "exact_match": 0.015,
+   "exact_match_count": 3,
+   "exact_match_if_code_fence_removed": 0.015,
+   "contains_think_tag": 0,
+   "loss": 1.85753909472137,
+   "loss_tokens": 5266,
+   "enable_thinking": false,
+   "max_new_tokens": 200,
+   "generated_tokens": 5342,
+   "seconds_loss": 9.890976667404175,
+   "seconds_generate": 28.356224298477173,
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "vram_peak_mb": 19370.0087890625
+  },
+  "epoch1": {
+   "name": "epoch1",
+   "adapter": "/workspace/lab5_dp/run_train/adapter_epoch1_rank1",
+   "n": 200,
+   "exact_match": 0.725,
+   "exact_match_count": 145,
+   "exact_match_if_code_fence_removed": 0.725,
+   "contains_think_tag": 0,
+   "loss": 0.060276856949426263,
+   "loss_tokens": 5266,
+   "enable_thinking": false,
+   "max_new_tokens": 200,
+   "generated_tokens": 5212,
+   "seconds_loss": 10.521642923355103,
+   "seconds_generate": 30.3891122341156,
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "vram_peak_mb": 19384.6337890625
+  },
+  "epoch2": {
+   "name": "epoch2",
+   "adapter": "/workspace/lab5_dp/run_train/adapter_epoch2_rank2",
+   "n": 200,
+   "exact_match": 0.75,
+   "exact_match_count": 150,
+   "exact_match_if_code_fence_removed": 0.75,
+   "contains_think_tag": 0,
+   "loss": 0.05146241613635082,
+   "loss_tokens": 5266,
+   "enable_thinking": false,
+   "max_new_tokens": 200,
+   "generated_tokens": 5224,
+   "seconds_loss": 10.95928955078125,
+   "seconds_generate": 43.37989377975464,
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "vram_peak_mb": 19384.6337890625
+  }
+ },
+ "exact_match": {
+  "base": 0.015,
+  "epoch1": 0.725,
+  "epoch2": 0.75
+ },
+ "cost": {
+  "price_usd_per_hour": {
+   "node1": 0.4862222222222222,
+   "node2": 0.494
+  },
+  "price_usd_per_hour_both_nodes": 0.9802222222222222,
+  "usd_per_1000_examples": 0.06049880645633296,
+  "usd_for_training_window": 0.4839904516506637,
+  "note": "listed on-demand price of both instances together (GPU + 60 GB disk), training throughput over the whole 2-epoch run; excludes setup, evaluation and bandwidth"
+ },
+ "billing": {
+  "instances": {
+   "vapp-lab5-dp-1": {
+    "label": "vapp-lab5-dp-1",
+    "start_utc": "2026-11-22 10:16:10",
+    "destroyed_utc": "2026-11-22 11:30:59",
+    "start_ts": 1795342570.2309923,
+    "destroyed_ts": 1795347059.2930286,
+    "age_hours": 1.2469616767432954,
+    "price_usd_per_hour": 0.4862222222222222,
+    "estimate_usd": 0.8379004774920733,
+    "estimate_note": "age x listed hourly price + bandwidth counters at destroy time",
+    "destroy_reply_ok": false,
+    "charged_usd": 0.819,
+    "by_type_usd": {
+     "gpu": 0.559,
+     "disk": 0.028,
+     "bwd": 0.128,
+     "bwu": 0.104
+    },
+    "lines": [
+     "gpu: 1.205 hours at $0.464/hour = $0.559",
+     "disk: 1.264 hours at $0.022/hour = $0.028",
+     "bwd: 31.9 GB Downloaded at $0.004/GB = $0.128",
+     "bwu: 19.5 GB Uploaded at $0.005/GB = $0.104"
+    ],
+    "instance_id": "<id>"
+   },
+   "vapp-lab5-dp-2": {
+    "label": "vapp-lab5-dp-2",
+    "start_utc": "2026-11-22 10:16:11",
+    "destroyed_utc": "2026-11-22 11:31:00",
+    "start_ts": 1795342571.7156515,
+    "destroyed_ts": 1795347060.93778,
+    "age_hours": 1.2470061467753517,
+    "price_usd_per_hour": 0.494,
+    "estimate_usd": 0.7722710365070238,
+    "estimate_note": "age x listed hourly price + bandwidth counters at destroy time",
+    "destroy_reply_ok": false,
+    "charged_usd": 0.769,
+    "by_type_usd": {
+     "gpu": 0.592,
+     "disk": 0.021,
+     "bwd": 0.089,
+     "bwu": 0.067
+    },
+    "lines": [
+     "gpu: 1.241 hours at $0.477/hour = $0.592",
+     "disk: 1.264 hours at $0.017/hour = $0.021",
+     "bwd: 34.2 GB Downloaded at $0.003/GB = $0.089",
+     "bwu: 17.2 GB Uploaded at $0.004/GB = $0.067"
+    ],
+    "instance_id": "<id>"
+   }
+  },
+  "left_after_destroy": [],
+  "charged_usd_both": 1.588,
+  "charges_read_at_utc": "2026-11-22 11:38:35"
+ }
+}

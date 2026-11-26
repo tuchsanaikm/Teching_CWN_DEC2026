@@ -1,0 +1,12 @@
+
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[08:10:11] placement {"embed_tokens": 0, "final_norm": 3, "lm_head": 3, "layers_per_gpu": {"gpu0": "0-8 (9 layers)", "gpu1": "9-17 (9 layers)", "gpu2": "18-26 (9 layers)", "gpu3": "27-35 (9 layers)"}, "trainable_params": 3833856, "total_params": 8194569216}
+[08:10:14] longest example: 256 tokens (index 2589); mean 106.2; truncated 1
+[08:10:16] probe batch 1: OK peak_reserved_gb [4.88, 3.65, 3.65, 5.31] sec/step 0.556 
+[08:10:18] probe batch 2: OK peak_reserved_gb [5.29, 4.04, 4.04, 6.19] sec/step 0.386 
+[08:10:20] probe batch 4: OK peak_reserved_gb [6.17, 4.79, 4.79, 7.93] sec/step 0.71 
+[08:10:25] probe batch 8: OK peak_reserved_gb [7.87, 6.29, 6.29, 11.43] sec/step 1.379 
+[08:10:33] probe batch 16: OK peak_reserved_gb [11.41, 9.32, 9.32, 18.39] sec/step 2.69 
+[08:10:37] probe batch 32: OOM peak_reserved_gb [16.11, 15.02, 15.02, 23.01] sec/step None CUDA out of memory. Tried to allocate 4.64 GiB. GPU 3 has a total capacity of 23.61 GiB of which 383.81 MiB is free. Including non-PyTorch memory, this process has 23.23 GiB memory in use. Of the allo
+[08:10:37] PROBE_DONE max_batch 16

@@ -1,0 +1,60 @@
+[loadgen] name=lc_equal mode=capacity target=http://127.0.0.1:8080  servers=8 (gpu0-8101, gpu0-8102, gpu0-8103, gpu0-8104, gpu1-8201, gpu1-8202, gpu1-8203, gpu1-8204)  mode=micro
+[loadgen] level=20s (warm-up 5s)  images=6  timeout=10s  pass: p95<=500ms and errors<1%
+[range] N=1    PASS  thr=32.3/s  p50=30.0 p95=35.0 p99=37.2 ms  err=0/485 (0.00%)  gpu0=6% gpu1=6%  cpu% server=82.5 nginx=1.1 loadgen=1.7
+       queue=5.24 ms  model=17.45 ms  images/call=1.0  answered by: gpu0-8101=61  gpu0-8102=60  gpu0-8103=60  gpu0-8104=61  gpu1-8201=61  gpu1-8202=60  gpu1-8203=61  gpu1-8204=61
+[range] N=2    PASS  thr=63.7/s  p50=30.7 p95=36.2 p99=39.4 ms  err=0/955 (0.00%)  gpu0=12% gpu1=12%  cpu% server=157.9 nginx=2.1 loadgen=2.8
+       queue=5.26 ms  model=17.56 ms  images/call=1.0  answered by: gpu0-8101=119  gpu0-8102=118  gpu0-8103=120  gpu0-8104=120  gpu1-8201=120  gpu1-8202=119  gpu1-8203=120  gpu1-8204=119
+[range] N=4    PASS  thr=121.2/s  p50=32.4 p95=38.3 p99=42.0 ms  err=0/1817 (0.00%)  gpu0=35% gpu1=33%  cpu% server=301.5 nginx=3.5 loadgen=4.7
+       queue=5.32 ms  model=18.25 ms  images/call=1.0  answered by: gpu0-8101=228  gpu0-8102=228  gpu0-8103=226  gpu0-8104=231  gpu1-8201=228  gpu1-8202=226  gpu1-8203=225  gpu1-8204=225
+[range] N=8    PASS  thr=230.4/s  p50=34.1 p95=40.9 p99=44.5 ms  err=0/3456 (0.00%)  gpu0=59% gpu1=62%  cpu% server=584.2 nginx=6.3 loadgen=8.0
+       queue=5.37 ms  model=19.43 ms  images/call=1.0  answered by: gpu0-8101=431  gpu0-8102=431  gpu0-8103=429  gpu0-8104=433  gpu1-8201=432  gpu1-8202=434  gpu1-8203=433  gpu1-8204=433
+[range] N=16   PASS  thr=305.9/s  p50=52.9 p95=64.3 p99=71.7 ms  err=0/4588 (0.00%)  gpu0=76% gpu1=75%  cpu% server=704.1 nginx=8.6 loadgen=10.7
+       queue=15.99 ms  model=23.44 ms  images/call=1.27  answered by: gpu0-8101=588  gpu0-8102=582  gpu0-8103=568  gpu0-8104=553  gpu1-8201=596  gpu1-8202=546  gpu1-8203=588  gpu1-8204=567
+[range] N=32   PASS  thr=412.3/s  p50=77.2 p95=87.7 p99=97.3 ms  err=0/6184 (0.00%)  gpu0=74% gpu1=74%  cpu% server=797.6 nginx=11.3 loadgen=13.0
+       queue=29.56 ms  model=30.74 ms  images/call=2.01  answered by: gpu0-8101=786  gpu0-8102=786  gpu0-8103=778  gpu0-8104=780  gpu1-8201=761  gpu1-8202=770  gpu1-8203=764  gpu1-8204=759
+[range] N=64   PASS  thr=475.7/s  p50=133.4 p95=147.2 p99=153.9 ms  err=0/7136 (0.00%)  gpu0=73% gpu1=76%  cpu% server=831.3 nginx=12.7 loadgen=13.7
+       queue=47.75 ms  model=57.36 ms  images/call=4.0  answered by: gpu0-8101=872  gpu0-8102=896  gpu0-8103=872  gpu0-8104=896  gpu1-8201=904  gpu1-8202=885  gpu1-8203=907  gpu1-8204=904
+[range] N=128  PASS  thr=495.5/s  p50=254.8 p95=275.4 p99=588.5 ms  err=0/7432 (0.00%)  gpu0=69% gpu1=74%  cpu% server=803.1 nginx=10.7 loadgen=14.8
+       queue=91.87 ms  model=112.04 ms  images/call=8.0  answered by: gpu0-8101=938  gpu0-8102=928  gpu0-8103=936  gpu0-8104=918  gpu1-8201=928  gpu1-8202=928  gpu1-8203=928  gpu1-8204=928
+[range] N=256  FAIL  thr=482.2/s  p50=522.0 p95=672.4 p99=836.7 ms  err=0/7233 (0.00%)  gpu0=82% gpu1=63%  cpu% server=800.1 nginx=10.3 loadgen=14.6
+       queue=187.97 ms  model=235.15 ms  images/call=16.0  answered by: gpu0-8101=911  gpu0-8102=896  gpu0-8103=946  gpu0-8104=896  gpu1-8201=896  gpu1-8202=896  gpu1-8203=896  gpu1-8204=896
+[range again] N=256  FAIL  thr=491.4/s  p50=509.4 p95=752.6 p99=897.7 ms  err=0/7372 (0.00%)  gpu0=76% gpu1=66%  cpu% server=793.2 nginx=10.8 loadgen=16.2
+       queue=174.62 ms  model=234.27 ms  images/call=15.99  answered by: gpu0-8101=910  gpu0-8102=913  gpu0-8103=928  gpu0-8104=928  gpu1-8201=928  gpu1-8202=928  gpu1-8203=928  gpu1-8204=909
+[range] N=512  FAIL  thr=471.3/s  p50=1071.3 p95=1527.1 p99=1692.4 ms  err=2/7072 (0.03%)  gpu0=63% gpu1=86%  cpu% server=773.8 nginx=9.7 loadgen=15.9
+       queue=416.84 ms  model=489.34 ms  images/call=31.28  answered by: gpu0-8101=905  gpu0-8102=905  gpu0-8103=906  gpu0-8104=905  gpu1-8201=969  gpu1-8202=542  gpu1-8203=969  gpu1-8204=969
+       errors: {'http_502': 2}
+[range again] N=512  FAIL  thr=454.3/s  p50=1081.2 p95=1615.2 p99=1757.6 ms  err=1/6816 (0.01%)  gpu0=38% gpu1=88%  cpu% server=749.5 nginx=9.8 loadgen=14.7
+       queue=428.61 ms  model=487.63 ms  images/call=31.26  answered by: gpu0-8101=969  gpu0-8102=1001  gpu0-8103=351  gpu0-8104=969  gpu1-8201=873  gpu1-8202=905  gpu1-8203=873  gpu1-8204=874
+       errors: {'http_502': 1}
+[estimate] next N = 200
+[estimate] N=200  PASS  thr=482.4/s  p50=404.4 p95=443.9 p99=764.7 ms  err=0/7237 (0.00%)  gpu0=64% gpu1=84%  cpu% server=783.7 nginx=10.5 loadgen=15.4
+       queue=141.9 ms  model=185.34 ms  images/call=12.51  answered by: gpu0-8101=875  gpu0-8102=900  gpu0-8103=875  gpu0-8104=900  gpu1-8201=912  gpu1-8202=925  gpu1-8203=925  gpu1-8204=925
+[refine] next N = 214
+[refine] N=214  PASS  thr=478.7/s  p50=439.5 p95=482.6 p99=826.0 ms  err=0/7181 (0.00%)  gpu0=70% gpu1=67%  cpu% server=800.0 nginx=10.3 loadgen=14.8
+       queue=155.82 ms  model=199.95 ms  images/call=13.47  answered by: gpu0-8101=874  gpu0-8102=916  gpu0-8103=876  gpu0-8104=906  gpu1-8201=903  gpu1-8202=906  gpu1-8203=901  gpu1-8204=899
+[refine] next N = 235
+[refine] N=235  FAIL  thr=487.3/s  p50=477.6 p95=523.6 p99=841.6 ms  err=0/7309 (0.00%)  gpu0=67% gpu1=67%  cpu% server=804.9 nginx=10.5 loadgen=15.1
+       queue=170.7 ms  model=215.67 ms  images/call=14.79  answered by: gpu0-8101=901  gpu0-8102=930  gpu0-8103=905  gpu0-8104=902  gpu1-8201=914  gpu1-8202=920  gpu1-8203=918  gpu1-8204=919
+[refine again] N=235  FAIL  thr=484.9/s  p50=477.4 p95=751.9 p99=881.7 ms  err=0/7273 (0.00%)  gpu0=75% gpu1=67%  cpu% server=788.2 nginx=10.7 loadgen=15.3
+       queue=158.92 ms  model=222.96 ms  images/call=14.81  answered by: gpu0-8101=902  gpu0-8102=906  gpu0-8103=903  gpu0-8104=918  gpu1-8201=905  gpu1-8202=933  gpu1-8203=903  gpu1-8204=903
+[refine] next N = 223
+[refine] N=223  FAIL  thr=482.9/s  p50=446.7 p95=783.4 p99=855.4 ms  err=0/7243 (0.00%)  gpu0=61% gpu1=64%  cpu% server=789.9 nginx=10.7 loadgen=15.4
+       queue=159.63 ms  model=205.39 ms  images/call=13.98  answered by: gpu0-8101=895  gpu0-8102=896  gpu0-8103=895  gpu0-8104=923  gpu1-8201=907  gpu1-8202=908  gpu1-8203=910  gpu1-8204=909
+[refine again] N=223  FAIL  thr=483.0/s  p50=452.7 p95=507.3 p99=838.7 ms  err=0/7245 (0.00%)  gpu0=72% gpu1=68%  cpu% server=789.3 nginx=10.6 loadgen=15.1
+       queue=161.02 ms  model=206.38 ms  images/call=13.98  answered by: gpu0-8101=923  gpu0-8102=896  gpu0-8103=922  gpu0-8104=925  gpu1-8201=895  gpu1-8202=896  gpu1-8203=895  gpu1-8204=893
+[refine] next N = 218
+[refine] N=218  PASS  thr=488.3/s  p50=438.6 p95=483.0 p99=800.0 ms  err=0/7323 (0.00%)  gpu0=72% gpu1=56%  cpu% server=791.7 nginx=10.7 loadgen=15.7
+       queue=149.42 ms  model=201.85 ms  images/call=13.63  answered by: gpu0-8101=914  gpu0-8102=916  gpu0-8103=914  gpu0-8104=915  gpu1-8201=899  gpu1-8202=915  gpu1-8203=913  gpu1-8204=937
+[refine] next N = 221
+[refine] N=221  PASS  thr=484.3/s  p50=450.3 p95=487.4 p99=846.4 ms  err=0/7264 (0.00%)  gpu0=71% gpu1=66%  cpu% server=793.4 nginx=10.3 loadgen=15.0
+       queue=161.29 ms  model=205.36 ms  images/call=13.97  answered by: gpu0-8101=920  gpu0-8102=920  gpu0-8103=920  gpu0-8104=922  gpu1-8201=910  gpu1-8202=881  gpu1-8203=882  gpu1-8204=909
+[loadgen] saved /workspace/lab6/results/lc_equal.json  (20 runs)
+  estimate 1: pass N=128 (p95 275.4) / fail N=256 (p95 672.4) -> line -> N~200.42 -> measured N=200: p95 443.9 PASS
+  estimate 2: pass N=200 (p95 443.9) / fail N=256 (p95 672.4) -> line -> N~213.75 -> measured N=214: p95 482.6 PASS
+  estimate 3: pass N=214 (p95 482.6) / fail N=256 (p95 672.4) -> midpoint (same side moved twice) -> N~235.0 -> measured N=235: p95 523.6 FAIL
+  estimate 4: pass N=214 (p95 482.6) / fail N=235 (p95 523.6) -> line -> N~222.91 -> measured N=223: p95 507.3 FAIL
+  estimate 5: pass N=214 (p95 482.6) / fail N=223 (p95 507.3) -> midpoint (same side moved twice) -> N~218.5 -> measured N=218: p95 483.0 PASS
+  estimate 6: pass N=218 (p95 483.0) / fail N=223 (p95 507.3) -> line -> N~221.5 -> measured N=221: p95 487.4 PASS
+OTHER ESTIMATE: max throughput 495.5 req/s (at N=128) x 0.5 s = N ~ 247.7
+CAPACITY: 221 users  (N=221 passes, N=223 fails)
+DONE

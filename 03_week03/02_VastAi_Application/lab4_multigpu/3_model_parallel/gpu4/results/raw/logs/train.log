@@ -1,0 +1,83 @@
+
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[08:11:48] placement {"embed_tokens": 0, "final_norm": 3, "lm_head": 3, "layers_per_gpu": {"gpu0": "0-8 (9 layers)", "gpu1": "9-17 (9 layers)", "gpu2": "18-26 (9 layers)", "gpu3": "27-35 (9 layers)"}, "trainable_params": 3833856, "total_params": 8194569216}
+[08:12:08] epoch 1/3 step 10/250 loss 1.0915 1.795s/step elapsed 18s eta_epoch 431s
+[08:12:24] epoch 1/3 step 20/250 loss 0.2283 1.642s/step elapsed 34s eta_epoch 395s
+[08:12:41] epoch 1/3 step 30/250 loss 0.1579 1.678s/step elapsed 51s eta_epoch 375s
+[08:12:57] epoch 1/3 step 40/250 loss 0.1380 1.578s/step elapsed 67s eta_epoch 351s
+[08:13:14] epoch 1/3 step 50/250 loss 0.1208 1.721s/step elapsed 84s eta_epoch 337s
+[08:13:31] epoch 1/3 step 60/250 loss 0.1076 1.698s/step elapsed 101s eta_epoch 320s
+[08:13:46] epoch 1/3 step 70/250 loss 0.0687 1.563s/step elapsed 117s eta_epoch 300s
+[08:14:03] epoch 1/3 step 80/250 loss 0.0977 1.619s/step elapsed 133s eta_epoch 282s
+[08:14:19] epoch 1/3 step 90/250 loss 0.0930 1.596s/step elapsed 149s eta_epoch 265s
+[08:14:35] epoch 1/3 step 100/250 loss 0.0678 1.627s/step elapsed 165s eta_epoch 248s
+[08:14:51] epoch 1/3 step 110/250 loss 0.0731 1.615s/step elapsed 181s eta_epoch 231s
+[08:15:09] epoch 1/3 step 120/250 loss 0.0853 1.789s/step elapsed 199s eta_epoch 216s
+[08:15:24] epoch 1/3 step 130/250 loss 0.0705 1.526s/step elapsed 214s eta_epoch 198s
+[08:15:39] epoch 1/3 step 140/250 loss 0.0563 1.509s/step elapsed 230s eta_epoch 180s
+[08:15:55] epoch 1/3 step 150/250 loss 0.0621 1.625s/step elapsed 246s eta_epoch 164s
+[08:16:11] epoch 1/3 step 160/250 loss 0.0564 1.510s/step elapsed 261s eta_epoch 147s
+[08:16:27] epoch 1/3 step 170/250 loss 0.0680 1.655s/step elapsed 277s eta_epoch 131s
+[08:16:43] epoch 1/3 step 180/250 loss 0.0452 1.582s/step elapsed 293s eta_epoch 114s
+[08:17:00] epoch 1/3 step 190/250 loss 0.0654 1.737s/step elapsed 311s eta_epoch 98s
+[08:17:16] epoch 1/3 step 200/250 loss 0.0428 1.564s/step elapsed 326s eta_epoch 82s
+[08:17:31] epoch 1/3 step 210/250 loss 0.0658 1.555s/step elapsed 342s eta_epoch 65s
+[08:17:47] epoch 1/3 step 220/250 loss 0.0477 1.596s/step elapsed 358s eta_epoch 49s
+[08:18:03] epoch 1/3 step 230/250 loss 0.0692 1.592s/step elapsed 374s eta_epoch 32s
+[08:18:20] epoch 1/3 step 240/250 loss 0.0645 1.648s/step elapsed 390s eta_epoch 16s
+[08:18:36] epoch 1/3 step 250/250 loss 0.0379 1.620s/step elapsed 406s eta_epoch 0s
+[08:18:37] EPOCH_DONE {"epoch": 1, "steps": 250, "train_loss_mean": 0.1233, "train_sec": 406.4, "sec_per_step": 1.6255, "samples_per_sec": 9.84, "tokens_per_sec": 1045.2, "gpu_util_mean_pct": {"gpu0": 24.6, "gpu1": 21.4, "gpu2": 22.3, "gpu3": 29.7}, "gpu_util_samples": 407, "smi_mem_used_max_mib": {"gpu0": 12530, "gpu1": 10468, "gpu2": 10468, "gpu3": 19748}, "mem": [{"gpu": 0, "peak_alloc_gb": 11.72, "peak_reserved_gb": 11.91}, {"gpu": 1, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 2, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 3, "peak_alloc_gb": 17.52, "peak_reserved_gb": 18.96}]}
+[08:18:54] epoch 2/3 step 10/250 loss 0.0495 1.686s/step elapsed 17s eta_epoch 405s
+[08:19:09] epoch 2/3 step 20/250 loss 0.0317 1.537s/step elapsed 32s eta_epoch 371s
+[08:19:25] epoch 2/3 step 30/250 loss 0.0399 1.553s/step elapsed 48s eta_epoch 350s
+[08:19:40] epoch 2/3 step 40/250 loss 0.0393 1.520s/step elapsed 63s eta_epoch 331s
+[08:19:55] epoch 2/3 step 50/250 loss 0.0321 1.496s/step elapsed 78s eta_epoch 312s
+[08:20:10] epoch 2/3 step 60/250 loss 0.0376 1.542s/step elapsed 93s eta_epoch 296s
+[08:20:26] epoch 2/3 step 70/250 loss 0.0257 1.545s/step elapsed 109s eta_epoch 280s
+[08:20:43] epoch 2/3 step 80/250 loss 0.0445 1.753s/step elapsed 126s eta_epoch 268s
+[08:21:00] epoch 2/3 step 90/250 loss 0.0382 1.643s/step elapsed 143s eta_epoch 254s
+[08:21:16] epoch 2/3 step 100/250 loss 0.0483 1.605s/step elapsed 159s eta_epoch 238s
+[08:21:32] epoch 2/3 step 110/250 loss 0.0497 1.581s/step elapsed 175s eta_epoch 222s
+[08:21:47] epoch 2/3 step 120/250 loss 0.0289 1.506s/step elapsed 190s eta_epoch 205s
+[08:22:03] epoch 2/3 step 130/250 loss 0.0390 1.651s/step elapsed 206s eta_epoch 190s
+[08:22:19] epoch 2/3 step 140/250 loss 0.0462 1.560s/step elapsed 222s eta_epoch 174s
+[08:22:35] epoch 2/3 step 150/250 loss 0.0341 1.595s/step elapsed 238s eta_epoch 158s
+[08:22:52] epoch 2/3 step 160/250 loss 0.0387 1.694s/step elapsed 255s eta_epoch 143s
+[08:23:08] epoch 2/3 step 170/250 loss 0.0493 1.597s/step elapsed 271s eta_epoch 127s
+[08:23:26] epoch 2/3 step 180/250 loss 0.0429 1.861s/step elapsed 289s eta_epoch 112s
+[08:23:43] epoch 2/3 step 190/250 loss 0.0443 1.621s/step elapsed 305s eta_epoch 96s
+[08:23:59] epoch 2/3 step 200/250 loss 0.0370 1.678s/step elapsed 322s eta_epoch 81s
+[08:24:17] epoch 2/3 step 210/250 loss 0.0339 1.723s/step elapsed 339s eta_epoch 65s
+[08:24:33] epoch 2/3 step 220/250 loss 0.0344 1.690s/step elapsed 356s eta_epoch 49s
+[08:24:49] epoch 2/3 step 230/250 loss 0.0357 1.604s/step elapsed 372s eta_epoch 32s
+[08:25:06] epoch 2/3 step 240/250 loss 0.0306 1.637s/step elapsed 389s eta_epoch 16s
+[08:25:22] epoch 2/3 step 250/250 loss 0.0233 1.629s/step elapsed 405s eta_epoch 0s
+[08:25:23] EPOCH_DONE {"epoch": 2, "steps": 250, "train_loss_mean": 0.0382, "train_sec": 405.1, "sec_per_step": 1.6202, "samples_per_sec": 9.88, "tokens_per_sec": 1048.6, "gpu_util_mean_pct": {"gpu0": 24.8, "gpu1": 24.7, "gpu2": 25.2, "gpu3": 30.0}, "gpu_util_samples": 405, "smi_mem_used_max_mib": {"gpu0": 12530, "gpu1": 10468, "gpu2": 10468, "gpu3": 19748}, "mem": [{"gpu": 0, "peak_alloc_gb": 11.72, "peak_reserved_gb": 11.91}, {"gpu": 1, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 2, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 3, "peak_alloc_gb": 17.52, "peak_reserved_gb": 18.96}]}
+[08:25:38] epoch 3/3 step 10/250 loss 0.0325 1.552s/step elapsed 16s eta_epoch 372s
+[08:25:54] epoch 3/3 step 20/250 loss 0.0239 1.617s/step elapsed 32s eta_epoch 364s
+[08:26:10] epoch 3/3 step 30/250 loss 0.0138 1.589s/step elapsed 48s eta_epoch 349s
+[08:26:28] epoch 3/3 step 40/250 loss 0.0283 1.777s/step elapsed 65s eta_epoch 343s
+[08:26:45] epoch 3/3 step 50/250 loss 0.0238 1.726s/step elapsed 83s eta_epoch 330s
+[08:27:01] epoch 3/3 step 60/250 loss 0.0205 1.538s/step elapsed 98s eta_epoch 310s
+[08:27:16] epoch 3/3 step 70/250 loss 0.0199 1.558s/step elapsed 114s eta_epoch 292s
+[08:27:32] epoch 3/3 step 80/250 loss 0.0319 1.548s/step elapsed 129s eta_epoch 274s
+[08:27:48] epoch 3/3 step 90/250 loss 0.0310 1.608s/step elapsed 145s eta_epoch 258s
+[08:28:04] epoch 3/3 step 100/250 loss 0.0276 1.673s/step elapsed 162s eta_epoch 243s
+[08:28:19] epoch 3/3 step 110/250 loss 0.0168 1.486s/step elapsed 177s eta_epoch 225s
+[08:28:35] epoch 3/3 step 120/250 loss 0.0190 1.540s/step elapsed 192s eta_epoch 208s
+[08:28:50] epoch 3/3 step 130/250 loss 0.0217 1.559s/step elapsed 208s eta_epoch 192s
+[08:29:07] epoch 3/3 step 140/250 loss 0.0276 1.644s/step elapsed 224s eta_epoch 176s
+[08:29:23] epoch 3/3 step 150/250 loss 0.0278 1.652s/step elapsed 241s eta_epoch 160s
+[08:29:39] epoch 3/3 step 160/250 loss 0.0212 1.607s/step elapsed 257s eta_epoch 144s
+[08:29:55] epoch 3/3 step 170/250 loss 0.0322 1.564s/step elapsed 272s eta_epoch 128s
+[08:30:11] epoch 3/3 step 180/250 loss 0.0247 1.648s/step elapsed 289s eta_epoch 112s
+[08:30:27] epoch 3/3 step 190/250 loss 0.0226 1.570s/step elapsed 305s eta_epoch 96s
+[08:30:43] epoch 3/3 step 200/250 loss 0.0223 1.575s/step elapsed 320s eta_epoch 80s
+[08:30:59] epoch 3/3 step 210/250 loss 0.0268 1.662s/step elapsed 337s eta_epoch 64s
+[08:31:16] epoch 3/3 step 220/250 loss 0.0308 1.672s/step elapsed 354s eta_epoch 48s
+[08:31:33] epoch 3/3 step 230/250 loss 0.0344 1.678s/step elapsed 370s eta_epoch 32s
+[08:31:48] epoch 3/3 step 240/250 loss 0.0260 1.479s/step elapsed 385s eta_epoch 16s
+[08:32:03] epoch 3/3 step 250/250 loss 0.0242 1.483s/step elapsed 400s eta_epoch 0s
+[08:32:03] EPOCH_DONE {"epoch": 3, "steps": 250, "train_loss_mean": 0.0252, "train_sec": 400.0, "sec_per_step": 1.6002, "samples_per_sec": 10.0, "tokens_per_sec": 1061.8, "gpu_util_mean_pct": {"gpu0": 25.2, "gpu1": 19.4, "gpu2": 21.8, "gpu3": 31.4}, "gpu_util_samples": 400, "smi_mem_used_max_mib": {"gpu0": 12530, "gpu1": 10468, "gpu2": 10468, "gpu3": 19748}, "mem": [{"gpu": 0, "peak_alloc_gb": 11.72, "peak_reserved_gb": 11.91}, {"gpu": 1, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 2, "peak_alloc_gb": 9.7, "peak_reserved_gb": 9.9}, {"gpu": 3, "peak_alloc_gb": 17.52, "peak_reserved_gb": 18.96}]}
+[08:32:03] TRAIN_DONE

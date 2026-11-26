@@ -1,0 +1,15 @@
+{
+ "model": "Qwen/Qwen3-8B",
+ "model_path": "/workspace/hf/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218",
+ "model_gb": 16.4,
+ "dataset": "b-mc2/sql-create-context",
+ "dataset_total": 78577,
+ "seed": 0,
+ "train": 4000,
+ "test": 200,
+ "columns": [
+  "answer",
+  "question",
+  "context"
+ ]
+}

@@ -1,0 +1,9 @@
+{
+ "role": "dp2",
+ "vllm": "0.34.0",
+ "torch": "2.14.0+cu130",
+ "install_vllm_s": 88.4,
+ "download_model_s": 44.9,
+ "install_nginx_udocker_s": 30.9,
+ "model_bytes": 8061178820
+}

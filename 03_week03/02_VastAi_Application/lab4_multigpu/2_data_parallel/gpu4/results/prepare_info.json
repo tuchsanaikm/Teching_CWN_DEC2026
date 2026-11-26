@@ -1,0 +1,32 @@
+{
+  "model": "Qwen/Qwen3-8B",
+  "model_dir": "/workspace/lab4_dp4/models/Qwen3-8B",
+  "model_gb": 16.4,
+  "model_files": [
+    "LICENSE",
+    "README.md",
+    "config.json",
+    "generation_config.json",
+    "merges.txt",
+    "model-00001-of-00005.safetensors",
+    "model-00002-of-00005.safetensors",
+    "model-00003-of-00005.safetensors",
+    "model-00004-of-00005.safetensors",
+    "model-00005-of-00005.safetensors",
+    "model.safetensors.index.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "vocab.json"
+  ],
+  "dataset": "b-mc2/sql-create-context",
+  "columns": [
+    "answer",
+    "question",
+    "context"
+  ],
+  "total": 78577,
+  "seed": 0,
+  "train": 4000,
+  "test": 200,
+  "train_test_overlap": 0
+}

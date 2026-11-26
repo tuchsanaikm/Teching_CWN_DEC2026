@@ -1,0 +1,248 @@
+{
+ "config": {
+  "nodes": 2,
+  "gpus_per_node": 2,
+  "batch_per_node": 8,
+  "batch_total": 16,
+  "epochs": 2,
+  "steps_per_epoch": 250,
+  "steps": 500,
+  "train_examples_processed": 8000
+ },
+ "nodes": {
+  "node1": {
+   "compute_s_mean": 0.6938238,
+   "compute_s_median": 0.67985,
+   "comm_wait_s_mean": 2.5790586,
+   "comm_wait_s_median": 1.90015,
+   "comm_wait_s_p95": 4.771,
+   "comm_wait_s_max": 67.5951,
+   "step_s_mean": 3.2728824000000003,
+   "comm_wait_share": 0.7880083317384089,
+   "grad_bytes_up_per_step": 7667712,
+   "grad_bytes_down_per_step": 15335424,
+   "replayed_steps_after_restart": 12,
+   "torch_peak_alloc_mib": [
+    13907,
+    14212
+   ],
+   "gpu": {
+    "gpu0": {
+     "util_mean_pct": 10.64,
+     "util_max_pct": 100.0,
+     "util_nonzero_share": 0.164,
+     "mem_used_max_mib": 14312.0,
+     "samples": 1686
+    },
+    "gpu1": {
+     "util_mean_pct": 10.78,
+     "util_max_pct": 100.0,
+     "util_nonzero_share": 0.203,
+     "mem_used_max_mib": 14694.0,
+     "samples": 1686
+    }
+   }
+  },
+  "node2": {
+   "compute_s_mean": 0.7099812,
+   "compute_s_median": 0.6970000000000001,
+   "comm_wait_s_mean": 2.547906,
+   "comm_wait_s_median": 1.8274,
+   "comm_wait_s_p95": 4.5137,
+   "comm_wait_s_max": 67.9568,
+   "step_s_mean": 3.2578872,
+   "comm_wait_share": 0.7820731178169704,
+   "grad_bytes_up_per_step": 7667712,
+   "grad_bytes_down_per_step": 15335424,
+   "replayed_steps_after_restart": 18,
+   "torch_peak_alloc_mib": [
+    13907,
+    14224
+   ],
+   "gpu": {
+    "gpu0": {
+     "util_mean_pct": 10.78,
+     "util_max_pct": 100.0,
+     "util_nonzero_share": 0.166,
+     "mem_used_max_mib": 14332.0,
+     "samples": 1703
+    },
+    "gpu1": {
+     "util_mean_pct": 9.4,
+     "util_max_pct": 100.0,
+     "util_nonzero_share": 0.179,
+     "mem_used_max_mib": 14696.0,
+     "samples": 1703
+    }
+   }
+  }
+ },
+ "cluster": {
+  "s_per_step_mean": 3.2653848,
+  "s_per_step_median": 2.60825,
+  "s_per_step_p10": 1.8508,
+  "s_per_step_p90": 4.31975,
+  "compute_s_mean": 0.7019025,
+  "comm_wait_s_mean": 2.5634823,
+  "comm_wait_share": 0.7850475386545562,
+  "examples_per_s": 4.89988193734472,
+  "train_time_s_sum_of_steps": 1632.6924,
+  "crosscheck_s_per_step_coordinator_clock": 3.134380282050887,
+  "wall_s_first_to_last_step_incl_outage": 1963.1289999485016,
+  "pauses_over_60s": [
+   336.8,
+   68.5
+  ],
+  "per_epoch": {
+   "1": {
+    "s_per_step_mean": 3.7507082,
+    "comm_wait_share": 0.811739606936098,
+    "examples_per_s": 4.265861044588859,
+    "train_loss_mean": 0.12106817026203498,
+    "train_loss_last20_mean": 0.058786500623682514
+   },
+   "2": {
+    "s_per_step_mean": 2.7800614,
+    "comm_wait_share": 0.7490360464700527,
+    "examples_per_s": 5.7552685706869635,
+    "train_loss_mean": 0.03841121854935773,
+    "train_loss_last20_mean": 0.035416061349678785
+   }
+  },
+  "train_loss_first_step": 1.6610022187232971,
+  "train_loss_last_step": 0.02573545277118683,
+  "weight_check": [
+   {
+    "type": "check",
+    "epoch": 1,
+    "identical": true,
+    "max_abs_diff": 0.0,
+    "sha256": {
+     "0": "d46ff6d242dfbcd16d1307c8e0b96b1c00d345bbd0f7a9335cb53cb896bf7cef",
+     "1": "d46ff6d242dfbcd16d1307c8e0b96b1c00d345bbd0f7a9335cb53cb896bf7cef"
+    },
+    "n_params": 3833856,
+    "l2_norm": 15.88872241973877,
+    "ts": 1795347924.115
+   },
+   {
+    "type": "check",
+    "epoch": 2,
+    "identical": true,
+    "max_abs_diff": 0.0,
+    "sha256": {
+     "0": "e58e01edbd4663b5cfaec20570e6e7fe3fd1b8b388f344c97c7214b35f93faf4",
+     "1": "e58e01edbd4663b5cfaec20570e6e7fe3fd1b8b388f344c97c7214b35f93faf4"
+    },
+    "n_params": 3833856,
+    "l2_norm": 16.886857986450195,
+    "ts": 1795348635.64
+   }
+  ]
+ },
+ "eval": {
+  "base": {
+   "n": 200,
+   "exact_match": 0.015,
+   "exact_match_count": 3,
+   "exact_match_case_insensitive": 0.015,
+   "test_loss": 1.9154050461339533,
+   "evaluated_on": "node1"
+  },
+  "epoch1": {
+   "n": 200,
+   "exact_match": 0.695,
+   "exact_match_count": 139,
+   "exact_match_case_insensitive": 0.725,
+   "test_loss": 0.06036358673859103,
+   "evaluated_on": "node2"
+  },
+  "epoch2": {
+   "n": 200,
+   "exact_match": 0.74,
+   "exact_match_count": 148,
+   "exact_match_case_insensitive": 0.76,
+   "test_loss": 0.0544266776461897,
+   "evaluated_on": "node1"
+  }
+ },
+ "cost": {
+  "usd_per_hour": {
+   "vapp-lab5-mp-1": 0.39555555555555555,
+   "vapp-lab5-mp-2": 0.5102222222222221
+  },
+  "usd_per_hour_both": 0.9057777777777777,
+  "usd_per_1000_examples": 0.0513491838148148,
+  "usd_per_1000_examples_by_epoch": {
+   "1": 0.05898104407098765,
+   "2": 0.04371732355864197
+  },
+  "usd_training_time_only": 0.4107934705185184,
+  "note": "hourly price (GPU + disk) of both machines / examples per second; internet traffic and idle/setup time are not included here"
+ },
+ "billing_actual": {
+  "fetched_at": 1795349506.1770294,
+  "source": "vastai show invoices-v1 --charges (after destroy)",
+  "total_usd": 1.838,
+  "instances": [
+   {
+    "instance_id": "<id>",
+    "label": "vapp-lab5-mp-1",
+    "amount_usd": 0.801,
+    "items": [
+     {
+      "type": "gpu",
+      "amount_usd": 0.631,
+      "description": "1.690 hours at $0.373/hour"
+     },
+     {
+      "type": "disk",
+      "amount_usd": 0.041,
+      "description": "1.828 hours at $0.022/hour"
+     },
+     {
+      "type": "bwd",
+      "amount_usd": 0.083,
+      "description": "21.1 GB Downloaded at $0.004/GB"
+     },
+     {
+      "type": "bwu",
+      "amount_usd": 0.046,
+      "description": "11.8 GB Uploaded at $0.004/GB"
+     }
+    ],
+    "age_s": 6633,
+    "age_hours": 1.843
+   },
+   {
+    "instance_id": "<id>",
+    "label": "vapp-lab5-mp-2",
+    "amount_usd": 1.037,
+    "items": [
+     {
+      "type": "gpu",
+      "amount_usd": 0.903,
+      "description": "1.850 hours at $0.488/hour"
+     },
+     {
+      "type": "disk",
+      "amount_usd": 0.042,
+      "description": "1.872 hours at $0.022/hour"
+     },
+     {
+      "type": "bwd",
+      "amount_usd": 0.068,
+      "description": "26.0 GB Downloaded at $0.003/GB"
+     },
+     {
+      "type": "bwu",
+      "amount_usd": 0.024,
+      "description": "6.2 GB Uploaded at $0.004/GB"
+     }
+    ],
+    "age_s": 6632,
+    "age_hours": 1.842
+   }
+  ]
+ }
+}

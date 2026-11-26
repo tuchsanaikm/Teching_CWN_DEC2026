@@ -1,0 +1,106 @@
+{
+  "model": "Qwen3-8B",
+  "dtype": "bfloat16",
+  "gradient_checkpointing": false,
+  "thinking": false,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ]
+  },
+  "lr": 0.0002,
+  "lr_schedule": "constant",
+  "optimizer": "AdamW",
+  "seed": 0,
+  "max_len": 256,
+  "n_train": 4000,
+  "n_cut_to_max_len": 1,
+  "world_size": 2,
+  "bs_per_gpu": 4,
+  "bs_total": 8,
+  "steps_per_epoch": 500,
+  "epochs": 3,
+  "sec_per_step": 0.4193,
+  "samples_per_sec": 19.078,
+  "wall_sec_this_run": 599.6,
+  "epochs_detail": [
+    {
+      "epoch": 1,
+      "steps": 500,
+      "train_loss_mean": 0.08848,
+      "sec_per_step": 0.4178,
+      "samples_per_sec": 19.148,
+      "epoch_wall_sec_this_run": 173.8,
+      "gpu_util_mean": [
+        97.1,
+        98.6
+      ],
+      "nvidia_smi_mem_max_mib": [
+        22445.0,
+        22585.0
+      ],
+      "torch_peak_alloc_mib": [
+        21631,
+        21749
+      ],
+      "torch_peak_reserved_mib": [
+        21990,
+        22130
+      ],
+      "replicas_identical": true
+    },
+    {
+      "epoch": 2,
+      "steps": 500,
+      "train_loss_mean": 0.03218,
+      "sec_per_step": 0.4184,
+      "samples_per_sec": 19.12,
+      "epoch_wall_sec_this_run": 211.9,
+      "gpu_util_mean": [
+        97.9,
+        98.6
+      ],
+      "nvidia_smi_mem_max_mib": [
+        22585.0,
+        24145.0
+      ],
+      "torch_peak_alloc_mib": [
+        21749,
+        23253
+      ],
+      "torch_peak_reserved_mib": [
+        22130,
+        23690
+      ],
+      "replicas_identical": true
+    },
+    {
+      "epoch": 3,
+      "steps": 500,
+      "train_loss_mean": 0.02053,
+      "sec_per_step": 0.4218,
+      "samples_per_sec": 18.966,
+      "epoch_wall_sec_this_run": 213.2,
+      "gpu_util_mean": [
+        98.3,
+        98.6
+      ],
+      "nvidia_smi_mem_max_mib": [
+        24145.0,
+        24147.0
+      ],
+      "torch_peak_alloc_mib": [
+        23253,
+        23253
+      ],
+      "torch_peak_reserved_mib": [
+        23690,
+        23692
+      ],
+      "replicas_identical": true
+    }
+  ]
+}

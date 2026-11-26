@@ -1,0 +1,41 @@
+{
+ "url": "http://127.0.0.1:8080",
+ "model": "shop-bot",
+ "key_file": "/workspace/lab7/runtime/api_key",
+ "replicas": [
+  {
+   "name": "n1-gpu0+1",
+   "metrics": "http://127.0.0.1:8001/metrics"
+  },
+  {
+   "name": "n2-gpu0+1",
+   "metrics": "http://181.173.127.113:27860/metrics"
+  }
+ ],
+ "gpu_sources": [
+  {
+   "machine": "n1"
+  },
+  {
+   "machine": "n2",
+   "ssh": [
+    "ssh",
+    "-i",
+    "/workspace/lab7/runtime/gpumon_key",
+    "-p",
+    "27570",
+    "-o",
+    "StrictHostKeyChecking=no",
+    "-o",
+    "UserKnownHostsFile=/dev/null",
+    "-o",
+    "LogLevel=ERROR",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ServerAliveInterval=5",
+    "root@181.173.127.113"
+   ]
+  }
+ ]
+}

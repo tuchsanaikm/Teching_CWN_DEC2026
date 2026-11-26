@@ -1,0 +1,11 @@
+08:00:32 STAGE 1/5 eval base
+08:01:29 STAGE 2/5 batch probe
+08:03:48 STAGE 3/5 train batch_per_gpu=4
+08:05:51 STAGE 2/5 batch probe
+08:08:07 STAGE 3/5 train batch_per_gpu=4
+08:10:48 STAGE 2/5 batch probe
+08:13:05 STAGE 3/5 train batch_per_gpu=4
+08:19:04 STAGE 4/5 eval epochs
+08:20:12 STAGE 5/5 summary
+08:20:12 STAGE done
+08:20:12 ALL_DONE

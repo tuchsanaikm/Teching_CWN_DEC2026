@@ -1,0 +1,189 @@
+{
+ "load_comparison": {
+  "1": {
+   "question": "กระทะเคลือบแบบไหนใช้กับเตาแม่เหล็กไฟฟ้าได้คะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+   "is_long": true,
+   "replica": "unknown",
+   "ttft_s": 0.0003,
+   "total_s": 0.0003,
+   "n_tokens": 0,
+   "speed_tps": 0.0,
+   "events": []
+  },
+  "64": {
+   "question": "กระทะเคลือบแบบไหนใช้กับเตาแม่เหล็กไฟฟ้าได้คะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+   "is_long": true,
+   "replica": "unknown",
+   "ttft_s": 0.0215,
+   "total_s": 0.0215,
+   "n_tokens": 0,
+   "speed_tps": 0.0,
+   "events": []
+  },
+  "256": {
+   "question": "กระทะเคลือบแบบไหนใช้กับเตาแม่เหล็กไฟฟ้าได้คะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+   "is_long": true,
+   "replica": "unknown",
+   "ttft_s": 0.0971,
+   "total_s": 0.0971,
+   "n_tokens": 0,
+   "speed_tps": 0.0,
+   "events": []
+  },
+  "512": {
+   "question": "กระทะเคลือบแบบไหนใช้กับเตาแม่เหล็กไฟฟ้าได้คะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+   "is_long": true,
+   "replica": "unknown",
+   "ttft_s": 0.1921,
+   "total_s": 0.1921,
+   "n_tokens": 0,
+   "speed_tps": 0.0,
+   "events": []
+  }
+ },
+ "four_users_sequence": {
+  "total_concurrent_users": 64,
+  "users": [
+   [
+    {
+     "question": "ร้านเปิดกี่โมงถึงกี่โมงคะ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0286,
+     "total_s": 0.0286,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.0001
+    },
+    {
+     "question": "กระทะเคลือบแบบไหนใช้กับเตาแม่เหล็กไฟฟ้าได้คะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+     "is_long": true,
+     "replica": "unknown",
+     "ttft_s": 0.0092,
+     "total_s": 0.0092,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.4375
+    },
+    {
+     "question": "จ่ายเงินปลายทางได้ไหมคะ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.008,
+     "total_s": 0.008,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.8541
+    }
+   ],
+   [
+    {
+     "question": "หม้อหุงข้าวสำหรับ 2 คน ควรใช้ขนาดกี่ลิตรครับ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0285,
+     "total_s": 0.0285,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.0003
+    },
+    {
+     "question": "สินค้าชำรุดตอนขนส่ง ต้องทำอย่างไรครับ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+     "is_long": true,
+     "replica": "unknown",
+     "ttft_s": 0.0091,
+     "total_s": 0.0091,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.4376
+    },
+    {
+     "question": "ขอใบกำกับภาษีเต็มรูปได้ไหมคะ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0079,
+     "total_s": 0.0079,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.8542
+    }
+   ],
+   [
+    {
+     "question": "ไม้ถูพื้นแบบไหนเหมาะกับพื้นไม้ลามิเนตคะ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0284,
+     "total_s": 0.0284,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.0005
+    },
+    {
+     "question": "ที่นอนยางพารากับที่นอนสปริงต่างกันอย่างไรคะ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+     "is_long": true,
+     "replica": "unknown",
+     "ttft_s": 0.009,
+     "total_s": 0.009,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.4377
+    },
+    {
+     "question": "สั่งวันนี้ของจะถึงกี่วันคะ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0079,
+     "total_s": 0.0079,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.8542
+    }
+   ],
+   [
+    {
+     "question": "เครื่องดูดฝุ่นไร้สายใช้งานได้นานกี่นาทีต่อการชาร์จครับ",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0283,
+     "total_s": 0.0283,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.0006
+    },
+    {
+     "question": "ปลั๊กพ่วงแบบไหนปลอดภัย มี มอก. ไหมครับ ช่วยอธิบายแบบละเอียดเป็นข้อ ๆ ด้วยนะคะ",
+     "is_long": true,
+     "replica": "unknown",
+     "ttft_s": 0.009,
+     "total_s": 0.009,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.4378
+    },
+    {
+     "question": "มีบริการส่งถึงบ้านไหมครับ ค่าส่งเท่าไร",
+     "is_long": false,
+     "replica": "unknown",
+     "ttft_s": 0.0079,
+     "total_s": 0.0079,
+     "n_tokens": 0,
+     "speed_tps": 0.0,
+     "events": [],
+     "start_offset_s": 0.8543
+    }
+   ]
+  ]
+ }
+}

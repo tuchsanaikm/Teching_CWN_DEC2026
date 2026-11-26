@@ -1,0 +1,69 @@
+{
+ "fetched_at": 1795349077.1849284,
+ "instances": [
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-mp-1",
+   "actual_status": "running",
+   "gpu_name": "RTX 3090",
+   "num_gpus": 2,
+   "dph_total": 0.39555555555555555,
+   "dph_base": 0.37333333333333335,
+   "start_date": 1795342443.7810178,
+   "duration": 6633.352748394012,
+   "geolocation": "France, FR",
+   "inet_up_billed": 12331253.76,
+   "inet_down_billed": 22145925.12,
+   "inet_up_cost": 0.00390625,
+   "inet_down_cost": 0.00390625,
+   "storage_cost": 0.2666666666666666,
+   "storage_total_cost": 0.022222222222222216,
+   "disk_space": 60.0,
+   "machine_id": 48973,
+   "host_id": 163253,
+   "instance": {
+    "discountTotalHour": 0,
+    "discountedTotalPerHour": 0,
+    "diskHour": 0.022222222222222216,
+    "gpuCostPerHour": 0.37333333333333335,
+    "slaPremiumPerHour": 0.0,
+    "totalHour": 0.39555555555555555
+   },
+   "uptime_mins": 87.90366900761923,
+   "is_bid": false,
+   "age_s_at_destroy": 6633.403910636902
+  },
+  {
+   "id": "<id>",
+   "label": "vapp-lab5-mp-2",
+   "actual_status": "running",
+   "gpu_name": "RTX 3090",
+   "num_gpus": 2,
+   "dph_total": 0.5102222222222221,
+   "dph_base": 0.48799999999999993,
+   "start_date": 1795342445.391743,
+   "duration": 6631.742040395737,
+   "geolocation": "Czechia, CZ",
+   "inet_up_billed": 6480199.68,
+   "inet_down_billed": 27262976.0,
+   "inet_up_cost": 0.00390625,
+   "inet_down_cost": 0.0026041666666666665,
+   "storage_cost": 0.2666666666666666,
+   "storage_total_cost": 0.022222222222222216,
+   "disk_space": 60.0,
+   "machine_id": 108411,
+   "host_id": 151822,
+   "instance": {
+    "discountTotalHour": 0,
+    "discountedTotalPerHour": 0,
+    "diskHour": 0.022222222222222216,
+    "gpuCostPerHour": 0.48799999999999993,
+    "slaPremiumPerHour": 0.0,
+    "totalHour": 0.5102222222222221
+   },
+   "uptime_mins": 169.2895953297615,
+   "is_bid": false,
+   "age_s_at_destroy": 6631.793185472488
+  }
+ ]
+}

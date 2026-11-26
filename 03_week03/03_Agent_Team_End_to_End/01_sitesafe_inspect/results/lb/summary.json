@@ -1,0 +1,88 @@
+{
+  "machine": "2× RTX 4090 (Poland, PL, 48 vCPU)",
+  "instance_meta": {
+    "instance_id": 62695848,
+    "offer_id": 61536152,
+    "label": "e2e-sitesafe-lb",
+    "gpu_name": "RTX 4090",
+    "num_gpus": 2,
+    "vcpus": 48.0,
+    "ram_gb": 125.6,
+    "disk_gb": 60.0,
+    "geolocation": "Poland, PL",
+    "inet_down_mbps": 1488.3,
+    "inet_up_mbps": 993.5,
+    "inet_down_cost_per_gb": 0.0026041666666666665,
+    "dph_total": 0.7422222222222223,
+    "public_ip": "1.193.139.28",
+    "ssh_port": 35326,
+    "api_port_8080": 35101,
+    "created_utc": "2026-11-26T13:08:14Z",
+    "status": "destroyed",
+    "ssh_proxy_host": "ssh5.vast.ai",
+    "ssh_proxy_port": 20656,
+    "destroyed_utc": "2026-11-26T14:47:00Z"
+  },
+  "designs": [
+    {
+      "id": "base",
+      "label": "1 GPU · 1 Process · Single",
+      "capacity": 11,
+      "max_rps": 54.73,
+      "p95_at_cap_ms": 447.5,
+      "gpu_util_pct": "8% / 0%",
+      "batch_mean": 1.0,
+      "model_ms_mean": 19.97
+    },
+    {
+      "id": "batch",
+      "label": "1 GPU · 1 Process · Micro-batch",
+      "capacity": 32,
+      "max_rps": 121.27,
+      "p95_at_cap_ms": 481.3,
+      "gpu_util_pct": "19% / 0%",
+      "batch_mean": 16.0,
+      "model_ms_mean": 123.48
+    },
+    {
+      "id": "multi",
+      "label": "1 GPU · 4 Processes · Micro-batch",
+      "capacity": 64,
+      "max_rps": 288.55,
+      "p95_at_cap_ms": 412.8,
+      "gpu_util_pct": "45% / 0%",
+      "batch_mean": 7.83,
+      "model_ms_mean": 103.27
+    },
+    {
+      "id": "gpu2_lc",
+      "label": "2× RTX 4090 · 8 Processes · NGINX least_conn",
+      "capacity": 88,
+      "max_rps": 444.55,
+      "p95_at_cap_ms": 457.4,
+      "gpu_util_pct": "54% / 49%",
+      "batch_mean": 5.5,
+      "model_ms_mean": 94.47
+    }
+  ],
+  "slow_gpu": {
+    "rr_capacity": 43,
+    "lc_capacity": 76,
+    "rr_rps": 259.09,
+    "lc_rps": 421.82,
+    "rr_gpu0_pct": 50.0,
+    "rr_gpu1_pct": 50.0,
+    "lc_gpu0_pct": 68.0,
+    "lc_gpu1_pct": 32.0
+  },
+  "failover": {
+    "users": 80,
+    "off_errors": 14098,
+    "off_error_pct": 67.175,
+    "off_after_errors": 13316,
+    "on_errors": 0,
+    "on_error_pct": 0.0,
+    "on_after_errors": 0,
+    "on_in_flight_errors": 0
+  }
+}

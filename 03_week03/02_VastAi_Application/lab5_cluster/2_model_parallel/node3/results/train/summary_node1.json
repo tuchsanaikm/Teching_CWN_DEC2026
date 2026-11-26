@@ -1,0 +1,99 @@
+{
+ "node": 1,
+ "epochs": [
+  {
+   "epoch": 1,
+   "node": 1,
+   "steps": 167,
+   "train_loss_mean": 0.15159,
+   "seconds": 878.3,
+   "compute_s": 129.0,
+   "comm_s": 744.9,
+   "lora_sha256": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a",
+   "all_nodes_equal": true,
+   "sha_all": {
+    "0": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a",
+    "1": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a",
+    "2": "9e3d99a48fef1bd544eea5023c4df6a9514072001eae810d457f3956b6121c4a"
+   }
+  },
+  {
+   "epoch": 2,
+   "node": 1,
+   "steps": 167,
+   "train_loss_mean": 0.04261,
+   "seconds": 972.2,
+   "compute_s": 128.5,
+   "comm_s": 839.1,
+   "lora_sha256": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063",
+   "all_nodes_equal": true,
+   "sha_all": {
+    "0": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063",
+    "1": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063",
+    "2": "59a22b41cc3e2e97a6d549c1f68e41ba80ac352aa323f05b995cdd51dbddc063"
+   }
+  }
+ ],
+ "vram": {
+  "gpu0": {
+   "max_allocated_gb": 13.58,
+   "max_reserved_gb": 13.65
+  },
+  "gpu1": {
+   "max_allocated_gb": 13.91,
+   "max_reserved_gb": 14.04
+  }
+ },
+ "info": {
+  "n_layers": 36,
+  "gpu0": "embed_tokens + layers 0-17",
+  "gpu1": "layers 18-35 + norm + lm_head",
+  "layer_device": {
+   "0": "cuda:0",
+   "1": "cuda:0",
+   "2": "cuda:0",
+   "3": "cuda:0",
+   "4": "cuda:0",
+   "5": "cuda:0",
+   "6": "cuda:0",
+   "7": "cuda:0",
+   "8": "cuda:0",
+   "9": "cuda:0",
+   "10": "cuda:0",
+   "11": "cuda:0",
+   "12": "cuda:0",
+   "13": "cuda:0",
+   "14": "cuda:0",
+   "15": "cuda:0",
+   "16": "cuda:0",
+   "17": "cuda:0",
+   "18": "cuda:1",
+   "19": "cuda:1",
+   "20": "cuda:1",
+   "21": "cuda:1",
+   "22": "cuda:1",
+   "23": "cuda:1",
+   "24": "cuda:1",
+   "25": "cuda:1",
+   "26": "cuda:1",
+   "27": "cuda:1",
+   "28": "cuda:1",
+   "29": "cuda:1",
+   "30": "cuda:1",
+   "31": "cuda:1",
+   "32": "cuda:1",
+   "33": "cuda:1",
+   "34": "cuda:1",
+   "35": "cuda:1"
+  }
+ },
+ "lora_params": 3833856,
+ "shard_size": 1334,
+ "steps_per_epoch": 167,
+ "train_start": 1795358391.7187626,
+ "train_end": 1795360242.191596,
+ "batch_per_node": 8,
+ "lr": 0.0002,
+ "seed": 0,
+ "max_len": 256
+}

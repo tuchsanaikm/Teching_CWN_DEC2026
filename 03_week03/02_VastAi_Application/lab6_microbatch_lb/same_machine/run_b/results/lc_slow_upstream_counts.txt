@@ -1,0 +1,9 @@
+16265 upstream=127.0.0.1:8101 status=200
+16219 upstream=127.0.0.1:8102 status=200
+15434 upstream=127.0.0.1:8103 status=200
+1 upstream=127.0.0.1:8103 status=502
+16940 upstream=127.0.0.1:8104 status=200
+6904 upstream=127.0.0.1:8201 status=200
+6918 upstream=127.0.0.1:8202 status=200
+6990 upstream=127.0.0.1:8203 status=200
+6918 upstream=127.0.0.1:8204 status=200

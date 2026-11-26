@@ -1,0 +1,59 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 6910.12it/s]
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+10:54:09 [rank 1] model loaded in 4s on NVIDIA GeForce RTX 3090; 144 LoRA tensors, 3833856 values, dtype torch.float32, base dtype torch.bfloat16
+10:54:10 [rank 1] 4000 train examples, token length max 256 mean 109.2, truncated to 256: 1; 250 steps/epoch, 500 steps to run
+10:54:15 [rank 1] start at step 0
+10:54:19 [rank 1] step 0/500 loss 1.9184 (avg 1.7098) width 133 compute 1.13s comm 2.20s peak 19096/19260 MB
+10:54:45 [rank 1] step 10/500 loss 0.3205 (avg 0.3012) width 129 compute 0.45s comm 2.22s peak 20782/21038 MB
+10:55:11 [rank 1] step 20/500 loss 0.0831 (avg 0.1357) width 171 compute 0.63s comm 2.13s peak 20782/21038 MB
+10:55:38 [rank 1] step 30/500 loss 0.0343 (avg 0.2350) width 108 compute 0.39s comm 2.31s peak 20782/21038 MB
+10:56:04 [rank 1] step 40/500 loss 0.0703 (avg 0.1014) width 123 compute 0.40s comm 2.31s peak 20782/21038 MB
+10:56:31 [rank 1] step 50/500 loss 0.0256 (avg 0.0899) width 153 compute 0.47s comm 2.07s peak 20782/21038 MB
+10:56:57 [rank 1] step 60/500 loss 0.2114 (avg 0.0925) width 98 compute 0.37s comm 2.27s peak 20782/21050 MB
+10:57:24 [rank 1] step 70/500 loss 0.0212 (avg 0.0653) width 128 compute 0.41s comm 2.18s peak 20782/21054 MB
+10:57:50 [rank 1] step 80/500 loss 0.1206 (avg 0.1550) width 128 compute 0.41s comm 2.27s peak 20782/21054 MB
+10:58:16 [rank 1] step 90/500 loss 0.0159 (avg 0.0679) width 105 compute 0.38s comm 2.34s peak 20782/21054 MB
+10:58:43 [rank 1] step 100/500 loss 0.0514 (avg 0.0928) width 114 compute 0.39s comm 2.22s peak 20782/21060 MB
+10:59:09 [rank 1] step 110/500 loss 0.0105 (avg 0.0374) width 130 compute 0.45s comm 2.16s peak 20782/21068 MB
+10:59:35 [rank 1] step 120/500 loss 0.0169 (avg 0.0194) width 122 compute 0.40s comm 2.19s peak 20782/21068 MB
+11:02:45 [rank 1] step 130/500 loss 0.0659 (avg 0.0469) width 154 compute 0.48s comm 2.72s peak 20782/21068 MB
+11:03:11 [rank 1] step 140/500 loss 0.0205 (avg 0.0402) width 127 compute 0.41s comm 2.30s peak 20782/21068 MB
+11:04:54 [rank 1] step 150/500 loss 0.0228 (avg 0.0560) width 142 compute 0.46s comm 40.46s peak 20782/21068 MB
+11:07:23 [rank 1] step 160/500 loss 0.1377 (avg 0.0711) width 112 compute 0.39s comm 40.14s peak 20782/21068 MB
+11:08:02 [rank 1] step 170/500 loss 0.0119 (avg 0.0554) width 108 compute 0.39s comm 2.24s peak 20782/21068 MB
+11:08:29 [rank 1] step 180/500 loss 0.0555 (avg 0.0644) width 116 compute 0.40s comm 2.35s peak 20782/21068 MB
+11:09:59 [rank 1] step 190/500 loss 0.2370 (avg 0.0744) width 131 compute 0.45s comm 2.35s peak 20782/21068 MB
+11:10:25 [rank 1] step 200/500 loss 0.0250 (avg 0.0290) width 118 compute 0.39s comm 2.36s peak 20782/21068 MB
+11:10:53 [rank 1] step 210/500 loss 0.1325 (avg 0.0681) width 132 compute 0.45s comm 2.25s peak 20782/21068 MB
+11:11:19 [rank 1] step 220/500 loss 0.0106 (avg 0.0941) width 109 compute 0.39s comm 2.25s peak 20782/21068 MB
+11:11:46 [rank 1] step 230/500 loss 0.0613 (avg 0.1064) width 135 compute 0.46s comm 2.15s peak 20782/21068 MB
+11:12:13 [rank 1] step 240/500 loss 0.0826 (avg 0.0494) width 141 compute 0.46s comm 2.32s peak 20782/21068 MB
+11:12:39 [rank 1] epoch 1 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:12:42 [rank 1] step 250/500 loss 0.0116 (avg 0.0266) width 121 compute 0.40s comm 1.92s peak 20782/21068 MB
+11:13:09 [rank 1] step 260/500 loss 0.0570 (avg 0.0300) width 149 compute 0.47s comm 2.12s peak 20782/21068 MB
+11:13:35 [rank 1] step 270/500 loss 0.0133 (avg 0.0149) width 124 compute 0.40s comm 2.19s peak 20782/21068 MB
+11:14:02 [rank 1] step 280/500 loss 0.0178 (avg 0.0189) width 108 compute 0.38s comm 2.51s peak 20782/21068 MB
+11:14:30 [rank 1] step 290/500 loss 0.0025 (avg 0.0273) width 123 compute 0.40s comm 2.35s peak 20782/21068 MB
+11:14:57 [rank 1] step 300/500 loss 0.0055 (avg 0.0448) width 120 compute 0.40s comm 2.32s peak 20782/21068 MB
+11:15:24 [rank 1] step 310/500 loss 0.0537 (avg 0.0313) width 143 compute 0.46s comm 2.36s peak 20782/21068 MB
+11:15:51 [rank 1] step 320/500 loss 0.0242 (avg 0.0484) width 121 compute 0.40s comm 2.42s peak 20782/21068 MB
+11:16:19 [rank 1] step 330/500 loss 0.0333 (avg 0.0255) width 105 compute 0.38s comm 2.51s peak 20782/21068 MB
+11:16:46 [rank 1] step 340/500 loss 0.1510 (avg 0.0744) width 121 compute 0.40s comm 2.31s peak 20782/21068 MB
+11:17:13 [rank 1] step 350/500 loss 0.3490 (avg 0.1545) width 123 compute 0.40s comm 2.31s peak 20782/21068 MB
+11:17:40 [rank 1] step 360/500 loss 0.0610 (avg 0.0372) width 164 compute 0.63s comm 1.98s peak 20782/21068 MB
+11:18:07 [rank 1] step 370/500 loss 0.0085 (avg 0.0326) width 123 compute 0.40s comm 2.24s peak 20782/21068 MB
+11:18:34 [rank 1] step 380/500 loss 0.0016 (avg 0.0241) width 151 compute 0.47s comm 2.39s peak 20782/21068 MB
+11:19:01 [rank 1] step 390/500 loss 0.0256 (avg 0.0443) width 137 compute 0.46s comm 2.33s peak 20782/21068 MB
+11:19:28 [rank 1] step 400/500 loss 0.0127 (avg 0.0555) width 112 compute 0.39s comm 2.31s peak 20782/21068 MB
+11:19:55 [rank 1] step 410/500 loss 0.0218 (avg 0.0216) width 135 compute 0.45s comm 2.29s peak 20782/21068 MB
+11:20:22 [rank 1] step 420/500 loss 0.0467 (avg 0.0265) width 157 compute 0.48s comm 2.19s peak 20782/21068 MB
+11:20:50 [rank 1] step 430/500 loss 0.0565 (avg 0.0418) width 119 compute 0.40s comm 2.36s peak 20782/21068 MB
+11:21:17 [rank 1] step 440/500 loss 0.0572 (avg 0.0210) width 122 compute 0.40s comm 2.26s peak 20782/21068 MB
+11:21:43 [rank 1] step 450/500 loss 0.0075 (avg 0.0124) width 131 compute 0.45s comm 2.21s peak 20782/21068 MB
+11:22:09 [rank 1] step 460/500 loss 0.0141 (avg 0.0234) width 110 compute 0.39s comm 2.25s peak 20782/21068 MB
+11:22:35 [rank 1] step 470/500 loss 0.0009 (avg 0.0296) width 122 compute 0.40s comm 2.42s peak 20782/21068 MB
+11:23:02 [rank 1] step 480/500 loss 0.0631 (avg 0.0271) width 135 compute 0.46s comm 2.24s peak 20782/21068 MB
+11:23:29 [rank 1] step 490/500 loss 0.1526 (avg 0.0666) width 152 compute 0.48s comm 2.23s peak 20782/21068 MB
+11:23:55 [rank 1] epoch 2 done: LoRA weights identical on all workers = True (max |diff| 0.0)
+11:23:55 [rank 1] finished

@@ -1,0 +1,139 @@
+{
+ "reply": {
+  "type": "init_ok",
+  "identical_init": true,
+  "init_hashes": {
+   "0": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "1": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "3": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "2": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2"
+  },
+  "resume_step": 0
+ },
+ "workers": {
+  "0": {
+   "type": "init",
+   "session": "train-1795344840",
+   "node": 1,
+   "n_params": 3833856,
+   "init_hash": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "checkpoints": [],
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "host": "dfe86563d04b",
+   "fixed": {
+    "model_id": "Qwen/Qwen3-8B",
+    "dtype": "bfloat16",
+    "enable_thinking": false,
+    "gradient_checkpointing": false,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_targets": [
+     "q_proj",
+     "v_proj"
+    ],
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "max_length": 256,
+    "epochs": 2,
+    "batch_per_gpu": 4,
+    "num_workers": 4
+   },
+   "lean_loss": true,
+   "tensors": 144,
+   "rank": 0
+  },
+  "1": {
+   "type": "init",
+   "session": "train-1795344840",
+   "node": 1,
+   "n_params": 3833856,
+   "init_hash": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "checkpoints": [],
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "host": "dfe86563d04b",
+   "fixed": {
+    "model_id": "Qwen/Qwen3-8B",
+    "dtype": "bfloat16",
+    "enable_thinking": false,
+    "gradient_checkpointing": false,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_targets": [
+     "q_proj",
+     "v_proj"
+    ],
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "max_length": 256,
+    "epochs": 2,
+    "batch_per_gpu": 4,
+    "num_workers": 4
+   },
+   "lean_loss": true,
+   "tensors": 144,
+   "rank": 1
+  },
+  "3": {
+   "type": "init",
+   "session": "train-1795344840",
+   "node": 2,
+   "n_params": 3833856,
+   "init_hash": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "checkpoints": [],
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "host": "7ef04a56e703",
+   "fixed": {
+    "model_id": "Qwen/Qwen3-8B",
+    "dtype": "bfloat16",
+    "enable_thinking": false,
+    "gradient_checkpointing": false,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_targets": [
+     "q_proj",
+     "v_proj"
+    ],
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "max_length": 256,
+    "epochs": 2,
+    "batch_per_gpu": 4,
+    "num_workers": 4
+   },
+   "lean_loss": true,
+   "tensors": 144,
+   "rank": 3
+  },
+  "2": {
+   "type": "init",
+   "session": "train-1795344840",
+   "node": 2,
+   "n_params": 3833856,
+   "init_hash": "52a9b275ba4afd915180214d80dc0f9b76802f48db1148663dab72e4f95ae9e2",
+   "checkpoints": [],
+   "gpu": "NVIDIA GeForce RTX 3090",
+   "host": "7ef04a56e703",
+   "fixed": {
+    "model_id": "Qwen/Qwen3-8B",
+    "dtype": "bfloat16",
+    "enable_thinking": false,
+    "gradient_checkpointing": false,
+    "lora_r": 8,
+    "lora_alpha": 16,
+    "lora_targets": [
+     "q_proj",
+     "v_proj"
+    ],
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "max_length": 256,
+    "epochs": 2,
+    "batch_per_gpu": 4,
+    "num_workers": 4
+   },
+   "lean_loss": true,
+   "tensors": 144,
+   "rank": 2
+  }
+ }
+}

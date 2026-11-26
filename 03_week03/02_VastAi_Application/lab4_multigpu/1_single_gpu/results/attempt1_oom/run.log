@@ -1,0 +1,139 @@
+[2026-11-22 07:41:24] STAGE 1/3 probe max batch
+[2026-11-22 07:41:26] probe batch=1 ...
+[2026-11-22 07:41:48] probe result {"batch": 1, "tokens": 256, "full_len": 325, "steps": 3, "model_vram_gb": 15.27, "status": "ok", "sec_per_step": 0.324, "losses": [0.1157, 0.0178, 0.0], "peak_allocated_gb": 17.24, "peak_reserved_gb": 17.26, "nvidia_smi_peak_gb": 17.59}
+[2026-11-22 07:41:48] probe batch=2 ...
+[2026-11-22 07:42:09] probe result {"batch": 2, "tokens": 256, "full_len": 325, "steps": 3, "model_vram_gb": 15.27, "status": "ok", "sec_per_step": 0.34, "losses": [0.0968, 0.0148, 0.0], "peak_allocated_gb": 19.15, "peak_reserved_gb": 19.17, "nvidia_smi_peak_gb": 19.51}
+[2026-11-22 07:42:09] probe batch=4 ...
+[2026-11-22 07:42:30] probe result {"batch": 4, "tokens": 256, "full_len": 325, "steps": 3, "model_vram_gb": 15.27, "status": "ok", "sec_per_step": 0.646, "losses": [0.0968, 0.0122, 0.0], "peak_allocated_gb": 22.98, "peak_reserved_gb": 23.04, "nvidia_smi_peak_gb": 23.38}
+[2026-11-22 07:42:30] probe batch=8 ...
+[2026-11-22 07:42:48] probe result {"batch": 8, "tokens": 256, "full_len": 325, "steps": 3, "model_vram_gb": 15.27, "status": "oom", "error": "CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacity of 23.80 GiB of which 37.31 MiB is free. Process 1512377 has 23.74 GiB memory in use. Of the allocated memory 23.40 GiB is a", "peak_allocated_gb": 23.4, "peak_reserved_gb": 23.44, "nvidia_smi_peak_gb": 23.65}
+[2026-11-22 07:42:48] probe finished: max batch = 4
+[2026-11-22 07:42:49] STAGE 2/3 eval base model
+[2026-11-22 07:42:54] eval tag=base adapter=None test=200
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  57%|█████▋    | 226/399 [00:00<00:00, 2220.37it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3031.26it/s]
+[eval] generated 16/200
+[eval] generated 32/200
+[eval] generated 48/200
+[eval] generated 64/200
+[eval] generated 80/200
+[eval] generated 96/200
+[eval] generated 112/200
+[eval] generated 128/200
+[eval] generated 144/200
+[eval] generated 160/200
+[eval] generated 176/200
+[eval] generated 192/200
+[eval] generated 200/200
+[2026-11-22 07:43:58] RESULT tag=base loss=1.7325 EM=0.0150 (3/200) EM_relaxed=0.5250 time=55.8s
+  gold: SELECT record FROM table_name_98 WHERE high_points = "ray allen (20)" 
+  pred: SELECT record FROM table_name_98 WHERE high_points = 'Ray Allen (20)'
+  gold: SELECT date FROM table_25428629_1 WHERE stadium = "Thuwunna stadium" 
+  pred: SELECT date FROM table_25428629_1 WHERE stadium = 'Thuwunna Stadium'
+  gold: SELECT DISTINCT T2.Model FROM CAR_NAMES AS T1 JOIN MODEL_LIST AS T2 ON T1.Model = T2.Model JOIN CAR_MAKERS AS T3 ON T2.Maker = T3.Id JOIN CARS_DATA AS T4 ON T1.MakeId = T4.Id WHERE T3.FullName = 'General Motors' OR T4.weight > 3500 
+  pred: SELECT DISTINCT Model FROM CAR_NAMES WHERE MakeId = (SELECT Id FROM CAR_MAKERS WHERE FullName = 'General Motors') OR Id IN (SELECT Id FROM CARS_DATA WHERE weight > '3500')
+[2026-11-22 07:43:59] STAGE 3/3 train 3 epochs (+ eval after each epoch)
+[2026-11-22 07:44:07] train=4000 test=200 batch=4 steps/epoch=1000 epochs=3 tokens mean=112.2 max=256 truncated=1
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  51%|█████     | 203/399 [00:00<00:00, 1958.04it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3223.64it/s]
+[2026-11-22 07:44:16] model loaded: 15.27 GB on cuda:0, trainable LoRA params=3,833,856
+[2026-11-22 07:44:20] epoch 1/3 step 10/1000 loss=1.0715 0.47s/step 8.6 samples/s util=57.6% vram=20.22GB train-ETA=23.2min
+[2026-11-22 07:44:25] epoch 1/3 step 20/1000 loss=0.2584 0.43s/step 9.4 samples/s util=97.5% vram=20.98GB train-ETA=21.2min
+[2026-11-22 07:44:29] epoch 1/3 step 30/1000 loss=0.1675 0.42s/step 9.5 samples/s util=95.0% vram=20.98GB train-ETA=20.8min
+[2026-11-22 07:44:33] epoch 1/3 step 40/1000 loss=0.1115 0.40s/step 10.1 samples/s util=95.0% vram=20.98GB train-ETA=19.5min
+[2026-11-22 07:44:37] epoch 1/3 step 50/1000 loss=0.0951 0.45s/step 8.9 samples/s util=97.8% vram=21.98GB train-ETA=22.0min
+[2026-11-22 07:44:42] epoch 1/3 step 60/1000 loss=0.1112 0.42s/step 9.5 samples/s util=100.0% vram=21.98GB train-ETA=20.6min
+[2026-11-22 07:44:46] epoch 1/3 step 70/1000 loss=0.1213 0.42s/step 9.5 samples/s util=96.8% vram=21.98GB train-ETA=20.6min
+[2026-11-22 07:44:50] epoch 1/3 step 80/1000 loss=0.1824 0.44s/step 9.1 samples/s util=96.8% vram=21.98GB train-ETA=21.3min
+[2026-11-22 07:44:55] epoch 1/3 step 90/1000 loss=0.0725 0.44s/step 9.1 samples/s util=100.0% vram=21.98GB train-ETA=21.2min
+[2026-11-22 07:45:00] epoch 1/3 step 100/1000 loss=0.1143 0.50s/step 8.0 samples/s util=100.0% vram=21.98GB train-ETA=24.3min
+[2026-11-22 07:45:04] epoch 1/3 step 110/1000 loss=0.1274 0.49s/step 8.2 samples/s util=100.0% vram=21.98GB train-ETA=23.4min
+[2026-11-22 07:45:09] epoch 1/3 step 120/1000 loss=0.0764 0.43s/step 9.2 samples/s util=96.8% vram=21.98GB train-ETA=20.8min
+[2026-11-22 07:45:13] STAGE 1/3 probe max batch
+[2026-11-22 07:45:14] STAGE 2/3 eval base model
+[2026-11-22 07:45:14] STAGE 3/3 train 3 epochs (+ eval after each epoch)
+[2026-11-22 07:45:22] train=4000 test=200 batch=4 steps/epoch=1000 epochs=3 tokens mean=112.2 max=256 truncated=1
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  73%|███████▎  | 293/399 [00:00<00:00, 2914.99it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3407.59it/s]
+[2026-11-22 07:45:31] model loaded: 15.27 GB on cuda:0, trainable LoRA params=3,833,856
+[2026-11-22 07:45:31] RESUMED from checkpoint: epoch=1 step=100 global_step=100
+[2026-11-22 07:45:36] epoch 1/3 step 110/1000 loss=0.1274 0.49s/step 8.2 samples/s util=77.2% vram=21.43GB train-ETA=23.4min
+[2026-11-22 07:45:40] epoch 1/3 step 120/1000 loss=0.0764 0.43s/step 9.3 samples/s util=100.0% vram=21.43GB train-ETA=20.7min
+[2026-11-22 07:45:44] epoch 1/3 step 130/1000 loss=0.0618 0.42s/step 9.5 samples/s util=97.2% vram=21.43GB train-ETA=20.2min
+[2026-11-22 07:45:48] epoch 1/3 step 140/1000 loss=0.1062 0.43s/step 9.4 samples/s util=97.8% vram=21.43GB train-ETA=20.3min
+[2026-11-22 07:45:53] epoch 1/3 step 150/1000 loss=0.0942 0.42s/step 9.5 samples/s util=96.0% vram=21.43GB train-ETA=19.9min
+[2026-11-22 07:45:57] epoch 1/3 step 160/1000 loss=0.0649 0.45s/step 8.8 samples/s util=98.6% vram=21.59GB train-ETA=21.4min
+[2026-11-22 07:46:02] epoch 1/3 step 170/1000 loss=0.0601 0.46s/step 8.7 samples/s util=96.5% vram=21.59GB train-ETA=21.7min
+[2026-11-22 07:46:06] epoch 1/3 step 180/1000 loss=0.0491 0.43s/step 9.2 samples/s util=97.0% vram=21.59GB train-ETA=20.3min
+[2026-11-22 07:46:11] epoch 1/3 step 190/1000 loss=0.0835 0.47s/step 8.5 samples/s util=96.0% vram=21.59GB train-ETA=22.0min
+[2026-11-22 07:46:15] epoch 1/3 step 200/1000 loss=0.0662 0.42s/step 9.6 samples/s util=97.3% vram=21.59GB train-ETA=19.5min
+[2026-11-22 07:46:20] epoch 1/3 step 210/1000 loss=0.0402 0.49s/step 8.2 samples/s util=100.0% vram=21.59GB train-ETA=22.8min
+[2026-11-22 07:46:24] epoch 1/3 step 220/1000 loss=0.0785 0.45s/step 8.9 samples/s util=90.2% vram=21.59GB train-ETA=20.7min
+[2026-11-22 07:46:29] epoch 1/3 step 230/1000 loss=0.0701 0.44s/step 9.2 samples/s util=98.8% vram=21.59GB train-ETA=20.1min
+[2026-11-22 07:46:33] epoch 1/3 step 240/1000 loss=0.0984 0.47s/step 8.4 samples/s util=98.4% vram=21.59GB train-ETA=21.9min
+[2026-11-22 07:46:38] epoch 1/3 step 250/1000 loss=0.0905 0.48s/step 8.3 samples/s util=95.0% vram=21.88GB train-ETA=22.1min
+[2026-11-22 07:46:43] epoch 1/3 step 260/1000 loss=0.0451 0.44s/step 9.2 samples/s util=96.2% vram=21.88GB train-ETA=19.9min
+[2026-11-22 07:46:47] epoch 1/3 step 270/1000 loss=0.0434 0.45s/step 8.9 samples/s util=96.2% vram=21.88GB train-ETA=20.4min
+[2026-11-22 07:46:52] epoch 1/3 step 280/1000 loss=0.0577 0.45s/step 8.9 samples/s util=97.0% vram=21.88GB train-ETA=20.3min
+[2026-11-22 07:46:56] epoch 1/3 step 290/1000 loss=0.0478 0.45s/step 8.9 samples/s util=97.5% vram=21.88GB train-ETA=20.2min
+[2026-11-22 07:47:01] epoch 1/3 step 300/1000 loss=0.0301 0.46s/step 8.8 samples/s util=94.8% vram=21.88GB train-ETA=20.5min
+[2026-11-22 07:47:06] epoch 1/3 step 310/1000 loss=0.0695 0.52s/step 7.7 samples/s util=75.5% vram=21.88GB train-ETA=23.4min
+[2026-11-22 07:47:10] epoch 1/3 step 320/1000 loss=0.0445 0.46s/step 8.7 samples/s util=95.2% vram=21.88GB train-ETA=20.6min
+[2026-11-22 07:47:15] epoch 1/3 step 330/1000 loss=0.0552 0.44s/step 9.0 samples/s util=99.5% vram=21.88GB train-ETA=19.8min
+[2026-11-22 07:47:20] epoch 1/3 step 340/1000 loss=0.0796 0.47s/step 8.4 samples/s util=100.0% vram=22.0GB train-ETA=21.0min
+[2026-11-22 07:47:24] epoch 1/3 step 350/1000 loss=0.0426 0.44s/step 9.0 samples/s util=95.8% vram=22.0GB train-ETA=19.6min
+[2026-11-22 07:47:29] epoch 1/3 step 360/1000 loss=0.0772 0.48s/step 8.4 samples/s util=98.8% vram=22.37GB train-ETA=20.9min
+[2026-11-22 07:47:34] epoch 1/3 step 370/1000 loss=0.1084 0.48s/step 8.3 samples/s util=98.8% vram=22.37GB train-ETA=21.1min
+[2026-11-22 07:47:38] epoch 1/3 step 380/1000 loss=0.0348 0.46s/step 8.7 samples/s util=92.8% vram=22.37GB train-ETA=20.0min
+[2026-11-22 07:47:43] epoch 1/3 step 390/1000 loss=0.0442 0.48s/step 8.3 samples/s util=97.8% vram=22.37GB train-ETA=20.8min
+[2026-11-22 07:47:48] epoch 1/3 step 400/1000 loss=0.0817 0.46s/step 8.8 samples/s util=96.6% vram=22.37GB train-ETA=19.8min
+[2026-11-22 07:47:52] epoch 1/3 step 410/1000 loss=0.0344 0.47s/step 8.6 samples/s util=76.8% vram=22.37GB train-ETA=20.1min
+[2026-11-22 07:47:57] epoch 1/3 step 420/1000 loss=0.0452 0.46s/step 8.6 samples/s util=100.0% vram=22.37GB train-ETA=19.9min
+[2026-11-22 07:48:01] epoch 1/3 step 430/1000 loss=0.0763 0.46s/step 8.8 samples/s util=94.8% vram=22.37GB train-ETA=19.5min
+[2026-11-22 07:48:06] epoch 1/3 step 440/1000 loss=0.0550 0.47s/step 8.5 samples/s util=100.0% vram=22.37GB train-ETA=20.0min
+[2026-11-22 07:48:11] epoch 1/3 step 450/1000 loss=0.0435 0.49s/step 8.1 samples/s util=96.2% vram=22.37GB train-ETA=21.0min
+[2026-11-22 07:48:16] epoch 1/3 step 460/1000 loss=0.0478 0.45s/step 8.9 samples/s util=97.5% vram=22.37GB train-ETA=18.9min
+[2026-11-22 07:48:20] epoch 1/3 step 470/1000 loss=0.0751 0.45s/step 9.0 samples/s util=98.2% vram=22.37GB train-ETA=18.8min
+[2026-11-22 07:48:25] epoch 1/3 step 480/1000 loss=0.0495 0.46s/step 8.8 samples/s util=96.2% vram=22.37GB train-ETA=19.1min
+[2026-11-22 07:48:29] epoch 1/3 step 490/1000 loss=0.0392 0.42s/step 9.4 samples/s util=95.0% vram=22.37GB train-ETA=17.8min
+[2026-11-22 07:48:34] epoch 1/3 step 500/1000 loss=0.0447 0.49s/step 8.2 samples/s util=100.0% vram=22.37GB train-ETA=20.4min
+[2026-11-22 07:48:38] epoch 1/3 step 510/1000 loss=0.0501 0.44s/step 9.0 samples/s util=100.0% vram=22.37GB train-ETA=18.4min
+[2026-11-22 07:48:43] epoch 1/3 step 520/1000 loss=0.0444 0.47s/step 8.6 samples/s util=98.4% vram=22.37GB train-ETA=19.2min
+[2026-11-22 07:48:47] epoch 1/3 step 530/1000 loss=0.0424 0.45s/step 8.9 samples/s util=97.0% vram=22.37GB train-ETA=18.6min
+[2026-11-22 07:48:52] epoch 1/3 step 540/1000 loss=0.0554 0.48s/step 8.3 samples/s util=100.0% vram=22.37GB train-ETA=19.8min
+[2026-11-22 07:48:57] epoch 1/3 step 550/1000 loss=0.0598 0.47s/step 8.5 samples/s util=92.2% vram=22.37GB train-ETA=19.1min
+[2026-11-22 07:49:02] epoch 1/3 step 560/1000 loss=0.0616 0.51s/step 7.8 samples/s util=97.2% vram=22.37GB train-ETA=20.7min
+[2026-11-22 07:49:06] epoch 1/3 step 570/1000 loss=0.0491 0.46s/step 8.8 samples/s util=98.0% vram=22.37GB train-ETA=18.5min
+[2026-11-22 07:49:11] epoch 1/3 step 580/1000 loss=0.0657 0.45s/step 9.0 samples/s util=95.5% vram=22.37GB train-ETA=18.0min
+[2026-11-22 07:49:16] epoch 1/3 step 590/1000 loss=0.0554 0.48s/step 8.3 samples/s util=100.0% vram=22.37GB train-ETA=19.4min
+[2026-11-22 07:49:20] epoch 1/3 step 600/1000 loss=0.0585 0.45s/step 8.9 samples/s util=97.2% vram=22.37GB train-ETA=17.9min
+[2026-11-22 07:49:25] epoch 1/3 step 610/1000 loss=0.0437 0.47s/step 8.4 samples/s util=97.8% vram=22.37GB train-ETA=18.9min
+[2026-11-22 07:49:30] epoch 1/3 step 620/1000 loss=0.0325 0.46s/step 8.6 samples/s util=97.0% vram=22.37GB train-ETA=18.4min
+[2026-11-22 07:49:34] epoch 1/3 step 630/1000 loss=0.0369 0.46s/step 8.8 samples/s util=93.8% vram=22.37GB train-ETA=18.1min
+[2026-11-22 07:49:39] epoch 1/3 step 640/1000 loss=0.0394 0.46s/step 8.8 samples/s util=96.2% vram=22.37GB train-ETA=17.9min
+[2026-11-22 07:49:43] epoch 1/3 step 650/1000 loss=0.0342 0.46s/step 8.7 samples/s util=95.0% vram=22.37GB train-ETA=18.0min
+[2026-11-22 07:49:48] epoch 1/3 step 660/1000 loss=0.0403 0.44s/step 9.1 samples/s util=100.0% vram=22.37GB train-ETA=17.2min
+[2026-11-22 07:49:52] epoch 1/3 step 670/1000 loss=0.0509 0.46s/step 8.7 samples/s util=100.0% vram=22.37GB train-ETA=17.8min
+[2026-11-22 07:49:57] epoch 1/3 step 680/1000 loss=0.0478 0.46s/step 8.8 samples/s util=97.4% vram=22.37GB train-ETA=17.6min
+[2026-11-22 07:50:01] epoch 1/3 step 690/1000 loss=0.0534 0.44s/step 9.2 samples/s util=96.8% vram=22.37GB train-ETA=16.8min
+[2026-11-22 07:50:06] epoch 1/3 step 700/1000 loss=0.0486 0.47s/step 8.4 samples/s util=98.8% vram=22.37GB train-ETA=18.2min
+[2026-11-22 07:50:11] epoch 1/3 step 710/1000 loss=0.0509 0.49s/step 8.2 samples/s util=100.0% vram=22.37GB train-ETA=18.6min
+[2026-11-22 07:50:15] epoch 1/3 step 720/1000 loss=0.0366 0.46s/step 8.8 samples/s util=92.8% vram=22.37GB train-ETA=17.3min
+[2026-11-22 07:50:20] epoch 1/3 step 730/1000 loss=0.0315 0.45s/step 8.8 samples/s util=94.0% vram=22.37GB train-ETA=17.2min
+[2026-11-22 07:50:24] epoch 1/3 step 740/1000 loss=0.0529 0.43s/step 9.3 samples/s util=92.0% vram=22.37GB train-ETA=16.2min
+Traceback (most recent call last):
+  File "/workspace/lab4/code/train.py", line 311, in <module>
+    main()
+  File "/workspace/lab4/code/train.py", line 307, in main
+    train(args)
+  File "/workspace/lab4/code/train.py", line 217, in train
+    loss = train_step(model, opt, C.collate([enc[i] for i in idx], tok.pad_token_id))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/lab4/code/train.py", line 50, in train_step
+    loss.backward()
+  File "/opt/conda/lib/python3.11/site-packages/torch/_tensor.py", line 647, in backward
+    torch.autograd.backward(
+  File "/opt/conda/lib/python3.11/site-packages/torch/autograd/__init__.py", line 354, in backward
+    _engine_run_backward(
+  File "/opt/conda/lib/python3.11/site-packages/torch/autograd/graph.py", line 829, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 592.00 MiB. GPU 0 has a total capacity of 23.80 GiB of which 583.31 MiB is free. Process 1515795 has 23.21 GiB memory in use. Of the allocated memory 22.84 GiB is allocated by PyTorch, and 55.32 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-11-22 07:50:26] PIPELINE STOPPED BEFORE FINISHING (re-run run_all.sh to resume)

@@ -1,0 +1,65 @@
+{
+ "fetched_at": 1795349506.1770294,
+ "source": "vastai show invoices-v1 --charges (after destroy)",
+ "total_usd": 1.838,
+ "instances": [
+  {
+   "instance_id": "<id>",
+   "label": "vapp-lab5-mp-1",
+   "amount_usd": 0.801,
+   "items": [
+    {
+     "type": "gpu",
+     "amount_usd": 0.631,
+     "description": "1.690 hours at $0.373/hour"
+    },
+    {
+     "type": "disk",
+     "amount_usd": 0.041,
+     "description": "1.828 hours at $0.022/hour"
+    },
+    {
+     "type": "bwd",
+     "amount_usd": 0.083,
+     "description": "21.1 GB Downloaded at $0.004/GB"
+    },
+    {
+     "type": "bwu",
+     "amount_usd": 0.046,
+     "description": "11.8 GB Uploaded at $0.004/GB"
+    }
+   ],
+   "age_s": 6633,
+   "age_hours": 1.843
+  },
+  {
+   "instance_id": "<id>",
+   "label": "vapp-lab5-mp-2",
+   "amount_usd": 1.037,
+   "items": [
+    {
+     "type": "gpu",
+     "amount_usd": 0.903,
+     "description": "1.850 hours at $0.488/hour"
+    },
+    {
+     "type": "disk",
+     "amount_usd": 0.042,
+     "description": "1.872 hours at $0.022/hour"
+    },
+    {
+     "type": "bwd",
+     "amount_usd": 0.068,
+     "description": "26.0 GB Downloaded at $0.003/GB"
+    },
+    {
+     "type": "bwu",
+     "amount_usd": 0.024,
+     "description": "6.2 GB Uploaded at $0.004/GB"
+    }
+   ],
+   "age_s": 6632,
+   "age_hours": 1.842
+  }
+ ]
+}

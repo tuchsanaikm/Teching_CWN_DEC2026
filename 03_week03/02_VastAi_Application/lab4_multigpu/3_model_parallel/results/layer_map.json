@@ -1,0 +1,21 @@
+{
+  "cuda:0": {
+    "layers": "0-17",
+    "n_layers": 18,
+    "others": [
+      "model.embed_tokens"
+    ],
+    "params": 4095365632,
+    "weights_gb": 8.19
+  },
+  "cuda:1": {
+    "layers": "18-35",
+    "n_layers": 18,
+    "others": [
+      "model.norm",
+      "lm_head"
+    ],
+    "params": 4095369728,
+    "weights_gb": 8.19
+  }
+}

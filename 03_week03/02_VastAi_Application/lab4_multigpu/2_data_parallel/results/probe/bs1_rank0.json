@@ -1,0 +1,27 @@
+{
+  "bs_per_gpu": 1,
+  "rank": 0,
+  "gpu": 0,
+  "status": "ok",
+  "steps_done": 3,
+  "seq_len": 256,
+  "model_only_alloc_mib": 15652,
+  "step_sec": [
+    0.617,
+    0.263,
+    0.269
+  ],
+  "peak_alloc_mib": 17606,
+  "peak_reserved_mib": 17806,
+  "nvidia_smi": {
+    "n": 28,
+    "util_mean": [
+      67.2,
+      48.3
+    ],
+    "mem_max_mib": [
+      18227.0,
+      18233.0
+    ]
+  }
+}

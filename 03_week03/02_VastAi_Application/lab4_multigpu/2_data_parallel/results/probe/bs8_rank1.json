@@ -1,0 +1,12 @@
+{
+  "bs_per_gpu": 8,
+  "rank": 1,
+  "gpu": 1,
+  "status": "oom",
+  "steps_done": 0,
+  "seq_len": 256,
+  "model_only_alloc_mib": 15652,
+  "error": "CUDA out of memory. Tried to allocate 48.00 MiB. GPU 1 has a total capacity of 23.68 GiB of which 68.50 MiB is free. Process 3593947 has 23.60 GiB memory in use. Of the allocated memory 23.15 GiB is allocated by PyTorch, and 32.80 MiB is reserved by PyTorch but unallocated. If reserved but unallocat",
+  "peak_alloc_mib": 23705,
+  "peak_reserved_mib": 23738
+}

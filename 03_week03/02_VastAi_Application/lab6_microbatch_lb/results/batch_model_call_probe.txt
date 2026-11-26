@@ -1,0 +1,7 @@
+image sizes [(640, 640, 3), (640, 640, 3), (640, 640, 3), (640, 640, 3), (640, 640, 3), (640, 640, 3)]
+batch= 1 call=   13.3 ms  per-image= 13.3  preprocess=   0.6  inference=  11.0  postprocess=   1.4
+batch= 2 call=   14.4 ms  per-image=  7.2  preprocess=   1.1  inference=  10.7  postprocess=   2.2
+batch= 4 call=   20.7 ms  per-image=  5.2  preprocess=   5.3  inference=  10.9  postprocess=   4.3
+batch= 8 call=   35.2 ms  per-image=  4.4  preprocess=  11.1  inference=  15.5  postprocess=   8.3
+batch=16 call=   68.3 ms  per-image=  4.3  preprocess=  22.0  inference=  30.0  postprocess=  15.8
+batch=32 call=  134.4 ms  per-image=  4.2  preprocess=  44.4  inference=  59.1  postprocess=  30.4

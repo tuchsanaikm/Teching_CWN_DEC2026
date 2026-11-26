@@ -1,0 +1,7 @@
+[cluster] up: gpus=2 per-gpu=4 mode=micro lb=lc (Least Connections) slow=gpu1 x3 failover=default  (8 servers)
+[cluster] API key: reusing the existing one in /workspace/lab6/api_key.env
+[cluster] servers ready: 0/8  (3s)
+[cluster] servers ready: 2/8  (13s)
+[cluster] servers ready: 8/8  (14s)
+[cluster] method check: --lb lc (Least Connections) = line 'least_conn;' in the config NGINX loaded
+[cluster] READY in 16s: nginx :8080 -> 8 server(s) [8101 8201 8102 8202 8103 8203 8104 8204] mode=micro lb=lc slow=gpu1 x3 failover=default

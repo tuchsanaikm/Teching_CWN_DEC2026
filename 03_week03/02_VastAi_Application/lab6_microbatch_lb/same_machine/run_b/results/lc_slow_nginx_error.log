@@ -1,0 +1,2 @@
+2026/11/23 23:56:32 [error] 17852#17852: *2551 recv() failed (104: Connection reset by peer) while reading response header from upstream, client: 127.0.0.1, server: , request: "POST /v1/detect HTTP/1.1", upstream: "http://127.0.0.1:8103/v1/detect", host: "127.0.0.1:8080"
+2026/11/23 23:56:32 [warn] 17852#17852: *2551 upstream server temporarily disabled while reading response header from upstream, client: 127.0.0.1, server: , request: "POST /v1/detect HTTP/1.1", upstream: "http://127.0.0.1:8103/v1/detect", host: "127.0.0.1:8080"

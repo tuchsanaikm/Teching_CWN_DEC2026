@@ -1,0 +1,59 @@
+{
+ "instances": {
+  "vapp-lab5-dp-1": {
+   "label": "vapp-lab5-dp-1",
+   "start_utc": "2026-11-22 10:16:10",
+   "destroyed_utc": "2026-11-22 11:30:59",
+   "start_ts": 1795342570.2309923,
+   "destroyed_ts": 1795347059.2930286,
+   "age_hours": 1.2469616767432954,
+   "price_usd_per_hour": 0.4862222222222222,
+   "estimate_usd": 0.8379004774920733,
+   "estimate_note": "age x listed hourly price + bandwidth counters at destroy time",
+   "destroy_reply_ok": false,
+   "charged_usd": 0.819,
+   "by_type_usd": {
+    "gpu": 0.559,
+    "disk": 0.028,
+    "bwd": 0.128,
+    "bwu": 0.104
+   },
+   "lines": [
+    "gpu: 1.205 hours at $0.464/hour = $0.559",
+    "disk: 1.264 hours at $0.022/hour = $0.028",
+    "bwd: 31.9 GB Downloaded at $0.004/GB = $0.128",
+    "bwu: 19.5 GB Uploaded at $0.005/GB = $0.104"
+   ],
+   "instance_id": "<id>"
+  },
+  "vapp-lab5-dp-2": {
+   "label": "vapp-lab5-dp-2",
+   "start_utc": "2026-11-22 10:16:11",
+   "destroyed_utc": "2026-11-22 11:31:00",
+   "start_ts": 1795342571.7156515,
+   "destroyed_ts": 1795347060.93778,
+   "age_hours": 1.2470061467753517,
+   "price_usd_per_hour": 0.494,
+   "estimate_usd": 0.7722710365070238,
+   "estimate_note": "age x listed hourly price + bandwidth counters at destroy time",
+   "destroy_reply_ok": false,
+   "charged_usd": 0.769,
+   "by_type_usd": {
+    "gpu": 0.592,
+    "disk": 0.021,
+    "bwd": 0.089,
+    "bwu": 0.067
+   },
+   "lines": [
+    "gpu: 1.241 hours at $0.477/hour = $0.592",
+    "disk: 1.264 hours at $0.017/hour = $0.021",
+    "bwd: 34.2 GB Downloaded at $0.003/GB = $0.089",
+    "bwu: 17.2 GB Uploaded at $0.004/GB = $0.067"
+   ],
+   "instance_id": "<id>"
+  }
+ },
+ "left_after_destroy": [],
+ "charged_usd_both": 1.588,
+ "charges_read_at_utc": "2026-11-22 11:38:35"
+}

@@ -1,0 +1,95 @@
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 5415.79it/s]
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  69%|██████▊   | 274/399 [00:00<00:00, 2736.99it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 2714.95it/s]
+[07:06:58] [gpu1] base: generated 10/100 EM so far 0/10
+[07:07:01] [gpu1] base: generated 20/100 EM so far 0/20
+[07:07:02] [gpu0] base: generated 10/100 EM so far 0/10
+[07:07:04] [gpu1] base: generated 30/100 EM so far 0/30
+[07:07:04] [gpu0] base: generated 20/100 EM so far 0/20
+[07:07:06] [gpu1] base: generated 40/100 EM so far 0/40
+[07:07:07] [gpu0] base: generated 30/100 EM so far 0/30
+[07:07:09] [gpu1] base: generated 50/100 EM so far 0/50
+[07:07:11] [gpu0] base: generated 40/100 EM so far 0/40
+[07:07:12] [gpu1] base: generated 60/100 EM so far 0/60
+[07:07:14] [gpu0] base: generated 50/100 EM so far 0/50
+[07:07:15] [gpu1] base: generated 70/100 EM so far 0/70
+[07:07:17] [gpu0] base: generated 60/100 EM so far 0/60
+[07:07:18] [gpu1] base: generated 80/100 EM so far 0/80
+[07:07:20] [gpu0] base: generated 70/100 EM so far 0/70
+[07:07:21] [gpu1] base: generated 90/100 EM so far 0/90
+[07:07:23] [gpu0] base: generated 80/100 EM so far 0/80
+[07:07:25] [gpu1] base: generated 100/100 EM so far 0/100
+[07:07:25] [gpu1] base: shard done in 34s
+[07:07:26] [gpu0] base: generated 90/100 EM so far 0/90
+[07:07:30] [gpu0] base: generated 100/100 EM so far 0/100
+[07:07:30] [gpu0] base: shard done in 38s
+[07:07:33] [gpu1] epoch1: generated 10/100 EM so far 8/10
+[07:07:36] [gpu1] epoch1: generated 20/100 EM so far 15/20
+[07:07:39] [gpu1] epoch1: generated 30/100 EM so far 23/30
+[07:07:42] [gpu0] epoch1: generated 10/100 EM so far 3/10
+[07:07:42] [gpu1] epoch1: generated 40/100 EM so far 30/40
+[07:07:45] [gpu0] epoch1: generated 20/100 EM so far 12/20
+[07:07:46] [gpu1] epoch1: generated 50/100 EM so far 36/50
+[07:07:49] [gpu0] epoch1: generated 30/100 EM so far 21/30
+[07:07:49] [gpu1] epoch1: generated 60/100 EM so far 43/60
+[07:07:53] [gpu0] epoch1: generated 40/100 EM so far 26/40
+[07:07:53] [gpu1] epoch1: generated 70/100 EM so far 48/70
+[07:07:56] [gpu1] epoch1: generated 80/100 EM so far 55/80
+[07:07:57] [gpu0] epoch1: generated 50/100 EM so far 34/50
+[07:08:00] [gpu1] epoch1: generated 90/100 EM so far 63/90
+[07:08:01] [gpu0] epoch1: generated 60/100 EM so far 41/60
+[07:08:04] [gpu0] epoch1: generated 70/100 EM so far 48/70
+[07:08:04] [gpu1] epoch1: generated 100/100 EM so far 70/100
+[07:08:04] [gpu1] epoch1: shard done in 39s
+[07:08:08] [gpu0] epoch1: generated 80/100 EM so far 56/80
+[07:08:12] [gpu0] epoch1: generated 90/100 EM so far 64/90
+[07:08:12] [gpu1] epoch2: generated 10/100 EM so far 8/10
+[07:08:15] [gpu1] epoch2: generated 20/100 EM so far 16/20
+[07:08:15] [gpu0] epoch1: generated 100/100 EM so far 70/100
+[07:08:15] [gpu0] epoch1: shard done in 45s
+[07:08:18] [gpu1] epoch2: generated 30/100 EM so far 24/30
+[07:08:21] [gpu1] epoch2: generated 40/100 EM so far 34/40
+[07:08:24] [gpu1] epoch2: generated 50/100 EM so far 42/50
+[07:08:26] [gpu0] epoch2: generated 10/100 EM so far 5/10
+[07:08:28] [gpu1] epoch2: generated 60/100 EM so far 49/60
+[07:08:29] [gpu0] epoch2: generated 20/100 EM so far 14/20
+[07:08:32] [gpu1] epoch2: generated 70/100 EM so far 57/70
+[07:08:32] [gpu0] epoch2: generated 30/100 EM so far 23/30
+[07:08:35] [gpu1] epoch2: generated 80/100 EM so far 63/80
+[07:08:35] [gpu0] epoch2: generated 40/100 EM so far 30/40
+[07:08:38] [gpu1] epoch2: generated 90/100 EM so far 68/90
+[07:08:40] [gpu0] epoch2: generated 50/100 EM so far 38/50
+[07:08:41] [gpu1] epoch2: generated 100/100 EM so far 76/100
+[07:08:41] [gpu1] epoch2: shard done in 37s
+[07:08:43] [gpu0] epoch2: generated 60/100 EM so far 45/60
+[07:08:47] [gpu0] epoch2: generated 70/100 EM so far 55/70
+[07:08:49] [gpu1] epoch3: generated 10/100 EM so far 9/10
+[07:08:50] [gpu0] epoch2: generated 80/100 EM so far 63/80
+[07:08:52] [gpu1] epoch3: generated 20/100 EM so far 17/20
+[07:08:54] [gpu0] epoch2: generated 90/100 EM so far 72/90
+[07:08:55] [gpu1] epoch3: generated 30/100 EM so far 25/30
+[07:08:58] [gpu0] epoch2: generated 100/100 EM so far 79/100
+[07:08:58] [gpu0] epoch2: shard done in 42s
+[07:08:58] [gpu1] epoch3: generated 40/100 EM so far 35/40
+[07:09:01] [gpu1] epoch3: generated 50/100 EM so far 43/50
+[07:09:05] [gpu1] epoch3: generated 60/100 EM so far 49/60
+[07:09:09] [gpu1] epoch3: generated 70/100 EM so far 58/70
+[07:09:10] [gpu0] epoch3: generated 10/100 EM so far 6/10
+[07:09:12] [gpu1] epoch3: generated 80/100 EM so far 64/80
+[07:09:13] [gpu0] epoch3: generated 20/100 EM so far 15/20
+[07:09:15] [gpu1] epoch3: generated 90/100 EM so far 71/90
+[07:09:16] [gpu0] epoch3: generated 30/100 EM so far 24/30
+[07:09:20] [gpu0] epoch3: generated 40/100 EM so far 31/40
+[07:09:21] [gpu1] epoch3: generated 100/100 EM so far 79/100
+[07:09:21] [gpu1] epoch3: shard done in 39s
+[07:09:24] [gpu0] epoch3: generated 50/100 EM so far 39/50
+[07:09:28] [gpu0] epoch3: generated 60/100 EM so far 47/60
+[07:09:32] [gpu0] epoch3: generated 70/100 EM so far 57/70
+[07:09:36] [gpu0] epoch3: generated 80/100 EM so far 64/80
+[07:09:40] [gpu0] epoch3: generated 90/100 EM so far 72/90
+[07:09:43] [gpu0] epoch3: generated 100/100 EM so far 79/100
+[07:09:43] [gpu0] epoch3: shard done in 45s
+{'tag': 'base', 'n_test': 200, 'test_loss': 1.8453, 'em_count': 0, 'exact_match_pct': 0.0, 'em_relaxed_pct': 54.5}
+{'tag': 'epoch1', 'n_test': 200, 'test_loss': 0.0581, 'em_count': 140, 'exact_match_pct': 70.0, 'em_relaxed_pct': 72.0}
+{'tag': 'epoch2', 'n_test': 200, 'test_loss': 0.052, 'em_count': 155, 'exact_match_pct': 77.5, 'em_relaxed_pct': 79.5}
+{'tag': 'epoch3', 'n_test': 200, 'test_loss': 0.0578, 'em_count': 158, 'exact_match_pct': 79.0, 'em_relaxed_pct': 81.0}
+EVAL DONE

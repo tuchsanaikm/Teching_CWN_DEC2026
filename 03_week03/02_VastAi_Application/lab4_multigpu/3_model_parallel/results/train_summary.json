@@ -1,0 +1,182 @@
+{
+  "batch": 8,
+  "epochs": 3,
+  "lr": 0.0002,
+  "seed": 0,
+  "max_len": 256,
+  "n_train": 4000,
+  "steps_per_epoch": 500,
+  "trainable_params": 3833856,
+  "total_params": 8194569216,
+  "gradient_checkpointing": false,
+  "dtype": "bfloat16",
+  "placement": {
+    "cuda:0": {
+      "layers": "0-17",
+      "n_layers": 18,
+      "others": [
+        "model.embed_tokens"
+      ],
+      "params": 4095365632,
+      "weights_gb": 8.19
+    },
+    "cuda:1": {
+      "layers": "18-35",
+      "n_layers": 18,
+      "others": [
+        "model.norm",
+        "lm_head"
+      ],
+      "params": 4095369728,
+      "weights_gb": 8.19
+    }
+  },
+  "hf_device_map": {
+    "model.embed_tokens": "0",
+    "model.rotary_emb": "0",
+    "model.layers.0": "0",
+    "model.layers.1": "0",
+    "model.layers.2": "0",
+    "model.layers.3": "0",
+    "model.layers.4": "0",
+    "model.layers.5": "0",
+    "model.layers.6": "0",
+    "model.layers.7": "0",
+    "model.layers.8": "0",
+    "model.layers.9": "0",
+    "model.layers.10": "0",
+    "model.layers.11": "0",
+    "model.layers.12": "0",
+    "model.layers.13": "0",
+    "model.layers.14": "0",
+    "model.layers.15": "0",
+    "model.layers.16": "0",
+    "model.layers.17": "0",
+    "model.layers.18": "1",
+    "model.layers.19": "1",
+    "model.layers.20": "1",
+    "model.layers.21": "1",
+    "model.layers.22": "1",
+    "model.layers.23": "1",
+    "model.layers.24": "1",
+    "model.layers.25": "1",
+    "model.layers.26": "1",
+    "model.layers.27": "1",
+    "model.layers.28": "1",
+    "model.layers.29": "1",
+    "model.layers.30": "1",
+    "model.layers.31": "1",
+    "model.layers.32": "1",
+    "model.layers.33": "1",
+    "model.layers.34": "1",
+    "model.layers.35": "1",
+    "model.norm": "1",
+    "lm_head": "1"
+  },
+  "train_wall_sec_this_run": 1184.7,
+  "history": [
+    {
+      "epoch": 1,
+      "steps": 500,
+      "samples": 4000,
+      "train_loss": 0.08764,
+      "train_loss_token_avg": 0.08997,
+      "sec_per_step": 0.7907,
+      "samples_per_sec": 10.118,
+      "epoch_wall_sec": 395.6,
+      "gpu": {
+        "gpu0": {
+          "util_mean": 44.7,
+          "util_max": 100,
+          "smi_mem_max_mib": 18640
+        },
+        "gpu1": {
+          "util_mean": 53.4,
+          "util_max": 100,
+          "smi_mem_max_mib": 23826
+        },
+        "n_samples": 378
+      },
+      "vram_peak": {
+        "gpu0": {
+          "allocated_mib": 14630,
+          "reserved_mib": 18306
+        },
+        "gpu1": {
+          "allocated_mib": 17674,
+          "reserved_mib": 23502
+        }
+      },
+      "lr_end": 0.00013333333333333337
+    },
+    {
+      "epoch": 2,
+      "steps": 500,
+      "samples": 4000,
+      "train_loss": 0.03045,
+      "train_loss_token_avg": 0.03115,
+      "sec_per_step": 0.7914,
+      "samples_per_sec": 10.108,
+      "epoch_wall_sec": 396.0,
+      "gpu": {
+        "gpu0": {
+          "util_mean": 45.9,
+          "util_max": 100,
+          "smi_mem_max_mib": 18640
+        },
+        "gpu1": {
+          "util_mean": 53.2,
+          "util_max": 100,
+          "smi_mem_max_mib": 19368
+        },
+        "n_samples": 378
+      },
+      "vram_peak": {
+        "gpu0": {
+          "allocated_mib": 14630,
+          "reserved_mib": 18306
+        },
+        "gpu1": {
+          "allocated_mib": 17674,
+          "reserved_mib": 19034
+        }
+      },
+      "lr_end": 6.666666666666668e-05
+    },
+    {
+      "epoch": 3,
+      "steps": 500,
+      "samples": 4000,
+      "train_loss": 0.01682,
+      "train_loss_token_avg": 0.01714,
+      "sec_per_step": 0.7846,
+      "samples_per_sec": 10.197,
+      "epoch_wall_sec": 392.5,
+      "gpu": {
+        "gpu0": {
+          "util_mean": 49.0,
+          "util_max": 100,
+          "smi_mem_max_mib": 18640
+        },
+        "gpu1": {
+          "util_mean": 48.7,
+          "util_max": 100,
+          "smi_mem_max_mib": 19368
+        },
+        "n_samples": 377
+      },
+      "vram_peak": {
+        "gpu0": {
+          "allocated_mib": 14630,
+          "reserved_mib": 18306
+        },
+        "gpu1": {
+          "allocated_mib": 17674,
+          "reserved_mib": 19034
+        }
+      },
+      "lr_end": 0.0
+    }
+  ],
+  "done": true
+}

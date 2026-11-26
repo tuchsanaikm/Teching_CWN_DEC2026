@@ -1,0 +1,102 @@
+{
+ "captured_at": 1795352207.5250192,
+ "pages_read": 2,
+ "charges": [
+  {
+   "instance_id": "<id>",
+   "label": "vapp-lab5-3dp-1",
+   "amount": 0.622,
+   "records": 1,
+   "items": {
+    "gpu": {
+     "amount": 0.446,
+     "descriptions": [
+      "1.124 hours at $0.397/hour"
+     ]
+    },
+    "disk": {
+     "amount": 0.02,
+     "descriptions": [
+      "1.197 hours at $0.017/hour"
+     ]
+    },
+    "bwd": {
+     "amount": 0.07,
+     "descriptions": [
+      "26.7 GB Downloaded at $0.003/GB"
+     ]
+    },
+    "bwu": {
+     "amount": 0.086,
+     "descriptions": [
+      "21.9 GB Uploaded at $0.004/GB"
+     ]
+    }
+   }
+  },
+  {
+   "instance_id": "<id>",
+   "label": "vapp-lab5-3dp-2",
+   "amount": 0.572,
+   "records": 1,
+   "items": {
+    "gpu": {
+     "amount": 0.469,
+     "descriptions": [
+      "1.158 hours at $0.405/hour"
+     ]
+    },
+    "disk": {
+     "amount": 0.013,
+     "descriptions": [
+      "1.196 hours at $0.011/hour"
+     ]
+    },
+    "bwd": {
+     "amount": 0.067,
+     "descriptions": [
+      "25.7 GB Downloaded at $0.003/GB"
+     ]
+    },
+    "bwu": {
+     "amount": 0.023,
+     "descriptions": [
+      "5.9 GB Uploaded at $0.004/GB"
+     ]
+    }
+   }
+  },
+  {
+   "instance_id": "<id>",
+   "label": "vapp-lab5-3dp-3",
+   "amount": 0.689,
+   "records": 1,
+   "items": {
+    "gpu": {
+     "amount": 0.575,
+     "descriptions": [
+      "1.147 hours at $0.501/hour"
+     ]
+    },
+    "disk": {
+     "amount": 0.02,
+     "descriptions": [
+      "1.196 hours at $0.017/hour"
+     ]
+    },
+    "bwd": {
+     "amount": 0.07,
+     "descriptions": [
+      "25.6 GB Downloaded at $0.003/GB"
+     ]
+    },
+    "bwu": {
+     "amount": 0.024,
+     "descriptions": [
+      "6.0 GB Uploaded at $0.004/GB"
+     ]
+    }
+   }
+  }
+ ]
+}

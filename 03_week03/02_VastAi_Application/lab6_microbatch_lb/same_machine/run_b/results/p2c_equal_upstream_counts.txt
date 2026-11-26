@@ -1,0 +1,8 @@
+22480 upstream=127.0.0.1:8101 status=200
+22401 upstream=127.0.0.1:8102 status=200
+22455 upstream=127.0.0.1:8103 status=200
+22300 upstream=127.0.0.1:8104 status=200
+22276 upstream=127.0.0.1:8201 status=200
+22365 upstream=127.0.0.1:8202 status=200
+22316 upstream=127.0.0.1:8203 status=200
+22320 upstream=127.0.0.1:8204 status=200

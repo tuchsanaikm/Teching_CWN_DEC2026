@@ -1,0 +1,12 @@
+{
+ "tag": "base",
+ "adapter": null,
+ "n": 200,
+ "test_loss": 1.7702,
+ "answer_tokens": 5266,
+ "exact_match": 0.015,
+ "em_correct": 3,
+ "exact_match_loose": 0.545,
+ "eval_sec": 46.2,
+ "vram_peak_mib": 19368
+}

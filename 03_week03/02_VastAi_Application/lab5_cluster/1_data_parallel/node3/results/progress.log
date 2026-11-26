@@ -1,0 +1,27 @@
+[19:07:32] step 17/334 epoch 1 loss(last20)=0.6930 compute=0.41s comm=4.11s/step elapsed=1.3min eta=23.9min vram=19510MB reconnects=0
+80 %, 19846 MiB 91 %, 20306 MiB 
+[19:08:10] step 28/334 epoch 1 loss(last20)=0.1973 compute=0.37s comm=3.88s/step elapsed=1.9min eta=21.7min vram=19510MB reconnects=0
+93 %, 19966 MiB 90 %, 20306 MiB 
+[19:10:38] step 52/334 epoch 1 loss(last20)=0.1188 compute=0.38s comm=6.20s/step elapsed=4.4min eta=30.9min vram=20152MB reconnects=0
+0 %, 20488 MiB 0 %, 20306 MiB 
+[19:12:54] step 86/334 epoch 1 loss(last20)=0.0986 compute=0.36s comm=4.27s/step elapsed=6.6min eta=19.1min vram=20152MB reconnects=0
+0 %, 20488 MiB 0 %, 20386 MiB 
+[19:15:39] step 132/334 epoch 1 loss(last20)=0.0756 compute=0.38s comm=3.06s/step elapsed=9.3min eta=11.6min vram=20494MB reconnects=0
+0 %, 20830 MiB 0 %, 21232 MiB 
+[19:18:26] step 156/334 epoch 1 loss(last20)=0.0555 compute=0.36s comm=3.78s/step elapsed=11.0min eta=12.3min vram=20494MB reconnects=0
+0 %, 20830 MiB 0 %, 21232 MiB 
+[19:23:02] step 193/334 epoch 2 loss(last20)=0.0456 compute=0.39s comm=5.20s/step elapsed=16.7min eta=13.1min vram=20494MB reconnects=0
+{"tag": "epoch1", "equal": true, "sha_pe
+0 %, 20830 MiB 0 %, 21232 MiB 
+[19:25:52] step 208/334 epoch 2 loss(last20)=0.0482 compute=0.38s comm=8.04s/step elapsed=19.1min eta=17.7min vram=20494MB reconnects=0
+{"tag": "epoch1", "equal": true, "sha_pe
+0 %, 20830 MiB 0 %, 21232 MiB 
+[19:28:45] step 227/334 epoch 2 loss(last20)=0.0388 compute=0.39s comm=11.67s/step elapsed=22.5min eta=21.5min vram=20676MB reconnects=0
+{"tag": "epoch1", "equal": true, "sha_pe
+0 %, 21012 MiB 0 %, 21232 MiB 
+[19:31:42] step 275/334 epoch 2 loss(last20)=0.0397 compute=0.38s comm=3.21s/step elapsed=25.4min eta=3.5min vram=20676MB reconnects=0
+{"tag": "epoch1", "equal": true, "sha_pe
+0 %, 21012 MiB 0 %, 21232 MiB 
+[19:35:22] step 325/334 epoch 2 loss(last20)=0.0484 compute=0.37s comm=3.94s/step elapsed=29.1min eta=0.6min vram=20676MB reconnects=0
+{"tag": "epoch1", "equal": true, "sha_pe
+0 %, 21012 MiB 0 %, 21232 MiB 

@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SiteSafe Inspect · Playwright Test Evidence Viewer (27 TCs + 27 GIFs)</title>
+<style>
+  :root { --navy:#0F172A; --slate:#334155; --muted:#64748B; --bg:#F8FAFC; --card:#FFFFFF; --line:#E2E8F0; --teal:#0F766E; --blue:#1D4ED8; --green:#15803D; --red:#DC2626; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,"Leelawadee UI",Tahoma,sans-serif; background:var(--bg); color:var(--navy); line-height:1.5; }
+  .wrap { max-width:1360px; margin:0 auto; padding:28px 24px 64px; }
+  .hero { background:linear-gradient(125deg,#0F172A,#1E293B); color:#F8FAFC; padding:28px 32px; border-radius:16px; margin-bottom:24px; }
+  .hero h1 { margin:0 0 6px; font-size:26px; }
+  .hero p { margin:0; color:#CBD5E1; font-size:14.5px; }
+  .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:20px 0 24px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:10px; padding:16px 18px; }
+  .kpi.green { border-top-color:var(--green); } .kpi.red { border-top-color:var(--red); } .kpi.teal { border-top-color:var(--teal); }
+  .kpi .num { font-size:28px; font-weight:800; color:var(--navy); }
+  .kpi .lbl { font-size:13px; color:var(--muted); margin-top:2px; }
+  .filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+  .flt { border:1px solid var(--line); background:var(--card); color:var(--slate); padding:7px 14px; border-radius:999px; cursor:pointer; font-size:13px; font-weight:600; }
+  .flt.active { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .table-box { background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:auto; margin-bottom:28px; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th { background:#F1F5F9; text-align:left; padding:11px 12px; border-bottom:2px solid var(--line); font-weight:700; white-space:nowrap; }
+  td { padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:hover td { background:#F8FAFC; }
+  .pill { display:inline-block; background:#EFF6FF; color:var(--blue); padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700; }
+  .mode-tag { display:inline-block; background:#F1F5F9; color:var(--slate); padding:2px 8px; border-radius:6px; font-size:12px; font-weight:600; }
+  .badge-pass { display:inline-block; background:#DCFCE7; color:var(--green); padding:3px 9px; border-radius:6px; font-size:12px; font-weight:700; white-space:nowrap; }
+  .badge-bug { display:inline-block; background:#FEE2E2; color:var(--red); padding:3px 9px; border-radius:6px; font-size:12px; font-weight:700; white-space:nowrap; }
+  .gif-link { color:var(--blue); font-weight:700; text-decoration:none; white-space:nowrap; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(400px,1fr)); gap:18px; }
+  .tc-card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+  .tc-card header { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .tc-id { font-weight:800; font-size:14px; background:var(--navy); color:#fff; padding:2px 8px; border-radius:6px; margin-right:4px; }
+  .tc-card h3 { margin:0; font-size:15px; color:var(--navy); }
+  .gif-wrap { cursor:zoom-in; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:#0F172A; }
+  .gif-wrap img { display:block; width:100%; height:auto; }
+  .meta { font-size:12.5px; color:var(--slate); display:flex; flex-direction:column; gap:3px; }
+  .meta code { background:#F1F5F9; padding:1px 5px; border-radius:4px; }
+  .modal { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.88); z-index:999; align-items:center; justify-content:center; padding:24px; }
+  .modal.open { display:flex; }
+  .modal-inner { max-width:1120px; width:100%; background:#0F172A; border-radius:12px; padding:14px; color:#fff; }
+  .modal-inner img { width:100%; border-radius:8px; display:block; }
+  .modal-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-weight:700; }
+  .modal-close { background:#334155; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:700; }
+  @media (max-width:900px) { .kpis { grid-template-columns:repeat(2,1fr); } .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>SiteSafe Inspect · Playwright Test Evidence Viewer</h1>
+    <p>หลักฐานการทดสอบครบทั้ง 27 Test Cases (24 Core TCs บน 2× RTX 4090 จริง + 3 Bug Hunt TCs ในโหมด BUG_MODE=1) พร้อมวิดีโอ .gif ทุกข้อ · คลิกที่ภาพเพื่อขยายเต็มจอ</p>
+  </section>
+
+  <section class="kpis">
+    <div class="kpi green"><div class="num">24 / 24</div><div class="lbl">Core Test Cases ผ่าน 100%</div></div>
+    <div class="kpi red"><div class="num">3 / 3</div><div class="lbl">Bug Hunt จับบักครบ (BUG_MODE=1)</div></div>
+    <div class="kpi teal"><div class="num">2.23 วิ</div><div class="lbl">p95 ชุด 20 รูปจริง (เกณฑ์ ≤ 30 วิ)</div></div>
+    <div class="kpi"><div class="num">27 GIFs</div><div class="lbl">วิดีโอหลักฐานครบทุก Test Case</div></div>
+  </section>
+
+  <div class="filters" id="filters">
+    <button class="flt active" data-filter="ALL">ทั้งหมด (27 ข้อ)</button>
+    <button class="flt" data-filter="Bug Hunt (BUG_MODE=1)">Bug Hunt (BUG_MODE=1)</button><button class="flt" data-filter="RBAC &amp; Telemetry">RBAC &amp; Telemetry</button><button class="flt" data-filter="Reliability &amp; GPU LB">Reliability &amp; GPU LB</button><button class="flt" data-filter="Reports &amp; Override">Reports &amp; Override</button><button class="flt" data-filter="Rules &amp; AI Detection">Rules &amp; AI Detection</button><button class="flt" data-filter="Upload &amp; Validation">Upload &amp; Validation</button>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr><th>TC ID</th><th>ชื่อ Test Case</th><th>กติกา</th><th>โหมด</th><th>ผลที่คาดหวัง</th><th>ผลจริง</th><th>สถานะ</th><th>วิดีโอ</th></tr>
+      </thead>
+      <tbody id="tc-tbody">
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-01</strong></td>
+        <td>รับไฟล์ขนาด 14.9 MB และ 15.0 MB พอดี</td>
+        <td><span class="pill">BR-05</span></td>
+        <td>Live GPU</td>
+        <td>HTTP 201 ทั้งสองไฟล์</td>
+        <td><code>HTTP 201, 201</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-01" class="gif-link">ดู GIF (128 KB)</a></td>
+      </tr>
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-02</strong></td>
+        <td>ปฏิเสธไฟล์เกิน 15 MB (+1 B และ 15.1 MB)</td>
+        <td><span class="pill">BR-05</span></td>
+        <td>Live GPU</td>
+        <td>HTTP 413 ทั้งสองไฟล์พร้อมข้อความ 15 MB</td>
+        <td><code>HTTP 413, 413</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-02" class="gif-link">ดู GIF (104 KB)</a></td>
+      </tr>
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-03</strong></td>
+        <td>รับเฉพาะ JPG และ PNG แท้ (ตรวจ Magic Bytes)</td>
+        <td><span class="pill">FR-02</span></td>
+        <td>Live GPU</td>
+        <td>รับ 2/2 ไฟล์ผ่าน UI และเก็บลง Volume</td>
+        <td><code>รับครบ 2/2 (JPG + PNG)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-03" class="gif-link">ดู GIF (127 KB)</a></td>
+      </tr>
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-04</strong></td>
+        <td>ปฏิเสธ GIF, PDF และไฟล์ text ปลอมนามสกุล .jpg</td>
+        <td><span class="pill">FR-02</span></td>
+        <td>Live GPU</td>
+        <td>HTTP 415 ทุกไฟล์</td>
+        <td><code>HTTP 415, 415, 415</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-04" class="gif-link">ดู GIF (109 KB)</a></td>
+      </tr>
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-05</strong></td>
+        <td>ขอบเขตจำนวนรูปต่อครั้ง (0, 50, 51 รูป)</td>
+        <td><span class="pill">BR-06</span></td>
+        <td>Live GPU</td>
+        <td>0→422 · 50→201 · 51→422</td>
+        <td><code>422 · 201 · 422</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-05" class="gif-link">ดู GIF (108 KB)</a></td>
+      </tr>
+      <tr data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <td><strong>TC-06</strong></td>
+        <td>หน้า /upload ผูกไซต์ตามบัญชีหัวหน้างานอัตโนมัติ</td>
+        <td><span class="pill">FR-04</span></td>
+        <td>Live GPU</td>
+        <td>แสดง SITE-A และไม่มี select เปลี่ยนไซต์</td>
+        <td><code>SITE-A · select=0</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-06" class="gif-link">ดู GIF (110 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="mock">
+        <td><strong>TC-07</strong></td>
+        <td>Decision Table ครบ 8 กรณี R-1..R-8 (รวม H=0, V=2)</td>
+        <td><span class="pill">BR-01..03</span></td>
+        <td>Mock</td>
+        <td>8/8 ตรงตารางตัดสิน (R-5 = FAIL)</td>
+        <td><code>8/8 ตรงครบทุกกรณี</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-07" class="gif-link">ดู GIF (70 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="mock">
+        <td><strong>TC-08</strong></td>
+        <td>หน้า PhotoDetail วาดกรอบ Bounding Boxes ครบตาม H+V</td>
+        <td><span class="pill">FR-07, FR-08</span></td>
+        <td>Mock</td>
+        <td>H=1, V=1, 2 กรอบ SVG, ผล FAIL</td>
+        <td><code>H=1, V=1, 2 กรอบ, FAIL</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-08" class="gif-link">ดู GIF (94 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <td><strong>TC-09</strong></td>
+        <td>Live 2× RTX 4090 YOLO11s ตรวจภาพหน้างานจริง 6 รูป + วาดกรอบ</td>
+        <td><span class="pill">FR-07, NFR-01</span></td>
+        <td>Live GPU</td>
+        <td>6/6 DONE พร้อมกรอบ PPE และ GPU telemetry</td>
+        <td><code>6/6 DONE (gpu0-8103, model=26.38ms)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-09" class="gif-link">ดู GIF (158 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <td><strong>TC-10</strong></td>
+        <td>หน้า /photos/problems แสดงเฉพาะรูป FAIL และ WARN</td>
+        <td><span class="pill">FR-11</span></td>
+        <td>Live GPU</td>
+        <td>รวม 31 (FAIL=20, WARN=11)</td>
+        <td><code>รวม 31 (FAIL=20, WARN=11)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-10" class="gif-link">ดู GIF (59 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <td><strong>TC-11</strong></td>
+        <td>หน้า /photos กรองตามวันที่ ไซต์ และผลตรวจ (WARN)</td>
+        <td><span class="pill">FR-12</span></td>
+        <td>Live GPU</td>
+        <td>กรอง WARN ไซต์ ก = 11 รูป</td>
+        <td><code>photos-total-count = 11</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-11" class="gif-link">ดู GIF (52 KB)</a></td>
+      </tr>
+      <tr data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <td><strong>TC-12</strong></td>
+        <td>API /api/photos/{id} คืนกรอบ PPE และ GPU Telemetry ครบ</td>
+        <td><span class="pill">FR-07</span></td>
+        <td>Live GPU</td>
+        <td>มี detections[], lb_upstream, lb_server, lb_model_ms</td>
+        <td><code>gpu0-8102 (127.0.0.1:8102)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-12" class="gif-link">ดู GIF (99 KB)</a></td>
+      </tr>
+      <tr data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <td><strong>TC-13</strong></td>
+        <td>ปิดหน้าเบราว์เซอร์กลางทาง 10 รูปยังตรวจจบครบ 10/10</td>
+        <td><span class="pill">FR-05, NFR-04</span></td>
+        <td>Live GPU</td>
+        <td>done=10, failed=0 หลังปิดหน้าจอ</td>
+        <td><code>done=10, failed=0</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-13" class="gif-link">ดู GIF (52 KB)</a></td>
+      </tr>
+      <tr data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <td><strong>TC-14</strong></td>
+        <td>ไฟล์ใหญ่ 14.9 MB และ 15.0 MB ตรวจจบครบผ่าน NGINX</td>
+        <td><span class="pill">BR-05, NFR-04</span></td>
+        <td>Live GPU</td>
+        <td>done=2, failed=0 ไม่หลุด timeout</td>
+        <td><code>done=2 ใน 2.5 วินาที</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-14" class="gif-link">ดู GIF (52 KB)</a></td>
+      </tr>
+      <tr data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <td><strong>TC-15</strong></td>
+        <td>ไฟล์เสีย corrupt_half.jpg จบ FAILED โดยไม่ขวางภาพปกติ</td>
+        <td><span class="pill">FR-06, NFR-04</span></td>
+        <td>Live GPU</td>
+        <td>corrupt=FAILED, ปกติ=DONE 2/2</td>
+        <td><code>done=2, failed=1 (เปิดไฟล์รูปไม่ได้)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-15" class="gif-link">ดู GIF (63 KB)</a></td>
+      </tr>
+      <tr data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <td><strong>TC-16</strong></td>
+        <td>ส่ง 20 รูปพร้อมกัน p95 ≤ 30 วิ และกระจายข้ามทั้ง 2× RTX 4090</td>
+        <td><span class="pill">NFR-02, NFR-03</span></td>
+        <td>Live GPU</td>
+        <td>20/20 DONE, p95 ≤ 30s, gpu0 &gt; 0 &amp; gpu1 &gt; 0</td>
+        <td><code>20/20 ใน 2.69s · p95=2.23s · gpu0=7, gpu1=13</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-16" class="gif-link">ดู GIF (139 KB)</a></td>
+      </tr>
+      <tr data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <td><strong>TC-17</strong></td>
+        <td>GET /api/health รายงาน db, storage, dispatcher, gateway = ok</td>
+        <td><span class="pill">NFR-04</span></td>
+        <td>Live GPU</td>
+        <td>status=ok ทุกบริการ · ai_mode=real</td>
+        <td><code>status=ok, db=ok, dispatcher=ok, gateway=ok</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-17" class="gif-link">ดู GIF (38 KB)</a></td>
+      </tr>
+      <tr data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <td><strong>TC-18</strong></td>
+        <td>BR-04 เส้นแบ่งสีแดง 89.67% แดง · 90.00% และ 90.33% ปกติ</td>
+        <td><span class="pill">BR-04</span></td>
+        <td>Live GPU</td>
+        <td>SITE-A แดง · SITE-B/C ปกติ</td>
+        <td><code>89.67%(แดง) · 90.00%(ปกติ) · 90.33%(ปกติ)</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-18" class="gif-link">ดู GIF (62 KB)</a></td>
+      </tr>
+      <tr data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <td><strong>TC-19</strong></td>
+        <td>ขอบเขตพิเศษรายงาน (ไม่มีข้อมูล / 9÷10 / ตัด FAILED ออก)</td>
+        <td><span class="pill">FR-15, BR-04</span></td>
+        <td>Live GPU</td>
+        <td>ไม่มีข้อมูล · 90.00% · 100.00% (ไม่แดง)</td>
+        <td><code>ตรงครบทั้ง 3 ไซต์</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-19" class="gif-link">ดู GIF (62 KB)</a></td>
+      </tr>
+      <tr data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <td><strong>TC-20</strong></td>
+        <td>BR-07 ป้ายความพร้อมรายงาน 17:59 น. vs 18:00 น.</td>
+        <td><span class="pill">BR-07</span></td>
+        <td>Live GPU</td>
+        <td>17:59→ระหว่างวัน · 18:00→พร้อมแล้ว</td>
+        <td><code>data-ready=false → true ตรงเวลา</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-20" class="gif-link">ดู GIF (50 KB)</a></td>
+      </tr>
+      <tr data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <td><strong>TC-21</strong></td>
+        <td>แก้ผล FAIL → PASS เปลี่ยนไซต์ ก จาก 89.67% (แดง) เป็น 90.00% (ปกติ)</td>
+        <td><span class="pill">FR-13, FR-14, NFR-07</span></td>
+        <td>Live GPU</td>
+        <td>คง model_result=FAIL, รายงานเป็น 90.00% ไม่แดง</td>
+        <td><code>90.00% ไม่แดง · edited=1</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-21" class="gif-link">ดู GIF (123 KB)</a></td>
+      </tr>
+      <tr data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <td><strong>TC-22</strong></td>
+        <td>ปฏิเสธเหตุผลว่าง (422) + Audit History + ปุ่มเลื่อนวันรายงาน</td>
+        <td><span class="pill">FR-13, FR-16</span></td>
+        <td>Live GPU</td>
+        <td>ว่าง→422 · มีเหตุผล→201 · เลื่อนวันได้</td>
+        <td><code>422 · 201 · 2026-11-17→16</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-22" class="gif-link">ดู GIF (71 KB)</a></td>
+      </tr>
+      <tr data-cat="RBAC &amp; Telemetry" data-mode="live-gpu">
+        <td><strong>TC-23</strong></td>
+        <td>แยกสิทธิ์ RBAC ครบ 3 บทบาท (401/403/404) + UI Login</td>
+        <td><span class="pill">FR-18..22, NFR-06</span></td>
+        <td>Live GPU</td>
+        <td>ไม่ล็อกอิน→401 · ข้ามไซต์→404 · เกินสิทธิ์→403</td>
+        <td><code>401 · 404 · 403 · UI Executive ซ่อนเมนูครบ</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-23" class="gif-link">ดู GIF (92 KB)</a></td>
+      </tr>
+      <tr data-cat="RBAC &amp; Telemetry" data-mode="live-gpu">
+        <td><strong>TC-24</strong></td>
+        <td>แดชบอร์ด /telemetry ONLINE (2× RTX 4090) + ไม่รั่ว API Key</td>
+        <td><span class="pill">NFR-05</span></td>
+        <td>Live GPU</td>
+        <td>ONLINE · ครบ 4 รูปแบบ · 0 API Key ใน HTML/API</td>
+        <td><code>ONLINE (gpu0-8103) · 3/3 บทบาทเข้าได้ · 0 รั่วไหล</code></td>
+        <td><span class="badge-pass">✅ ผ่าน (PASS)</span></td>
+        <td><a href="#card-TC-24" class="gif-link">ดู GIF (107 KB)</a></td>
+      </tr>
+      <tr data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <td><strong>TC-25</strong></td>
+        <td>Bug Hunt #1 (BR-02): จับบัก H=0, V=2 ได้ WARN แทน FAIL</td>
+        <td><span class="pill">BR-02</span></td>
+        <td>Mock (BUG_MODE=1)</td>
+        <td>ตรวจพบบัก: ระบบตอบ WARN แทน FAIL</td>
+        <td><code>จับได้! h0_v2.jpg ตอบ WARN แทน FAIL</code></td>
+        <td><span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span></td>
+        <td><a href="#card-TC-25" class="gif-link">ดู GIF (103 KB)</a></td>
+      </tr>
+      <tr data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <td><strong>TC-26</strong></td>
+        <td>Bug Hunt #2 (BR-04): จับบักอัตราผ่าน 90.00% พอดีเป็นสีแดง</td>
+        <td><span class="pill">BR-04</span></td>
+        <td>Mock (BUG_MODE=1)</td>
+        <td>ตรวจพบบัก: SITE-B 90.00% แสดงสีแดง</td>
+        <td><code>จับได้! SITE-B 90.00% ได้ red=true</code></td>
+        <td><span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span></td>
+        <td><a href="#card-TC-26" class="gif-link">ดู GIF (63 KB)</a></td>
+      </tr>
+      <tr data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <td><strong>TC-27</strong></td>
+        <td>Bug Hunt #3 (BR-06): จับบักเปิดชุด 51 รูปแล้วรับ 201 แทน 422</td>
+        <td><span class="pill">BR-06</span></td>
+        <td>Mock (BUG_MODE=1)</td>
+        <td>ตรวจพบบัก: count=51 ตอบ HTTP 201</td>
+        <td><code>จับได้! count=51 ตอบ HTTP 201</code></td>
+        <td><span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span></td>
+        <td><a href="#card-TC-27" class="gif-link">ดู GIF (112 KB)</a></td>
+      </tr></tbody>
+    </table>
+  </div>
+
+  <section class="grid" id="tc-grid">
+      <article class="tc-card" id="card-TC-01" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-01</span>
+            <span class="pill">BR-05</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>รับไฟล์ขนาด 14.9 MB และ 15.0 MB พอดี</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-01.gif', 'TC-01 · รับไฟล์ขนาด 14.9 MB และ 15.0 MB พอดี')">
+          <img src="../images/tests/TC-01.gif" alt="TC-01" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> HTTP 201 ทั้งสองไฟล์</div>
+          <div><strong>ผลจริง:</strong> <code>HTTP 201, 201</code> · 10.1s · 128 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-02" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-02</span>
+            <span class="pill">BR-05</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ปฏิเสธไฟล์เกิน 15 MB (+1 B และ 15.1 MB)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-02.gif', 'TC-02 · ปฏิเสธไฟล์เกิน 15 MB (+1 B และ 15.1 MB)')">
+          <img src="../images/tests/TC-02.gif" alt="TC-02" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> HTTP 413 ทั้งสองไฟล์พร้อมข้อความ 15 MB</div>
+          <div><strong>ผลจริง:</strong> <code>HTTP 413, 413</code> · 5.6s · 104 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-03" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-03</span>
+            <span class="pill">FR-02</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>รับเฉพาะ JPG และ PNG แท้ (ตรวจ Magic Bytes)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-03.gif', 'TC-03 · รับเฉพาะ JPG และ PNG แท้ (ตรวจ Magic Bytes)')">
+          <img src="../images/tests/TC-03.gif" alt="TC-03" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> รับ 2/2 ไฟล์ผ่าน UI และเก็บลง Volume</div>
+          <div><strong>ผลจริง:</strong> <code>รับครบ 2/2 (JPG + PNG)</code> · 3.4s · 127 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-04" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-04</span>
+            <span class="pill">FR-02</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ปฏิเสธ GIF, PDF และไฟล์ text ปลอมนามสกุล .jpg</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-04.gif', 'TC-04 · ปฏิเสธ GIF, PDF และไฟล์ text ปลอมนามสกุล .jpg')">
+          <img src="../images/tests/TC-04.gif" alt="TC-04" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> HTTP 415 ทุกไฟล์</div>
+          <div><strong>ผลจริง:</strong> <code>HTTP 415, 415, 415</code> · 1.8s · 109 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-05" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-05</span>
+            <span class="pill">BR-06</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ขอบเขตจำนวนรูปต่อครั้ง (0, 50, 51 รูป)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-05.gif', 'TC-05 · ขอบเขตจำนวนรูปต่อครั้ง (0, 50, 51 รูป)')">
+          <img src="../images/tests/TC-05.gif" alt="TC-05" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> 0→422 · 50→201 · 51→422</div>
+          <div><strong>ผลจริง:</strong> <code>422 · 201 · 422</code> · 1.7s · 108 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-06" data-cat="Upload &amp; Validation" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-06</span>
+            <span class="pill">FR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>หน้า /upload ผูกไซต์ตามบัญชีหัวหน้างานอัตโนมัติ</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-06.gif', 'TC-06 · หน้า /upload ผูกไซต์ตามบัญชีหัวหน้างานอัตโนมัติ')">
+          <img src="../images/tests/TC-06.gif" alt="TC-06" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> แสดง SITE-A และไม่มี select เปลี่ยนไซต์</div>
+          <div><strong>ผลจริง:</strong> <code>SITE-A · select=0</code> · 2.4s · 110 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-07" data-cat="Rules &amp; AI Detection" data-mode="mock">
+        <header>
+          <div>
+            <span class="tc-id">TC-07</span>
+            <span class="pill">BR-01..03</span>
+            <span class="mode-tag">Mock</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>Decision Table ครบ 8 กรณี R-1..R-8 (รวม H=0, V=2)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-07.gif', 'TC-07 · Decision Table ครบ 8 กรณี R-1..R-8 (รวม H=0, V=2)')">
+          <img src="../images/tests/TC-07.gif" alt="TC-07" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> 8/8 ตรงตารางตัดสิน (R-5 = FAIL)</div>
+          <div><strong>ผลจริง:</strong> <code>8/8 ตรงครบทุกกรณี</code> · 2.4s · 70 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-08" data-cat="Rules &amp; AI Detection" data-mode="mock">
+        <header>
+          <div>
+            <span class="tc-id">TC-08</span>
+            <span class="pill">FR-07, FR-08</span>
+            <span class="mode-tag">Mock</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>หน้า PhotoDetail วาดกรอบ Bounding Boxes ครบตาม H+V</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-08.gif', 'TC-08 · หน้า PhotoDetail วาดกรอบ Bounding Boxes ครบตาม H+V')">
+          <img src="../images/tests/TC-08.gif" alt="TC-08" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> H=1, V=1, 2 กรอบ SVG, ผล FAIL</div>
+          <div><strong>ผลจริง:</strong> <code>H=1, V=1, 2 กรอบ, FAIL</code> · 3.0s · 94 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-09" data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-09</span>
+            <span class="pill">FR-07, NFR-01</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>Live 2× RTX 4090 YOLO11s ตรวจภาพหน้างานจริง 6 รูป + วาดกรอบ</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-09.gif', 'TC-09 · Live 2× RTX 4090 YOLO11s ตรวจภาพหน้างานจริง 6 รูป + วาดกรอบ')">
+          <img src="../images/tests/TC-09.gif" alt="TC-09" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> 6/6 DONE พร้อมกรอบ PPE และ GPU telemetry</div>
+          <div><strong>ผลจริง:</strong> <code>6/6 DONE (gpu0-8103, model=26.38ms)</code> · 5.1s · 158 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-10" data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-10</span>
+            <span class="pill">FR-11</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>หน้า /photos/problems แสดงเฉพาะรูป FAIL และ WARN</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-10.gif', 'TC-10 · หน้า /photos/problems แสดงเฉพาะรูป FAIL และ WARN')">
+          <img src="../images/tests/TC-10.gif" alt="TC-10" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> รวม 31 (FAIL=20, WARN=11)</div>
+          <div><strong>ผลจริง:</strong> <code>รวม 31 (FAIL=20, WARN=11)</code> · 2.3s · 59 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-11" data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-11</span>
+            <span class="pill">FR-12</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>หน้า /photos กรองตามวันที่ ไซต์ และผลตรวจ (WARN)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-11.gif', 'TC-11 · หน้า /photos กรองตามวันที่ ไซต์ และผลตรวจ (WARN)')">
+          <img src="../images/tests/TC-11.gif" alt="TC-11" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> กรอง WARN ไซต์ ก = 11 รูป</div>
+          <div><strong>ผลจริง:</strong> <code>photos-total-count = 11</code> · 2.9s · 52 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-12" data-cat="Rules &amp; AI Detection" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-12</span>
+            <span class="pill">FR-07</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>API /api/photos/{id} คืนกรอบ PPE และ GPU Telemetry ครบ</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-12.gif', 'TC-12 · API /api/photos/{id} คืนกรอบ PPE และ GPU Telemetry ครบ')">
+          <img src="../images/tests/TC-12.gif" alt="TC-12" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> มี detections[], lb_upstream, lb_server, lb_model_ms</div>
+          <div><strong>ผลจริง:</strong> <code>gpu0-8102 (127.0.0.1:8102)</code> · 4.0s · 99 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-13" data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-13</span>
+            <span class="pill">FR-05, NFR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ปิดหน้าเบราว์เซอร์กลางทาง 10 รูปยังตรวจจบครบ 10/10</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-13.gif', 'TC-13 · ปิดหน้าเบราว์เซอร์กลางทาง 10 รูปยังตรวจจบครบ 10/10')">
+          <img src="../images/tests/TC-13.gif" alt="TC-13" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> done=10, failed=0 หลังปิดหน้าจอ</div>
+          <div><strong>ผลจริง:</strong> <code>done=10, failed=0</code> · 3.6s · 52 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-14" data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-14</span>
+            <span class="pill">BR-05, NFR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ไฟล์ใหญ่ 14.9 MB และ 15.0 MB ตรวจจบครบผ่าน NGINX</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-14.gif', 'TC-14 · ไฟล์ใหญ่ 14.9 MB และ 15.0 MB ตรวจจบครบผ่าน NGINX')">
+          <img src="../images/tests/TC-14.gif" alt="TC-14" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> done=2, failed=0 ไม่หลุด timeout</div>
+          <div><strong>ผลจริง:</strong> <code>done=2 ใน 2.5 วินาที</code> · 4.9s · 52 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-15" data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-15</span>
+            <span class="pill">FR-06, NFR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ไฟล์เสีย corrupt_half.jpg จบ FAILED โดยไม่ขวางภาพปกติ</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-15.gif', 'TC-15 · ไฟล์เสีย corrupt_half.jpg จบ FAILED โดยไม่ขวางภาพปกติ')">
+          <img src="../images/tests/TC-15.gif" alt="TC-15" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> corrupt=FAILED, ปกติ=DONE 2/2</div>
+          <div><strong>ผลจริง:</strong> <code>done=2, failed=1 (เปิดไฟล์รูปไม่ได้)</code> · 2.8s · 63 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-16" data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-16</span>
+            <span class="pill">NFR-02, NFR-03</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ส่ง 20 รูปพร้อมกัน p95 ≤ 30 วิ และกระจายข้ามทั้ง 2× RTX 4090</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-16.gif', 'TC-16 · ส่ง 20 รูปพร้อมกัน p95 ≤ 30 วิ และกระจายข้ามทั้ง 2× RTX 4090')">
+          <img src="../images/tests/TC-16.gif" alt="TC-16" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> 20/20 DONE, p95 ≤ 30s, gpu0 &gt; 0 &amp; gpu1 &gt; 0</div>
+          <div><strong>ผลจริง:</strong> <code>20/20 ใน 2.69s · p95=2.23s · gpu0=7, gpu1=13</code> · 5.0s · 139 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-17" data-cat="Reliability &amp; GPU LB" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-17</span>
+            <span class="pill">NFR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>GET /api/health รายงาน db, storage, dispatcher, gateway = ok</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-17.gif', 'TC-17 · GET /api/health รายงาน db, storage, dispatcher, gateway = ok')">
+          <img src="../images/tests/TC-17.gif" alt="TC-17" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> status=ok ทุกบริการ · ai_mode=real</div>
+          <div><strong>ผลจริง:</strong> <code>status=ok, db=ok, dispatcher=ok, gateway=ok</code> · 1.7s · 38 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-18" data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-18</span>
+            <span class="pill">BR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>BR-04 เส้นแบ่งสีแดง 89.67% แดง · 90.00% และ 90.33% ปกติ</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-18.gif', 'TC-18 · BR-04 เส้นแบ่งสีแดง 89.67% แดง · 90.00% และ 90.33% ปกติ')">
+          <img src="../images/tests/TC-18.gif" alt="TC-18" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> SITE-A แดง · SITE-B/C ปกติ</div>
+          <div><strong>ผลจริง:</strong> <code>89.67%(แดง) · 90.00%(ปกติ) · 90.33%(ปกติ)</code> · 2.2s · 62 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-19" data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-19</span>
+            <span class="pill">FR-15, BR-04</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ขอบเขตพิเศษรายงาน (ไม่มีข้อมูล / 9÷10 / ตัด FAILED ออก)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-19.gif', 'TC-19 · ขอบเขตพิเศษรายงาน (ไม่มีข้อมูล / 9÷10 / ตัด FAILED ออก)')">
+          <img src="../images/tests/TC-19.gif" alt="TC-19" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ไม่มีข้อมูล · 90.00% · 100.00% (ไม่แดง)</div>
+          <div><strong>ผลจริง:</strong> <code>ตรงครบทั้ง 3 ไซต์</code> · 2.1s · 62 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-20" data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-20</span>
+            <span class="pill">BR-07</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>BR-07 ป้ายความพร้อมรายงาน 17:59 น. vs 18:00 น.</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-20.gif', 'TC-20 · BR-07 ป้ายความพร้อมรายงาน 17:59 น. vs 18:00 น.')">
+          <img src="../images/tests/TC-20.gif" alt="TC-20" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> 17:59→ระหว่างวัน · 18:00→พร้อมแล้ว</div>
+          <div><strong>ผลจริง:</strong> <code>data-ready=false → true ตรงเวลา</code> · 2.9s · 50 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-21" data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-21</span>
+            <span class="pill">FR-13, FR-14, NFR-07</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>แก้ผล FAIL → PASS เปลี่ยนไซต์ ก จาก 89.67% (แดง) เป็น 90.00% (ปกติ)</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-21.gif', 'TC-21 · แก้ผล FAIL → PASS เปลี่ยนไซต์ ก จาก 89.67% (แดง) เป็น 90.00% (ปกติ)')">
+          <img src="../images/tests/TC-21.gif" alt="TC-21" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> คง model_result=FAIL, รายงานเป็น 90.00% ไม่แดง</div>
+          <div><strong>ผลจริง:</strong> <code>90.00% ไม่แดง · edited=1</code> · 3.1s · 123 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-22" data-cat="Reports &amp; Override" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-22</span>
+            <span class="pill">FR-13, FR-16</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>ปฏิเสธเหตุผลว่าง (422) + Audit History + ปุ่มเลื่อนวันรายงาน</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-22.gif', 'TC-22 · ปฏิเสธเหตุผลว่าง (422) + Audit History + ปุ่มเลื่อนวันรายงาน')">
+          <img src="../images/tests/TC-22.gif" alt="TC-22" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ว่าง→422 · มีเหตุผล→201 · เลื่อนวันได้</div>
+          <div><strong>ผลจริง:</strong> <code>422 · 201 · 2026-11-17→16</code> · 2.1s · 71 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-23" data-cat="RBAC &amp; Telemetry" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-23</span>
+            <span class="pill">FR-18..22, NFR-06</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>แยกสิทธิ์ RBAC ครบ 3 บทบาท (401/403/404) + UI Login</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-23.gif', 'TC-23 · แยกสิทธิ์ RBAC ครบ 3 บทบาท (401/403/404) + UI Login')">
+          <img src="../images/tests/TC-23.gif" alt="TC-23" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ไม่ล็อกอิน→401 · ข้ามไซต์→404 · เกินสิทธิ์→403</div>
+          <div><strong>ผลจริง:</strong> <code>401 · 404 · 403 · UI Executive ซ่อนเมนูครบ</code> · 3.6s · 92 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-24" data-cat="RBAC &amp; Telemetry" data-mode="live-gpu">
+        <header>
+          <div>
+            <span class="tc-id">TC-24</span>
+            <span class="pill">NFR-05</span>
+            <span class="mode-tag">Live GPU</span>
+          </div>
+          <span class="badge-pass">✅ ผ่าน (PASS)</span>
+        </header>
+        <h3>แดชบอร์ด /telemetry ONLINE (2× RTX 4090) + ไม่รั่ว API Key</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-24.gif', 'TC-24 · แดชบอร์ด /telemetry ONLINE (2× RTX 4090) + ไม่รั่ว API Key')">
+          <img src="../images/tests/TC-24.gif" alt="TC-24" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ONLINE · ครบ 4 รูปแบบ · 0 API Key ใน HTML/API</div>
+          <div><strong>ผลจริง:</strong> <code>ONLINE (gpu0-8103) · 3/3 บทบาทเข้าได้ · 0 รั่วไหล</code> · 3.9s · 107 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-25" data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <header>
+          <div>
+            <span class="tc-id">TC-25</span>
+            <span class="pill">BR-02</span>
+            <span class="mode-tag">Mock (BUG_MODE=1)</span>
+          </div>
+          <span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span>
+        </header>
+        <h3>Bug Hunt #1 (BR-02): จับบัก H=0, V=2 ได้ WARN แทน FAIL</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-25.gif', 'TC-25 · Bug Hunt #1 (BR-02): จับบัก H=0, V=2 ได้ WARN แทน FAIL')">
+          <img src="../images/tests/TC-25.gif" alt="TC-25" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ตรวจพบบัก: ระบบตอบ WARN แทน FAIL</div>
+          <div><strong>ผลจริง:</strong> <code>จับได้! h0_v2.jpg ตอบ WARN แทน FAIL</code> · 3.5s · 103 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-26" data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <header>
+          <div>
+            <span class="tc-id">TC-26</span>
+            <span class="pill">BR-04</span>
+            <span class="mode-tag">Mock (BUG_MODE=1)</span>
+          </div>
+          <span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span>
+        </header>
+        <h3>Bug Hunt #2 (BR-04): จับบักอัตราผ่าน 90.00% พอดีเป็นสีแดง</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-26.gif', 'TC-26 · Bug Hunt #2 (BR-04): จับบักอัตราผ่าน 90.00% พอดีเป็นสีแดง')">
+          <img src="../images/tests/TC-26.gif" alt="TC-26" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ตรวจพบบัก: SITE-B 90.00% แสดงสีแดง</div>
+          <div><strong>ผลจริง:</strong> <code>จับได้! SITE-B 90.00% ได้ red=true</code> · 2.1s · 63 KB</div>
+        </div>
+      </article>
+      <article class="tc-card" id="card-TC-27" data-cat="Bug Hunt (BUG_MODE=1)" data-mode="bughunt">
+        <header>
+          <div>
+            <span class="tc-id">TC-27</span>
+            <span class="pill">BR-06</span>
+            <span class="mode-tag">Mock (BUG_MODE=1)</span>
+          </div>
+          <span class="badge-bug">🐛 จับบักได้ (BUG_MODE=1)</span>
+        </header>
+        <h3>Bug Hunt #3 (BR-06): จับบักเปิดชุด 51 รูปแล้วรับ 201 แทน 422</h3>
+        <div class="gif-wrap" onclick="openModal('../images/tests/TC-27.gif', 'TC-27 · Bug Hunt #3 (BR-06): จับบักเปิดชุด 51 รูปแล้วรับ 201 แทน 422')">
+          <img src="../images/tests/TC-27.gif" alt="TC-27" loading="lazy">
+        </div>
+        <div class="meta">
+          <div><strong>คาดหวัง:</strong> ตรวจพบบัก: count=51 ตอบ HTTP 201</div>
+          <div><strong>ผลจริง:</strong> <code>จับได้! count=51 ตอบ HTTP 201</code> · 2.1s · 112 KB</div>
+        </div>
+      </article></section>
+</div>
+
+<div class="modal" id="modal" onclick="closeModal()">
+  <div class="modal-inner" onclick="event.stopPropagation()">
+    <div class="modal-bar"><span id="modal-title"></span><button class="modal-close" onclick="closeModal()">ปิด (Esc)</button></div>
+    <img id="modal-img" src="" alt="">
+  </div>
+</div>
+
+<script>
+const btns = document.querySelectorAll('.flt');
+btns.forEach(b => b.addEventListener('click', () => {
+  btns.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  const f = b.dataset.filter;
+  document.querySelectorAll('#tc-tbody tr, .tc-card').forEach(el => {
+    el.style.display = (f === 'ALL' || el.dataset.cat === f) ? '' : 'none';
+  });
+}));
+function openModal(src, title) {
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

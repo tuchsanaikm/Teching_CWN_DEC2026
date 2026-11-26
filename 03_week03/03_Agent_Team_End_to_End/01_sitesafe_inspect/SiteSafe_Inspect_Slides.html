@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiteSafe Inspect · 2× RTX 4090 · NGINX least_conn + 8× FastAPI Micro-batching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12305e;--teal:#0f8f8c;--teal-soft:#e2f5f4;--orange:#e87f1c;--orange-soft:#fff1e3;--red:#c92a2a;--red-soft:#fdecec;
+--green:#15803d;--green-soft:#e7f7ec;--ink:#1c2533;--muted:#5b6b80;--line:#d8e0ec;--bg:#f5f7fb;--card:#fff;--code:#0e1a2b;
+--font:'IBM Plex Sans Thai','Leelawadee UI','Noto Sans Thai','Segoe UI',sans-serif;--mono:'JetBrains Mono','Cascadia Code',Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:var(--font);color:var(--ink)}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:40px 72px 44px;display:none;flex-direction:column;overflow:hidden}
+.slide.active,.slide.measure{display:flex}
+.slide.measure{visibility:hidden}
+.slide.active{animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hd{flex:none;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+.kicker{font-size:17px;font-weight:600;color:var(--teal);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kicker code{font-size:.9em;background:none;padding:0;color:inherit}
+h2{font-size:36px;line-height:1.22;margin:3px 0 0;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:14px}
+h2 .tt{min-width:0}
+h2 code{font-size:.88em}
+.tag{flex:none;font-size:16px;font-weight:600;color:#b35c0a;white-space:nowrap;align-self:center}
+.tag::before{content:"● ";font-size:.7em;vertical-align:.15em}
+.pg{flex:none;margin-left:auto;font-size:16px;font-weight:500;color:var(--muted);white-space:nowrap}
+.slide .no{display:none;position:absolute;right:26px;bottom:12px;font-size:13px;color:#8796ab}
+.slide .dk{position:absolute;left:72px;bottom:12px;font-size:13px;color:#8796ab}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5em;font-size:calc(23px*var(--fs,1));overflow:hidden}
+.body.scroll{overflow:auto}
+.body>*{flex:none;margin:0}
+p{line-height:1.55}
+ul{padding-left:1.3em;margin:0}
+li{line-height:1.5;margin:.22em 0}
+b,strong{color:var(--navy)}
+a{color:#1d5fd0;text-decoration:none;border-bottom:1px solid rgba(29,95,208,.3)}
+.xref{color:var(--navy);font-weight:600}
+code{font-family:var(--mono);font-size:.84em;background:#e6edf7;color:#0b3b7a;padding:.08em .38em;border-radius:5px;overflow-wrap:break-word}
+pre,code{font-variant-ligatures:none}
+h3.lead{font-size:1.14em;color:var(--navy);font-weight:700;line-height:1.35;padding-left:.6em;border-left:5px solid var(--teal)}
+h3.lead span{font-weight:400;color:var(--muted);font-size:.86em}
+h3.lead span b{color:var(--muted)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9em;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.4em .62em;text-align:left;vertical-align:top;line-height:1.42;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600}
+th code{background:rgba(255,255,255,.16);color:#fff}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f9fd}
+td:first-child{font-weight:500}
+td.yes{color:#0f5132}td.no{color:#9b1c1c}
+.slide td.no{display:table-cell;position:static;font-size:inherit;color:#9b1c1c}
+table.c6,table.c7{font-size:.84em}
+.v{font-weight:700;font-size:.92em;padding:.05em .5em;border-radius:6px;white-space:nowrap}
+.v.accept{background:var(--green-soft);color:var(--green)}
+.v.reject{background:var(--red-soft);color:var(--red)}
+.note{border-left:3px solid var(--teal);padding:.15em 0 .15em .9em;line-height:1.5}
+.note>*{margin:0}
+.note>*+*{margin-top:.4em}
+.note.ok{border-color:var(--green)}
+.note.warn{border-color:var(--orange)}
+.note.bad{border-color:var(--red)}
+.note.result{border-color:var(--navy)}
+.note.eye{border-color:var(--orange);display:block}
+.note.eye>*+*{margin-top:0}
+.note .lbl{flex:none;font-weight:700;color:#b35c0a}
+.note .lbl{margin-right:.45em}
+.note .lbl::after{content:" —";font-weight:400;color:var(--muted)}
+pre.code{position:relative;background:var(--code);color:#dbe7ff;font-family:var(--mono);font-size:.74em;line-height:1.5;padding:.85em 1.1em;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+pre.code.term{border-left:6px solid var(--teal)}
+pre .copy{position:absolute;top:8px;right:8px;font-family:var(--font);font-size:14px;background:#26406a;color:#fff;border:0;border-radius:7px;padding:5px 12px;cursor:pointer;opacity:.85}
+pre .copy:hover,.copy.big:hover{background:var(--teal);opacity:1}
+pre .err{color:#ff9b9b}pre .ok{color:#86e3ae}pre .dim{color:#8ea3c4}pre .cmd{color:#ffd28a}
+.tk-c{color:#7f93b5;font-style:italic}.tk-s{color:#a5e8b5}.tk-k{color:#ffb86b}.tk-n{color:#8fd3ff}
+.fig{flex:1 1 0;min-height:var(--figmin,260px);display:flex;align-items:center;justify-content:center}
+.fig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 6px 22px rgba(18,48,94,.16);background:#fff;cursor:zoom-in}
+.fig.wide{flex:none;min-height:0;display:block}
+.fig.wide img{width:100%;max-height:none}
+.body>.fig.wide:only-child{margin:auto 0}
+.figrow{flex:1 1 0;min-height:0;display:flex;gap:24px;align-items:center}
+.figrow .fig{height:100%}
+.cols{display:flex;gap:26px;align-items:flex-start}
+.cols .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:.5em}
+.cols .col>*{margin:0}
+.cmp pre.code{font-size:.72em}
+.fails{display:flex;flex-direction:column;gap:.45em}
+.fails .cardx{padding:.4em .8em}
+.slide.mid .body{justify-content:center;gap:.8em}
+.cardx h4 code{font-size:.9em}
+.fails .cardx p{font-size:.8em;font-family:var(--mono);line-height:1.45}
+/* พรอมต์ */
+.pbar{display:flex;align-items:center;gap:16px;background:var(--orange-soft);border:1px solid #f6d3ad;border-radius:10px;padding:.45em .8em;font-size:.86em}
+.pbar .how{flex:1;min-width:0}
+.pbar .plabel{flex:none;color:var(--muted);font-size:.9em}
+.copy.big{flex:none;font-family:var(--font);font-size:19px;font-weight:700;background:var(--orange);color:#fff;border:0;border-radius:9px;padding:9px 20px;cursor:pointer;box-shadow:0 3px 10px rgba(232,127,28,.35)}
+.copy.done{background:var(--green)!important}
+pre.code.prompt{font-size:.76em;line-height:1.52;border:2px solid #f08a24}
+.full{display:none}
+/* checklist */
+.checks{display:flex;flex-direction:column;gap:.45em}
+.chk{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5em .8em;cursor:pointer;line-height:1.45}
+.chk input{width:1.15em;height:1.15em;margin-top:.2em;flex:none;accent-color:var(--teal)}
+.chk:has(input:checked){background:var(--green-soft);border-color:#a7dcb8}
+/* ภาพ + ขั้นตอน */
+.fitbox{overflow:hidden}
+.ex{flex:1 1 0;min-height:0;display:flex;gap:30px;align-items:stretch}
+.ex .fig{flex:1.5 1 0;min-height:0;min-width:0}
+.ex .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.5em}
+.ex .side>*{flex:none;margin:0}
+.stp{display:flex;gap:.75em;align-items:baseline;padding:.42em 0;line-height:1.45;border-top:1px solid var(--line)}
+.side .stp:first-child{border-top:0}
+.stp .n{flex:none;min-width:1.1em;font-size:1.25em;font-weight:700;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.cap{color:var(--muted);line-height:1.5;text-align:center}
+.cap b{color:var(--navy)}
+/* ตัวเลขใหญ่ */
+.tiles{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-top:3px solid var(--navy)}
+.tile{min-width:0;padding:.55em 1.1em .2em;border-left:1px solid var(--line)}
+.tile:first-child{border-left:0;padding-left:0}
+.tile .k{font-size:.86em;font-weight:700;color:var(--ink);margin-top:.35em}
+.tile .num{font-size:2.25em;font-weight:700;color:var(--navy);line-height:1.1;white-space:nowrap;letter-spacing:-.01em}
+.tiles.tl{border-top:0;position:relative;padding-top:34px}
+.tiles.tl::before{content:"";position:absolute;left:0;right:0;top:11px;height:3px;background:var(--navy)}
+.tiles.tl .tile{border-left:0;padding-left:0;position:relative}
+.tiles.tl .tile::before{content:"";position:absolute;top:-31px;left:0;width:16px;height:16px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 5px var(--bg)}
+.tile .num small{font-size:.5em;font-weight:600;color:var(--muted)}
+.tile .s{font-size:.8em;color:var(--muted);line-height:1.4}
+.tile.ok{}.tile.ok .num{color:var(--green)}
+.tile.bad{}.tile.bad .num{color:var(--red)}
+.tile.warn .num{color:#b35c0a}
+/* การ์ด */
+.cards{display:grid;gap:18px;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.cardx{border-top:3px solid var(--teal);padding:.5em 0 0;display:flex;flex-direction:column;gap:.3em}
+.cardx>*{margin:0}
+.cardx h4{font-size:1.02em;color:var(--navy);line-height:1.35}
+.cardx p,.cardx li{font-size:.88em;line-height:1.48;color:#2b3648}
+.cardx .n{color:var(--teal);font-weight:700;margin-right:.45em}
+.cardx.ok{border-top-color:var(--green)}.cardx.bad{border-top-color:var(--red)}.cardx.warn{border-top-color:var(--orange)}.cardx.navy{border-top-color:var(--navy)}
+.cardx .chips{display:flex;flex-direction:column;gap:.3em}
+.cardx .chips div{font-size:.86em;line-height:1.45}
+/* สมการ (KaTeX) */
+.katex{font-size:1.1em;font-family:KaTeX_Main,'IBM Plex Sans Thai','Leelawadee UI','Times New Roman',serif}
+.katex-display{margin:0}
+.eqbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:.3em .6em;text-align:center;box-shadow:0 4px 14px rgba(18,48,94,.06);font-size:2.2em;color:var(--ink);display:flex;flex-direction:column;gap:.12em}
+.eqbox .row+.row{border-top:1px dashed var(--line);padding-top:.12em}
+.eqbox .sub{font-size:.36em;color:var(--muted);line-height:1.4;padding-bottom:.3em}
+.eqlead{color:var(--muted);font-size:.95em;line-height:1.45}
+.parts{display:grid;gap:16px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+.part{background:#fff;border:1px solid var(--line);border-top:9px solid var(--c);border-radius:14px;padding:.55em .8em .65em;display:flex;flex-direction:column;gap:.22em;box-shadow:0 3px 10px rgba(18,48,94,.05)}
+.part>*{margin:0}
+.part .role{font-size:.64em;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.part .top{display:flex;align-items:center;gap:.5em;min-height:2.3em}
+.part .n{flex:none;display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--c);color:#fff;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.part .sym{font-size:1.3em;color:var(--c)}
+.part h4{font-size:1em;color:var(--navy);line-height:1.3}
+.part p{font-size:.86em;line-height:1.45;color:#2b3648}
+.part .lab{align-self:flex-start;font-family:var(--mono);font-size:.74em;color:#0b6b69;background:var(--teal-soft);border-radius:6px;padding:.12em .5em;margin-top:.15em}
+/* เทียบ 2 ฝั่ง */
+.vs{display:flex;gap:26px;align-items:stretch}
+.vs .sidebox{flex:1;min-width:0;border-radius:16px;padding:.8em 1em;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:.4em}
+.vs .sidebox>*{margin:0}
+.vs .bad{border-color:#f0b4b4;background:#fff8f8}.vs .good{border-color:#a7dcb8;background:#f5fcf7}
+.vs .hd2{font-size:.8em;font-weight:700;letter-spacing:.03em}
+.vs .bad .hd2{color:var(--red)}.vs .good .hd2{color:var(--green)}
+.vs .bigv{font-family:var(--mono);font-size:2.6em;font-weight:700;line-height:1.15}
+.vs .bad .bigv{color:var(--red)}.vs .good .bigv{color:var(--green)}
+.vs .calc{font-family:var(--mono);font-size:.95em;color:#2b3648}
+.callbox{background:var(--code);color:#dbe7ff;font-family:var(--mono);border-radius:12px;padding:.6em 1em;font-size:1.05em;text-align:center}
+.formula{background:#fff;border:2px solid var(--navy);border-radius:16px;padding:.7em 1em;text-align:center;font-size:1.25em;font-weight:700;color:var(--navy);line-height:1.5}
+.bigq{font-size:1.9em;font-weight:700;color:var(--navy);line-height:1.35;margin:auto 0 .2em!important}
+.bigq em{font-style:normal;color:var(--orange)}
+.bigsub{font-size:1.05em;color:var(--muted);line-height:1.6;margin-bottom:auto!important}
+/* แท่ง */
+.bars{display:flex;flex-direction:column;gap:.5em}
+.bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 7.5em;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45em .85em}
+.bar .lb{line-height:1.4}
+.bar .lb small{display:block;color:var(--muted);font-size:.8em}
+.bar .tr{height:1.15em;background:#e7edf5;border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;border-radius:999px;background:var(--green);min-width:6px}
+.bar .fl.mid{background:var(--orange)}.bar .fl.low{background:var(--red)}
+.bar .vl{font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;font-size:.92em}
+/* ตารางสี 18 Trial */
+.heat{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;align-items:stretch}
+.heat .hh{font-family:var(--mono);font-size:.74em;font-weight:600;color:var(--navy);text-align:center;padding:.2em 0}
+.heat .hr{font-size:.82em;color:var(--muted);display:flex;align-items:center;padding-right:.4em;white-space:nowrap}
+.heat .hc{border-radius:10px;text-align:center;font-family:var(--mono);font-weight:700;font-size:1.15em;padding:.55em 0;color:#12305e}
+.heat .grp{grid-column:span 4;text-align:center;font-size:.8em;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:.15em}
+.heat .grp.val{grid-column:span 2;background:var(--orange)}
+/* Input -> LAB -> Output */
+.ff{display:flex;gap:22px;align-items:center}
+.ffcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:.42em}
+.ffh{font-size:.78em;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:10px;padding:.42em .7em;font-size:.9em;line-height:1.42}
+.ffcol.out .file{border-left-color:var(--orange)}
+.ffmid{flex:none;width:8em;text-align:center;background:var(--navy);color:#fff;border-radius:18px;padding:1.1em .5em;font-weight:700;font-size:1.1em;line-height:1.3;position:relative}
+.ffmid small{display:block;font-weight:500;font-size:.62em;color:#b9d2f5;margin-top:.3em}
+.ffar{flex:none;font-size:2em;color:var(--orange);font-weight:700}
+/* กลุ่มข้อตรวจ */
+.ck{display:flex;gap:.55em;align-items:baseline;font-size:.86em;line-height:1.45}
+.ck code{flex:none}
+/* แผนของบท */
+.road{display:flex;gap:26px;align-items:stretch}
+.road .partbox{flex:1;border-radius:18px;padding:.8em 1em 1em;background:#fff;border:2px solid var(--line);display:flex;flex-direction:column;gap:.55em}
+.road .partbox>*{margin:0}
+.road .ph{font-size:1.25em;font-weight:700;color:var(--navy)}
+.road .ph small{font-size:.6em;font-weight:600;color:var(--teal);margin-left:.6em}
+.road .secbox{border-left:7px solid var(--teal);background:var(--bg);border-radius:10px;padding:.5em .8em}
+.road .secbox b{display:block;font-size:1.02em}
+.road .secbox span{font-size:.86em;color:#2b3648;line-height:1.45;display:block}
+.road .partbox.lab .secbox{border-left-color:var(--orange)}
+/* hero: ภาพเต็มหน้า + ตัวเลขสีขาว */
+.slide.hero{background-color:#081222;background-size:cover;background-position:center right;color:#eef3fb}
+.slide.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,11,22,.97) 0%,rgba(5,11,22,.93) 44%,rgba(5,11,22,.55) 64%,rgba(5,11,22,.08) 88%),linear-gradient(180deg,rgba(5,11,22,.55) 0%,rgba(5,11,22,0) 22%)}
+.slide.hero>*{position:relative;z-index:1}
+.slide.hero .hd{border-bottom-color:rgba(255,255,255,.18)}
+.slide.hero h2{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.slide.hero .kicker{color:#7fe3dc}
+.slide.hero .body{justify-content:center}
+.herobox{max-width:62%;display:flex;flex-direction:column;gap:.7em}
+.tiles.hl{display:grid;grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:auto 1fr;column-gap:1.1em;border-top:0}
+.tiles.hl .tile{display:contents}
+.tiles.hl .num,.tiles.hl .txt{border-top:1px solid rgba(255,255,255,.16);padding:.4em 0}
+.tiles.hl .tile:first-child .num,.tiles.hl .tile:first-child .txt{border-top:0}
+.tiles.hl .num{font-size:2.35em;line-height:1.05;color:#fff;text-shadow:0 2px 18px rgba(34,184,207,.35)}
+.tiles.hl .num small{display:block;font-size:.36em;font-weight:600;color:#b9c8e2;margin-top:.15em}
+.tiles.hl .txt{min-width:0;align-self:center}
+.tiles.hl .k{color:#fff;margin-top:0}
+.tiles.hl .s{color:#b9c8e2}
+.tiles.hl .tile.ok .num{color:#7ee2a8}.tiles.hl .tile.warn .num{color:#ffb661}.tiles.hl .tile.bad .num{color:#ff8a8a}
+.slide.hero .note{border-left-color:#ffb661;color:#e6eefc}
+.slide.hero .note .lbl{color:#ffb661}
+.slide.hero .note b,.slide.hero b{color:#fff}
+.slide.hero .imgnote{position:absolute;right:22px;bottom:60px;z-index:2}
+/* ปก และหน้าคั่น */
+.cover,.divider{padding:0;background:linear-gradient(135deg,#0d2447 0%,#163f7a 62%,#0f8f8c 140%);background-size:cover;background-position:center;color:#fff}
+.cover .shade,.divider.photo .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.96) 0%,rgba(6,13,26,.86) 46%,rgba(6,13,26,.25) 80%)}
+.inner{position:relative;height:100%;padding:90px 96px 70px;display:flex;flex-direction:column;max-width:1120px;font-size:25px}
+.divider:not(.photo) .inner{max-width:1400px}
+.divider.photo .inner{max-width:940px}
+.inner .small{font-size:21px;font-weight:600;color:#8fe0dc;letter-spacing:.03em;min-height:28px}
+.inner .big{font-size:120px;font-weight:700;line-height:1.05;color:#fff;margin-top:8px}
+.inner h1{font-size:54px;line-height:1.2;margin:10px 0 0;color:#fff}
+.cover .inner h1{font-size:68px;margin-top:120px}
+.inner .sub{margin-top:26px;color:#d6e4fb;line-height:1.55;display:flex;flex-direction:column;gap:.55em}
+.cover .inner .sub{font-size:34px;color:#cfe0ff}
+.inner .sub p,.inner .sub ul{margin:0}
+.inner b{color:#fff}
+.inner code{background:rgba(255,255,255,.14);color:#fff}
+.inner a{color:#9fd8ff;border-bottom-color:rgba(159,216,255,.4)}
+.inner .xref{color:#fff}
+.inner .hint{margin-top:auto;font-size:19px;color:#9fb6dd}
+.inner .v.accept{background:rgba(134,227,174,.2);color:#9af0bf}.inner .v.reject{background:rgba(255,155,155,.2);color:#ffb3b3}
+.imgnote{position:absolute;right:22px;bottom:14px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:7px}
+.facts{display:flex;flex-wrap:wrap;row-gap:.3em;gap:0;margin-top:14px;font-size:24px;color:#fff;font-weight:600}
+.facts div{white-space:nowrap}
+.facts div:nth-child(3){flex-basis:100%;white-space:normal}
+.facts div:nth-child(3)::before{content:none}
+.facts div+div::before{content:"·";margin:0 .7em;color:#8fb3e6}
+.facts .fl{color:#9fd8ff;font-weight:500;margin-right:.4em}
+.kbd{display:inline-block;border:1px solid #9fb6dd;border-bottom-width:3px;border-radius:7px;padding:0 9px;font-family:var(--mono);font-size:.8em;margin:0 2px;background:rgba(255,255,255,.06)}
+.body .kbd{border-color:#9aa9bf;background:#fff}
+/* ส่วนควบคุม */
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--orange);transition:width .25s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:6;font-family:var(--font);opacity:.35;transition:opacity .2s}
+#hud:hover{opacity:1}
+#hud button{background:rgba(18,48,94,.85);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;height:36px;min-width:38px;font-size:16px;cursor:pointer;padding:0 10px}
+#hud button:hover{background:var(--teal)}
+#count{color:#fff;background:rgba(18,48,94,.85);border-radius:9px;padding:7px 10px;font-size:15px;min-width:80px;text-align:center}
+body.ov #stage{display:none}
+#ov{display:none;position:fixed;inset:0;overflow:auto;padding:26px 32px 60px;z-index:10;background:#0b1424;color:#dbe7ff}
+body.ov #ov{display:block}
+#ov h4{margin:22px 0 10px;font-size:19px;color:#8fe0dc;font-weight:600;border-bottom:1px solid #22324d;padding-bottom:6px}
+#ov .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+#ov .th{background:#16233a;border:2px solid transparent;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+#ov .th:hover,#ov .th.cur{border-color:var(--orange)}
+#ov .th span{color:var(--orange);font-weight:700;margin-right:6px}
+#lb{display:none;position:fixed;inset:0;z-index:20;background:rgba(4,8,16,.95);overflow:auto;padding:18px;text-align:center;cursor:zoom-out}
+#lb.on{display:block}
+#lb img{width:min(100%,2000px);height:auto;border-radius:8px;background:#fff}
+@media print{html,body{overflow:visible;height:auto;background:#fff}#hud,#bar,#ov,#lb,.copy{display:none!important}.slide .no{display:block}
+#stage{position:static;display:block}#deck{transform:none!important;height:auto}
+.slide{display:flex!important;position:relative;width:1600px;height:900px;page-break-after:always;break-after:page;animation:none}}
+@page{size:1600px 900px;margin:0}
+</style>
+
+<style>
+.editorial-row { display:grid; gap:20px; align-items:start; }
+.editorial-row.c2 { grid-template-columns:1fr 1fr; }
+.editorial-row.c3 { grid-template-columns:1fr 1fr 1fr; }
+.editorial-row.c4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+.media-item { display:flex; flex-direction:column; gap:8px; }
+.media-item img { width:100%; height:auto; max-height:460px; object-fit:contain; border-radius:8px; border:1px solid #CBD5E1; background:#0F172A; cursor:zoom-in; }
+.media-item.tall img { max-height:520px; }
+.media-item.compact img { max-height:230px; }
+.media-cap { font-size:0.84em; color:#334155; line-height:1.35; }
+.media-cap strong { color:#0F172A; }
+.persona-img { width:100%; height:220px; object-fit:cover; border-radius:8px; border:1px solid #CBD5E1; }
+.persona-role { font-weight:800; color:#0F766E; font-size:0.95em; margin-top:4px; }
+.persona-desc { font-size:0.86em; color:#334155; line-height:1.4; }
+.console-box { background:#0F172A; color:#E2E8F0; border-radius:10px; padding:18px 22px; font-family:ui-monospace,Consolas,monospace; font-size:0.84em; line-height:1.55; border-left:5px solid #0EA5E9; }
+.console-box.destroyed { border-left-color:#16A34A; }
+.console-hdr { display:flex; justify-content:space-between; align-items:center; padding-bottom:10px; margin-bottom:12px; border-bottom:1px solid #334155; font-family:system-ui,"Leelawadee UI",sans-serif; color:#F8FAFC !important; }
+.console-hdr strong { color:#F8FAFC !important; font-size:1.05em; }
+.status-run { background:#15803D; color:#FFF; padding:3px 10px; border-radius:4px; font-weight:800; font-size:0.85em; }
+.status-del { background:#475569; color:#FFF; padding:3px 10px; border-radius:4px; font-weight:800; font-size:0.85em; }
+.compact-tbl table { font-size:0.74em !important; }
+.compact-tbl td, .compact-tbl th { padding:5px 8px !important; }
+.step-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:16px; }
+.step-list li { display:grid; grid-template-columns:48px 1fr; gap:16px; padding-bottom:12px; border-bottom:1px solid #E2E8F0; align-items:start; }
+.step-list li:last-child { border-bottom:none; }
+.step-num { font-size:1.35em; font-weight:800; color:#0F766E; line-height:1.1; }
+.badge-ok { color:#15803D; font-weight:800; }
+.badge-bug { color:#DC2626; font-weight:800; }
+</style>
+
+</head>
+<body>
+<!-- สร้างจาก README.md ด้วย tools/build_slides.py · ห้ามแก้ไฟล์นี้ด้วยมือ ให้แก้ README.md แล้วสร้างใหม่ -->
+<div id="stage"><div id="deck">
+<section class="slide cover" style="background-image:url(images/slides/cover-sitesafe.jpg)" data-title="ปก" data-group="1 · ภาพรวมโครงการ"><div class="shade"></div><div class="inner"><div class="small">กรณีศึกษา บริษัท ไทยมั่นคงก่อสร้าง จำกัด · ภาพจำลอง</div><h1>SiteSafe Inspect</h1><div class="sub">สร้างระบบตรวจอุปกรณ์นิรภัยหน้างานก่อสร้างครบวงจร · 1 โหนด × 2× RTX 4090 · NGINX least_conn + 8× FastAPI Micro-batching</div><div class="hint">กด <span class="kbd">→</span> หรือ <span class="kbd">Space</span> เพื่อไปต่อ · <span class="kbd">O</span> สารบัญ · <span class="kbd">F</span> เต็มจอ · คลิกภาพเพื่อขยาย</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/hero-outcome.jpg)" data-title="เพิ่มความจุ 8.0 เท่า ป้องกันเครื่องล่ม 0.00% และผ่านชุดทดสอบครบ 27 ข้อ" data-group="1 · ภาพรวมโครงการ" data-max="1.25"><header class="hd"><div class="kicker">ผลลัพธ์จริงของโครงการ · 1 โหนด × 2× RTX 4090</div><h2><span class="tt">เพิ่มความจุ 8.0 เท่า ป้องกันเครื่องล่ม 0.00% และผ่านชุดทดสอบครบ 27 ข้อ</span><span class="tag">results/lb/summary.json · test/evidence/</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile good"><div class="num">88 ผู้ใช้</div><div class="txt"><div class="k">ความจุพร้อมกัน (Design #4)</div><div class="s">เพิ่มขึ้น 8.0 เท่า · p95 = 457.4 มิลลิวินาที</div></div></div><div class="tile "><div class="num">444.55</div><div class="txt"><div class="k">ปริมาณงานสูงสุด (คำขอต่อวินาที)</div><div class="s">NGINX least_conn + 8× FastAPI Micro-batching</div></div></div><div class="tile good"><div class="num">0.00%</div><div class="txt"><div class="k">ความผิดพลาดเมื่อ GPU ล่ม</div><div class="s">Failover ON ย้ายคำขอไป Process ที่รอดอัตโนมัติ</div></div></div><div class="tile "><div class="num">24/24 + 3/3</div><div class="txt"><div class="k">Playwright + Bug Hunt</div><div class="s">บันทึกวิดีโอ .gif หลักฐานครบทุก Test Case</div></div></div></div>ตัวเลขทั้งหมดวัดจริงจาก 1 โหนด × 2× RTX 4090 และชุดทดสอบ Playwright อัตโนมัติ · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ปัญหาลูกค้า: ตรวจรูป 300+ ใบต่อวันด้วยตา หลุดคนไม่ใส่หมวกและทำรายงานไม่ทัน 18:00 น." data-group="1 · ภาพรวมโครงการ" data-max="1.25"><header class="hd"><div class="kicker">SiteSafe Inspect</div><h2><span class="tt">ปัญหาลูกค้า: ตรวจรูป 300+ ใบต่อวันด้วยตา หลุดคนไม่ใส่หมวกและทำรายงานไม่ทัน 18:00 น.</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="images/story/s2-overload.jpg" alt="ปัญหาลูกค้า: ตรวจรูป 300+ ใบต่อวันด้วยตา หลุดคนไม่ใส่หมวกและทำรายงานไม่ทัน 18:00 น." width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>3 ไซต์งานพร้อมกัน:</b> หัวหน้างานถ่ายรูปหน้างานวันละ 3 รอบ รวมกว่า 300 รูปต่อวัน และช่วงเร่งด่วนอัปโหลดพร้อมกันถึง 150 รูป</span></div><div class="stp"><span class="n">2</span><span><b>ความเสี่ยงด้านความปลอดภัย:</b> เมื่อตรวจด้วยตาไม่ทัน ทำให้หลุดภาพคนงานไม่ใส่หมวกนิรภัยและไม่ใส่เสื้อสะท้อนแสง</span></div><div class="stp"><span class="n">3</span><span><b>โจทย์ของระบบ:</b> ต้องตรวจจับแม่นยำ ตอบกลับเร็วช่วงเร่งด่วน รูปห้ามหาย แยกสิทธิ์ 3 บทบาท และออกรายงานก่อน 18:00 น.</span></div>ภาพจำลองจากสถานการณ์หน้างานของบริษัท ไทยมั่นคงก่อสร้าง จำกัด</div></div></div></section>
+<section class="slide " data-title="เส้นทางวิศวกรรม 4 ระยะ: จากบทสัมภาษณ์สู่ระบบจริงบน 2× RTX 4090 และ Playwright 27 ข้อ" data-group="1 · ภาพรวมโครงการ" data-max="1.25"><header class="hd"><div class="kicker">SiteSafe Inspect</div><h2><span class="tt">เส้นทางวิศวกรรม 4 ระยะ: จากบทสัมภาษณ์สู่ระบบจริงบน 2× RTX 4090 และ Playwright 27 ข้อ</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="images/slides/diag-four-phases.jpg" alt="เส้นทางวิศวกรรม 4 ระยะ: จากบทสัมภาษณ์สู่ระบบจริงบน 2× RTX 4090 และ Playwright 27 ข้อ" width="1920" height="1080"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ระยะ A · วิเคราะห์โจทย์และออกแบบ:</b> แปลงบทสัมภาษณ์เป็น User Stories, กติกา 7 ข้อ และสถาปัตยกรรม Design #4</span></div><div class="stp"><span class="n">2</span><span><b>ระยะ B · วางแผน DAG 10 บล็อก:</b> จัดสายวิกฤตและกระจายงานขนานให้ทีม Agent (<code>yolo2</code>, <code>yolo3</code>, <code>cyolo1</code>)</span></div><div class="stp"><span class="n">3</span><span><b>ระยะ C · สร้างและวัดผลบน 2× RTX 4090:</b> เว็บ Next.js 15 + PostgreSQL เชื่อมตรง NGINX <code>least_conn</code> + 8× FastAPI</span></div><div class="stp"><span class="n">4</span><span><b>ระยะ D · ทดสอบ 27 ข้อ + Bug Hunt:</b> รัน Playwright บันทึก <code>.gif</code> ทุกข้อ ยืนยันจับบัก 3/3 แล้วลบเครื่อง GPU ทันที</span></div></div></div></div></section>
+<section class="slide " data-title="ผู้ใช้ทั้ง 3 บทบาทมีขอบเขตสิทธิ์และหน้าจอที่ต่างกันชัดเจน" data-group="2 · เรื่องราวและบทสัมภาษณ์" data-max="1.40"><header class="hd"><div class="kicker">เรื่องราวลูกค้า · บริษัท ไทยมั่นคงก่อสร้าง จำกัด</div><h2><span class="tt">ผู้ใช้ทั้ง 3 บทบาทมีขอบเขตสิทธิ์และหน้าจอที่ต่างกันชัดเจน</span><span class="tag">INTERVIEW.md</span></h2></header><div class="body"><div class="editorial-row c3"><div><img class="persona-img" src="images/story/p-wichai.jpg" alt="วิชัย"><div class="persona-role">วิชัย · หัวหน้างานไซต์ (Supervisor)</div><div class="persona-desc">เดินตรวจหน้างานวันละ 3 รอบ ต้องการอัปโหลดรูปเป็นชุดไม่เกิน 50 รูป ดูเฉพาะไซต์ตัวเอง และแก้ผลได้เมื่อโมเดลทักผิด</div></div><div><img class="persona-img" src="images/story/p-napa.jpg" alt="นภา"><div class="persona-role">นภา · ผู้จัดการความปลอดภัย (Manager)</div><div class="persona-desc">ดูแลครบ 3 ไซต์ ต้องการดูเฉพาะรูปที่มีปัญหา (ไม่ผ่าน/เตือน) ตรวจสอบประวัติการแก้ผล และสรุปรายงานก่อน 18:00 น.</div></div><div><img class="persona-img" src="images/story/p-thana.jpg" alt="ธนา"><div class="persona-role">ธนา · ผู้บริหาร (Executive)</div><div class="persona-desc">ต้องการดูรายงานเปรียบเทียบอัตราผ่านทั้ง 3 ไซต์ (ต่ำกว่า 90% ขึ้นสีแดง) และสถานะเครื่อง GPU โดยไม่เปิดดูรูปหน้างาน</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ภาพจำลอง · บทบาททั้ง 3 กลุ่มถูกบังคับสิทธิ์ที่ฝั่งเซิร์ฟเวอร์ทุก API (NFR-06)</span></div></div></section>
+<section class="slide " data-title="หน้างานจริงมีทั้งมุมกล้องซับซ้อนและช่วงเร่งด่วนที่รูปเข้าพร้อมกันจำนวนมาก" data-group="2 · เรื่องราวและบทสัมภาษณ์" data-max="1.40"><header class="hd"><div class="kicker">เรื่องราวลูกค้า · บริษัท ไทยมั่นคงก่อสร้าง จำกัด</div><h2><span class="tt">หน้างานจริงมีทั้งมุมกล้องซับซ้อนและช่วงเร่งด่วนที่รูปเข้าพร้อมกันจำนวนมาก</span><span class="tag">INTERVIEW.md</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item tall"><img src="images/story/s1-walk.jpg" alt="**1 · เดินตรวจหน้างาน:** หัวหน้างานถ่ายรูปด้วยมือถือ 100+ รูปต่อไซต์ต่อวัน (ภาพจำลอง)"><div class="media-cap"><b>1 · เดินตรวจหน้างาน:</b> หัวหน้างานถ่ายรูปด้วยมือถือ 100+ รูปต่อไซต์ต่อวัน (ภาพจำลอง)</div></div><div class="media-item tall"><img src="images/story/s3-miss.jpg" alt="**2 · จุดพลาดที่ยอมรับไม่ได้:** คนงานไม่ใส่หมวกนิรภัยเพียง 1 คนในภาพต้องแจ้งเตือนทันที (ภาพจำลอง)"><div class="media-cap"><b>2 · จุดพลาดที่ยอมรับไม่ได้:</b> คนงานไม่ใส่หมวกนิรภัยเพียง 1 คนในภาพต้องแจ้งเตือนทันที (ภาพจำลอง)</div></div></div></div></section>
+<section class="slide " data-title="บทสัมภาษณ์กำหนดเส้นแบ่งชัดเจนว่าอะไรต้องทำในรุ่นแรกและอะไรตัดออกก่อน" data-group="2 · เรื่องราวและบทสัมภาษณ์" data-max="1.25"><header class="hd"><div class="kicker">เรื่องราวลูกค้า · บริษัท ไทยมั่นคงก่อสร้าง จำกัด</div><h2><span class="tt">บทสัมภาษณ์กำหนดเส้นแบ่งชัดเจนว่าอะไรต้องทำในรุ่นแรกและอะไรตัดออกก่อน</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="images/story/s4-interview.jpg" alt="บทสัมภาษณ์กำหนดเส้นแบ่งชัดเจนว่าอะไรต้องทำในรุ่นแรกและอะไรตัดออกก่อน" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ต้องมีในรุ่นแรก:</b> อัปโหลดเป็นชุด, ตรวจจับ <code>NO_HARDHAT</code> / <code>NO_VEST</code> พร้อมวาดกรอบ, แก้ผลแบบเก็บประวัติลบไม่ได้, รายงานรายวัน และ <code>/telemetry</code></span></div><div class="stp"><span class="n">2</span><span><b>นอกขอบเขตรุ่นแรก:</b> แจ้งเตือนผ่าน LINE, การตรวจจับจากกล้องวิดีโอสด และการสร้างบัญชีผู้ใช้ด้วยตนเอง</span></div><div class="stp"><span class="n">3</span><span><b>จุดยืนด้านความโปร่งใส:</b> ทุกข้อสมมติถูกระบุชัดในเอกสารเพื่อให้ลูกค้าตรวจสอบก่อนลงมือเขียนโค้ด</span></div>ภาพจำลอง · รายละเอียดบทสัมภาษณ์ฉบับเต็มอยู่ใน INTERVIEW.md</div></div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/div-phase-a.jpg)" data-title="ระยะ A · วิเคราะห์โจทย์ กติกา 7 ข้อ และสถาปัตยกรรม Design #4" data-group="3 · ระยะ A: โจทย์และการออกแบบ"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ระยะ A</div><h1>วิเคราะห์โจทย์ กติกา 7 ข้อ และสถาปัตยกรรม Design #4</h1><div class="sub">แปลงบทสัมภาษณ์เป็น User Stories · Requirements · Test Data · System Design · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 1 · แปลงบทสัมภาษณ์เป็น docs/USER-STORIES.md" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 1 · แปลงบทสัมภาษณ์เป็น docs/USER-STORIES.md</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 1 · สร้าง <code>docs/USER-STORIES.md</code> จากบทสัมภาษณ์</b></span><span class="plabel">พรอมต์ทั้งหมด 6 บรรทัด</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">อ่าน INTERVIEW.md ของบริษัท ไทยมั่นคงก่อสร้าง จำกัด ให้ครบทุกข้อ
+แล้วสร้างไฟล์ docs/USER-STORIES.md ที่ประกอบด้วย:
+1. บทบาทผู้ใช้ทั้ง 3 กลุ่ม (หัวหน้างานไซต์, ผู้จัดการความปลอดภัย, ผู้บริหาร) และขอบเขตสิทธิ์ของแต่ละกลุ่ม
+2. User Stories ครบทุกเส้นทางงานหลัก: อัปโหลดรูปหน้างานเป็นชุด, ตรวจจับคนไม่ใส่หมวก (H) และไม่ใส่เสื้อสะท้อนแสง (V) พร้อมวาดกรอบ, กรองดูรูปที่มีปัญหา, แก้ผลตรวจพร้อมบันทึกเหตุผลแบบลบไม่ได้, ดูรายงานประจำวันรายไซต์, และดูแดชบอร์ดสถานะเครื่อง GPU
+3. Acceptance Criteria แบบ Given / When / Then ที่วัดผลได้จริงในทุก Story
+4. แยกรายการที่อยู่นอกขอบเขตรุ่นแรกไว้ชัดเจน (เช่น แจ้งเตือน LINE และวิดีโอสด)</span></pre></div></section>
+<section class="slide " data-title="กติกาธุรกิจทั้ง 7 ข้อกระชับ ชัดเจน และรวมศูนย์ไว้ที่ web/lib/rules.ts ไฟล์เดียว" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">กติกาธุรกิจทั้ง 7 ข้อกระชับ ชัดเจน และรวมศูนย์ไว้ที่ web/lib/rules.ts ไฟล์เดียว</span><span class="tag">docs/REQUIREMENTS.md</span></h2></header><div class="body"><table class="c3"><thead><tr><th>รหัสกติกา</th><th>นิยามแบบกระชับชัดเจน (รวมไว้ที่ <code>web/lib/rules.ts</code> ไฟล์เดียว)</th><th>จุดขอบเขตที่ต้องทดสอบ</th></tr></thead><tbody><tr><td><b>BR-01</b></td><td>พบคนไม่ใส่หมวกนิรภัย <code>H ≥ 1</code> → <b>ไม่ผ่าน (<code>FAIL</code>)</b></td><td><code>H = 0</code> vs <code>H = 1</code></td></tr><tr><td><b>BR-02</b></td><td>ไม่พบคนไม่ใส่หมวก (<code>H = 0</code>) แต่ไม่ใส่เสื้อสะท้อนแสง <code>V ≥ 2</code> → <b>ไม่ผ่าน (<code>FAIL</code>)</b></td><td><code>V = 1</code> (เตือน) vs <b><code>V = 2</code> (ไม่ผ่าน)</b></td></tr><tr><td><b>BR-03</b></td><td><code>H = 0</code> และไม่ใส่เสื้อสะท้อนแสง <code>V = 1</code> → <b>เตือน (<code>WARN</code>)</b> · นอกนั้น <b>ผ่าน (<code>PASS</code>)</b></td><td><code>(0,0)</code> → ผ่าน · <code>(0,1)</code> → เตือน</td></tr><tr><td><b>BR-04</b></td><td>อัตราผ่านประจำวัน <code>&lt; 90%</code> → แสดง <b>สีแดง</b> · <code>≥ 90%</code> → ปกติ</td><td><b><code>89.67%</code> (แดง)</b> vs <b><code>90.00%</code> (ปกติ)</b> vs <code>90.33%</code></td></tr><tr><td><b>BR-05</b></td><td>รับเฉพาะไฟล์ JPG/PNG แท้ (ตรวจ Magic Bytes) ขนาด <b>≤ 15 MB</b> (<code>15,728,640</code> ไบต์)</td><td><code>15.0 MB</code> (<code>201</code>) vs <code>15 MB + 1 B</code> (<code>413</code>)</td></tr><tr><td><b>BR-06</b></td><td>อัปโหลดได้ครั้งละ <b>1 ถึง 50 รูป</b> · เกิน 50 รูปปฏิเสธทั้งชุด</td><td><code>0</code> (<code>422</code>) · <code>50</code> (<code>201</code>) · <b><code>51</code> (<code>422</code>)</b></td></tr><tr><td><b>BR-07</b></td><td>รายงานประจำวันพร้อมสมบูรณ์เมื่อเวลา <b>≥ 18:00 น.</b> (ก่อนหน้านั้นแสดง "ข้อมูลระหว่างวัน")</td><td><code>17:59 น.</code> vs <code>18:00 น.</code></td></tr></tbody></table>การรวมศูนย์กติกาและสวิตช์ BUG_MODE ไว้ที่ไฟล์เดียวทำให้เปลี่ยนเกณฑ์และทดสอบกรณีขอบเขตได้แม่นยำ</div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 2 · สร้าง docs/REQUIREMENTS.md และ docs/TEST-DATA.md" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 2 · สร้าง docs/REQUIREMENTS.md และ docs/TEST-DATA.md</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 2 · สร้าง <code>docs/REQUIREMENTS.md</code> และ <code>docs/TEST-DATA.md</code></b></span><span class="plabel">พรอมต์ทั้งหมด 6 บรรทัด</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">จาก docs/USER-STORIES.md ให้สร้างเอกสารคู่กัน 2 ไฟล์:
+1. docs/REQUIREMENTS.md:
+   - Functional Requirements (FR-01 ถึง FR-22) ครบทั้งการอัปโหลด ผลตรวจ การแก้ผล รายงาน และสิทธิ์ 3 บทบาท
+   - Business Rules 7 ข้อที่กระชับ ชัดเจน ไม่มีข้อยกเว้นซับซ้อน (BR-01: H ≥ 1 ไม่ผ่าน, BR-02: V ≥ 2 ไม่ผ่าน, BR-03: V = 1 เตือน, BR-04: อัตราผ่าน &lt; 90% แสดงสีแดง, BR-05: ไฟล์ ≤ 15 MB เฉพาะ JPG/PNG แท้, BR-06: อัปโหลดครั้งละ ≤ 50 รูป, BR-07: รายงานประจำวันพร้อมแสดงผลที่ 18:00 น.)
+   - Non-Functional Requirements (NFR-01 ถึง NFR-08): Recall/Precision ≥ 0.80, ความเร็วช่วงปกติ p95 ≤ 30 วินาที, รองรับช่วงเร่งด่วน 150 รูปพร้อมกัน, รูปห้ามหาย, ป้องกันข้อมูลและ API Key, สิทธิ์ตรวจฝั่งเซิร์ฟเวอร์, และประวัติแก้ผลแบบ Append-only
+2. docs/TEST-DATA.md: ตารางกรณีขอบเขต (Boundary Values) และผลที่คาดหวังคำนวณล่วงหน้าครบทั้ง 7 กติกา (R-1..R-8, F-1..F-10, P-1..P-9, บัญชีทดสอบ 5 บัญชีใน 3 ไซต์)</span></pre></div></section>
+<section class="slide " data-title="เหตุผลเชิงวิศวกรรม: โมเดล 19 MB ติดคอขวด CPU/GIL จึงต้องใช้ 4 Processes ต่อ GPU + Micro-batching" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.25"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">เหตุผลเชิงวิศวกรรม: โมเดล 19 MB ติดคอขวด CPU/GIL จึงต้องใช้ 4 Processes ต่อ GPU + Micro-batching</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="images/slides/diag-microbatch.jpg" alt="เหตุผลเชิงวิศวกรรม: โมเดล 19 MB ติดคอขวด CPU/GIL จึงต้องใช้ 4 Processes ต่อ GPU + Micro-batching" width="1920" height="1080"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ปัญหาแบบ 1 Process ทีละ 1 รูป:</b> โมเดล YOLO11s ขนาดเพียง 19 MB จึงใช้การ์ดจอแค่ 8% ขณะที่ Python GIL รอถอดรหัสภาพทีละใบ</span></div><div class="stp"><span class="n">2</span><span><b>ทางออก 1 · 4 Processes ต่อ GPU:</b> แยก Process อิสระ 4 ตัวต่อการ์ดจอ (รวม 8 ตัวบน <code>2× RTX 4090</code>) เพื่อถอดรหัสภาพขนานบน 48 vCPU</span></div><div class="stp"><span class="n">3</span><span><b>ทางออก 2 · Dynamic Micro-batching:</b> รวมภาพที่เข้ามาในช่วง <code>5 ms</code> สูงสุด <code>32</code> รูปส่งเข้า GPU คราวเดียว ลดโอเวอร์เฮดต่อภาพ</span></div><div class="stp"><span class="n">4</span><span><b>ทางออก 3 · NGINX <code>least_conn</code> + Failover ON:</b> ส่งงานให้ Process ที่ว่างที่สุดและย้ายคำขออัตโนมัติเมื่อ Process ล่ม</span></div></div></div></div></section>
+<section class="slide " data-title="สถาปัตยกรรม Design #4: Next.js 15 ส่ง HTTP ขนาน 16 รูปตรงสู่ NGINX + 8× FastAPI บน 2× RTX 4090" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.10"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">สถาปัตยกรรม Design #4: Next.js 15 ส่ง HTTP ขนาน 16 รูปตรงสู่ NGINX + 8× FastAPI บน 2× RTX 4090</span><span class="tag">docs/DESIGN.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/arch-nginx.png" alt="สถาปัตยกรรม Design #4: Next.js 15 ส่ง HTTP ขนาน 16 รูปตรงสู่ NGINX + 8× FastAPI บน 2× RTX 4090" width="2400" height="1350"></div><p class="cap">ฝั่งเว็บเก็บต้นฉบับลง Volume และ PostgreSQL ก่อนตอบรับ 201 แล้ว Async HTTP Dispatcher ส่งตรงไปยัง NGINX โดยไม่ต้องใช้โบรกเกอร์ข้อความภายนอก</p></div></section>
+<section class="slide " data-title="วงจรสถานะ 4 ค่าของงานตรวจรูป: ปลายทาง DONE และ FAILED เปลี่ยนสถานะซ้ำไม่ได้" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.10"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">วงจรสถานะ 4 ค่าของงานตรวจรูป: ปลายทาง DONE และ FAILED เปลี่ยนสถานะซ้ำไม่ได้</span><span class="tag">docs/DESIGN.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/state-flow.png" alt="วงจรสถานะ 4 ค่าของงานตรวจรูป: ปลายทาง DONE และ FAILED เปลี่ยนสถานะซ้ำไม่ได้" width="2250" height="1125"></div><p class="cap">รูปที่ระบบรับแล้วทุกรูปต้องจบที่ DONE หรือ FAILED พร้อมเหตุผลชัดเจน และไม่หายแม้เบราว์เซอร์ปิดหรือ Process ล่มกลางทาง</p></div></section>
+<section class="slide " data-title="ลำดับการไหลของคำขอ End-to-End ตั้งแต่หน้าอัปโหลดจนถึงรายงานประจำวัน" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.10"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">ลำดับการไหลของคำขอ End-to-End ตั้งแต่หน้าอัปโหลดจนถึงรายงานประจำวัน</span><span class="tag">docs/DESIGN.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/trace-nginx.png" alt="ลำดับการไหลของคำขอ End-to-End ตั้งแต่หน้าอัปโหลดจนถึงรายงานประจำวัน" width="2250" height="1275"></div><p class="cap">NGINX แนบ Header X-Upstream กลับมาพร้อมค่า batch_size, queue_ms (เวลารอรวมชุด) และ model_ms เพื่อบันทึกลง PostgreSQL ทุกรูป</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 3 · ออกแบบ docs/DESIGN.md สถาปัตยกรรม 2 ฝั่ง" data-group="3 · ระยะ A: โจทย์และการออกแบบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ A · วิเคราะห์โจทย์และออกแบบสถาปัตยกรรม</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 3 · ออกแบบ docs/DESIGN.md สถาปัตยกรรม 2 ฝั่ง</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 3 · สร้าง <code>docs/DESIGN.md</code> สถาปัตยกรรม 2 ฝั่ง (Direct Concurrent HTTP → NGINX + 8× FastAPI)</b></span><span class="plabel">พรอมต์ทั้งหมด 11 บรรทัด</span><button class="copy big" data-full="prompt2">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">ออกแบบระบบใน docs/DESIGN.md เพื่อตอบโจทย์ทั้งความถูกต้องของกติกาและความเร็วช่วงเร่งด่วน 150 รูปพร้อมกัน โดยแบ่งเป็น 2 ฝั่ง:
+1. ฝั่งเว็บ (Docker Compose ภายในเครื่อง · พอร์ต 3410):
+   - Next.js 15 (App Router) + Tailwind CSS + PostgreSQL 16 (7 ตาราง + คอลัมน์บันทึก GPU Telemetry) + volume photos เก็บรูปต้นฉบับก่อนตอบรับ 201
+   - รวม Business Rule BR-01..BR-07 และสวิตช์ BUG_MODE ไว้ในไฟล์เดียว (web/lib/rules.ts)
+   - Async HTTP Dispatcher ส่งรูปขนาน concurrency=16 ผ่าน HTTP POST /v1/detect พร้อม Authorization: Bearer ไปยังฝั่ง GPU โดยตรง (ไม่ต้องใช้โบรกเกอร์ข้อความภายนอก)
+   - หน้าเว็บ 8 หน้า รวมหน้า /telemetry แสดงสถานะเครื่อง GPU, Header X-Upstream, batch_size และ model_ms
+   - รองรับโหมดจำลอง AI_MODE=mock (mock-gateway พอร์ต 3411) สำหรับทดสอบกรณีขอบเขตและ Bug Hunt
+2. ฝั่ง AI (1 โหนด × 2× RTX 4090 บน Vast.ai):
+   - NGINX Load Balancer พอร์ต 8080 ใช้ least_conn + Passive Failover ON (proxy_next_upstream error timeout non_idempotent, max_fails=1 fail_timeout=10s) + client_max_body_size 20m + แนบ Header X-Upstream
+   - 8× FastAPI Micro-batching (4 Processes ต่อ GPU, พอร์ต 8101–8104 และ 8201–8204, MAX_BATCH=32, MAX_WAIT_MS=5) โหลดโมเดล YOLO11s (best.pt)
+ระบุ ER Diagram, แผนภาพสถาปัตยกรรม, ลำดับคำขอ End-to-End, API Contract, และตาราง data-testid สำหรับ Playwright ให้ครบ</span></pre></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/div-phase-b.jpg)" data-title="ระยะ B · วางแผนงานขนาน 10 บล็อกด้วย DAG และเกณฑ์ Review ชัดเจน" data-group="4 · ระยะ B: วางแผน DAG"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ระยะ B</div><h1>วางแผนงานขนาน 10 บล็อกด้วย DAG และเกณฑ์ Review ชัดเจน</h1><div class="sub">จัดสายวิกฤตและกระจายงานให้ทีม Agent (yolo2 · yolo3 · cyolo1) · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="แผนงาน DAG 10 บล็อก: สายวิกฤตคือ B01 → B02 → B03 → B08 → B10 ทำงานขนานสูงสุด 3 งาน" data-group="4 · ระยะ B: วางแผน DAG" data-max="1.10"><header class="hd"><div class="kicker">ระยะ B · วางแผนการทำงานแบบ DAG</div><h2><span class="tt">แผนงาน DAG 10 บล็อก: สายวิกฤตคือ B01 → B02 → B03 → B08 → B10 ทำงานขนานสูงสุด 3 งาน</span><span class="tag">plan/PLAN.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="plan/dag.png" alt="แผนงาน DAG 10 บล็อก: สายวิกฤตคือ B01 → B02 → B03 → B08 → B10 ทำงานขนานสูงสุด 3 งาน" width="2250" height="1170"></div><p class="cap">แยกงานฝั่งเว็บ (PostgreSQL, Business Rules, หน้าเว็บ 8 หน้า) ขนานกับฝั่ง AI (NGINX least_conn, 8× FastAPI Micro-batching, Evaluation)</p></div></section>
+<section class="slide " data-title="Gantt แผนเวลา: ประมาณการรวม 112.5 นาที และคุมบล็อก B03 (Review) ให้จบภายใน 3 รอบ" data-group="4 · ระยะ B: วางแผน DAG" data-max="1.10"><header class="hd"><div class="kicker">ระยะ B · วางแผนการทำงานแบบ DAG</div><h2><span class="tt">Gantt แผนเวลา: ประมาณการรวม 112.5 นาที และคุมบล็อก B03 (Review) ให้จบภายใน 3 รอบ</span><span class="tag">plan/PLAN.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="plan/gantt-plan.png" alt="Gantt แผนเวลา: ประมาณการรวม 112.5 นาที และคุมบล็อก B03 (Review) ให้จบภายใน 3 รอบ" width="2100" height="1020"></div><p class="cap">กำหนดขอบเขตการตรวจของบล็อก B03 ให้ผ่านทันทีเมื่อกรณีขอบเขตใน docs/TEST-DATA.md ผ่านครบโดยไม่ขยายขอบเขตเกิน Requirement</p></div></section>
+<section class="slide " data-title="Gantt เวลาทำงานจริง: เสร็จสมบูรณ์ครบ 10/10 บล็อก ใช้โทเคนรวม 2,499,966 โทเคน" data-group="4 · ระยะ B: วางแผน DAG" data-max="1.10"><header class="hd"><div class="kicker">ระยะ B · วางแผนการทำงานแบบ DAG</div><h2><span class="tt">Gantt เวลาทำงานจริง: เสร็จสมบูรณ์ครบ 10/10 บล็อก ใช้โทเคนรวม 2,499,966 โทเคน</span><span class="tag">plan/REPORT.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="plan/gantt-actual.png" alt="Gantt เวลาทำงานจริง: เสร็จสมบูรณ์ครบ 10/10 บล็อก ใช้โทเคนรวม 2,499,966 โทเคน" width="2100" height="1020"></div><p class="cap">การทำงานขนานช่วยย่นเวลาสร้างจริงลงอย่างชัดเจน และได้ซอร์สโค้ดครบทั้งฝั่งเว็บ Docker Compose และฝั่ง AI บน 2× RTX 4090</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 4 · วางแผนงาน DAG 10 บล็อกใน plan/PLAN.md" data-group="4 · ระยะ B: วางแผน DAG" data-max="1.45"><header class="hd"><div class="kicker">ระยะ B · วางแผนการทำงานแบบ DAG</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 4 · วางแผนงาน DAG 10 บล็อกใน plan/PLAN.md</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 4 · สร้างแผนงาน <code>plan/PLAN.md</code>, <code>plan/dag.png</code> และ <code>plan/gantt-plan.png</code></b></span><span class="plabel">พรอมต์ทั้งหมด 4 บรรทัด</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">อ่าน docs/REQUIREMENTS.md, docs/DESIGN.md และ docs/TEST-DATA.md แล้ววางแผนสร้างระบบ SiteSafe Inspect แบบขนานด้วยบัญชี yolo2, yolo3, cyolo1 (พร้อมกันสูงสุด 3 งาน):
+1. แตกงานเป็น 10 บล็อก (B01 โครงโปรเจกต์ + Docker Compose, B02 ฐานข้อมูล 7 ตาราง + Seed, B03 กติกา BR-01..BR-07 + RBAC + 14 API, B04 Async HTTP Dispatcher + Mock, B05 NGINX least_conn + Failover ON, B06 8× FastAPI Micro-batch YOLO11s, B07 โค้ด Training &amp; Evaluation, B08 หน้าเว็บ 8 หน้า + /telemetry, B09 โลโก้, B10 รวมระบบและทดสอบเบื้องต้น)
+2. กำหนดให้บล็อก B03 เป็นงานแบบ review (ทำและตรวจคนละบัญชี) โดยตั้งขอบเขตการตรวจให้ชัดเจน: ผ่านทันทีเมื่อ unit test และกรณีขอบเขตทั้งหมดใน docs/TEST-DATA.md ผ่านครบโดยไม่ขยายขอบเขตเกิน Requirement เพื่อให้จบภายใน ≤ 3 รอบ
+3. สร้าง plan/PLAN.md ระบุสายวิกฤต ตารางแจกงาน และวาดแผนภาพ plan/dag.png กับ plan/gantt-plan.png</span></pre></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/div-phase-c.jpg)" data-title="ระยะ C · สร้างแอป เทรนโมเดล YOLO11s และพิสูจน์สมรรถนะบน 2× RTX 4090" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ระยะ C</div><h1>สร้างแอป เทรนโมเดล YOLO11s และพิสูจน์สมรรถนะบน 2× RTX 4090</h1><div class="sub">โค้ด 10 บล็อก · ประเมินโมเดล · วัดสมรรถนะ 4 รูปแบบ · ทดสอบ GPU ช้าและ Failover · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 5 · สั่งทีม Agent สร้างซอร์สโค้ดครบ 10 บล็อก" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.45"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 5 · สั่งทีม Agent สร้างซอร์สโค้ดครบ 10 บล็อก</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 5 · สร้างซอร์สโค้ดฝั่งเว็บและฝั่ง AI ครบทั้งระบบ</b></span><span class="plabel">พรอมต์ทั้งหมด 4 บรรทัด</span><button class="copy big" data-full="prompt4">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">ดำเนินการสร้างระบบ SiteSafe Inspect ตามแผน plan/PLAN.md ครบทั้ง 10 บล็อก โดยใช้บัญชี yolo2, yolo3, cyolo1:
+- ฝั่งเว็บ (code_reference/app/web/): Next.js 15 + Tailwind CSS + PostgreSQL 16 + lib/rules.ts (BR-01..BR-07 + BUG_MODE ไฟล์เดียว) + RBAC 3 บทบาทตรวจฝั่งเซิร์ฟเวอร์ + Async HTTP Dispatcher ส่งขนาน 16 รูป + หน้า /telemetry + mock-gateway
+- ฝั่ง AI (code_reference/app/ai/serving/): server.py (FastAPI + YOLO11s Dynamic Micro-batching), nginx.conf (least_conn + Failover ON + Bearer auth check + X-Upstream), cluster.sh, loadgen.py และ ai/train/evaluate.py
+- รัน npm run typecheck, npm run build, vitest (web) และ pytest (ai/train) ให้ผ่านครบทุกข้อ พร้อมสรุปเวลาและโทเคนจริงใน plan/REPORT.md และ plan/gantt-actual.png</span></pre></div></section>
+<section class="slide " data-title="ซอร์สโค้ดทั้งฝั่งเว็บและฝั่ง AI ผ่าน Build และ Unit Test ครบก่อนเช่าเครื่อง GPU" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">ซอร์สโค้ดทั้งฝั่งเว็บและฝั่ง AI ผ่าน Build และ Unit Test ครบก่อนเช่าเครื่อง GPU</span><span class="tag">code_reference/app/TEST.md</span></h2></header><div class="body"><div class="tiles"><div class="tile good"><div class="num">119 / 119</div><div class="k">Web Unit Tests (Vitest)</div><div class="s">ผ่านครบ typecheck, Next.js 15 build และ rules.ts</div></div><div class="tile good"><div class="num">30 / 30</div><div class="k">AI Evaluation Tests</div><div class="s">ผ่านครบการตรวจ Recall, Precision และ threshold</div></div><div class="tile "><div class="num">1 ไฟล์</div><div class="k">Single Source of Truth</div><div class="s">อ่าน BUG_MODE และกติกา BR-01..07 ที่ lib/rules.ts ที่เดียว</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ยืนยันสิทธิ์ฐานข้อมูล Append-only (NFR-07): บัญชี runtime sitesafe_app ถูกปฏิเสธ UPDATE และ DELETE บนตาราง result_overrides</span></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 6 · เช่าเครื่อง 2× RTX 4090 และวัดความแม่นยำโมเดล YOLO11s" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.45"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 6 · เช่าเครื่อง 2× RTX 4090 และวัดความแม่นยำโมเดล YOLO11s</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 6 · เช่าเครื่อง <code>2× RTX 4090</code> บน Vast.ai และวัดความแม่นยำโมเดล YOLO11s</b></span><span class="plabel">พรอมต์ทั้งหมด 4 บรรทัด</span><button class="copy big" data-full="prompt5">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">ค้นหาและเช่าเครื่อง 1 โหนด × 2× RTX 4090 บน Vast.ai ที่ผ่านการยืนยัน (verified=true, inet_down &gt;= 1200 Mbps, เลือกค่าดาวน์โหลดต่ำสุด, เปิดพอร์ต 8080, ติดป้าย label e2e-sitesafe-nginx):
+1. ตรวจสอบสเปกเครื่องจริง (2× RTX 4090, vCPU, RAM, สถานะ RUNNING) และอัปโหลดโค้ดฝั่ง AI กับโมเดล YOLO11s (best.pt)
+2. ตรวจความแม่นยำโมเดลด้วย ai/train/evaluate.py เทียบก่อน-หลังเทรน และเลือก Confidence Threshold บน Validation Set ให้ได้ Recall ≥ 0.80 และ Precision ≥ 0.80 สำหรับทั้ง NO_HARDHAT และ NO_VEST
+3. บันทึกผลประเมินลง results/model/metrics_before.json, results/model/metrics_after.json และ results/model/threshold.json</span></pre></div></section>
+<section class="slide " data-title="สถานะเครื่อง Vast.ai พร้อมใช้งาน (RUNNING): 8 Processes + NGINX เปิดพอร์ต 8080 ครบ" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">สถานะเครื่อง Vast.ai พร้อมใช้งาน (RUNNING): 8 Processes + NGINX เปิดพอร์ต 8080 ครบ</span><span class="tag">Vast.ai Console · 2× RTX 4090</span></h2></header><div class="body">
+<div class="console-box">
+  <div class="console-hdr">
+    <strong>Vast.ai Cloud Console · 1 โหนด × 2× RTX 4090 (label: e2e-sitesafe-nginx)</strong>
+    <span class="status-run">● RUNNING</span>
+  </div>
+  <div>Instance ID : 62729107 &nbsp;·&nbsp; Location : Illinois, US &nbsp;·&nbsp; Verification : verified</div>
+  <div>Hardware    : 2× NVIDIA GeForce RTX 4090 (24 GB VRAM × 2) · 48 vCPU · 125.6 GB RAM · 60 GB Disk</div>
+  <div>Image       : pytorch/pytorch:2.4.1-cuda12.4-cudnn9-runtime · Open Port : 8080/tcp</div>
+  <div>Loaded      : /workspace/lab6/best.pt (19.2 MB) · server.py · nginx.conf · cluster.sh</div>
+  <div style="margin-top:10px;color:#4ADE80;">[cluster] READY in 36s: nginx :8080 -&gt; 8 server(s) [8101..8104, 8201..8204] mode=micro lb=lc failover=on</div>
+  <div style="color:#38BDF8;">GET /lb/health -&gt; 200 {"status":"ok","service":"nginx"} &nbsp;|&nbsp; GET /health -&gt; 200 {"status":"ready","mode":"micro","max_batch":32}</div>
+</div>
+<div class="note eye"><span class="lbl">ข้อสังเกต</span><span>คั่นจังหวะชัดเจนระหว่างขั้นสร้างเครื่อง GPU กับขั้นรันโมเดลและวัดผล · ยืนยันว่าทั้ง 8 Processes และ NGINX พร้อมรับงานจริง</span></div></div></section>
+<section class="slide " data-title="ตัวอย่างภาพชุดข้อมูล PPE ที่ใช้เทรนและทดสอบโมเดล YOLO11s" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">ตัวอย่างภาพชุดข้อมูล PPE ที่ใช้เทรนและทดสอบโมเดล YOLO11s</span><span class="tag">results/dataset_samples.jpg</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/dataset_samples.jpg" alt="ตัวอย่างภาพชุดข้อมูล PPE ที่ใช้เทรนและทดสอบโมเดล YOLO11s" width="1920" height="960"></div><p class="cap">ครอบคลุมมุมกล้องหน้างานก่อสร้างหลากหลายระยะ ทั้งคนงานสวมอุปกรณ์ครบและไม่สวมหมวก/เสื้อสะท้อนแสง</p></div></section>
+<section class="slide " data-title="กราฟผลการเทรน YOLO11s ครบ 30 Epochs (534.7 วินาที): Loss ลดลงสม่ำเสมอและ mAP สูงขึ้นต่อเนื่อง" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">กราฟผลการเทรน YOLO11s ครบ 30 Epochs (534.7 วินาที): Loss ลดลงสม่ำเสมอและ mAP สูงขึ้นต่อเนื่อง</span><span class="tag">results/model/train_time.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/model/results.png" alt="กราฟผลการเทรน YOLO11s ครบ 30 Epochs (534.7 วินาที): Loss ลดลงสม่ำเสมอและ mAP สูงขึ้นต่อเนื่อง" width="2400" height="1200"></div><p class="cap">น้ำหนักโมเดลที่บันทึกไว้ (results/model/best.pt ขนาด 19.2 MB) ถูกนำไปใช้งานจริงบนทั้ง 8 Processes ของ 2× RTX 4090</p></div></section>
+<section class="slide " data-title="ผลประเมินโมเดล YOLO11s ที่ threshold 0.32: ค่าที่วัดได้ถึงเกณฑ์ ≥ 0.80 ครบทั้ง 2 คลาส" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">ผลประเมินโมเดล YOLO11s ที่ threshold 0.32: ค่าที่วัดได้ถึงเกณฑ์ ≥ 0.80 ครบทั้ง 2 คลาส</span><span class="tag">results/model/metrics_after.json</span></h2></header><div class="body"><table class="c6"><thead><tr><th>รุ่นโมเดล</th><th><code>NO_HARDHAT</code> Recall</th><th><code>NO_HARDHAT</code> Precision</th><th><code>NO_VEST</code> Recall</th><th><code>NO_VEST</code> Precision</th><th>ผลการประเมิน</th></tr></thead><tbody><tr><td>ก่อนเทรน (<code>yolo11s</code> COCO pretrained)</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.000</td><td>ไม่มีคลาส PPE · ไม่ผ่าน</td></tr><tr><td><b>หลังเทรน (<code>ppe-yolo-v1</code> · <code>best.pt</code>, <code>conf = 0.32</code>)</b></td><td><b>0.800 (20/25)</b></td><td><b>0.952 (20/21)</b></td><td><b>0.861 (31/36)</b></td><td><b>1.000 (31/31)</b></td><td><b>ค่าที่วัดได้ถึงเกณฑ์ ≥ 0.80 ทุกคลาส</b> (แจ้งหมายเหตุขนาด Test Set 82 รูป)</td></tr></tbody></table>ความโปร่งใส: ชุดทดสอบสาธารณะมีภาพกลุ่มบวก 25 รูป (ต่ำกว่าเกณฑ์กลุ่มละ 100 รูปของ NFR-01) จึงแจ้งลูกค้าให้เก็บภาพหน้างานจริงเพิ่มเพื่อยืนยันซ้ำ</div></section>
+<section class="slide " data-title="ตัวอย่างกรอบทำนายจริงของโมเดล ppe-yolo-v1 (best.pt) บนภาพชุดทดสอบ" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">ตัวอย่างกรอบทำนายจริงของโมเดล ppe-yolo-v1 (best.pt) บนภาพชุดทดสอบ</span><span class="tag">results/model/examples_test_predictions.jpg</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/model/examples_test_predictions.jpg" alt="ตัวอย่างกรอบทำนายจริงของโมเดล ppe-yolo-v1 (best.pt) บนภาพชุดทดสอบ" width="1920" height="1920"></div><p class="cap">โมเดลตีกรอบแยกคนงานที่สวมอุปกรณ์และไม่สวมอุปกรณ์ (NO-Hardhat, NO-Safety Vest) ได้แม่นยำพร้อมคะแนนความมั่นใจ</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 7 · วัดสมรรถนะ 4 รูปแบบ, ทดสอบ GPU ช้า &amp; Failover และเปิด Design #4" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.45"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 7 · วัดสมรรถนะ 4 รูปแบบ, ทดสอบ GPU ช้า &amp; Failover และเปิด Design #4</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 7 · วัดความจุ 4 รูปแบบ, ทดสอบ GPU ช้า &amp; Failover และเปิดระบบจริง</b></span><span class="plabel">พรอมต์ทั้งหมด 9 บรรทัด</span><button class="copy big" data-full="prompt6">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">บนเครื่อง 1 โหนด × 2× RTX 4090 ให้รันชุดทดสอบความจุและเสถียรภาพด้วย cluster.sh และ loadgen.py (เกณฑ์ p95 ≤ 500 ms):
+1. วัดความจุเปรียบเทียบ 4 รูปแบบ:
+   - Design #1: 1 GPU · 1 Process · Single
+   - Design #2: 1 GPU · 1 Process · Micro-batch
+   - Design #3: 1 GPU · 4 Processes · Micro-batch
+   - Design #4: 2× RTX 4090 · 8 Processes (4/GPU) · Micro-batch · NGINX least_conn
+2. ทดสอบสถานการณ์ GPU 1 ช้าลง 3 เท่า (slow-factor 3) เปรียบเทียบ Round Robin กับ least_conn
+3. ทดสอบสถานการณ์ปิด GPU 1 กะทันหันกลางโหลด 80 ผู้ใช้ เปรียบเทียบ Failover OFF กับ Failover ON
+4. บันทึกผล JSON ลง results/lb/ สร้างกราฟ 4 แผ่นใน images/lab/ แล้วเปิด Design #4 (--gpus 2 --per-gpu 4 --mode micro --lb lc --failover on) เชื่อมต่อกับเว็บ Docker Compose (sitesafe-nginx พอร์ต 3410) และเปิด sitesafe-mock (พอร์ต 3411) คู่กัน</span></pre></div></section>
+<section class="slide " data-title="ผลวัดจริงบน 1 โหนด × 2× RTX 4090: Design #4 รองรับ 88 ผู้ใช้พร้อมกัน (8.0×) และ 444.55 คำขอต่อวินาที" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">ผลวัดจริงบน 1 โหนด × 2× RTX 4090: Design #4 รองรับ 88 ผู้ใช้พร้อมกัน (8.0×) และ 444.55 คำขอต่อวินาที</span><span class="tag">results/lb/summary.json</span></h2></header><div class="body"><table class="c8"><thead><tr><th>รูปแบบสถาปัตยกรรม</th><th>จำนวน GPU / Process</th><th>โหมด</th><th>ความจุ (ผู้ใช้พร้อมกัน)</th><th>ปริมาณงาน (คำขอต่อวินาที)</th><th>ความหน่วง p95</th><th>การใช้ GPU 0 / GPU 1</th><th>เทียบฐาน</th></tr></thead><tbody><tr><td>Design #1 (<code>base</code>)</td><td>1 GPU · 1 Process</td><td>Single</td><td>11</td><td>54.73</td><td>447.5 ms</td><td>8% / 0%</td><td>1.0×</td></tr><tr><td>Design #2 (<code>batch</code>)</td><td>1 GPU · 1 Process</td><td>Micro-batch</td><td>32</td><td>121.27</td><td>481.3 ms</td><td>19% / 0%</td><td>2.9×</td></tr><tr><td>Design #3 (<code>multi</code>)</td><td>1 GPU · 4 Processes</td><td>Micro-batch</td><td>64</td><td>288.55</td><td>412.8 ms</td><td>45% / 0%</td><td>5.8×</td></tr><tr><td><b>Design #4 (<code>gpu2_lc</code> · ชุดใช้งานจริง)</b></td><td><b>2× RTX 4090 · 8 Processes</b></td><td><b>Micro-batch + <code>least_conn</code></b></td><td><b>88</b></td><td><b>444.55</b></td><td><b>457.4 ms</b></td><td><b>54% / 49%</b></td><td><b>8.0×</b></td></tr></tbody></table>ทุกการวัดใช้เกณฑ์เดียวกันคือความหน่วง p95 ไม่เกิน 500 มิลลิวินาที · Design #4 ใช้ทั้ง GPU 0 (54%) และ GPU 1 (49%) อย่างสมดุล</div></section>
+<section class="slide " data-title="เทียบความจุ 4 รูปแบบ: จาก 11 → 32 → 64 → 88 ผู้ใช้พร้อมกัน (เพิ่มขึ้น 8.0 เท่า)" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เทียบความจุ 4 รูปแบบ: จาก 11 → 32 → 64 → 88 ผู้ใช้พร้อมกัน (เพิ่มขึ้น 8.0 เท่า)</span><span class="tag">results/lb/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:422px"><img src="images/lab/01_capacity_4designs.png" alt="เทียบความจุ 4 รูปแบบ: จาก 11 → 32 → 64 → 88 ผู้ใช้พร้อมกัน (เพิ่มขึ้น 8.0 เท่า)" width="2700" height="1120"></div><p class="cap">ดูการกระโดดของความจุทุกขั้น: Micro-batching (2.9×) → เพิ่มเป็น 4 Processes/GPU (5.8×) → ขยาย 2× RTX 4090 + NGINX least_conn (8.0×)</p></div></section>
+<section class="slide " data-title="เส้นโค้งความหน่วงและปริมาณงาน: Design #4 คง p95 ต่ำกว่า 500 ms ได้จนถึง 88 ผู้ใช้พร้อมกัน" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เส้นโค้งความหน่วงและปริมาณงาน: Design #4 คง p95 ต่ำกว่า 500 ms ได้จนถึง 88 ผู้ใช้พร้อมกัน</span><span class="tag">results/lb/gpu2_lc.json</span></h2></header><div class="body"><div class="fig" style="--figmin:415px"><img src="images/lab/04_latency_throughput_curves.png" alt="เส้นโค้งความหน่วงและปริมาณงาน: Design #4 คง p95 ต่ำกว่า 500 ms ได้จนถึง 88 ผู้ใช้พร้อมกัน" width="2700" height="1100"></div><p class="cap">เมื่อเพิ่มจำนวนผู้ใช้พร้อมกัน Design #4 ทำปริมาณงานได้สูงสุด 444.55 คำขอต่อวินาทีโดยความหน่วงยังผ่านเกณฑ์ SLO</p></div></section>
+<section class="slide " data-title="เมื่อ GPU 1 ช้าลง 3 เท่า: NGINX least_conn รักษาความจุได้ 76 ผู้ใช้ สูงกว่า Round Robin +76.7%" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เมื่อ GPU 1 ช้าลง 3 เท่า: NGINX least_conn รักษาความจุได้ 76 ผู้ใช้ สูงกว่า Round Robin +76.7%</span><span class="tag">results/lb/lc_slow.json · rr_slow.json</span></h2></header><div class="body"><div class="fig" style="--figmin:407px"><img src="images/lab/02_rr_vs_lc_slow.png" alt="เมื่อ GPU 1 ช้าลง 3 เท่า: NGINX least_conn รักษาความจุได้ 76 ผู้ใช้ สูงกว่า Round Robin +76.7%" width="2600" height="1040"></div><p class="cap">Round Robin แจกงาน 50%/50% ทำให้ค้างที่การ์ดจอช้า (43 ผู้ใช้) ส่วน least_conn โยกโหลดไป GPU 0 ทันทีเป็น 68%/32% (76 ผู้ใช้)</p></div></section>
+<section class="slide " data-title="เมื่อปิด GPU 1 กะทันหันกลางโหลด 80 ผู้ใช้: Failover ON ลดความผิดพลาดจาก 67.18% เหลือ 0.00%" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เมื่อปิด GPU 1 กะทันหันกลางโหลด 80 ผู้ใช้: Failover ON ลดความผิดพลาดจาก 67.18% เหลือ 0.00%</span><span class="tag">results/lb/fail_on.json · fail_off.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/03_failover_comparison.png" alt="เมื่อปิด GPU 1 กะทันหันกลางโหลด 80 ผู้ใช้: Failover ON ลดความผิดพลาดจาก 67.18% เหลือ 0.00%" width="2600" height="1360"></div><p class="cap">Failover OFF เกิด 502 จำนวน 14,098 คำขอ (67.18%) ขณะที่ Failover ON ใช้ proxy_next_upstream ย้ายไป GPU 0 ได้ครบโดยผิดพลาด 0 คำขอ</p></div></section>
+<section class="slide " data-title="บัญชีทดลองใช้งานหน้าเว็บ (Demo Login Accounts): ทดลองสลับครบทั้ง 3 บทบาทได้ทันที" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">บัญชีทดลองใช้งานหน้าเว็บ (Demo Login Accounts): ทดลองสลับครบทั้ง 3 บทบาทได้ทันที</span><span class="tag">docs/TEST-DATA.md</span></h2></header><div class="body"><table class="c5"><thead><tr><th>บทบาท (Role)</th><th>อีเมล (Email)</th><th>รหัสผ่าน (Password)</th><th>ไซต์</th><th>ฟีเจอร์และเส้นทางที่ทดลองได้</th></tr></thead><tbody><tr><td><b>หัวหน้างานไซต์ (Supervisor)</b></td><td><code>sup.a@sitesafe.test</code></td><td><code>Test-SupA-01</code></td><td><code>SITE-A</code></td><td>อัปโหลดรูปเป็นชุด (<code>/upload</code>), ดูกรอบ PPE ของไซต์ ก, แก้ผลพร้อมเหตุผล, ดูรายงานไซต์ ก, ดู <code>/telemetry</code></td></tr><tr><td><b>หัวหน้างานไซต์ (Supervisor)</b></td><td><code>sup.b@sitesafe.test</code></td><td><code>Test-SupB-01</code></td><td><code>SITE-B</code></td><td>ทดสอบการแยกข้อมูลข้ามไซต์ (เปิดรูป <code>SITE-A</code> จะถูกปฏิเสธ <code>404</code>)</td></tr><tr><td><b>หัวหน้างานไซต์ (Supervisor)</b></td><td><code>sup.c@sitesafe.test</code></td><td><code>Test-SupC-01</code></td><td><code>SITE-C</code></td><td>อัปโหลดและดูข้อมูลเฉพาะ <code>SITE-C</code></td></tr><tr><td><b>ผู้จัดการความปลอดภัย (Safety Manager)</b></td><td><code>manager@sitesafe.test</code></td><td><code>Test-Manager-01</code></td><td>ทุกไซต์</td><td>ดูรูปครบ 3 ไซต์ (<code>/photos</code>, <code>/photos/problems</code>), แก้ผลตรวจพร้อม Audit Trail, ดูรายงาน 3 ไซต์ (<code>/reports/daily</code>), ดู <code>/telemetry</code> (ไม่มีสิทธิ์อัปโหลด)</td></tr><tr><td><b>ผู้บริหาร (Executive)</b></td><td><code>exec@sitesafe.test</code></td><td><code>Test-Exec-01</code></td><td>ทุกไซต์</td><td>ดูรายงานประจำวัน 3 ไซต์ (<code>/reports/daily</code>) และแดชบอร์ด <code>/telemetry</code> เท่านั้น (ซ่อนเมนูอัปโหลดและรูปภาพ)</td></tr></tbody></table>รหัสผ่านทั้งหมดเก็บด้วย argon2id ใน PostgreSQL · หลังเปิดเว็บที่ http://localhost:3410 สามารถล็อกอินด้วยบัญชีเหล่านี้เพื่อทดสอบสิทธิ์ได้ทันที</div></section>
+<section class="slide " data-title="เดโมใช้งานจริง 1: เริ่มจากหน้า /login → อัปโหลด 6 รูป → กรอบ PPE บน 2× RTX 4090 → รายงาน" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เดโมใช้งานจริง 1: เริ่มจากหน้า /login → อัปโหลด 6 รูป → กรอบ PPE บน 2× RTX 4090 → รายงาน</span><span class="tag">Live 2× RTX 4090 Demo GIF</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/sitesafe_e2e_flow.gif" alt="เดโมใช้งานจริง 1: เริ่มจากหน้า /login → อัปโหลด 6 รูป → กรอบ PPE บน 2× RTX 4090 → รายงาน" width="1600" height="900"></div><p class="cap">แสดงการพิมพ์อีเมลและรหัสผ่านจริงบนหน้า /login, อัปโหลดภาพหน้างานจริง, แสดงกรอบตรวจจับพร้อมป้าย GPU/model_ms และเปิดรายงานประจำวัน</p></div></section>
+<section class="slide " data-title="เดโมใช้งานจริง 2: อัปโหลด 20 รูปพร้อมกัน → หน้ารูปมีปัญหา → รายงาน &lt;90% แดง → /telemetry" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.10"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">เดโมใช้งานจริง 2: อัปโหลด 20 รูปพร้อมกัน → หน้ารูปมีปัญหา → รายงาน &lt;90% แดง → /telemetry</span><span class="tag">Live 2× RTX 4090 Demo GIF</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/sitesafe_lb_telemetry.gif" alt="เดโมใช้งานจริง 2: อัปโหลด 20 รูปพร้อมกัน → หน้ารูปมีปัญหา → รายงาน &lt;90% แดง → /telemetry" width="1600" height="900"></div><p class="cap">สลับบทบาทจากหัวหน้างานเป็นผู้จัดการความปลอดภัย ตรวจหน้ารูปมีปัญหา รายงานไซต์ ก สีแดง (89.67%) และแดชบอร์ด /telemetry สถานะ ONLINE</p></div></section>
+<section class="slide " data-title="หน้าจอใช้งานจริงฝั่งหัวหน้างาน: หน้าอัปโหลดผูกไซต์อัตโนมัติ และหน้าดูกรอบ PPE พร้อม GPU Telemetry" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">หน้าจอใช้งานจริงฝั่งหัวหน้างาน: หน้าอัปโหลดผูกไซต์อัตโนมัติ และหน้าดูกรอบ PPE พร้อม GPU Telemetry</span><span class="tag">Live Web UI</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item tall"><img src="images/lab/web-home.png" alt="**หน้า `/upload`:** ผูก `SITE-A` อัตโนมัติ ไม่มีช่องเลือกไซต์อื่น"><div class="media-cap"><b>หน้า <code>/upload</code>:</b> ผูก <code>SITE-A</code> อัตโนมัติ ไม่มีช่องเลือกไซต์อื่น</div></div><div class="media-item tall"><img src="images/lab/web-detect-boxes.png" alt="**หน้า `/photos/[id]`:** วาดกรอบ PPE ทับภาพต้นฉบับพร้อม `X-Upstream` และ `model_ms`"><div class="media-cap"><b>หน้า <code>/photos/[id]</code>:</b> วาดกรอบ PPE ทับภาพต้นฉบับพร้อม <code>X-Upstream</code> และ <code>model_ms</code></div></div></div></div></section>
+<section class="slide " data-title="หน้าจอใช้งานจริงฝั่งผู้จัดการและผู้บริหาร: รายงานเส้นแบ่ง 90% และแดชบอร์ด /telemetry" data-group="5 · ระยะ C: สร้างและเปิดใช้จริง" data-max="1.40"><header class="hd"><div class="kicker">ระยะ C · สร้างระบบ เตรียมโมเดล และวัดผลบน 2× RTX 4090</div><h2><span class="tt">หน้าจอใช้งานจริงฝั่งผู้จัดการและผู้บริหาร: รายงานเส้นแบ่ง 90% และแดชบอร์ด /telemetry</span><span class="tag">Live Web UI</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item tall"><img src="images/lab/web-report-daily.png" alt="**หน้า `/reports/daily`:** SITE-A `89.67%` ขึ้นสีแดง · SITE-B `90.00%` ปกติ"><div class="media-cap"><b>หน้า <code>/reports/daily</code>:</b> SITE-A <code>89.67%</code> ขึ้นสีแดง · SITE-B <code>90.00%</code> ปกติ</div></div><div class="media-item tall"><img src="images/lab/web-telemetry.png" alt="**หน้า `/telemetry`:** แสดงสถานะ Upstream `ONLINE` และสัดส่วนการกระจายงาน 2× RTX 4090"><div class="media-cap"><b>หน้า <code>/telemetry</code>:</b> แสดงสถานะ Upstream <code>ONLINE</code> และสัดส่วนการกระจายงาน 2× RTX 4090</div></div></div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/div-phase-d.jpg)" data-title="ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อพร้อม .gif ทุกข้อ และ Bug Hunt 3/3" data-group="6 · ระยะ D: ทดสอบและส่งมอบ"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">ระยะ D</div><h1>ทดสอบอัตโนมัติ Playwright 27 ข้อพร้อม <code>.gif</code> ทุกข้อ และ Bug Hunt 3/3</h1><div class="sub">พิสูจน์ทุกกติกาบน 2× RTX 4090 จริง · จับบักซ่อนครบ 3/3 · ลบเครื่อง GPU ทันที · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 8 · รัน Playwright 24 Core Test Cases พร้อมบันทึก .gif ทุกข้อ" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 8 · รัน Playwright 24 Core Test Cases พร้อมบันทึก .gif ทุกข้อ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 8 · ทดสอบ E2E ครบ 24 Core Test Cases + บันทึก <code>.gif</code> รายข้อ + เดโมหน้าเว็บ</b></span><span class="plabel">พรอมต์ทั้งหมด 7 บรรทัด</span><button class="copy big" data-full="prompt7">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">ออกแบบและรันชุดทดสอบ Playwright (test/e2e/tests/) ครบ 24 Core Test Cases (TC-01 ถึง TC-24) ครอบคลุมทุก Requirement และ Business Rule:
+- กลุ่ม A (TC-01..06): ตรวจขนาดไฟล์ 14.9/15.0/15.1 MB (BR-05), ชนิดไฟล์จริงด้วย Magic Bytes (FR-02), จำนวน 0/50/51 รูป (BR-06), การผูกไซต์อัตโนมัติ (FR-04)
+- กลุ่ม B (TC-07..12): Decision Table 8 กรณี R-1..R-8 (BR-01..03), วาดกรอบ SVG, ตรวจภาพหน้างานจริง 6 รูปด้วย YOLO11s บน 2× RTX 4090, กรองหน้ารูปมีปัญหาและรูปทั้งหมด
+- กลุ่ม C (TC-13..17): ปิดเบราว์เซอร์กลางทาง 10 รูปไม่หาย, ไฟล์ใหญ่ 15 MB ตรวจผ่าน NGINX, ไฟล์เสียไม่ขวางภาพปกติ, ชุด 20 รูปพร้อมกันเช็ก p95 ≤ 30 วิ และกระจายข้ามทั้ง gpu0 และ gpu1, และ /api/health
+- กลุ่ม D (TC-18..22): เส้นแบ่งสีแดง 89.67% vs 90.00% vs 90.33% (BR-04), ขอบเขตพิเศษวันที่ 2, ป้ายเวลา 17:59 vs 18:00 น. (BR-07), แก้ผลพร้อมเหตุผลและ Audit Trail (FR-13..16)
+- กลุ่ม E (TC-23..24): แยกสิทธิ์ RBAC 3 บทบาท (401/403/404), แดชบอร์ด /telemetry ONLINE และตรวจไม่รั่ว API Key
+ทุก Test Case ต้องบันทึกวิดีโอหลักฐาน .gif ของตัวเองที่ images/tests/TC-XX.gif พร้อมบันทึกวิดีโอเดโมหน้าเว็บเริ่มตั้งแต่หน้า /login และสร้าง test/TEST-REPORT.md กับ test/index.html</span></pre></div></section>
+<section class="slide " data-title="สรุปผลทดสอบ Playwright: ผ่านครบ 24/24 ข้อ จับบัก Bug Hunt ครบ 3/3 และบันทึก .gif ครบ 27 ไฟล์" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">สรุปผลทดสอบ Playwright: ผ่านครบ 24/24 ข้อ จับบัก Bug Hunt ครบ 3/3 และบันทึก .gif ครบ 27 ไฟล์</span><span class="tag">test/TEST-REPORT.md</span></h2></header><div class="body"><div class="tiles"><div class="tile good"><div class="num">24 / 24</div><div class="k">Core Test Cases ผ่าน 100%</div><div class="s">ทดสอบจริงบน 2× RTX 4090 (22 ข้อ) + Mock (2 ข้อ)</div></div><div class="tile good"><div class="num">3 / 3</div><div class="k">Bug Hunt จับบักครบ 100%</div><div class="s">พิสูจน์ในโหมด BUG_MODE=1 แล้วคืนค่า BUG_MODE=0</div></div><div class="tile "><div class="num">2.23 วิ</div><div class="k">p95 ชุด 20 รูปจริง (TC-16)</div><div class="s">เร็วกว่าเกณฑ์ 30 วิ ถึง 13.5× · กระจาย gpu0=7, gpu1=13</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ทุก Test Case ทั้ง 27 ข้อมีไฟล์วิดีโอ .gif ของตัวเองใน images/tests/TC-01.gif ถึง TC-27.gif และเปิดกรองดูได้ใน test/index.html</span></div></div></section>
+<section class="slide " data-title="ตารางผลทดสอบ Playwright (ชุดที่ 1 · TC-01 ถึง TC-12): Upload, Rules และ Live YOLO11s" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">ตารางผลทดสอบ Playwright (ชุดที่ 1 · TC-01 ถึง TC-12): Upload, Rules และ Live YOLO11s</span><span class="tag">test/evidence/e2e_results.json</span></h2></header><div class="body"><div class="compact-tbl"><table class="c6"><thead><tr><th>TC ID</th><th>ชื่อ Test Case</th><th>กติกา</th><th>โหมด</th><th>ผลจริง</th><th>สถานะ</th></tr></thead><tbody><tr><td><b>TC-01</b></td><td>รับไฟล์ขนาด 14.9 MB และ 15.0 MB พอดี</td><td><code>BR-05</code></td><td>Live GPU</td><td>HTTP 201, 201</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-02</b></td><td>ปฏิเสธไฟล์เกิน 15 MB (+1 B และ 15.1 MB)</td><td><code>BR-05</code></td><td>Live GPU</td><td>HTTP 413, 413</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-03</b></td><td>รับเฉพาะ JPG และ PNG แท้ (ตรวจ Magic Bytes)</td><td><code>FR-02</code></td><td>Live GPU</td><td>รับครบ 2/2 (JPG + PNG)</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-04</b></td><td>ปฏิเสธ GIF, PDF และไฟล์ text ปลอมนามสกุล .jpg</td><td><code>FR-02</code></td><td>Live GPU</td><td>HTTP 415, 415, 415</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-05</b></td><td>ขอบเขตจำนวนรูปต่อครั้ง (0, 50, 51 รูป)</td><td><code>BR-06</code></td><td>Live GPU</td><td>422 · 201 · 422</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-06</b></td><td>หน้า /upload ผูกไซต์ตามบัญชีหัวหน้างานอัตโนมัติ</td><td><code>FR-04</code></td><td>Live GPU</td><td>SITE-A · select=0</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-07</b></td><td>Decision Table ครบ 8 กรณี R-1..R-8 (รวม H=0, V=2)</td><td><code>BR-01..03</code></td><td>Mock</td><td>8/8 ตรงครบทุกกรณี</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-08</b></td><td>หน้า PhotoDetail วาดกรอบ Bounding Boxes ครบตาม H+V</td><td><code>FR-07, FR-08</code></td><td>Mock</td><td>H=1, V=1, 2 กรอบ, FAIL</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-09</b></td><td>Live 2× RTX 4090 YOLO11s ตรวจภาพหน้างานจริง 6 รูป + วาดกรอบ</td><td><code>FR-07, NFR-01</code></td><td>Live GPU</td><td>6/6 DONE (gpu0-8103, model=26.38ms)</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-10</b></td><td>หน้า /photos/problems แสดงเฉพาะรูป FAIL และ WARN</td><td><code>FR-11</code></td><td>Live GPU</td><td>รวม 31 (FAIL=20, WARN=11)</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-11</b></td><td>หน้า /photos กรองตามวันที่ ไซต์ และผลตรวจ (WARN)</td><td><code>FR-12</code></td><td>Live GPU</td><td>photos-total-count = 11</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-12</b></td><td>API /api/photos/{id} คืนกรอบ PPE และ GPU Telemetry ครบ</td><td><code>FR-07</code></td><td>Live GPU</td><td>gpu0-8102 (127.0.0.1:8102)</td><td class="yes">✓ ผ่าน</td></tr></tbody></table></div></div></section>
+<section class="slide " data-title="ตารางผลทดสอบ Playwright (ชุดที่ 2 · TC-13 ถึง TC-24): Reliability, 2× GPU LB, Reports และ RBAC" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">ตารางผลทดสอบ Playwright (ชุดที่ 2 · TC-13 ถึง TC-24): Reliability, 2× GPU LB, Reports และ RBAC</span><span class="tag">test/evidence/e2e_results.json</span></h2></header><div class="body"><div class="compact-tbl"><table class="c6"><thead><tr><th>TC ID</th><th>ชื่อ Test Case</th><th>กติกา</th><th>โหมด</th><th>ผลจริง</th><th>สถานะ</th></tr></thead><tbody><tr><td><b>TC-13</b></td><td>ปิดหน้าเบราว์เซอร์กลางทาง 10 รูปยังตรวจจบครบ 10/10</td><td><code>FR-05, NFR-04</code></td><td>Live GPU</td><td>done=10, failed=0</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-14</b></td><td>ไฟล์ใหญ่ 14.9 MB และ 15.0 MB ตรวจจบครบผ่าน NGINX</td><td><code>BR-05, NFR-04</code></td><td>Live GPU</td><td>done=2 ใน 2.5 วินาที</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-15</b></td><td>ไฟล์เสีย corrupt_half.jpg จบ FAILED โดยไม่ขวางภาพปกติ</td><td><code>FR-06, NFR-04</code></td><td>Live GPU</td><td>done=2, failed=1 (เปิดไฟล์รูปไม่ได้)</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-16</b></td><td>ส่ง 20 รูปพร้อมกัน p95 ≤ 30 วิ และกระจายข้ามทั้ง 2× RTX 4090</td><td><code>NFR-02, NFR-03</code></td><td>Live GPU</td><td>20/20 ใน 2.69s · p95=2.23s · gpu0=7, gpu1=13</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-17</b></td><td>GET /api/health รายงาน db, storage, dispatcher, gateway = ok</td><td><code>NFR-04</code></td><td>Live GPU</td><td>status=ok, db=ok, dispatcher=ok, gateway=ok</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-18</b></td><td>BR-04 เส้นแบ่งสีแดง 89.67% แดง · 90.00% และ 90.33% ปกติ</td><td><code>BR-04</code></td><td>Live GPU</td><td>89.67%(แดง) · 90.00%(ปกติ) · 90.33%(ปกติ)</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-19</b></td><td>ขอบเขตพิเศษรายงาน (ไม่มีข้อมูล / 9÷10 / ตัด FAILED ออก)</td><td><code>FR-15, BR-04</code></td><td>Live GPU</td><td>ตรงครบทั้ง 3 ไซต์</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-20</b></td><td>BR-07 ป้ายความพร้อมรายงาน 17:59 น. vs 18:00 น.</td><td><code>BR-07</code></td><td>Live GPU</td><td>data-ready=false → true ตรงเวลา</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-21</b></td><td>แก้ผล FAIL → PASS เปลี่ยนไซต์ ก จาก 89.67% (แดง) เป็น 90.00% (ปกติ)</td><td><code>FR-13, FR-14, NFR-07</code></td><td>Live GPU</td><td>90.00% ไม่แดง · edited=1</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-22</b></td><td>ปฏิเสธเหตุผลว่าง (422) + Audit History + ปุ่มเลื่อนวันรายงาน</td><td><code>FR-13, FR-16</code></td><td>Live GPU</td><td>422 · 201 · 2026-11-17→16</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-23</b></td><td>แยกสิทธิ์ RBAC ครบ 3 บทบาท (401/403/404) + UI Login</td><td><code>FR-18..22, NFR-06</code></td><td>Live GPU</td><td>401 · 404 · 403 · UI Executive ซ่อนเมนูครบ</td><td class="yes">✓ ผ่าน</td></tr><tr><td><b>TC-24</b></td><td>แดชบอร์ด /telemetry ONLINE (2× RTX 4090) + ไม่รั่ว API Key</td><td><code>NFR-05</code></td><td>Live GPU</td><td>ONLINE (gpu0-8103) · 3/3 บทบาทเข้าได้ · 0 รั่วไหล</td><td class="yes">✓ ผ่าน</td></tr></tbody></table></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม A · การรับไฟล์และตรวจขอบเขต (BR-05, FR-02, BR-06)" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม A · การรับไฟล์และตรวจขอบเขต (BR-05, FR-02, BR-06)</span><span class="tag">TC-01 · TC-02 · TC-04 · TC-05</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item compact"><img src="images/tests/TC-01.gif" alt="TC-01 · รับ 14.9 &amp; 15.0 MB พอดี"><div class="media-cap"><strong>TC-01 · รับ 14.9 &amp; 15.0 MB พอดี</strong> — HTTP 201 ทั้งสองไฟล์ (BR-05)</div></div><div class="media-item compact"><img src="images/tests/TC-02.gif" alt="TC-02 · ปฏิเสธ 15 MB + 1 B"><div class="media-cap"><strong>TC-02 · ปฏิเสธ 15 MB + 1 B</strong> — HTTP 413 พร้อมข้อความ 15 MB</div></div><div class="media-item compact"><img src="images/tests/TC-04.gif" alt="TC-04 · ปฏิเสธ GIF/PDF/fake.jpg"><div class="media-cap"><strong>TC-04 · ปฏิเสธ GIF/PDF/fake.jpg</strong> — HTTP 415 ตรวจจาก Magic Bytes</div></div><div class="media-item compact"><img src="images/tests/TC-05.gif" alt="TC-05 · ขอบเขต 0 / 50 / 51 รูป"><div class="media-cap"><strong>TC-05 · ขอบเขต 0 / 50 / 51 รูป</strong> — 422 · 201 · 422 ตรงตาม BR-06</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>คลิกที่วิดีโอ GIF ใดก็ได้เพื่อขยายเต็มจอ · ดูครบทุกข้อที่ test/index.html</span></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม B · ตารางตัดสิน BR-01..03 และ YOLO11s จริงบน 2× RTX 4090" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม B · ตารางตัดสิน BR-01..03 และ YOLO11s จริงบน 2× RTX 4090</span><span class="tag">TC-07 · TC-08 · TC-09</span></h2></header><div class="body"><div class="editorial-row c3"><div class="media-item "><img src="images/tests/TC-07.gif" alt="TC-07 · Decision Table 8/8"><div class="media-cap"><strong>TC-07 · Decision Table 8/8</strong> — ครบ R-1..R-8 รวม H=0, V=2 → FAIL</div></div><div class="media-item "><img src="images/tests/TC-08.gif" alt="TC-08 · กรอบ Bounding Boxes"><div class="media-cap"><strong>TC-08 · กรอบ Bounding Boxes</strong> — h1_v1.jpg วาดครบ 2 กรอบ SVG</div></div><div class="media-item "><img src="images/tests/TC-09.gif" alt="TC-09 · Live 2× RTX 4090 (6 รูป)"><div class="media-cap"><strong>TC-09 · Live 2× RTX 4090 (6 รูป)</strong> — 6/6 DONE · gpu0-8103 · 26.38 ms</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ยืนยันทั้งกติกาเชิงขอบเขตแบบกำหนดค่าได้ (Mock) และผลตรวจภาพหน้างานจริงด้วย YOLO11s บน 2× RTX 4090</span></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม C · ความทนทาน รูปห้ามหาย และการกระจายงานข้าม 2× RTX 4090" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม C · ความทนทาน รูปห้ามหาย และการกระจายงานข้าม 2× RTX 4090</span><span class="tag">TC-13 · TC-14 · TC-15 · TC-16</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item compact"><img src="images/tests/TC-13.gif" alt="TC-13 · ปิดเบราว์เซอร์กลางทาง"><div class="media-cap"><strong>TC-13 · ปิดเบราว์เซอร์กลางทาง</strong> — เปิดกลับมาตรวจจบครบ 10/10 รูป</div></div><div class="media-item compact"><img src="images/tests/TC-14.gif" alt="TC-14 · ไฟล์ใหญ่ 14.9 &amp; 15.0 MB"><div class="media-cap"><strong>TC-14 · ไฟล์ใหญ่ 14.9 &amp; 15.0 MB</strong> — ผ่าน NGINX 20 MB จบ 2/2 ใน 2.5 วิ</div></div><div class="media-item compact"><img src="images/tests/TC-15.gif" alt="TC-15 · ไฟล์เสีย corrupt_half.jpg"><div class="media-cap"><strong>TC-15 · ไฟล์เสีย corrupt_half.jpg</strong> — จบ FAILED โดยไม่ขวางภาพปกติ 2/2</div></div><div class="media-item compact"><img src="images/tests/TC-16.gif" alt="TC-16 · ชุด 20 รูปพร้อมกัน"><div class="media-cap"><strong>TC-16 · ชุด 20 รูปพร้อมกัน</strong> — 20/20 ใน 2.69 วิ · p95=2.23 วิ · gpu0=7, gpu1=13</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>TC-16 พิสูจน์จริงว่า NGINX least_conn กระจายโหลดข้ามทั้ง GPU 0 และ GPU 1 พร้อมทำความเร็วเร็วกว่าเกณฑ์ 30 วินาทีถึง 13.5 เท่า</span></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม D1 · เส้นแบ่งรายงาน 90.00% และป้ายเวลาความพร้อม 18:00 น." data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม D1 · เส้นแบ่งรายงาน 90.00% และป้ายเวลาความพร้อม 18:00 น.</span><span class="tag">TC-18 · TC-19 · TC-20</span></h2></header><div class="body"><div class="editorial-row c3"><div class="media-item "><img src="images/tests/TC-18.gif" alt="TC-18 · เส้นแบ่งสีแดง BR-04"><div class="media-cap"><strong>TC-18 · เส้นแบ่งสีแดง BR-04</strong> — 89.67% แดง · 90.00% และ 90.33% ปกติ</div></div><div class="media-item "><img src="images/tests/TC-19.gif" alt="TC-19 · ขอบเขตพิเศษวันที่ 2"><div class="media-cap"><strong>TC-19 · ขอบเขตพิเศษวันที่ 2</strong> — ไม่มีข้อมูล / 9÷10=90% / ตัด FAILED ออก</div></div><div class="media-item "><img src="images/tests/TC-20.gif" alt="TC-20 · เวลาความพร้อม BR-07"><div class="media-cap"><strong>TC-20 · เวลาความพร้อม BR-07</strong> — 17:59 น. ระหว่างวัน → 18:00 น. พร้อมแล้ว</div></div></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม D2 · หน้ารูปมีปัญหา การแก้ผลพร้อม Audit Trail และการเลื่อนวัน" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม D2 · หน้ารูปมีปัญหา การแก้ผลพร้อม Audit Trail และการเลื่อนวัน</span><span class="tag">TC-10 · TC-21 · TC-22</span></h2></header><div class="body"><div class="editorial-row c3"><div class="media-item "><img src="images/tests/TC-10.gif" alt="TC-10 · หน้า /photos/problems"><div class="media-cap"><strong>TC-10 · หน้า /photos/problems</strong> — แสดงเฉพาะ FAIL 20 + WARN 11 = 31 รูป</div></div><div class="media-item "><img src="images/tests/TC-21.gif" alt="TC-21 · แก้ผล FAIL → PASS"><div class="media-cap"><strong>TC-21 · แก้ผล FAIL → PASS</strong> — ไซต์ ก เปลี่ยนจาก 89.67% แดงเป็น 90.00% ปกติ</div></div><div class="media-item "><img src="images/tests/TC-22.gif" alt="TC-22 · ปฏิเสธเหตุผลว่าง + Audit"><div class="media-cap"><strong>TC-22 · ปฏิเสธเหตุผลว่าง + Audit</strong> — เหตุผลว่าง 422 · มีเหตุผล 201 · เลื่อนวันได้</div></div></div></div></section>
+<section class="slide " data-title="หลักฐาน GIF กลุ่ม E · การแยกสิทธิ์ RBAC 3 บทบาท และแดชบอร์ด /telemetry ปลอด API Key" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF กลุ่ม E · การแยกสิทธิ์ RBAC 3 บทบาท และแดชบอร์ด /telemetry ปลอด API Key</span><span class="tag">TC-23 · TC-24</span></h2></header><div class="body"><div class="editorial-row c2"><div class="media-item "><img src="images/tests/TC-23.gif" alt="TC-23 · RBAC 3 บทบาท (401/403/404)"><div class="media-cap"><strong>TC-23 · RBAC 3 บทบาท (401/403/404)</strong> — ไม่ล็อกอิน→401 · ข้ามไซต์→404 · Manager/Exec→403</div></div><div class="media-item "><img src="images/tests/TC-24.gif" alt="TC-24 · /telemetry ONLINE + Security"><div class="media-cap"><strong>TC-24 · /telemetry ONLINE + Security</strong> — แสดงสถานะ ONLINE (gpu0-8103) · 0 API Key รั่วไหล</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ทุกบทบาทเข้าดู /telemetry ได้ แต่ไม่มีการส่งผ่าน API Key ไปยังฝั่งเบราว์เซอร์หรือ HTML เลยแม้แต่ตัวเดียว</span></div></div></section>
+<section class="slide " data-title="Bug Hunt (BUG_MODE=1): พิสูจน์ว่าชุดทดสอบจับบักที่ซ่อนอยู่ในกติกาได้จริงครบ 3/3" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.25"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">Bug Hunt (BUG_MODE=1): พิสูจน์ว่าชุดทดสอบจับบักที่ซ่อนอยู่ในกติกาได้จริงครบ 3/3</span></h2></header><div class="body"><div class="ex"><div class="fig"><img src="images/slides/diag-bughunt.jpg" alt="Bug Hunt (BUG_MODE=1): พิสูจน์ว่าชุดทดสอบจับบักที่ซ่อนอยู่ในกติกาได้จริงครบ 3/3" width="1920" height="1080"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>เปิดโหมด <code>BUG_MODE=1</code>:</b> สวิตช์ที่อ่านเฉพาะใน <code>web/lib/rules.ts</code> ทำให้กติกา 3 ข้อ (<code>BR-02</code>, <code>BR-04</code>, <code>BR-06</code>) ทำงานผิดที่จุดขอบเขต</span></div><div class="stp"><span class="n">2</span><span><b>รัน Playwright ตรวจซ้ำ (<code>TC-25</code>–<code>TC-27</code>):</b> ชุดทดสอบต้องตรวจพบความผิดพลาดครบทั้ง 3 ข้อ ไม่ใช่ปล่อยผ่านไปเงียบ ๆ</span></div><div class="stp"><span class="n">3</span><span><b>คืนค่า <code>BUG_MODE=0</code> ทันที:</b> หลังเก็บหลักฐาน <code>.gif</code> และภาพหน้าจอครบจึงปิดโหมดบักกลับสู่สถานะปกติ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 9 · รัน Bug Hunt (TC-25..TC-27) ในโหมด BUG_MODE=1" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 9 · รัน Bug Hunt (TC-25..TC-27) ในโหมด BUG_MODE=1</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 9 · รัน Bug Hunt (<code>TC-25</code>–<code>TC-27</code>) ในโหมด <code>BUG_MODE=1</code></b></span><span class="plabel">พรอมต์ทั้งหมด 5 บรรทัด</span><button class="copy big" data-full="prompt8">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">เปิดโหมด BUG_MODE=1 บนสแต็ก sitesafe-mock (พอร์ต 3411) แล้วรัน test/e2e/tests/06_bughunt.spec.ts (TC-25 ถึง TC-27) เพื่อพิสูจน์ว่าชุดทดสอบจับความผิดพลาดของ Business Rule ที่ซ่อนไว้ได้ครบ 3/3:
+- TC-25 (BR-02): ยืนยันตรวจพบว่า h0_v2.jpg ตอบ WARN แทน FAIL
+- TC-26 (BR-04): ยืนยันตรวจพบว่า SITE-B ที่ได้ 90.00% พอดีถูกไฮไลต์สีแดง พร้อมถ่ายภาพหน้าจอ images/lab/web-bug-9000.png
+- TC-27 (BR-06): ยืนยันตรวจพบว่าส่งชุด 51 รูปได้รับ 201 แทน 422
+บันทึกไฟล์ .gif หลักฐานทั้ง 3 ข้อ (images/tests/TC-25.gif ถึง TC-27.gif) บันทึกผลลง test/BUG-HUNT.md แล้วคืนค่า BUG_MODE=0 ทันที</span></pre></div></section>
+<section class="slide " data-title="หลักฐาน GIF Bug Hunt (BUG_MODE=1): จับบักซ่อนได้ครบทั้ง 3 กติกา (3/3 · 100%)" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">หลักฐาน GIF Bug Hunt (BUG_MODE=1): จับบักซ่อนได้ครบทั้ง 3 กติกา (3/3 · 100%)</span><span class="tag">TC-25 · TC-26 · TC-27 (BUG_MODE=1)</span></h2></header><div class="body"><div class="editorial-row c3"><div class="media-item "><img src="images/tests/TC-25.gif" alt="TC-25 · จับบัก #1 (BR-02)"><div class="media-cap"><strong>TC-25 · จับบัก #1 (BR-02)</strong> — h0_v2.jpg ตอบ WARN แทน FAIL</div></div><div class="media-item "><img src="images/tests/TC-26.gif" alt="TC-26 · จับบัก #2 (BR-04)"><div class="media-cap"><strong>TC-26 · จับบัก #2 (BR-04)</strong> — SITE-B 90.00% พอดีถูกไฮไลต์สีแดง</div></div><div class="media-item "><img src="images/tests/TC-27.gif" alt="TC-27 · จับบัก #3 (BR-06)"><div class="media-cap"><strong>TC-27 · จับบัก #3 (BR-06)</strong> — ส่งชุด 51 รูปตอบ 201 แทน 422</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ยืนยันคุณภาพของชุดทดสอบ: เมื่อโค้ดผิดเงื่อนไขเพียง 1 เครื่องหมาย (&gt; แทน ≥ หรือ ≤ แทน &lt;) Playwright จับได้ทันทีทุกข้อ</span></div></div></section>
+<section class="slide " data-title="ภาพหน้าจอหลักฐาน Bug #2 (BR-04): เมื่อ BUG_MODE=1 ไซต์ ข ที่ได้ 90.00% พอดีกลายเป็นสีแดงผิดกติกา" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.10"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">ภาพหน้าจอหลักฐาน Bug #2 (BR-04): เมื่อ BUG_MODE=1 ไซต์ ข ที่ได้ 90.00% พอดีกลายเป็นสีแดงผิดกติกา</span><span class="tag">test/BUG-HUNT.md</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/web-bug-9000.png" alt="ภาพหน้าจอหลักฐาน Bug #2 (BR-04): เมื่อ BUG_MODE=1 ไซต์ ข ที่ได้ 90.00% พอดีกลายเป็นสีแดงผิดกติกา" width="1200" height="675"></div><p class="cap">เปรียบเทียบกับภาพปกติ (BUG_MODE=0) ที่ SITE-B 90.00% ต้องไม่แดง · การทดสอบจุดขอบเขต 90.00% พอดีช่วยจับบักลักษณะนี้ได้ทันที</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · พรอมต์ที่ 10 · ลบเครื่อง GPU บน Vast.ai และออกเอกสารส่งมอบงาน" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.45"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">พรอมต์ · พรอมต์ที่ 10 · ลบเครื่อง GPU บน Vast.ai และออกเอกสารส่งมอบงาน</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how"><b>พรอมต์ที่ 10 · ปิดและลบเครื่อง GPU ทันที + ออกเอกสารส่งมอบ <code>DELIVERY.md</code></b></span><span class="plabel">พรอมต์ทั้งหมด 4 บรรทัด</span><button class="copy big" data-full="prompt9">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">หลังจบการทดสอบทั้งหมดให้ดำเนินการปิดทรัพยากรและสรุปงานส่งมอบทันที:
+1. ลบเครื่อง GPU ที่มี label e2e-sitesafe-nginx บน Vast.ai ด้วย vastai destroy instance &lt;INSTANCE_ID&gt; -y และตรวจสอบด้วย vastai show instances ว่าเหลือ 0 เครื่อง
+2. ปิดคอนเทนเนอร์ทดสอบในเครื่อง (sitesafe-nginx และ sitesafe-mock) ด้วย docker compose down -v และลบไฟล์ชั่วคราวที่ไม่จำเป็น
+3. ออกรายงานคำตัดสินส่งมอบใน DELIVERY.md สรุปผลความแม่นยำโมเดล ความจุบน 2× RTX 4090 ผลทดสอบ Playwright 24/24 + Bug Hunt 3/3 และข้อสังเกตโปร่งใสเรื่องขนาด Test Set</span></pre></div></section>
+<section class="slide " data-title="ยืนยันลบเครื่อง Vast.ai (DESTROYED): เหลือ 0 เครื่องและปิดคอนเทนเนอร์ทดสอบครบถ้วน" data-group="6 · ระยะ D: ทดสอบและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">ระยะ D · ทดสอบอัตโนมัติ Playwright 27 ข้อและ Bug Hunt</div><h2><span class="tt">ยืนยันลบเครื่อง Vast.ai (DESTROYED): เหลือ 0 เครื่องและปิดคอนเทนเนอร์ทดสอบครบถ้วน</span><span class="tag">Vast.ai Cleanup Verified</span></h2></header><div class="body">
+<div class="console-box destroyed">
+  <div class="console-hdr">
+    <strong>Vast.ai Cloud Console · คืนทรัพยากรหลังจบการทดสอบ (label: e2e-sitesafe-nginx)</strong>
+    <span class="status-del">● DESTROYED (0 REMAINING)</span>
+  </div>
+  <div>$ vastai destroy instance 62729107 -y</div>
+  <div style="color:#4ADE80;">destroying instance 62729107.</div>
+  <div style="margin-top:8px;">$ vastai show instances --filter label=e2e-sitesafe-nginx</div>
+  <div style="color:#38BDF8;">Total: 0 instances (e2e-sitesafe-nginx)</div>
+  <div style="margin-top:8px;">$ docker compose -p sitesafe-nginx down -v &amp;&amp; docker compose -p sitesafe-mock down -v</div>
+  <div style="color:#4ADE80;">All local test containers, volumes, and temporary keys removed cleanly.</div>
+</div>
+<div class="note eye"><span class="lbl">ข้อสังเกต</span><span>วินัยสำคัญของงาน GPU บนคลาวด์: ลบเครื่องทันทีหลังบันทึกหลักฐานครบทุกไฟล์ และตรวจยืนยันด้วย vastai show instances เสมอ</span></div></div></section>
+<section class="slide " data-title="คำตัดสินส่งมอบงาน: พร้อมส่งมอบพร้อมหลักฐานจริงและข้อสังเกตโปร่งใสครบถ้วน" data-group="7 · สรุปและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">สรุปและส่งมอบงาน</div><h2><span class="tt">คำตัดสินส่งมอบงาน: พร้อมส่งมอบพร้อมหลักฐานจริงและข้อสังเกตโปร่งใสครบถ้วน</span><span class="tag">DELIVERY.md</span></h2></header><div class="body"><div class="tiles"><div class="tile good"><div class="num">พร้อมส่งมอบ</div><div class="k">คำตัดสินส่งมอบงาน</div><div class="s">ผ่านครบทั้ง 4 ระยะ · 24/24 Core + 3/3 Bug Hunt</div></div><div class="tile good"><div class="num">88 ผู้ใช้</div><div class="k">ความจุ Design #4 จริง</div><div class="s">444.55 คำขอต่อวินาที · Failover Error 0.00%</div></div><div class="tile "><div class="num">82 รูป</div><div class="k">ข้อสังเกตโปร่งใส Test Set</div><div class="s">ค่าที่วัดได้ ≥ 0.80 ทุกคลาส · แนะนำเก็บภาพจริงเพิ่มให้ครบ 100/กลุ่ม</div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>การส่งมอบงานวิศวกรรมที่ดีไม่ได้ซ่อนข้อจำกัด: เราแจ้งลูกค้าชัดเจนเรื่องขนาด Test Set สาธารณะ 82 รูปควบคู่กับผลวัดจริงทั้งหมดใน DELIVERY.md</span></div></div></section>
+<section class="slide " data-title="บทเรียนวิศวกรรม 4 ข้อจากการสร้าง SiteSafe Inspect ตั้งแต่โจทย์จนถึงส่งมอบ" data-group="7 · สรุปและส่งมอบ" data-max="1.40"><header class="hd"><div class="kicker">สรุปและส่งมอบงาน</div><h2><span class="tt">บทเรียนวิศวกรรม 4 ข้อจากการสร้าง SiteSafe Inspect ตั้งแต่โจทย์จนถึงส่งมอบ</span><span class="tag">Key Takeaways</span></h2></header><div class="body">
+<ul class="step-list">
+  <li><div class="step-num">01</div><div><strong>เริ่มจากกติกาและกรณีขอบเขตก่อนเขียนโค้ด:</strong> การเขียน <code>docs/TEST-DATA.md</code> ล่วงหน้าและรวมกติกาไว้ที่ <code>web/lib/rules.ts</code> ไฟล์เดียวทำให้การตรวจและแก้บักแม่นยำ</div></li>
+  <li><div class="step-num">02</div><div><strong>แก้คอขวดให้ตรงจุดด้วย Design #4:</strong> โมเดลขนาดเล็ก (19 MB) ติดคอขวด CPU/GIL การใช้ 4 Processes ต่อ GPU + Micro-batching + NGINX <code>least_conn</code> เพิ่มความจุได้ 8.0 เท่าโดยไม่ต้องเพิ่มโบรกเกอร์ซับซ้อน</div></li>
+  <li><div class="step-num">03</div><div><strong>วัดความทนทานด้วยสถานการณ์เสียจริง:</strong> ทดสอบทั้ง GPU ช้าลง 3 เท่า (<code>least_conn</code> ชนะ +76.7%) และปิด GPU 1 กะทันหัน (<code>Failover ON</code> ผิดพลาด 0.00%)</div></li>
+  <li><div class="step-num">04</div><div><strong>พิสูจน์คุณภาพชุดทดสอบด้วย Bug Hunt:</strong> ชุดทดสอบที่ดีต้องทั้งผ่าน 24/24 เมื่อโค้ดถูก และจับบักได้ 3/3 เมื่อเปิด <code>BUG_MODE=1</code> พร้อมวิดีโอ <code>.gif</code> หลักฐานทุกข้อ</div></li>
+</ul>
+</div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/div-summary.jpg)" data-title="จบการนำเสนอ · SiteSafe Inspect พร้อมใช้งานและตรวจสอบย้อนกลับได้ทุกตัวเลข" data-group="7 · สรุปและส่งมอบ"><div class="shade"></div><div class="inner"><div class="small"></div><div class="big">จบการนำเสนอ</div><h1>SiteSafe Inspect พร้อมใช้งานและตรวจสอบย้อนกลับได้ทุกตัวเลข</h1><div class="sub">คู่มือฉบับเต็ม: README.md · ดูวิดีโอทดสอบทั้ง 27 ข้อ: test/index.html · รวมพรอมต์: PROMPTS.md · คำตัดสินส่งมอบ: DELIVERY.md · ภาพจำลอง</div><div class="imgnote">ภาพจำลอง</div></div></section>
+</div></div>
+<pre class="full" id="prompt0">อ่าน INTERVIEW.md ของบริษัท ไทยมั่นคงก่อสร้าง จำกัด ให้ครบทุกข้อ
+แล้วสร้างไฟล์ docs/USER-STORIES.md ที่ประกอบด้วย:
+1. บทบาทผู้ใช้ทั้ง 3 กลุ่ม (หัวหน้างานไซต์, ผู้จัดการความปลอดภัย, ผู้บริหาร) และขอบเขตสิทธิ์ของแต่ละกลุ่ม
+2. User Stories ครบทุกเส้นทางงานหลัก: อัปโหลดรูปหน้างานเป็นชุด, ตรวจจับคนไม่ใส่หมวก (H) และไม่ใส่เสื้อสะท้อนแสง (V) พร้อมวาดกรอบ, กรองดูรูปที่มีปัญหา, แก้ผลตรวจพร้อมบันทึกเหตุผลแบบลบไม่ได้, ดูรายงานประจำวันรายไซต์, และดูแดชบอร์ดสถานะเครื่อง GPU
+3. Acceptance Criteria แบบ Given / When / Then ที่วัดผลได้จริงในทุก Story
+4. แยกรายการที่อยู่นอกขอบเขตรุ่นแรกไว้ชัดเจน (เช่น แจ้งเตือน LINE และวิดีโอสด)</pre>
+<pre class="full" id="prompt1">จาก docs/USER-STORIES.md ให้สร้างเอกสารคู่กัน 2 ไฟล์:
+1. docs/REQUIREMENTS.md:
+   - Functional Requirements (FR-01 ถึง FR-22) ครบทั้งการอัปโหลด ผลตรวจ การแก้ผล รายงาน และสิทธิ์ 3 บทบาท
+   - Business Rules 7 ข้อที่กระชับ ชัดเจน ไม่มีข้อยกเว้นซับซ้อน (BR-01: H ≥ 1 ไม่ผ่าน, BR-02: V ≥ 2 ไม่ผ่าน, BR-03: V = 1 เตือน, BR-04: อัตราผ่าน &lt; 90% แสดงสีแดง, BR-05: ไฟล์ ≤ 15 MB เฉพาะ JPG/PNG แท้, BR-06: อัปโหลดครั้งละ ≤ 50 รูป, BR-07: รายงานประจำวันพร้อมแสดงผลที่ 18:00 น.)
+   - Non-Functional Requirements (NFR-01 ถึง NFR-08): Recall/Precision ≥ 0.80, ความเร็วช่วงปกติ p95 ≤ 30 วินาที, รองรับช่วงเร่งด่วน 150 รูปพร้อมกัน, รูปห้ามหาย, ป้องกันข้อมูลและ API Key, สิทธิ์ตรวจฝั่งเซิร์ฟเวอร์, และประวัติแก้ผลแบบ Append-only
+2. docs/TEST-DATA.md: ตารางกรณีขอบเขต (Boundary Values) และผลที่คาดหวังคำนวณล่วงหน้าครบทั้ง 7 กติกา (R-1..R-8, F-1..F-10, P-1..P-9, บัญชีทดสอบ 5 บัญชีใน 3 ไซต์)</pre>
+<pre class="full" id="prompt2">ออกแบบระบบใน docs/DESIGN.md เพื่อตอบโจทย์ทั้งความถูกต้องของกติกาและความเร็วช่วงเร่งด่วน 150 รูปพร้อมกัน โดยแบ่งเป็น 2 ฝั่ง:
+1. ฝั่งเว็บ (Docker Compose ภายในเครื่อง · พอร์ต 3410):
+   - Next.js 15 (App Router) + Tailwind CSS + PostgreSQL 16 (7 ตาราง + คอลัมน์บันทึก GPU Telemetry) + volume photos เก็บรูปต้นฉบับก่อนตอบรับ 201
+   - รวม Business Rule BR-01..BR-07 และสวิตช์ BUG_MODE ไว้ในไฟล์เดียว (web/lib/rules.ts)
+   - Async HTTP Dispatcher ส่งรูปขนาน concurrency=16 ผ่าน HTTP POST /v1/detect พร้อม Authorization: Bearer ไปยังฝั่ง GPU โดยตรง (ไม่ต้องใช้โบรกเกอร์ข้อความภายนอก)
+   - หน้าเว็บ 8 หน้า รวมหน้า /telemetry แสดงสถานะเครื่อง GPU, Header X-Upstream, batch_size และ model_ms
+   - รองรับโหมดจำลอง AI_MODE=mock (mock-gateway พอร์ต 3411) สำหรับทดสอบกรณีขอบเขตและ Bug Hunt
+2. ฝั่ง AI (1 โหนด × 2× RTX 4090 บน Vast.ai):
+   - NGINX Load Balancer พอร์ต 8080 ใช้ least_conn + Passive Failover ON (proxy_next_upstream error timeout non_idempotent, max_fails=1 fail_timeout=10s) + client_max_body_size 20m + แนบ Header X-Upstream
+   - 8× FastAPI Micro-batching (4 Processes ต่อ GPU, พอร์ต 8101–8104 และ 8201–8204, MAX_BATCH=32, MAX_WAIT_MS=5) โหลดโมเดล YOLO11s (best.pt)
+ระบุ ER Diagram, แผนภาพสถาปัตยกรรม, ลำดับคำขอ End-to-End, API Contract, และตาราง data-testid สำหรับ Playwright ให้ครบ</pre>
+<pre class="full" id="prompt3">อ่าน docs/REQUIREMENTS.md, docs/DESIGN.md และ docs/TEST-DATA.md แล้ววางแผนสร้างระบบ SiteSafe Inspect แบบขนานด้วยบัญชี yolo2, yolo3, cyolo1 (พร้อมกันสูงสุด 3 งาน):
+1. แตกงานเป็น 10 บล็อก (B01 โครงโปรเจกต์ + Docker Compose, B02 ฐานข้อมูล 7 ตาราง + Seed, B03 กติกา BR-01..BR-07 + RBAC + 14 API, B04 Async HTTP Dispatcher + Mock, B05 NGINX least_conn + Failover ON, B06 8× FastAPI Micro-batch YOLO11s, B07 โค้ด Training &amp; Evaluation, B08 หน้าเว็บ 8 หน้า + /telemetry, B09 โลโก้, B10 รวมระบบและทดสอบเบื้องต้น)
+2. กำหนดให้บล็อก B03 เป็นงานแบบ review (ทำและตรวจคนละบัญชี) โดยตั้งขอบเขตการตรวจให้ชัดเจน: ผ่านทันทีเมื่อ unit test และกรณีขอบเขตทั้งหมดใน docs/TEST-DATA.md ผ่านครบโดยไม่ขยายขอบเขตเกิน Requirement เพื่อให้จบภายใน ≤ 3 รอบ
+3. สร้าง plan/PLAN.md ระบุสายวิกฤต ตารางแจกงาน และวาดแผนภาพ plan/dag.png กับ plan/gantt-plan.png</pre>
+<pre class="full" id="prompt4">ดำเนินการสร้างระบบ SiteSafe Inspect ตามแผน plan/PLAN.md ครบทั้ง 10 บล็อก โดยใช้บัญชี yolo2, yolo3, cyolo1:
+- ฝั่งเว็บ (code_reference/app/web/): Next.js 15 + Tailwind CSS + PostgreSQL 16 + lib/rules.ts (BR-01..BR-07 + BUG_MODE ไฟล์เดียว) + RBAC 3 บทบาทตรวจฝั่งเซิร์ฟเวอร์ + Async HTTP Dispatcher ส่งขนาน 16 รูป + หน้า /telemetry + mock-gateway
+- ฝั่ง AI (code_reference/app/ai/serving/): server.py (FastAPI + YOLO11s Dynamic Micro-batching), nginx.conf (least_conn + Failover ON + Bearer auth check + X-Upstream), cluster.sh, loadgen.py และ ai/train/evaluate.py
+- รัน npm run typecheck, npm run build, vitest (web) และ pytest (ai/train) ให้ผ่านครบทุกข้อ พร้อมสรุปเวลาและโทเคนจริงใน plan/REPORT.md และ plan/gantt-actual.png</pre>
+<pre class="full" id="prompt5">ค้นหาและเช่าเครื่อง 1 โหนด × 2× RTX 4090 บน Vast.ai ที่ผ่านการยืนยัน (verified=true, inet_down &gt;= 1200 Mbps, เลือกค่าดาวน์โหลดต่ำสุด, เปิดพอร์ต 8080, ติดป้าย label e2e-sitesafe-nginx):
+1. ตรวจสอบสเปกเครื่องจริง (2× RTX 4090, vCPU, RAM, สถานะ RUNNING) และอัปโหลดโค้ดฝั่ง AI กับโมเดล YOLO11s (best.pt)
+2. ตรวจความแม่นยำโมเดลด้วย ai/train/evaluate.py เทียบก่อน-หลังเทรน และเลือก Confidence Threshold บน Validation Set ให้ได้ Recall ≥ 0.80 และ Precision ≥ 0.80 สำหรับทั้ง NO_HARDHAT และ NO_VEST
+3. บันทึกผลประเมินลง results/model/metrics_before.json, results/model/metrics_after.json และ results/model/threshold.json</pre>
+<pre class="full" id="prompt6">บนเครื่อง 1 โหนด × 2× RTX 4090 ให้รันชุดทดสอบความจุและเสถียรภาพด้วย cluster.sh และ loadgen.py (เกณฑ์ p95 ≤ 500 ms):
+1. วัดความจุเปรียบเทียบ 4 รูปแบบ:
+   - Design #1: 1 GPU · 1 Process · Single
+   - Design #2: 1 GPU · 1 Process · Micro-batch
+   - Design #3: 1 GPU · 4 Processes · Micro-batch
+   - Design #4: 2× RTX 4090 · 8 Processes (4/GPU) · Micro-batch · NGINX least_conn
+2. ทดสอบสถานการณ์ GPU 1 ช้าลง 3 เท่า (slow-factor 3) เปรียบเทียบ Round Robin กับ least_conn
+3. ทดสอบสถานการณ์ปิด GPU 1 กะทันหันกลางโหลด 80 ผู้ใช้ เปรียบเทียบ Failover OFF กับ Failover ON
+4. บันทึกผล JSON ลง results/lb/ สร้างกราฟ 4 แผ่นใน images/lab/ แล้วเปิด Design #4 (--gpus 2 --per-gpu 4 --mode micro --lb lc --failover on) เชื่อมต่อกับเว็บ Docker Compose (sitesafe-nginx พอร์ต 3410) และเปิด sitesafe-mock (พอร์ต 3411) คู่กัน</pre>
+<pre class="full" id="prompt7">ออกแบบและรันชุดทดสอบ Playwright (test/e2e/tests/) ครบ 24 Core Test Cases (TC-01 ถึง TC-24) ครอบคลุมทุก Requirement และ Business Rule:
+- กลุ่ม A (TC-01..06): ตรวจขนาดไฟล์ 14.9/15.0/15.1 MB (BR-05), ชนิดไฟล์จริงด้วย Magic Bytes (FR-02), จำนวน 0/50/51 รูป (BR-06), การผูกไซต์อัตโนมัติ (FR-04)
+- กลุ่ม B (TC-07..12): Decision Table 8 กรณี R-1..R-8 (BR-01..03), วาดกรอบ SVG, ตรวจภาพหน้างานจริง 6 รูปด้วย YOLO11s บน 2× RTX 4090, กรองหน้ารูปมีปัญหาและรูปทั้งหมด
+- กลุ่ม C (TC-13..17): ปิดเบราว์เซอร์กลางทาง 10 รูปไม่หาย, ไฟล์ใหญ่ 15 MB ตรวจผ่าน NGINX, ไฟล์เสียไม่ขวางภาพปกติ, ชุด 20 รูปพร้อมกันเช็ก p95 ≤ 30 วิ และกระจายข้ามทั้ง gpu0 และ gpu1, และ /api/health
+- กลุ่ม D (TC-18..22): เส้นแบ่งสีแดง 89.67% vs 90.00% vs 90.33% (BR-04), ขอบเขตพิเศษวันที่ 2, ป้ายเวลา 17:59 vs 18:00 น. (BR-07), แก้ผลพร้อมเหตุผลและ Audit Trail (FR-13..16)
+- กลุ่ม E (TC-23..24): แยกสิทธิ์ RBAC 3 บทบาท (401/403/404), แดชบอร์ด /telemetry ONLINE และตรวจไม่รั่ว API Key
+ทุก Test Case ต้องบันทึกวิดีโอหลักฐาน .gif ของตัวเองที่ images/tests/TC-XX.gif พร้อมบันทึกวิดีโอเดโมหน้าเว็บเริ่มตั้งแต่หน้า /login และสร้าง test/TEST-REPORT.md กับ test/index.html</pre>
+<pre class="full" id="prompt8">เปิดโหมด BUG_MODE=1 บนสแต็ก sitesafe-mock (พอร์ต 3411) แล้วรัน test/e2e/tests/06_bughunt.spec.ts (TC-25 ถึง TC-27) เพื่อพิสูจน์ว่าชุดทดสอบจับความผิดพลาดของ Business Rule ที่ซ่อนไว้ได้ครบ 3/3:
+- TC-25 (BR-02): ยืนยันตรวจพบว่า h0_v2.jpg ตอบ WARN แทน FAIL
+- TC-26 (BR-04): ยืนยันตรวจพบว่า SITE-B ที่ได้ 90.00% พอดีถูกไฮไลต์สีแดง พร้อมถ่ายภาพหน้าจอ images/lab/web-bug-9000.png
+- TC-27 (BR-06): ยืนยันตรวจพบว่าส่งชุด 51 รูปได้รับ 201 แทน 422
+บันทึกไฟล์ .gif หลักฐานทั้ง 3 ข้อ (images/tests/TC-25.gif ถึง TC-27.gif) บันทึกผลลง test/BUG-HUNT.md แล้วคืนค่า BUG_MODE=0 ทันที</pre>
+<pre class="full" id="prompt9">หลังจบการทดสอบทั้งหมดให้ดำเนินการปิดทรัพยากรและสรุปงานส่งมอบทันที:
+1. ลบเครื่อง GPU ที่มี label e2e-sitesafe-nginx บน Vast.ai ด้วย vastai destroy instance &lt;INSTANCE_ID&gt; -y และตรวจสอบด้วย vastai show instances ว่าเหลือ 0 เครื่อง
+2. ปิดคอนเทนเนอร์ทดสอบในเครื่อง (sitesafe-nginx และ sitesafe-mock) ด้วย docker compose down -v และลบไฟล์ชั่วคราวที่ไม่จำเป็น
+3. ออกรายงานคำตัดสินส่งมอบใน DELIVERY.md สรุปผลความแม่นยำโมเดล ความจุบน 2× RTX 4090 ผลทดสอบ Playwright 24/24 + Bug Hunt 3/3 และข้อสังเกตโปร่งใสเรื่องขนาด Test Set</pre>
+<div id="bar"></div>
+<div id="hud"><button id="bo" title="สารบัญ (O)">☰</button><button id="bp" title="ก่อนหน้า (←)">‹</button><span id="count"></span><button id="bn" title="ถัดไป (→)">›</button><button id="bf" title="เต็มจอ (F)">⛶</button></div>
+<div id="ov"></div>
+<div id="lb"><img alt=""></div>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const N=slides.length; let cur=0;
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const n=document.createElement('div'); n.className='no'; n.textContent=(k+1)+' / '+N; s.appendChild(n);} });
+  function fit(){ deck.style.transform='scale('+Math.min(innerWidth/1600,innerHeight/900)+')'; }
+  /* ปรับขนาดตัวอักษรของแต่ละสไลด์ให้พอดีหน้า: เริ่มที่ค่าสูงสุด แล้วลดจนไม่ล้น */
+  function fitSlide(s){
+    const body=s.querySelector('.body'); if(!body) return;
+    const on=s.classList.contains('active'); if(!on) s.classList.add('measure');
+    body.classList.remove('scroll');
+    let fs=parseFloat(s.dataset.max||'1.4');
+    const boxes=[body,...body.querySelectorAll('.fitbox')];
+    const over=()=>boxes.some(b=>b.scrollHeight>b.clientHeight+3||b.scrollWidth>b.clientWidth+1);
+    s.style.setProperty('--fs',fs);
+    while(over()&&fs>0.62){ fs=Math.round((fs-0.03)*100)/100; s.style.setProperty('--fs',fs); }
+    s.dataset.fs=fs; s.dataset.over=over()?'1':'0';
+    if(over()) body.classList.add('scroll');
+    if(!on) s.classList.remove('measure');
+  }
+  function fitAll(){ slides.forEach(fitSlide); document.documentElement.dataset.fitted='1'; }
+  function go(i,push){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+N;
+    document.getElementById('bar').style.width=((cur+1)/N*100)+'%';
+    if(push!==false){ try{ history.replaceState(null,'','#'+(cur+1)); }catch(e){} }
+    document.querySelectorAll('#ov .th').forEach((t,k)=>t.classList.toggle('cur',k===cur));
+  }
+  const next=()=>go(cur+1), prev=()=>go(cur-1);
+  function fs(){ if(!document.fullscreenElement){ const r=document.documentElement; r.requestFullscreen&&r.requestFullscreen(); } else document.exitFullscreen&&document.exitFullscreen(); }
+  const ovEl=document.getElementById('ov'); let grid=null,last=null;
+  slides.forEach((s,k)=>{
+    if(s.dataset.group!==last){ last=s.dataset.group; const h=document.createElement('h4'); h.textContent=last; ovEl.appendChild(h); grid=document.createElement('div'); grid.className='grid'; ovEl.appendChild(grid); }
+    const d=document.createElement('div'); d.className='th';
+    const n=document.createElement('span'); n.textContent=k+1; d.appendChild(n); d.appendChild(document.createTextNode(s.dataset.title||''));
+    d.onclick=()=>{ go(k); ov(false); }; grid.appendChild(d);
+  });
+  function ov(on){ const v=on===undefined?!document.body.classList.contains('ov'):on; document.body.classList.toggle('ov',v);
+    if(v){ const c=ovEl.querySelector('.th.cur'); c&&c.scrollIntoView({block:'center'}); } }
+  const lb=document.getElementById('lb'), lbi=lb.querySelector('img');
+  deck.addEventListener('click',e=>{ const im=e.target.closest('.fig img'); if(im){ lbi.src=im.src; lbi.alt=im.alt; lb.classList.add('on'); lb.scrollTop=0; } });
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey) return;
+    const k=e.key;
+    if(lb.classList.contains('on')){ if(k==='Escape'||k==='Enter'||k===' '){ e.preventDefault(); lb.classList.remove('on'); } return; }
+    if(['ArrowRight','PageDown',' ','Enter'].includes(k)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(k)){ e.preventDefault(); prev(); }
+    else if(k==='Home') go(0); else if(k==='End') go(N-1);
+    else if(k==='f'||k==='F') fs(); else if(k==='o'||k==='O') ov();
+    else if(k==='Escape'&&document.body.classList.contains('ov')) ov(false);
+  });
+  document.getElementById('bn').onclick=next; document.getElementById('bp').onclick=prev;
+  document.getElementById('bf').onclick=fs; document.getElementById('bo').onclick=()=>ov();
+  let tx=null;
+  document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>60)(dx<0?next:prev)(); });
+  function copyText(text,btn,label){
+    const done=()=>{ btn.textContent='คัดลอกแล้ว ✓'; btn.classList.add('done'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('done'); },1600); };
+    const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); done(); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback();
+  }
+  window.promptText=id=>document.getElementById(id).textContent;
+  document.querySelectorAll('.copy').forEach(b=>{
+    const label=b.textContent;
+    b.addEventListener('click',ev=>{ ev.stopPropagation();
+      const text=b.dataset.full?window.promptText(b.dataset.full):b.parentElement.querySelector('.t').textContent;
+      copyText(text,b,label); });
+  });
+  document.querySelectorAll('.chk input').forEach(c=>{
+    const key='slides:'+location.pathname+':'+c.dataset.k;
+    try{ c.checked=localStorage.getItem(key)==='1'; }catch(e){}
+    c.addEventListener('change',()=>{ try{ localStorage.setItem(key,c.checked?'1':'0'); }catch(e){} });
+  });
+  addEventListener('resize',fit);
+  addEventListener('hashchange',()=>{ const n=parseInt(location.hash.slice(1)); if(n) go(n-1,false); });
+  fit(); const start=parseInt(location.hash.slice(1)); go(start?start-1:0,false);
+  fitAll();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
+  addEventListener('load',fitAll);
+})();
+</script>
+</body>
+</html>

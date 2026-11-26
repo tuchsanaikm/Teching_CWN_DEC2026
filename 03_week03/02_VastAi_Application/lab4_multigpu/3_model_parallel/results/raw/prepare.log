@@ -1,0 +1,37 @@
+Fetching 15 files:   0%|          | 0/15 [00:00<?, ?it/s]Fetching 15 files:   7%|▋         | 1/15 [00:00<00:13,  1.01it/s]Fetching 15 files:  13%|█▎        | 2/15 [00:01<00:10,  1.25it/s]Fetching 15 files:  53%|█████▎    | 8/15 [00:02<00:02,  3.25it/s]Fetching 15 files:  67%|██████▋   | 10/15 [00:10<00:06,  1.25s/it]Fetching 15 files:  73%|███████▎  | 11/15 [01:42<01:06, 16.57s/it]Fetching 15 files:  80%|████████  | 12/15 [01:57<00:48, 16.33s/it]Fetching 15 files:  87%|████████▋ | 13/15 [02:55<00:50, 25.35s/it]Fetching 15 files:  93%|█████████▎| 14/15 [03:10<00:23, 23.02s/it]Fetching 15 files: 100%|██████████| 15/15 [03:26<00:00, 21.20s/it]Fetching 15 files: 100%|██████████| 15/15 [03:26<00:00, 13.78s/it]
+Generating train split:   0%|          | 0/78577 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 78577/78577 [00:00<00:00, 115845.71 examples/s]Generating train split: 100%|██████████| 78577/78577 [00:00<00:00, 114084.13 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/78577 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 78577/78577 [00:00<00:00, 1277113.83 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 78577/78577 [00:00<00:00, 1272871.96 examples/s]
+{
+  "model_id": "Qwen/Qwen3-8B",
+  "model_dir": "/workspace/lab4_mp/models/Qwen3-8B",
+  "model_files": [
+    ".cache",
+    ".gitattributes",
+    "LICENSE",
+    "README.md",
+    "config.json",
+    "generation_config.json",
+    "merges.txt",
+    "model-00001-of-00005.safetensors",
+    "model-00002-of-00005.safetensors",
+    "model-00003-of-00005.safetensors",
+    "model-00004-of-00005.safetensors",
+    "model-00005-of-00005.safetensors",
+    "model.safetensors.index.json",
+    "tokenizer.json",
+    "tokenizer_config.json",
+    "vocab.json"
+  ],
+  "model_gb": 16.4,
+  "dataset_id": "b-mc2/sql-create-context",
+  "columns": [
+    "answer",
+    "question",
+    "context"
+  ],
+  "n_full": 78577,
+  "seed": 0,
+  "n_train": 4000,
+  "n_test": 200,
+  "overlap": 0
+}

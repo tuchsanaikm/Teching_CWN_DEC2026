@@ -1,0 +1,199 @@
+{
+ "lab": "lab4_multigpu/1_single_gpu",
+ "model": "Qwen/Qwen3-8B",
+ "method": "LoRA r=8 alpha=16 on q_proj+v_proj, bf16, max_len 256",
+ "gpu": {
+  "name": "RTX 3090",
+  "count": 1,
+  "vram_gb": 24.0
+ },
+ "batch_probe": [
+  {
+   "batch": 1,
+   "status": "ok",
+   "peak_allocated_gb": 17.24,
+   "peak_reserved_gb": 17.26,
+   "nvidia_smi_peak_gb": 17.59,
+   "sec_per_step": 0.327
+  },
+  {
+   "batch": 2,
+   "status": "ok",
+   "peak_allocated_gb": 19.15,
+   "peak_reserved_gb": 19.17,
+   "nvidia_smi_peak_gb": 19.51,
+   "sec_per_step": 0.348
+  },
+  {
+   "batch": 4,
+   "status": "ok",
+   "peak_allocated_gb": 22.98,
+   "peak_reserved_gb": 23.04,
+   "nvidia_smi_peak_gb": 23.38,
+   "sec_per_step": 0.647
+  },
+  {
+   "batch": 8,
+   "status": "oom",
+   "peak_allocated_gb": 23.4,
+   "peak_reserved_gb": 23.44,
+   "nvidia_smi_peak_gb": 18.48,
+   "sec_per_step": null
+  }
+ ],
+ "max_batch": 4,
+ "train": {
+  "batch_size": 4,
+  "epochs": 3,
+  "train_examples": 4000,
+  "steps_per_epoch": 1000,
+  "train_seconds_total": 1413.6,
+  "samples_per_sec": 8.489,
+  "sec_per_step": 0.4712,
+  "gpu_util_mean": 97.0,
+  "peak_vram_gb": 22.98
+ },
+ "base": {
+  "test_loss": 1.7298062125675768,
+  "exact_match": 0.015,
+  "exact_match_relaxed": 0.525,
+  "n_correct": 3,
+  "n_test": 200
+ },
+ "epochs": [
+  {
+   "epoch": 1,
+   "train_loss": 0.07129583912878297,
+   "test_loss": 0.05290039455849908,
+   "exact_match": 0.77,
+   "exact_match_relaxed": 0.79,
+   "n_correct": 154,
+   "n_test": 200,
+   "samples_per_sec": 8.564,
+   "sec_per_step": 0.4671,
+   "train_seconds": 467.1,
+   "eval_seconds": 71.2,
+   "gpu_util_mean": 96.3,
+   "peak_allocated_gb": 22.98
+  },
+  {
+   "epoch": 2,
+   "train_loss": 0.029007775048856273,
+   "test_loss": 0.050195485659076645,
+   "exact_match": 0.79,
+   "exact_match_relaxed": 0.81,
+   "n_correct": 158,
+   "n_test": 200,
+   "samples_per_sec": 8.445,
+   "sec_per_step": 0.4737,
+   "train_seconds": 473.7,
+   "eval_seconds": 70.7,
+   "gpu_util_mean": 97.4,
+   "peak_allocated_gb": 22.98
+  },
+  {
+   "epoch": 3,
+   "train_loss": 0.01984866064200469,
+   "test_loss": 0.0489056322043086,
+   "exact_match": 0.775,
+   "exact_match_relaxed": 0.79,
+   "n_correct": 155,
+   "n_test": 200,
+   "samples_per_sec": 8.46,
+   "sec_per_step": 0.4728,
+   "train_seconds": 472.8,
+   "eval_seconds": 68.7,
+   "gpu_util_mean": 97.4,
+   "peak_allocated_gb": 22.98
+  }
+ ],
+ "exact_match_final": 0.775,
+ "exact_match_best": {
+  "epoch": 2,
+  "value": 0.79
+ },
+ "market": {
+  "searched_at_utc": "2026-11-22T08:25:44Z",
+  "query": "vastai search offers 'gpu_name=RTX_3090 num_gpus=1 rentable=true' -o dph_total (on-demand)",
+  "cheapest_verified": {
+   "id": "<id>",
+   "machine_id": 156744,
+   "host_id": 849620,
+   "gpu_name": "RTX 3090",
+   "num_gpus": 1,
+   "gpu_ram": 24576,
+   "dph_total": 0.13935185185185184,
+   "dph_base": 0.13333333333333333,
+   "storage_cost": 0.8666666666666666,
+   "verification": "verified",
+   "reliability2": 0.9714847,
+   "geolocation": "California, US",
+   "disk_space": 122.10000000000001,
+   "dlperf": 31.839764056,
+   "inet_down_cost": 0.015625,
+   "inet_up_cost": 0.016927083333333332
+  },
+  "cheapest_any": {
+   "id": 56919559,
+   "machine_id": 153871,
+   "host_id": 514292,
+   "gpu_name": "RTX 3090",
+   "num_gpus": 1,
+   "gpu_ram": 24576,
+   "dph_total": 0.09425925925925926,
+   "dph_base": 0.09333333333333334,
+   "storage_cost": 0.1333333333333333,
+   "verification": "deverified",
+   "reliability2": 0.9853234,
+   "geolocation": "Ukraine, UA",
+   "disk_space": 47.5,
+   "dlperf": 6.855764056000001,
+   "inet_down_cost": 6.510416666666667e-05,
+   "inet_up_cost": 6.510416666666667e-05
+  },
+  "n_offers_verified": 34,
+  "n_offers_any": 69
+ },
+ "price_usd_per_hour": {
+  "market_cheapest_verified": 0.13935185185185184,
+  "market_cheapest_any": 0.09425925925925926,
+  "rented_instance": 0.19444444444444448
+ },
+ "usd_per_1000_samples": {
+  "market_cheapest_verified": 0.00456,
+  "market_cheapest_any": 0.003084,
+  "rented_instance": 0.006363
+ },
+ "usd_per_1000_samples_basis": "price_per_hour / (samples_per_sec * 3600) * 1000, training steps only (no model load / eval time)",
+ "actual_cost": {
+  "instance_id": "<id>",
+  "label": "vapp-lab4-single",
+  "price_usd_per_hour": 0.19444444444444448,
+  "lifetime_seconds": 3298.9,
+  "lifetime_minutes": 55.0,
+  "charged_usd": 0.19,
+  "charged_items": [
+   {
+    "type": "gpu",
+    "amount": 0.167,
+    "description": "0.926 hours at $0.180/hour"
+   },
+   {
+    "type": "disk",
+    "amount": 0.013,
+    "description": "0.934 hours at $0.014/hour"
+   },
+   {
+    "type": "bwd",
+    "amount": 0.01,
+    "description": "15.1 GB Downloaded at $0.001/GB"
+   },
+   {
+    "type": "bwu",
+    "amount": 0.0,
+    "description": "0.3 GB Uploaded at $0.000/GB"
+   }
+  ],
+  "expected_usd_from_rate": 0.1782
+ }
+}

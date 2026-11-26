@@ -1,0 +1,17 @@
+{
+  "model_id": "Qwen/Qwen3-8B",
+  "model_dir": "/workspace/lab4_dp/models/Qwen3-8B",
+  "model_files": 15,
+  "model_gb": 16.4,
+  "dataset_id": "b-mc2/sql-create-context",
+  "dataset_total": 78577,
+  "columns": [
+    "answer",
+    "question",
+    "context"
+  ],
+  "seed": 0,
+  "n_train": 4000,
+  "n_test": 200,
+  "train_test_overlap": 0
+}

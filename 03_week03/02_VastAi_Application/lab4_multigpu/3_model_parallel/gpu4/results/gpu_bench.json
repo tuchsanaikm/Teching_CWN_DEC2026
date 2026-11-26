@@ -1,0 +1,40 @@
+{
+ "torch": "2.8.0+cu128",
+ "cuda": "12.8",
+ "gpus": [
+  {
+   "gpu": 0,
+   "name": "NVIDIA GeForce RTX 3090",
+   "matmul_it_s": 56.42,
+   "train_it_s": 130.19,
+   "matmul_slower_pct": 8.8,
+   "train_slower_pct": 3.3
+  },
+  {
+   "gpu": 1,
+   "name": "NVIDIA GeForce RTX 3090",
+   "matmul_it_s": 57.99,
+   "train_it_s": 129.27,
+   "matmul_slower_pct": 6.3,
+   "train_slower_pct": 4.0
+  },
+  {
+   "gpu": 2,
+   "name": "NVIDIA GeForce RTX 3090",
+   "matmul_it_s": 53.41,
+   "train_it_s": 126.65,
+   "matmul_slower_pct": 13.7,
+   "train_slower_pct": 5.9
+  },
+  {
+   "gpu": 3,
+   "name": "NVIDIA GeForce RTX 3090",
+   "matmul_it_s": 61.88,
+   "train_it_s": 134.62,
+   "matmul_slower_pct": 0.0,
+   "train_slower_pct": 0.0
+  }
+ ],
+ "worst_slower_pct": 13.7,
+ "pass": true
+}

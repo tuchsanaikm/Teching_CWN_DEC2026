@@ -1,0 +1,9 @@
+{
+ "url": "http://127.0.0.1:8080",
+ "model": "shop-bot",
+ "key_file": "/workspace/lab7/runtime/api_key",
+ "replicas": [
+  {"name": "fake", "metrics": "http://127.0.0.1:9000/metrics"}
+ ],
+ "gpu_sources": []
+}

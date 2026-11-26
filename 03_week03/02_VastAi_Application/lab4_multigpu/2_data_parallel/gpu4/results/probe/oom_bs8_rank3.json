@@ -1,0 +1,1 @@
+{"batch_per_gpu": 8, "rank": 3, "error": "CUDA out of memory. Tried to allocate 48.00 MiB. GPU 3 has a total capacity of 23.61 GiB of which 35.75 MiB is free. Including non-PyTorch memory, this process has 23.57 GiB memory in use. Of the allocated memory 23.10 GiB is allocated by PyTorch, and 40.80 MiB is reserved by PyTorch but unallocated", "allocated_mib": 23657.203125}

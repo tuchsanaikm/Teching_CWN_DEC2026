@@ -1,0 +1,8 @@
+#!/bin/bash
+# usage: ./sshn <1|2|3> <command...>   |  ./sshn cp <n> <local> <remote>
+D=$(dirname "$0"); source $D/nodes.env
+KEY=/workspace/vastai_lab/Devtool_SSH/devtoolSSH
+O="-i $KEY -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR -o ConnectTimeout=20 -o ServerAliveInterval=30"
+if [ "$1" = cp ]; then n=$2; ip=N${n}_IP; p=N${n}_SSH; scp $O -P ${!p} "$3" root@${!ip}:"$4"; exit $?; fi
+n=$1; shift; ip=N${n}_IP; p=N${n}_SSH
+ssh $O -p ${!p} root@${!ip} "$@"

@@ -1,0 +1,68 @@
+W1122 06:50:16.407000 2630 site-packages/torch/distributed/run.py:774] 
+W1122 06:50:16.407000 2630 site-packages/torch/distributed/run.py:774] *****************************************
+W1122 06:50:16.407000 2630 site-packages/torch/distributed/run.py:774] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W1122 06:50:16.407000 2630 site-packages/torch/distributed/run.py:774] *****************************************
+[06:50:22] train examples 4000 | longer than 256 tokens (cut): 1 | longest kept 256 tokens
+Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:   0%|          | 0/399 [00:00<?, ?it/s]Loading weights:  93%|█████████▎| 373/399 [00:00<00:00, 3726.60it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3683.09it/s]
+Loading weights:  80%|███████▉  | 318/399 [00:00<00:00, 3178.78it/s]Loading weights: 100%|██████████| 399/399 [00:00<00:00, 3156.28it/s]
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+/opt/conda/lib/python3.11/site-packages/transformers/modeling_utils.py:3312: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+[06:50:30] trainable LoRA params 3,833,856 | world 2 | bs/gpu 4 | total bs 8
+[06:50:40] epoch 1/3 step 10/500 (global 10/1500) loss 0.2587 avg 0.9634 0.471s/step 16.98 samples/s util [98.2, 98.9] mem [22203.0, 22061.0] ETA 11.7 min
+[06:50:44] epoch 1/3 step 20/500 (global 20/1500) loss 0.0595 avg 0.6139 0.436s/step 18.36 samples/s util [98.0, 98.5] mem [22203.0, 22061.0] ETA 10.7 min
+[06:50:49] epoch 1/3 step 30/500 (global 30/1500) loss 0.0451 avg 0.4525 0.434s/step 18.44 samples/s util [97.8, 98.3] mem [22805.0, 22061.0] ETA 10.6 min
+[06:50:53] epoch 1/3 step 40/500 (global 40/1500) loss 0.2423 avg 0.3776 0.437s/step 18.32 samples/s util [97.8, 98.2] mem [22805.0, 22061.0] ETA 10.6 min
+[06:50:58] epoch 1/3 step 50/500 (global 50/1500) loss 0.1401 avg 0.3268 0.439s/step 18.20 samples/s util [97.9, 98.3] mem [22805.0, 22343.0] ETA 10.6 min
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/workspace/lab4_dp/code/train.py", line 279, in <module>
+[rank0]:     main()
+[rank0]:   File "/workspace/lab4_dp/code/train.py", line 204, in main
+[rank0]:     loss = train_step(ddp, opt, batch)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/workspace/lab4_dp/code/train.py", line 67, in train_step
+[rank0]:     loss.backward()  # DDP all-reduces (averages) the gradients here
+[rank0]:     ^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/conda/lib/python3.11/site-packages/torch/_tensor.py", line 647, in backward
+[rank0]:     torch.autograd.backward(
+[rank0]:   File "/opt/conda/lib/python3.11/site-packages/torch/autograd/__init__.py", line 354, in backward
+[rank0]:     _engine_run_backward(
+[rank0]:   File "/opt/conda/lib/python3.11/site-packages/torch/autograd/graph.py", line 829, in _engine_run_backward
+[rank0]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 594.00 MiB. GPU 0 has a total capacity of 23.68 GiB of which 600.56 MiB is free. Process 3566205 has 23.08 GiB memory in use. Of the allocated memory 22.57 GiB is allocated by PyTorch, and 88.81 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+W1122 06:51:03.159000 2630 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 2696 closing signal SIGTERM
+E1122 06:51:03.424000 2630 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 2695) of binary: /opt/conda/bin/python3.11
+Traceback (most recent call last):
+  File "/opt/conda/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 357, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/torch/distributed/run.py", line 901, in main
+    run(args)
+  File "/opt/conda/lib/python3.11/site-packages/torch/distributed/run.py", line 892, in run
+    elastic_launch(
+  File "/opt/conda/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 143, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/conda/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 277, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-11-22_06:51:03
+  host      : f9a76a6871c7
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 2695)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

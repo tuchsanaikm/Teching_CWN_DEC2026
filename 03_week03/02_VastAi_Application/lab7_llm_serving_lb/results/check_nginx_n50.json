@@ -1,0 +1,597 @@
+{
+ "name": "check_nginx_n50",
+ "mode": "single",
+ "started": "2026-11-26T08:47:45+0000",
+ "target": {
+  "url": "http://127.0.0.1:8080",
+  "model": "shop-bot",
+  "replicas": []
+ },
+ "settings": {
+  "mode": "single",
+  "name": "check_nginx_n50",
+  "procs": 0,
+  "long_pct": 0.0,
+  "temperature": 0.7,
+  "ramp": 2.0,
+  "warmup": 5.0,
+  "duration": 20.0,
+  "levels": "8,16,32,64,128,256,512",
+  "ttft_p95_max": 1.0,
+  "speed_p5_min": 20.0,
+  "max_error_pct": 1.0,
+  "max_rounds": 10,
+  "scan_all": false,
+  "seed_from": "",
+  "single_speed": 0.0,
+  "cpu_full_pct": 80.0,
+  "max_procs": 24,
+  "users": 50,
+  "keep_requests": false,
+  "levels_given": false
+ },
+ "request": {
+  "system_short": "คุณเป็นพนักงานร้านขายของใช้ในบ้าน ตอบลูกค้าเป็นภาษาไทย ด้วยความสุภาพ และตอบไม่เกิน 3 ประโยค",
+  "system_long": "คุณเป็นพนักงานร้านขายของใช้ในบ้าน ตอบลูกค้าเป็นภาษาไทย ด้วยความสุภาพ ลูกค้าขอคำตอบแบบละเอียด ให้อธิบายเป็นข้อ ๆ ครบถ้วน พร้อมข้อแนะนำและข้อควรระวัง",
+  "max_tokens_short": 150,
+  "max_tokens_long": 600,
+  "timeout_s": 60.0,
+  "questions": 40
+ },
+ "definitions": {
+  "ttft": "seconds from sending the question to the first answer token; questions whose first token arrived in the window",
+  "speed": "(tokens after the first chunk) / (time from first to last token) of one question; questions finished in the window",
+  "throughput_tok_s": "answer tokens received by all users in the window / window length",
+  "window": "level time minus warm-up",
+  "cpu": "% of one CPU core, summed over the processes"
+ },
+ "levels": [
+  {
+   "questions_done": 342,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "ttft_max_s": 0.206,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.98,
+   "total_p50_s": 2.201,
+   "total_p95_s": 2.202,
+   "tokens_out_mean": 100.0,
+   "window_s": [
+    5.0,
+    20.0
+   ],
+   "questions_sent": 342,
+   "first_tokens": 296,
+   "throughput_tok_s": 2271.3,
+   "questions_per_s": 22.8,
+   "errors": 0,
+   "error_kinds": {},
+   "error_pct": 0.0,
+   "tokens_in_mean": 40.0,
+   "long_answer_questions": 0,
+   "open_at_end": 50,
+   "open_at_end_without_first_token": 4,
+   "open_at_end_longest_wait_without_token_s": 0.171,
+   "replicas": {
+    "fake": {
+     "questions_done": 342,
+     "ttft_p50_s": 0.201,
+     "ttft_p95_s": 0.202,
+     "ttft_max_s": 0.206,
+     "speed_p50_tok_s": 50.0,
+     "speed_p5_tok_s": 49.98,
+     "total_p50_s": 2.201,
+     "total_p95_s": 2.202,
+     "tokens_out_mean": 100.0,
+     "share_pct": 100.0,
+     "throughput_tok_s": 2271.3,
+     "errors": 0,
+     "per_second": {
+      "t": [],
+      "running": [],
+      "waiting": []
+     }
+    }
+   },
+   "gpus": {},
+   "cpu": {
+    "loadgen": {
+     "mean_pct_of_core": 24.8,
+     "max_pct_of_core": 27.0
+    },
+    "loadgen_busiest_proc": {
+     "mean_pct_of_core": 12.7,
+     "max_pct_of_core": 14.0
+    },
+    "loadgen_master": {
+     "mean_pct_of_core": 0.1,
+     "max_pct_of_core": 1.0
+    },
+    "nginx": {
+     "mean_pct_of_core": 12.8,
+     "max_pct_of_core": 16.0
+    },
+    "nginx_busiest_proc": {
+     "mean_pct_of_core": 4.6,
+     "max_pct_of_core": 6.0
+    },
+    "nginx_proot": {
+     "mean_pct_of_core": 0.1,
+     "max_pct_of_core": 1.0
+    }
+   },
+   "questions_sent_total": 454,
+   "tokens_received_total": 42963,
+   "t0_epoch": 1795682879.0,
+   "users": 50,
+   "processes": 2,
+   "duration_s": 20.0,
+   "warmup_s": 5.0,
+   "started_at": "2026-11-26T08:47:59+0000",
+   "worker_errors": []
+  }
+ ],
+ "per_second": [
+  {
+   "t": 0,
+   "sent": 26,
+   "first_tokens": 17,
+   "done": 0,
+   "errors": 0,
+   "tokens": 347,
+   "ttft_p50_s": 0.203,
+   "ttft_p95_s": 0.212,
+   "speed_p50_tok_s": null,
+   "speed_p5_tok_s": null,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 0.0,
+    "nginx_proot": 0.0,
+    "loadgen": 0.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 0.0,
+    "nginx_busiest_proc": 0.0
+   }
+  },
+  {
+   "t": 1,
+   "sent": 24,
+   "first_tokens": 30,
+   "done": 0,
+   "errors": 0,
+   "tokens": 1661,
+   "ttft_p50_s": 0.202,
+   "ttft_p95_s": 0.205,
+   "speed_p50_tok_s": null,
+   "speed_p5_tok_s": null,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 4.0,
+    "nginx_proot": 1.0,
+    "loadgen": 9.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 6.0,
+    "nginx_busiest_proc": 3.0
+   }
+  },
+  {
+   "t": 2,
+   "sent": 17,
+   "first_tokens": 15,
+   "done": 17,
+   "errors": 0,
+   "tokens": 2340,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.02,
+   "speed_p5_tok_s": 50.0,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 12.0,
+    "nginx_proot": 0.0,
+    "loadgen": 24.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 3,
+   "sent": 30,
+   "first_tokens": 28,
+   "done": 30,
+   "errors": 0,
+   "tokens": 2214,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 14.0,
+    "nginx_proot": 0.0,
+    "loadgen": 26.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 14.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 4,
+   "sent": 15,
+   "first_tokens": 18,
+   "done": 15,
+   "errors": 0,
+   "tokens": 2327,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 14.0,
+    "nginx_proot": 0.0,
+    "loadgen": 24.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 5,
+   "sent": 28,
+   "first_tokens": 28,
+   "done": 28,
+   "errors": 0,
+   "tokens": 2218,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.203,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 13.0,
+    "nginx_proot": 0.0,
+    "loadgen": 25.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 6,
+   "sent": 18,
+   "first_tokens": 18,
+   "done": 18,
+   "errors": 0,
+   "tokens": 2335,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 12.0,
+    "nginx_proot": 0.0,
+    "loadgen": 23.0,
+    "loadgen_master": 1.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 7,
+   "sent": 28,
+   "first_tokens": 26,
+   "done": 28,
+   "errors": 0,
+   "tokens": 2221,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 11.0,
+    "nginx_proot": 0.0,
+    "loadgen": 26.0,
+    "loadgen_master": 1.0,
+    "loadgen_busiest_proc": 14.0,
+    "nginx_busiest_proc": 6.0
+   }
+  },
+  {
+   "t": 8,
+   "sent": 18,
+   "first_tokens": 20,
+   "done": 18,
+   "errors": 0,
+   "tokens": 2306,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 11.0,
+    "nginx_proot": 0.0,
+    "loadgen": 22.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 9,
+   "sent": 26,
+   "first_tokens": 26,
+   "done": 26,
+   "errors": 0,
+   "tokens": 2256,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.203,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.98,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 13.0,
+    "nginx_proot": 0.0,
+    "loadgen": 22.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 11.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 10,
+   "sent": 20,
+   "first_tokens": 24,
+   "done": 20,
+   "errors": 0,
+   "tokens": 2269,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.203,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 16.0,
+    "nginx_proot": 1.0,
+    "loadgen": 24.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 6.0
+   }
+  },
+  {
+   "t": 11,
+   "sent": 26,
+   "first_tokens": 17,
+   "done": 26,
+   "errors": 0,
+   "tokens": 2276,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.203,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.98,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 14.0,
+    "nginx_proot": 0.0,
+    "loadgen": 27.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 14.0,
+    "nginx_busiest_proc": 6.0
+   }
+  },
+  {
+   "t": 12,
+   "sent": 24,
+   "first_tokens": 30,
+   "done": 24,
+   "errors": 0,
+   "tokens": 2230,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 11.0,
+    "nginx_proot": 0.0,
+    "loadgen": 26.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 13,
+   "sent": 17,
+   "first_tokens": 15,
+   "done": 17,
+   "errors": 0,
+   "tokens": 2341,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 14.0,
+    "nginx_proot": 0.0,
+    "loadgen": 24.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 5.0
+   }
+  },
+  {
+   "t": 14,
+   "sent": 30,
+   "first_tokens": 28,
+   "done": 30,
+   "errors": 0,
+   "tokens": 2213,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.98,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 12.0,
+    "nginx_proot": 0.0,
+    "loadgen": 26.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 15,
+   "sent": 15,
+   "first_tokens": 18,
+   "done": 15,
+   "errors": 0,
+   "tokens": 2326,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 14.0,
+    "nginx_proot": 0.0,
+    "loadgen": 25.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 16,
+   "sent": 28,
+   "first_tokens": 28,
+   "done": 28,
+   "errors": 0,
+   "tokens": 2215,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.98,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 13.0,
+    "nginx_proot": 0.0,
+    "loadgen": 24.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 12.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 17,
+   "sent": 18,
+   "first_tokens": 18,
+   "done": 18,
+   "errors": 0,
+   "tokens": 2337,
+   "ttft_p50_s": 0.201,
+   "ttft_p95_s": 0.202,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 13.0,
+    "nginx_proot": 0.0,
+    "loadgen": 26.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 18,
+   "sent": 28,
+   "first_tokens": 0,
+   "done": 28,
+   "errors": 0,
+   "tokens": 2224,
+   "ttft_p50_s": null,
+   "ttft_p95_s": null,
+   "speed_p50_tok_s": 50.01,
+   "speed_p5_tok_s": 49.99,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 12.0,
+    "nginx_proot": 0.0,
+    "loadgen": 25.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 13.0,
+    "nginx_busiest_proc": 4.0
+   }
+  },
+  {
+   "t": 19,
+   "sent": 18,
+   "first_tokens": 0,
+   "done": 18,
+   "errors": 0,
+   "tokens": 2302,
+   "ttft_p50_s": null,
+   "ttft_p95_s": null,
+   "speed_p50_tok_s": 50.0,
+   "speed_p5_tok_s": 49.98,
+   "replicas": {},
+   "gpu_util_pct": {},
+   "gpu_temp_c": {},
+   "cpu_pct_of_core": {
+    "nginx": 13.0,
+    "nginx_proot": 0.0,
+    "loadgen": 27.0,
+    "loadgen_master": 0.0,
+    "loadgen_busiest_proc": 14.0,
+    "nginx_busiest_proc": 4.0
+   }
+  }
+ ],
+ "saved": "2026-11-26T08:48:20+0000"
+}

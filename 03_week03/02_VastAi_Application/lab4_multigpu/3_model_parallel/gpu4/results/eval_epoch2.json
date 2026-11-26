@@ -1,0 +1,9 @@
+{
+ "tag": "epoch2",
+ "n": 200,
+ "exact_match": 77.5,
+ "exact_match_case_insensitive": 79.0,
+ "correct": 155,
+ "test_loss": 0.0536,
+ "eval_sec": 55.8
+}

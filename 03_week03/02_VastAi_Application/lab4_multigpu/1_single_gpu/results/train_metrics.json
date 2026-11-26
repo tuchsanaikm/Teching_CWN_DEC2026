@@ -1,0 +1,70 @@
+{
+  "batch_size": 4,
+  "lr": 0.0002,
+  "epochs": 3,
+  "seed": 0,
+  "max_len": 256,
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "targets": [
+      "q_proj",
+      "v_proj"
+    ],
+    "trainable_params": 3833856
+  },
+  "train_examples": 4000,
+  "steps_per_epoch": 1000,
+  "truncated_examples": 1,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.07129583912878297,
+      "test_loss": 0.05290039455849908,
+      "exact_match": 0.77,
+      "exact_match_relaxed": 0.79,
+      "n_correct": 154,
+      "n_test": 200,
+      "steps": 1000,
+      "train_seconds": 467.1,
+      "sec_per_step": 0.4671,
+      "samples_per_sec": 8.564,
+      "gpu_util_mean": 96.3,
+      "peak_allocated_gb": 22.98,
+      "eval_seconds": 71.2
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.029007775048856273,
+      "test_loss": 0.050195485659076645,
+      "exact_match": 0.79,
+      "exact_match_relaxed": 0.81,
+      "n_correct": 158,
+      "n_test": 200,
+      "steps": 1000,
+      "train_seconds": 473.7,
+      "sec_per_step": 0.4737,
+      "samples_per_sec": 8.445,
+      "gpu_util_mean": 97.4,
+      "peak_allocated_gb": 22.98,
+      "eval_seconds": 70.7
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.01984866064200469,
+      "test_loss": 0.0489056322043086,
+      "exact_match": 0.775,
+      "exact_match_relaxed": 0.79,
+      "n_correct": 155,
+      "n_test": 200,
+      "steps": 1000,
+      "train_seconds": 472.8,
+      "sec_per_step": 0.4728,
+      "samples_per_sec": 8.46,
+      "gpu_util_mean": 97.4,
+      "peak_allocated_gb": 22.98,
+      "eval_seconds": 68.7
+    }
+  ],
+  "finished": true
+}

@@ -1,0 +1,29 @@
+{
+ "fetched_utc": "2026-11-22T07:23:21Z",
+ "note": "unchanged over 3 readings 07:20-07:23 UTC, after the destroy at 07:14:32 UTC",
+ "source": "instance-<id>",
+ "label": "vapp-lab4-dp",
+ "total_usd": 0.351,
+ "items": [
+  {
+   "type": "gpu",
+   "usd": 0.295,
+   "description": "0.820 hours at $0.360/hour"
+  },
+  {
+   "type": "disk",
+   "usd": 0.016,
+   "description": "0.931 hours at $0.017/hour"
+  },
+  {
+   "type": "bwd",
+   "usd": 0.039,
+   "description": "14.8 GB Downloaded at $0.003/GB"
+  },
+  {
+   "type": "bwu",
+   "usd": 0.001,
+   "description": "0.4 GB Uploaded at $0.003/GB"
+  }
+ ]
+}

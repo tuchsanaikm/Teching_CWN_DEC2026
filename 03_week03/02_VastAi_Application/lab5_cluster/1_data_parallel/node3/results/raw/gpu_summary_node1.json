@@ -1,0 +1,1 @@
+{"rank0": {"node": 1, "gpu": 0, "samples": 1777, "util_mean": 6.3, "util_max": 100.0, "nvidia_smi_mem_max_mib": 21012.0}, "rank1": {"node": 1, "gpu": 1, "samples": 1777, "util_mean": 6.7, "util_max": 100.0, "nvidia_smi_mem_max_mib": 21232.0}}

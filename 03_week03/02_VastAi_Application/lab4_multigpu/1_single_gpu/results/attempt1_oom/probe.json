@@ -1,0 +1,70 @@
+{
+  "gpu_total_gb": 24.0,
+  "results": [
+    {
+      "batch": 1,
+      "tokens": 256,
+      "full_len": 325,
+      "steps": 3,
+      "model_vram_gb": 15.27,
+      "status": "ok",
+      "sec_per_step": 0.324,
+      "losses": [
+        0.1157,
+        0.0178,
+        0.0
+      ],
+      "peak_allocated_gb": 17.24,
+      "peak_reserved_gb": 17.26,
+      "nvidia_smi_peak_gb": 17.59
+    },
+    {
+      "batch": 2,
+      "tokens": 256,
+      "full_len": 325,
+      "steps": 3,
+      "model_vram_gb": 15.27,
+      "status": "ok",
+      "sec_per_step": 0.34,
+      "losses": [
+        0.0968,
+        0.0148,
+        0.0
+      ],
+      "peak_allocated_gb": 19.15,
+      "peak_reserved_gb": 19.17,
+      "nvidia_smi_peak_gb": 19.51
+    },
+    {
+      "batch": 4,
+      "tokens": 256,
+      "full_len": 325,
+      "steps": 3,
+      "model_vram_gb": 15.27,
+      "status": "ok",
+      "sec_per_step": 0.646,
+      "losses": [
+        0.0968,
+        0.0122,
+        0.0
+      ],
+      "peak_allocated_gb": 22.98,
+      "peak_reserved_gb": 23.04,
+      "nvidia_smi_peak_gb": 23.38
+    },
+    {
+      "batch": 8,
+      "tokens": 256,
+      "full_len": 325,
+      "steps": 3,
+      "model_vram_gb": 15.27,
+      "status": "oom",
+      "error": "CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacity of 23.80 GiB of which 37.31 MiB is free. Process 1512377 has 23.74 GiB memory in use. Of the allocated memory 23.40 GiB is a",
+      "peak_allocated_gb": 23.4,
+      "peak_reserved_gb": 23.44,
+      "nvidia_smi_peak_gb": 23.65
+    }
+  ],
+  "max_batch": 4,
+  "finished": true
+}

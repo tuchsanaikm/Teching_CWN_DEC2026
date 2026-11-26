@@ -1,0 +1,474 @@
+{
+  "name": "C_direct_n200_delay0",
+  "mode": "single",
+  "started_utc": "2026-11-23T01:15:28+00:00",
+  "finished": true,
+  "config": {
+    "url": "http://127.0.0.1:8101/v1/detect",
+    "images": [
+      "sample-1.jpg",
+      "sample-2.jpg",
+      "sample-3.jpg",
+      "sample-4.jpg",
+      "sample-5.jpg",
+      "sample-6.jpg"
+    ],
+    "timeout_s": 10.0,
+    "level_seconds": 20.0,
+    "warmup_s": 5.0,
+    "pass_rule": {
+      "p95_ms_max": 500.0,
+      "error_pct_below": 1.0
+    },
+    "ladder": null
+  },
+  "system": {
+    "servers": {
+      "fake": {
+        "mode": "fake",
+        "max_batch": 1,
+        "max_wait_ms": 0,
+        "device": "none",
+        "imgsz": 640
+      }
+    },
+    "gpus": [
+      "NVIDIA GeForce RTX 3090",
+      "NVIDIA GeForce RTX 3090"
+    ],
+    "cpu_count": 64
+  },
+  "levels": [
+    {
+      "users": 200,
+      "pass": true,
+      "throughput_rps": 64167.67,
+      "latency_ms": {
+        "p50": 2.9,
+        "p95": 5.0,
+        "p99": 5.9,
+        "mean": 3.1,
+        "max": 38.9
+      },
+      "requests": 962517,
+      "ok": 962517,
+      "errors": 0,
+      "error_pct": 0.0,
+      "error_kinds": {},
+      "gpu_util_pct": [
+        0.0,
+        0.0
+      ],
+      "cpu_pct": {
+        "server": 0.0,
+        "nginx": 0.0,
+        "loadgen": 400.1
+      },
+      "model": {
+        "requests": 962517,
+        "queue_ms_mean": 0.0,
+        "queue_ms_p95": 0.0,
+        "model_ms_mean": 0.01,
+        "model_ms_p95": 0.01,
+        "batch_mean_per_call": 1.0,
+        "batch_mean_per_request": 1.0,
+        "batch_max": 1
+      },
+      "servers": {
+        "fake": {
+          "requests": 962517,
+          "queue_ms_mean": 0.0,
+          "queue_ms_p95": 0.0,
+          "model_ms_mean": 0.01,
+          "model_ms_p95": 0.01,
+          "batch_mean_per_call": 1.0,
+          "batch_mean_per_request": 1.0,
+          "batch_max": 1,
+          "share_pct": 100.0
+        }
+      },
+      "window_s": [
+        5.0,
+        20.0
+      ],
+      "per_second": [
+        {
+          "second": 1,
+          "warmup": true,
+          "ok": 60127,
+          "errors": 0,
+          "p50_ms": 1.5,
+          "p95_ms": 3.5,
+          "max_ms": 11.3,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 390.0
+          }
+        },
+        {
+          "second": 2,
+          "warmup": true,
+          "ok": 67108,
+          "errors": 0,
+          "p50_ms": 2.5,
+          "p95_ms": 5.0,
+          "max_ms": 11.4,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 3,
+          "warmup": true,
+          "ok": 63657,
+          "errors": 0,
+          "p50_ms": 2.8,
+          "p95_ms": 5.2,
+          "max_ms": 15.3,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 399.0
+          }
+        },
+        {
+          "second": 4,
+          "warmup": true,
+          "ok": 67483,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 4.4,
+          "max_ms": 20.0,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 5,
+          "warmup": true,
+          "ok": 64935,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 4.8,
+          "max_ms": 12.3,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 6,
+          "warmup": false,
+          "ok": 64039,
+          "errors": 0,
+          "p50_ms": 2.9,
+          "p95_ms": 5.0,
+          "max_ms": 11.1,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 400.0
+          }
+        },
+        {
+          "second": 7,
+          "warmup": false,
+          "ok": 63455,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 5.1,
+          "max_ms": 13.1,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 402.0
+          }
+        },
+        {
+          "second": 8,
+          "warmup": false,
+          "ok": 64387,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 4.8,
+          "max_ms": 13.9,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 398.0
+          }
+        },
+        {
+          "second": 9,
+          "warmup": false,
+          "ok": 61766,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 5.2,
+          "max_ms": 29.0,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 399.0
+          }
+        },
+        {
+          "second": 10,
+          "warmup": false,
+          "ok": 63904,
+          "errors": 0,
+          "p50_ms": 2.8,
+          "p95_ms": 5.2,
+          "max_ms": 12.5,
+          "gpu_util_pct": [
+            0.0,
+            0.5
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 399.0
+          }
+        },
+        {
+          "second": 11,
+          "warmup": false,
+          "ok": 63504,
+          "errors": 0,
+          "p50_ms": 3.1,
+          "p95_ms": 4.9,
+          "max_ms": 9.4,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 12,
+          "warmup": false,
+          "ok": 66020,
+          "errors": 0,
+          "p50_ms": 2.9,
+          "p95_ms": 4.8,
+          "max_ms": 10.5,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 400.0
+          }
+        },
+        {
+          "second": 13,
+          "warmup": false,
+          "ok": 64668,
+          "errors": 0,
+          "p50_ms": 2.7,
+          "p95_ms": 5.0,
+          "max_ms": 7.0,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 14,
+          "warmup": false,
+          "ok": 63658,
+          "errors": 0,
+          "p50_ms": 2.7,
+          "p95_ms": 5.1,
+          "max_ms": 28.4,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 401.0
+          }
+        },
+        {
+          "second": 15,
+          "warmup": false,
+          "ok": 65112,
+          "errors": 0,
+          "p50_ms": 2.8,
+          "p95_ms": 5.1,
+          "max_ms": 32.9,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 400.0
+          }
+        },
+        {
+          "second": 16,
+          "warmup": false,
+          "ok": 68050,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 4.3,
+          "max_ms": 10.3,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 400.0
+          }
+        },
+        {
+          "second": 17,
+          "warmup": false,
+          "ok": 65633,
+          "errors": 0,
+          "p50_ms": 3.0,
+          "p95_ms": 4.7,
+          "max_ms": 7.8,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 399.0
+          }
+        },
+        {
+          "second": 18,
+          "warmup": false,
+          "ok": 63510,
+          "errors": 0,
+          "p50_ms": 2.9,
+          "p95_ms": 5.1,
+          "max_ms": 12.7,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 400.0
+          }
+        },
+        {
+          "second": 19,
+          "warmup": false,
+          "ok": 63730,
+          "errors": 0,
+          "p50_ms": 2.8,
+          "p95_ms": 5.1,
+          "max_ms": 13.4,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 399.0
+          }
+        },
+        {
+          "second": 20,
+          "warmup": false,
+          "ok": 61079,
+          "errors": 0,
+          "p50_ms": 2.7,
+          "p95_ms": 5.5,
+          "max_ms": 38.9,
+          "gpu_util_pct": [
+            0.0,
+            0.0
+          ],
+          "cpu_pct": {
+            "server": 0.0,
+            "nginx": 0.0,
+            "loadgen": 403.0
+          }
+        }
+      ],
+      "sent": {
+        "total": 1286025,
+        "warmup": 323508,
+        "measured": 962517,
+        "ok_total": 1286025,
+        "resent_on_closed_keepalive": 0
+      },
+      "loadgen_procs": 4,
+      "loadgen_busy": true,
+      "server_procs": 0,
+      "nginx_procs": 0,
+      "phase": "single",
+      "attempt": 1
+    }
+  ],
+  "capacity": null,
+  "max_throughput_rps": 64167.67,
+  "finished_utc": "2026-11-23T01:15:53+00:00"
+}

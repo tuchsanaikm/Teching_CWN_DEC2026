@@ -1,0 +1,9 @@
+{
+ "tag": "base",
+ "n": 200,
+ "exact_match": 1.5,
+ "exact_match_case_insensitive": 1.5,
+ "correct": 3,
+ "test_loss": 1.9176,
+ "eval_sec": 43.7
+}

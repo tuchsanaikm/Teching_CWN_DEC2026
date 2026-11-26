@@ -1,0 +1,122 @@
+{
+ "a": {
+  "equal": {
+   "rr": {
+    "capacity": 128,
+    "first_fail": 130,
+    "p95_at_capacity": 464.2,
+    "throughput_at_capacity": 489.3,
+    "max_throughput": 489.3,
+    "p95_at_n64_first_try": 173.2,
+    "levels_measured": 18
+   },
+   "lc": {
+    "capacity": 221,
+    "first_fail": 223,
+    "p95_at_capacity": 487.4,
+    "throughput_at_capacity": 484.3,
+    "max_throughput": 495.5,
+    "p95_at_n64_first_try": 147.2,
+    "levels_measured": 20
+   },
+   "p2c": {
+    "capacity": 196,
+    "first_fail": 200,
+    "p95_at_capacity": 494.1,
+    "throughput_at_capacity": 487.3,
+    "max_throughput": 497.1,
+    "p95_at_n64_first_try": 179.2,
+    "levels_measured": 20
+   }
+  },
+  "slow": {
+   "rr": {
+    "capacity": 49,
+    "first_fail": 50,
+    "p95_at_capacity": 492.3,
+    "throughput_at_capacity": 202.5,
+    "max_throughput": 212.5,
+    "p95_at_n64_first_try": 657.5,
+    "levels_measured": 14
+   },
+   "lc": {
+    "capacity": 96,
+    "first_fail": 97,
+    "p95_at_capacity": 488.8,
+    "throughput_at_capacity": 343.9,
+    "max_throughput": 366.2,
+    "p95_at_n64_first_try": 328.3,
+    "levels_measured": 14
+   },
+   "p2c": {
+    "capacity": 72,
+    "first_fail": 73,
+    "p95_at_capacity": 489.1,
+    "throughput_at_capacity": 322.4,
+    "max_throughput": 348.5,
+    "p95_at_n64_first_try": 447.5,
+    "levels_measured": 15
+   }
+  }
+ },
+ "b": {
+  "equal": {
+   "rr": {
+    "capacity": 203,
+    "first_fail": 207,
+    "p95_at_capacity": 488.1,
+    "throughput_at_capacity": 588.3,
+    "max_throughput": 600.9,
+    "p95_at_n64_first_try": 144.8,
+    "levels_measured": 21
+   },
+   "lc": {
+    "capacity": 230,
+    "first_fail": 234,
+    "p95_at_capacity": 474.3,
+    "throughput_at_capacity": 573.1,
+    "max_throughput": 615.4,
+    "p95_at_n64_first_try": 134.2,
+    "levels_measured": 16
+   },
+   "p2c": {
+    "capacity": 238,
+    "first_fail": 239,
+    "p95_at_capacity": 497.7,
+    "throughput_at_capacity": 585.3,
+    "max_throughput": 594.1,
+    "p95_at_n64_first_try": 143.1,
+    "levels_measured": 19
+   }
+  },
+  "slow": {
+   "rr": {
+    "capacity": 54,
+    "first_fail": 55,
+    "p95_at_capacity": 499.0,
+    "throughput_at_capacity": 220.1,
+    "max_throughput": 232.3,
+    "p95_at_n64_first_try": 577.5,
+    "levels_measured": 13
+   },
+   "lc": {
+    "capacity": 111,
+    "first_fail": 112,
+    "p95_at_capacity": 498.4,
+    "throughput_at_capacity": 396.6,
+    "max_throughput": 409.3,
+    "p95_at_n64_first_try": 298.8,
+    "levels_measured": 15
+   },
+   "p2c": {
+    "capacity": 81,
+    "first_fail": 82,
+    "p95_at_capacity": 492.3,
+    "throughput_at_capacity": 387.6,
+    "max_throughput": 408.9,
+    "p95_at_n64_first_try": 398.6,
+    "levels_measured": 15
+   }
+  }
+ }
+}

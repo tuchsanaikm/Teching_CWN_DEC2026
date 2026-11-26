@@ -1,0 +1,52 @@
+{
+  "mode": "bughunt",
+  "base_url": "http://127.0.0.1:3421",
+  "total": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate_pct": 100.0,
+  "results": [
+    {
+      "id": "TC-26",
+      "group": "9. Bug Hunt",
+      "rule": "BUG #1 (BR-05)",
+      "mode": "bughunt",
+      "title": "จับบั๊กซ่อน BR-05: ผลต่าง 1.01–1.49 บาทไม่ติดธงยอดไม่ตรง",
+      "expected": "ตรวจพบ mismatch=False ผิดจากกติกา",
+      "actual": "จับบั๊ก BR-05 สำเร็จ: ผลต่าง 1.01 และ 1.49 บาทไม่ติดธง (ควรติดธง)",
+      "status": "PASS",
+      "seconds": 7.22,
+      "gif": "images/tests/TC-26.gif",
+      "gif_sec": 2.88,
+      "gif_kb": 178
+    },
+    {
+      "id": "TC-27",
+      "group": "9. Bug Hunt",
+      "rule": "BUG #2 (BR-09)",
+      "mode": "bughunt",
+      "title": "จับบั๊กซ่อน BR-09: โควตาครบ 5 งานแล้วยังตั้งงานที่ 6 ได้",
+      "expected": "ตรวจพบ accepted=1 แทนที่จะถูกปฏิเสธ",
+      "actual": "จับบั๊ก BR-09 สำเร็จ: โควตาครบ 5 แล้วยังตั้งงานเร่งด่วนที่ 6 ได้ (ควรได้ 409)",
+      "status": "PASS",
+      "seconds": 2.3,
+      "gif": "images/tests/TC-27.gif",
+      "gif_sec": 2.88,
+      "gif_kb": 140
+    },
+    {
+      "id": "TC-28",
+      "group": "9. Bug Hunt",
+      "rule": "BUG #3 (BR-14)",
+      "mode": "bughunt",
+      "title": "จับบั๊กซ่อน BR-14: รายงานรายเดือนตัดใบเสร็จวันที่ 1 ทิ้ง",
+      "expected": "ตรวจพบยอด 1,139.50 แทน 1,340.00",
+      "actual": "จับบั๊ก BR-14 สำเร็จ: ยอดเหลือ 1,139.50 (3 ใบ) ตัดใบวันที่ 1 (200.50) ทิ้ง",
+      "status": "PASS",
+      "seconds": 2.08,
+      "gif": "images/tests/TC-28.gif",
+      "gif_sec": 2.26,
+      "gif_kb": 84
+    }
+  ]
+}

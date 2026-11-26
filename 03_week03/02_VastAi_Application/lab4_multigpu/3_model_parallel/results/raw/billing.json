@@ -1,0 +1,61 @@
+{
+ "instance_id": "<id>",
+ "label": "vapp-lab4-mp",
+ "fetched_unix": 1795331413.8240163,
+ "total_charged_usd": 0.356,
+ "charges": [
+  {
+   "amount": 0.356,
+   "description": "Instance <id> Charges - 1 day",
+   "end": 1795305600,
+   "items": [
+    {
+     "amount": 0.287,
+     "description": "0.770 hours at $0.373/hour",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "gpu"
+    },
+    {
+     "amount": 0.03,
+     "description": "0.914 hours at $0.033/hour",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "disk"
+    },
+    {
+     "amount": 0.038,
+     "description": "14.7 GB Downloaded at $0.003/GB",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwd"
+    },
+    {
+     "amount": 0.001,
+     "description": "0.2 GB Uploaded at $0.004/GB",
+     "end": 1795305600,
+     "items": [],
+     "metadata": {},
+     "source": null,
+     "start": 1795305600,
+     "type": "bwu"
+    }
+   ],
+   "metadata": {
+    "label": "vapp-lab4-mp"
+   },
+   "source": "instance-<id>",
+   "start": 1795305600,
+   "type": "instance"
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+[08:10:42] to evaluate: ['base']
+
+[08:11:34] EVAL_DONE {"tag": "base", "n": 200, "exact_match": 1.5, "exact_match_case_insensitive": 1.5, "correct": 3, "test_loss": 1.9176, "eval_sec": 43.7}
+[08:11:34] EVAL_ALL_DONE
+[08:32:09] to evaluate: ['epoch1', 'epoch2', 'epoch3']
+
+[08:33:02] EVAL_DONE {"tag": "epoch1", "n": 200, "exact_match": 69.0, "exact_match_case_insensitive": 71.5, "correct": 138, "test_loss": 0.0629, "eval_sec": 45.7}
+[08:33:58] EVAL_DONE {"tag": "epoch2", "n": 200, "exact_match": 77.5, "exact_match_case_insensitive": 79.0, "correct": 155, "test_loss": 0.0536, "eval_sec": 55.8}
+[08:34:47] EVAL_DONE {"tag": "epoch3", "n": 200, "exact_match": 74.5, "exact_match_case_insensitive": 76.5, "correct": 149, "test_loss": 0.054, "eval_sec": 48.6}
+[08:34:47] EVAL_ALL_DONE

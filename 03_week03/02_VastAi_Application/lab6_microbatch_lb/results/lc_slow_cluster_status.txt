@@ -1,0 +1,14 @@
+[cluster] layout: gpus=2 per-gpu=4 mode=micro lb=lc slow-gpu=1 slow-factor=3 started=2026-11-23T02:31:18Z
+  server 127.0.0.1:8101 pid=20522 health=200 gpu0-8101 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8201 pid=20526 health=200 gpu1-8201 micro cuda:0 max_batch=32 slowdown=3.0 queue=0
+  server 127.0.0.1:8102 pid=20531 health=200 gpu0-8102 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8202 pid=20535 health=200 gpu1-8202 micro cuda:0 max_batch=32 slowdown=3.0 queue=0
+  server 127.0.0.1:8103 pid=20540 health=200 gpu0-8103 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8203 pid=20544 health=200 gpu1-8203 micro cuda:0 max_batch=32 slowdown=3.0 queue=0
+  server 127.0.0.1:8104 pid=20552 health=200 gpu0-8104 micro cuda:0 max_batch=32 slowdown=1.0 queue=0
+  server 127.0.0.1:8204 pid=20559 health=200 gpu1-8204 micro cuda:0 max_batch=32 slowdown=3.0 queue=0
+  nginx  0.0.0.0:8080 pid=21074 processes=5 health=200 upstreams=8 least_conn_lines=1
+  listening: 0.0.0.0:8080 127.0.0.1:8101 127.0.0.1:8102 127.0.0.1:8103 127.0.0.1:8104 127.0.0.1:8201 127.0.0.1:8202 127.0.0.1:8203 127.0.0.1:8204
+  gpu 0, 8057 MiB, 0 %
+  gpu 1, 8057 MiB, 0 %
+[cluster] status: OK

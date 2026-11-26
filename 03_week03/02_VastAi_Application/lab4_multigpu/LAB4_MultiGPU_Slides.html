@@ -1,0 +1,1181 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAB 4 · Multi-GPU ในเครื่องเดียว (Single GPU · Data Parallelism · Model Parallelism)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12305e;--teal:#0f8f8c;--teal-soft:#e2f5f4;--orange:#e87f1c;--orange-soft:#fff1e3;--red:#c92a2a;--red-soft:#fdecec;
+--green:#15803d;--green-soft:#e7f7ec;--ink:#1c2533;--muted:#5b6b80;--line:#d8e0ec;--bg:#f5f7fb;--card:#fff;--code:#0e1a2b;
+--font:'IBM Plex Sans Thai','Leelawadee UI','Noto Sans Thai','Segoe UI',sans-serif;--mono:'JetBrains Mono','Cascadia Code',Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:var(--font);color:var(--ink)}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:40px 72px 44px;display:none;flex-direction:column;overflow:hidden}
+.slide.active,.slide.measure{display:flex}
+.slide.measure{visibility:hidden}
+.slide.active{animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hd{flex:none;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+.kicker{font-size:17px;font-weight:600;color:var(--teal);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kicker code{font-size:.9em;background:none;padding:0;color:inherit}
+h2{font-size:36px;line-height:1.22;margin:3px 0 0;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:14px}
+h2 .tt{min-width:0}
+h2 code{font-size:.88em}
+.tag{flex:none;font-size:16px;font-weight:600;color:#b35c0a;white-space:nowrap;align-self:center}
+.tag::before{content:"● ";font-size:.7em;vertical-align:.15em}
+.pg{flex:none;margin-left:auto;font-size:16px;font-weight:500;color:var(--muted);white-space:nowrap}
+.slide .no{display:none;position:absolute;right:26px;bottom:12px;font-size:13px;color:#8796ab}
+.slide .dk{position:absolute;left:72px;bottom:12px;font-size:13px;color:#8796ab}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5em;font-size:calc(23px*var(--fs,1));overflow:hidden}
+.body.scroll{overflow:auto}
+.body>*{flex:none;margin:0}
+p{line-height:1.55}
+ul{padding-left:1.3em;margin:0}
+li{line-height:1.5;margin:.22em 0}
+b,strong{color:var(--navy)}
+a{color:#1d5fd0;text-decoration:none;border-bottom:1px solid rgba(29,95,208,.3)}
+.xref{color:var(--navy);font-weight:600}
+code{font-family:var(--mono);font-size:.84em;background:#e6edf7;color:#0b3b7a;padding:.08em .38em;border-radius:5px;overflow-wrap:break-word}
+pre,code{font-variant-ligatures:none}
+h3.lead{font-size:1.14em;color:var(--navy);font-weight:700;line-height:1.35;padding-left:.6em;border-left:5px solid var(--teal)}
+h3.lead span{font-weight:400;color:var(--muted);font-size:.86em}
+h3.lead span b{color:var(--muted)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9em;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.4em .62em;text-align:left;vertical-align:top;line-height:1.42;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600}
+th code{background:rgba(255,255,255,.16);color:#fff}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f9fd}
+td:first-child{font-weight:500}
+td.yes{color:#0f5132}td.no{color:#9b1c1c}
+.slide td.no{display:table-cell;position:static;font-size:inherit;color:#9b1c1c}
+table.c6,table.c7{font-size:.84em}
+.v{font-weight:700;font-size:.92em;padding:.05em .5em;border-radius:6px;white-space:nowrap}
+.v.accept{background:var(--green-soft);color:var(--green)}
+.v.reject{background:var(--red-soft);color:var(--red)}
+.note{border-left:3px solid var(--teal);padding:.15em 0 .15em .9em;line-height:1.5}
+.note>*{margin:0}
+.note>*+*{margin-top:.4em}
+.note.ok{border-color:var(--green)}
+.note.warn{border-color:var(--orange)}
+.note.bad{border-color:var(--red)}
+.note.result{border-color:var(--navy)}
+.note.eye{border-color:var(--orange);display:block}
+.note.eye>*+*{margin-top:0}
+.note .lbl{flex:none;font-weight:700;color:#b35c0a}
+.note .lbl{margin-right:.45em}
+.note .lbl::after{content:" —";font-weight:400;color:var(--muted)}
+pre.code{position:relative;background:var(--code);color:#dbe7ff;font-family:var(--mono);font-size:.74em;line-height:1.5;padding:.85em 1.1em;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+pre.code.term{border-left:6px solid var(--teal)}
+pre .copy{position:absolute;top:8px;right:8px;font-family:var(--font);font-size:14px;background:#26406a;color:#fff;border:0;border-radius:7px;padding:5px 12px;cursor:pointer;opacity:.85}
+pre .copy:hover,.copy.big:hover{background:var(--teal);opacity:1}
+pre .err{color:#ff9b9b}pre .ok{color:#86e3ae}pre .dim{color:#8ea3c4}pre .cmd{color:#ffd28a}
+.tk-c{color:#7f93b5;font-style:italic}.tk-s{color:#a5e8b5}.tk-k{color:#ffb86b}.tk-n{color:#8fd3ff}
+.fig{flex:1 1 0;min-height:var(--figmin,260px);display:flex;align-items:center;justify-content:center}
+.fig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 6px 22px rgba(18,48,94,.16);background:#fff;cursor:zoom-in}
+.fig.wide{flex:none;min-height:0;display:block}
+.fig.wide img{width:100%;max-height:none}
+.body>.fig.wide:only-child{margin:auto 0}
+.figrow{flex:1 1 0;min-height:0;display:flex;gap:24px;align-items:center}
+.figrow .fig{height:100%}
+.cols{display:flex;gap:26px;align-items:flex-start}
+.cols .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:.5em}
+.cols .col>*{margin:0}
+.cmp pre.code{font-size:.72em}
+.fails{display:flex;flex-direction:column;gap:.45em}
+.fails .cardx{padding:.4em .8em}
+.slide.mid .body{justify-content:center;gap:.8em}
+.cardx h4 code{font-size:.9em}
+.fails .cardx p{font-size:.8em;font-family:var(--mono);line-height:1.45}
+/* พรอมต์ */
+.pbar{display:flex;align-items:center;gap:16px;background:var(--orange-soft);border:1px solid #f6d3ad;border-radius:10px;padding:.45em .8em;font-size:.86em}
+.pbar .how{flex:1;min-width:0}
+.pbar .plabel{flex:none;color:var(--muted);font-size:.9em}
+.copy.big{flex:none;font-family:var(--font);font-size:19px;font-weight:700;background:var(--orange);color:#fff;border:0;border-radius:9px;padding:9px 20px;cursor:pointer;box-shadow:0 3px 10px rgba(232,127,28,.35)}
+.copy.done{background:var(--green)!important}
+pre.code.prompt{font-size:.76em;line-height:1.52;border:2px solid #f08a24}
+.full{display:none}
+/* checklist */
+.checks{display:flex;flex-direction:column;gap:.45em}
+.chk{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5em .8em;cursor:pointer;line-height:1.45}
+.chk input{width:1.15em;height:1.15em;margin-top:.2em;flex:none;accent-color:var(--teal)}
+.chk:has(input:checked){background:var(--green-soft);border-color:#a7dcb8}
+/* ภาพ + ขั้นตอน */
+.fitbox{overflow:hidden}
+.ex{flex:1 1 0;min-height:0;display:flex;gap:30px;align-items:stretch}
+.ex .fig{flex:1.5 1 0;min-height:0;min-width:0}
+.ex .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.5em}
+.ex .side>*{flex:none;margin:0}
+.stp{display:flex;gap:.75em;align-items:baseline;padding:.42em 0;line-height:1.45;border-top:1px solid var(--line)}
+.side .stp:first-child{border-top:0}
+.stp .n{flex:none;min-width:1.1em;font-size:1.25em;font-weight:700;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.cap{color:var(--muted);line-height:1.5;text-align:center}
+.cap b{color:var(--navy)}
+/* ตัวเลขใหญ่ */
+.tiles{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-top:3px solid var(--navy)}
+.tile{min-width:0;padding:.55em 1.1em .2em;border-left:1px solid var(--line)}
+.tile:first-child{border-left:0;padding-left:0}
+.tile .k{font-size:.86em;font-weight:700;color:var(--ink);margin-top:.35em}
+.tile .num{font-size:2.25em;font-weight:700;color:var(--navy);line-height:1.1;white-space:nowrap;letter-spacing:-.01em}
+.tiles.tl{border-top:0;position:relative;padding-top:34px}
+.tiles.tl::before{content:"";position:absolute;left:0;right:0;top:11px;height:3px;background:var(--navy)}
+.tiles.tl .tile{border-left:0;padding-left:0;position:relative}
+.tiles.tl .tile::before{content:"";position:absolute;top:-31px;left:0;width:16px;height:16px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 5px var(--bg)}
+.tile .num small{font-size:.5em;font-weight:600;color:var(--muted)}
+.tile .s{font-size:.8em;color:var(--muted);line-height:1.4}
+.tile.ok{}.tile.ok .num{color:var(--green)}
+.tile.bad{}.tile.bad .num{color:var(--red)}
+.tile.warn .num{color:#b35c0a}
+/* การ์ด */
+.cards{display:grid;gap:18px;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.cardx{border-top:3px solid var(--teal);padding:.5em 0 0;display:flex;flex-direction:column;gap:.3em}
+.cardx>*{margin:0}
+.cardx h4{font-size:1.02em;color:var(--navy);line-height:1.35}
+.cardx p,.cardx li{font-size:.88em;line-height:1.48;color:#2b3648}
+.cardx .n{color:var(--teal);font-weight:700;margin-right:.45em}
+.cardx.ok{border-top-color:var(--green)}.cardx.bad{border-top-color:var(--red)}.cardx.warn{border-top-color:var(--orange)}.cardx.navy{border-top-color:var(--navy)}
+.cardx .chips{display:flex;flex-direction:column;gap:.3em}
+.cardx .chips div{font-size:.86em;line-height:1.45}
+/* สมการ (KaTeX) */
+.katex{font-size:1.1em;font-family:KaTeX_Main,'IBM Plex Sans Thai','Leelawadee UI','Times New Roman',serif}
+.katex-display{margin:0}
+.eqbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:.3em .6em;text-align:center;box-shadow:0 4px 14px rgba(18,48,94,.06);font-size:2.2em;color:var(--ink);display:flex;flex-direction:column;gap:.12em}
+.eqbox .row+.row{border-top:1px dashed var(--line);padding-top:.12em}
+.eqbox .sub{font-size:.36em;color:var(--muted);line-height:1.4;padding-bottom:.3em}
+.eqlead{color:var(--muted);font-size:.95em;line-height:1.45}
+.parts{display:grid;gap:16px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+.part{background:#fff;border:1px solid var(--line);border-top:9px solid var(--c);border-radius:14px;padding:.55em .8em .65em;display:flex;flex-direction:column;gap:.22em;box-shadow:0 3px 10px rgba(18,48,94,.05)}
+.part>*{margin:0}
+.part .role{font-size:.64em;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.part .top{display:flex;align-items:center;gap:.5em;min-height:2.3em}
+.part .n{flex:none;display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--c);color:#fff;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.part .sym{font-size:1.3em;color:var(--c)}
+.part h4{font-size:1em;color:var(--navy);line-height:1.3}
+.part p{font-size:.86em;line-height:1.45;color:#2b3648}
+.part .lab{align-self:flex-start;font-family:var(--mono);font-size:.74em;color:#0b6b69;background:var(--teal-soft);border-radius:6px;padding:.12em .5em;margin-top:.15em}
+/* เทียบ 2 ฝั่ง */
+.vs{display:flex;gap:26px;align-items:stretch}
+.vs .sidebox{flex:1;min-width:0;border-radius:16px;padding:.8em 1em;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:.4em}
+.vs .sidebox>*{margin:0}
+.vs .bad{border-color:#f0b4b4;background:#fff8f8}.vs .good{border-color:#a7dcb8;background:#f5fcf7}
+.vs .hd2{font-size:.8em;font-weight:700;letter-spacing:.03em}
+.vs .bad .hd2{color:var(--red)}.vs .good .hd2{color:var(--green)}
+.vs .bigv{font-family:var(--mono);font-size:2.6em;font-weight:700;line-height:1.15}
+.vs .bad .bigv{color:var(--red)}.vs .good .bigv{color:var(--green)}
+.vs .calc{font-family:var(--mono);font-size:.95em;color:#2b3648}
+.callbox{background:var(--code);color:#dbe7ff;font-family:var(--mono);border-radius:12px;padding:.6em 1em;font-size:1.05em;text-align:center}
+.formula{background:#fff;border:2px solid var(--navy);border-radius:16px;padding:.7em 1em;text-align:center;font-size:1.25em;font-weight:700;color:var(--navy);line-height:1.5}
+.bigq{font-size:1.9em;font-weight:700;color:var(--navy);line-height:1.35;margin:auto 0 .2em!important}
+.bigq em{font-style:normal;color:var(--orange)}
+.bigsub{font-size:1.05em;color:var(--muted);line-height:1.6;margin-bottom:auto!important}
+/* แท่ง */
+.bars{display:flex;flex-direction:column;gap:.5em}
+.bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 7.5em;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45em .85em}
+.bar .lb{line-height:1.4}
+.bar .lb small{display:block;color:var(--muted);font-size:.8em}
+.bar .tr{height:1.15em;background:#e7edf5;border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;border-radius:999px;background:var(--green);min-width:6px}
+.bar .fl.mid{background:var(--orange)}.bar .fl.low{background:var(--red)}
+.bar .vl{font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;font-size:.92em}
+/* ตารางสี 18 Trial */
+.heat{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;align-items:stretch}
+.heat .hh{font-family:var(--mono);font-size:.74em;font-weight:600;color:var(--navy);text-align:center;padding:.2em 0}
+.heat .hr{font-size:.82em;color:var(--muted);display:flex;align-items:center;padding-right:.4em;white-space:nowrap}
+.heat .hc{border-radius:10px;text-align:center;font-family:var(--mono);font-weight:700;font-size:1.15em;padding:.55em 0;color:#12305e}
+.heat .grp{grid-column:span 4;text-align:center;font-size:.8em;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:.15em}
+.heat .grp.val{grid-column:span 2;background:var(--orange)}
+/* Input -> LAB -> Output */
+.ff{display:flex;gap:22px;align-items:center}
+.ffcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:.42em}
+.ffh{font-size:.78em;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:10px;padding:.42em .7em;font-size:.9em;line-height:1.42}
+.ffcol.out .file{border-left-color:var(--orange)}
+.ffmid{flex:none;width:8em;text-align:center;background:var(--navy);color:#fff;border-radius:18px;padding:1.1em .5em;font-weight:700;font-size:1.1em;line-height:1.3;position:relative}
+.ffmid small{display:block;font-weight:500;font-size:.62em;color:#b9d2f5;margin-top:.3em}
+.ffar{flex:none;font-size:2em;color:var(--orange);font-weight:700}
+/* กลุ่มข้อตรวจ */
+.ck{display:flex;gap:.55em;align-items:baseline;font-size:.86em;line-height:1.45}
+.ck code{flex:none}
+/* แผนของบท */
+.road{display:flex;gap:26px;align-items:stretch}
+.road .partbox{flex:1;border-radius:18px;padding:.8em 1em 1em;background:#fff;border:2px solid var(--line);display:flex;flex-direction:column;gap:.55em}
+.road .partbox>*{margin:0}
+.road .ph{font-size:1.25em;font-weight:700;color:var(--navy)}
+.road .ph small{font-size:.6em;font-weight:600;color:var(--teal);margin-left:.6em}
+.road .secbox{border-left:7px solid var(--teal);background:var(--bg);border-radius:10px;padding:.5em .8em}
+.road .secbox b{display:block;font-size:1.02em}
+.road .secbox span{font-size:.86em;color:#2b3648;line-height:1.45;display:block}
+.road .partbox.lab .secbox{border-left-color:var(--orange)}
+/* hero: ภาพเต็มหน้า + ตัวเลขสีขาว */
+.slide.hero{background-color:#081222;background-size:cover;background-position:center right;color:#eef3fb}
+.slide.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,11,22,.97) 0%,rgba(5,11,22,.93) 44%,rgba(5,11,22,.55) 64%,rgba(5,11,22,.08) 88%),linear-gradient(180deg,rgba(5,11,22,.55) 0%,rgba(5,11,22,0) 22%)}
+.slide.hero>*{position:relative;z-index:1}
+.slide.hero .hd{border-bottom-color:rgba(255,255,255,.18)}
+.slide.hero h2{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.slide.hero .kicker{color:#7fe3dc}
+.slide.hero .body{justify-content:center}
+.herobox{max-width:62%;display:flex;flex-direction:column;gap:.7em}
+.tiles.hl{display:grid;grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:auto 1fr;column-gap:1.1em;border-top:0}
+.tiles.hl .tile{display:contents}
+.tiles.hl .num,.tiles.hl .txt{border-top:1px solid rgba(255,255,255,.16);padding:.4em 0}
+.tiles.hl .tile:first-child .num,.tiles.hl .tile:first-child .txt{border-top:0}
+.tiles.hl .num{font-size:2.35em;line-height:1.05;color:#fff;text-shadow:0 2px 18px rgba(34,184,207,.35)}
+.tiles.hl .num small{display:block;font-size:.36em;font-weight:600;color:#b9c8e2;margin-top:.15em}
+.tiles.hl .txt{min-width:0;align-self:center}
+.tiles.hl .k{color:#fff;margin-top:0}
+.tiles.hl .s{color:#b9c8e2}
+.tiles.hl .tile.ok .num{color:#7ee2a8}.tiles.hl .tile.warn .num{color:#ffb661}.tiles.hl .tile.bad .num{color:#ff8a8a}
+.slide.hero .note{border-left-color:#ffb661;color:#e6eefc}
+.slide.hero .note .lbl{color:#ffb661}
+.slide.hero .note b,.slide.hero b{color:#fff}
+.slide.hero .imgnote{position:absolute;right:22px;bottom:60px;z-index:2}
+/* ปก และหน้าคั่น */
+.cover,.divider{padding:0;background:linear-gradient(135deg,#0d2447 0%,#163f7a 62%,#0f8f8c 140%);background-size:cover;background-position:center;color:#fff}
+.cover .shade,.divider.photo .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.96) 0%,rgba(6,13,26,.86) 46%,rgba(6,13,26,.25) 80%)}
+.inner{position:relative;height:100%;padding:90px 96px 70px;display:flex;flex-direction:column;max-width:1120px;font-size:25px}
+.divider:not(.photo) .inner{max-width:1400px}
+.divider.photo .inner{max-width:940px}
+.inner .small{font-size:21px;font-weight:600;color:#8fe0dc;letter-spacing:.03em;min-height:28px}
+.inner .big{font-size:120px;font-weight:700;line-height:1.05;color:#fff;margin-top:8px}
+.inner h1{font-size:54px;line-height:1.2;margin:10px 0 0;color:#fff}
+.cover .inner h1{font-size:68px;margin-top:120px}
+.inner .sub{margin-top:26px;color:#d6e4fb;line-height:1.55;display:flex;flex-direction:column;gap:.55em}
+.cover .inner .sub{font-size:34px;color:#cfe0ff}
+.inner .sub p,.inner .sub ul{margin:0}
+.inner b{color:#fff}
+.inner code{background:rgba(255,255,255,.14);color:#fff}
+.inner a{color:#9fd8ff;border-bottom-color:rgba(159,216,255,.4)}
+.inner .xref{color:#fff}
+.inner .hint{margin-top:auto;font-size:19px;color:#9fb6dd}
+.inner .v.accept{background:rgba(134,227,174,.2);color:#9af0bf}.inner .v.reject{background:rgba(255,155,155,.2);color:#ffb3b3}
+.imgnote{position:absolute;right:22px;bottom:14px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:7px}
+.facts{display:flex;flex-wrap:wrap;row-gap:.3em;gap:0;margin-top:14px;font-size:24px;color:#fff;font-weight:600}
+.facts div{white-space:nowrap}
+.facts div:nth-child(3){flex-basis:100%;white-space:normal}
+.facts div:nth-child(3)::before{content:none}
+.facts div+div::before{content:"·";margin:0 .7em;color:#8fb3e6}
+.facts .fl{color:#9fd8ff;font-weight:500;margin-right:.4em}
+.kbd{display:inline-block;border:1px solid #9fb6dd;border-bottom-width:3px;border-radius:7px;padding:0 9px;font-family:var(--mono);font-size:.8em;margin:0 2px;background:rgba(255,255,255,.06)}
+.body .kbd{border-color:#9aa9bf;background:#fff}
+/* ส่วนควบคุม */
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--orange);transition:width .25s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:6;font-family:var(--font);opacity:.35;transition:opacity .2s}
+#hud:hover{opacity:1}
+#hud button{background:rgba(18,48,94,.85);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;height:36px;min-width:38px;font-size:16px;cursor:pointer;padding:0 10px}
+#hud button:hover{background:var(--teal)}
+#count{color:#fff;background:rgba(18,48,94,.85);border-radius:9px;padding:7px 10px;font-size:15px;min-width:80px;text-align:center}
+body.ov #stage{display:none}
+#ov{display:none;position:fixed;inset:0;overflow:auto;padding:26px 32px 60px;z-index:10;background:#0b1424;color:#dbe7ff}
+body.ov #ov{display:block}
+#ov h4{margin:22px 0 10px;font-size:19px;color:#8fe0dc;font-weight:600;border-bottom:1px solid #22324d;padding-bottom:6px}
+#ov .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+#ov .th{background:#16233a;border:2px solid transparent;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+#ov .th:hover,#ov .th.cur{border-color:var(--orange)}
+#ov .th span{color:var(--orange);font-weight:700;margin-right:6px}
+#lb{display:none;position:fixed;inset:0;z-index:20;background:rgba(4,8,16,.95);overflow:auto;padding:18px;text-align:center;cursor:zoom-out}
+#lb.on{display:block}
+#lb img{width:min(100%,2000px);height:auto;border-radius:8px;background:#fff}
+@media print{html,body{overflow:visible;height:auto;background:#fff}#hud,#bar,#ov,#lb,.copy{display:none!important}.slide .no{display:block}
+#stage{position:static;display:block}#deck{transform:none!important;height:auto}
+.slide{display:flex!important;position:relative;width:1600px;height:900px;page-break-after:always;break-after:page;animation:none}}
+@page{size:1600px 900px;margin:0}
+
+.ex.big .fig{flex:2.25 1 0}
+.ex.mid2 .fig{flex:1.95 1 0}
+.slide.stmt{padding:0;color:#fff}
+.stmt img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stmt .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.95) 0%,rgba(6,13,26,.82) 52%,rgba(6,13,26,.18) 88%)}
+.stmt .inner{justify-content:center;max-width:1060px}
+.stmt .q{font-size:50px;font-weight:700;line-height:1.32;color:#fff}
+.stmt .sub2{margin-top:28px;font-size:25px;line-height:1.6;color:#d6e4fb}
+.stmt .sub2 b{color:#ffd28a}
+.stmt .links{margin-top:26px;font-size:21px;line-height:1.7;color:#b9d2f5}
+.stmt .links a{color:#8fe0dc;border-bottom-color:rgba(143,224,220,.45);margin-right:18px;white-space:nowrap}
+.stmt .imgnote{bottom:60px}
+.inner .dim{color:#9fb6dd;font-size:.9em}
+.divider .inner .small{margin-bottom:22px}
+.inner h1{line-height:1.32}
+.slide.hero .tag{color:#ffd28a;text-shadow:0 1px 6px rgba(0,0,0,.95),0 0 3px #000}
+.slide.hero code{background:rgba(255,255,255,.16);color:#fff}
+.slide.hero .tiles.hl .num{font-size:2.15em}
+.slide th a{color:#fff}
+
+/* Vast.ai Web Console Status Mockup (ช่วงสร้างเครื่องเสร็จพร้อมเทรน) */
+.vweb{background:#0f172a;color:#e2e8f0;border-radius:14px;overflow:hidden;border:1px solid #1e293b;margin-top:6px;box-shadow:0 10px 28px rgba(15,23,42,.18)}
+.vweb-bar{display:flex;align-items:center;justify-content:space-between;background:#1e293b;padding:11px 20px;border-bottom:1px solid #334155;font-family:ui-monospace,Consolas,monospace;font-size:.82em;color:#94a3b8}
+.vweb-dots{display:flex;gap:7px;align-items:center}
+.vweb-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.vweb-url{background:#0f172a;padding:4px 16px;border-radius:6px;color:#cbd5e1;border:1px solid #334155}
+.vweb-status{display:inline-flex;align-items:center;gap:7px;background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(52,211,153,.45);padding:3px 13px;border-radius:999px;font-weight:700;font-size:.86em}
+.vweb-body{padding:20px 26px}
+.vweb-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid #334155;margin-bottom:16px;flex-wrap:wrap}
+.vweb-gpu{font-size:1.35em;font-weight:700;color:#38bdf8}
+.vweb-lbl{font-family:ui-monospace,Consolas,monospace;background:#1e293b;color:#fde68a;padding:4px 12px;border-radius:6px;border:1px solid #475569;font-size:.88em}
+.vweb-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:22px}
+.vweb-kv{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.9em;line-height:1.45}
+.vweb-k{color:#94a3b8;font-weight:600;white-space:nowrap}
+.vweb-v{color:#f8fafc}
+.vweb-chk{border-left:1px solid #334155;padding-left:22px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.vweb-chkh{color:#94a3b8;font-size:.82em;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.vweb-item{display:flex;gap:10px;align-items:flex-start;font-size:.9em;line-height:1.45;color:#e2e8f0}
+.vweb-ok{color:#34d399;font-weight:700;flex-shrink:0}
+.vweb-next{margin-top:4px;padding-top:10px;border-top:1px dashed #334155;color:#7dd3fc;font-weight:700;font-size:.92em}
+.vweb b{color:#7dd3fc}
+.vweb .vweb-next b{color:#fde68a}
+.vweb code{background:#1e293b;color:#fde68a;border:1px solid #334155}
+
+/* Training Completion Readout (ช่วงหลังเทรนเสร็จ 3 Epoch) */
+.tdone{background:#0b1220;color:#e2e8f0;border-radius:14px;overflow:hidden;border:1px solid #1e293b;margin-top:6px;box-shadow:0 10px 28px rgba(15,23,42,.16)}
+.tdone-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#172033;padding:10px 20px;border-bottom:1px solid #334155;font-family:ui-monospace,Consolas,monospace;font-size:.82em;color:#cbd5e1}
+.tdone-ok{background:rgba(56,189,248,.16);color:#38bdf8;border:1px solid rgba(56,189,248,.4);padding:3px 14px;border-radius:999px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.tdone-body{padding:18px 24px;display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:start}
+.tdone-list{display:flex;flex-direction:column;gap:9px}
+.tdone-row{display:flex;justify-content:space-between;gap:14px;padding-bottom:7px;border-bottom:1px solid #1e293b;font-size:.88em}
+.tdone-row:last-child{border-bottom:none;padding-bottom:0}
+.tdone-k{color:#94a3b8}
+.tdone-v{color:#f8fafc;font-weight:700;text-align:right}
+.tdone-v.hi{color:#34d399}
+.tdone b{color:#fde68a}
+.tdone-tbl{width:100%;border-collapse:collapse;font-size:.86em;margin:0;background:#111c33!important;border:1px solid #334155;border-radius:10px;overflow:hidden}
+.tdone-tbl th{background:#1e293b!important;color:#cbd5e1!important;padding:8px 11px;text-align:left;font-weight:700;border-bottom:1px solid #334155}
+.tdone-tbl td{background:#111c33!important;padding:8px 11px;border-bottom:1px solid #1e293b;color:#f1f5f9!important}
+.tdone-tbl tr:nth-child(even) td{background:#16233d!important}
+.tdone-tbl tr:last-child td{border-bottom:none}
+.tdone-tbl td.em{color:#34d399!important;font-weight:700}
+</style>
+</head>
+<body>
+<!-- สร้างจาก README.md ด้วย tools/build_slides.py · ห้ามแก้ไฟล์นี้ด้วยมือ ให้แก้ README.md แล้วสร้างใหม่ -->
+<div id="stage"><div id="deck">
+<section class="slide cover" style="background-image:url(images/slides/s01-cover.jpg)" data-title="ปก" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์"><div class="shade"></div><div class="inner"><div class="small">02_VastAi_Application / lab4_multigpu</div><h1>LAB 4 · Multi-GPU ใน 1 เครื่อง</h1><div class="sub">Single GPU · Data Parallelism · Model Parallelism (เครื่องเดียว · 1, 2 และ 4 ใบ)</div><div class="hint">กด <span class="kbd">→</span> หรือ <span class="kbd">Space</span> เพื่อไปต่อ · <span class="kbd">O</span> สารบัญ · <span class="kbd">F</span> เต็มจอ · คลิกภาพเพื่อขยาย</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="เส้นทางของทั้งบท: ใช้เครื่องเดียวแต่เพิ่มหลาย GPU เพื่อแก้คอขวดคนละด้าน" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.10"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">เส้นทางของทั้งบท: ใช้เครื่องเดียวแต่เพิ่มหลาย GPU เพื่อแก้คอขวดคนละด้าน</span><span class="tag">ภาพจำลอง</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/slides/s07-lab4-journey.jpg" alt="เส้นทางของทั้งบท: ใช้เครื่องเดียวแต่เพิ่มหลาย GPU เพื่อแก้คอขวดคนละด้าน" width="1920" height="1080"></div><p class="cap">ทุกการทดลองใช้ <b>1 เครื่องต่อรอบ</b> (Multi-GPU ในเครื่องเดียว): เริ่มจาก <b>Single GPU</b> (1 ใบ ชนเพดานทั้งความเร็วและ VRAM) → แยกเป็น <b>Data Parallelism</b> (2 และ 4 ใบ เน้นความเร็ว) และ <b>Model Parallelism</b> (2 และ 4 ใบ ขยาย VRAM และ batch)</p></div></section>
+<section class="slide " data-title="แผนที่โฟลเดอร์และการทดลองทั้ง 3 LAB ย่อย (1 เครื่อง)" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">แผนที่โฟลเดอร์และการทดลองทั้ง 3 LAB ย่อย (1 เครื่อง)</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n01-lab4-folders.jpg" alt="แผนที่โฟลเดอร์และการทดลองทั้ง 3 LAB ย่อย (1 เครื่อง)" width="1376" height="768"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>LAB 4.1 (<code>1_single_gpu/</code>)</b> เช่า <b>1 เครื่อง (RTX 3090 × 1 ใบ)</b> · 3 ขั้น เพื่อหาขีดจำกัดของ batch และความเร็วตั้งต้น</span></div><div class="stp"><span class="n">2</span><span><b>LAB 4.2 (<code>2_data_parallel/</code> และ <code>gpu4/</code>)</b> เช่า <b>1 เครื่อง (2 ใบ)</b> แล้วทำซ้ำด้วย <b>1 เครื่อง (4 ใบ)</b> · 6 ขั้น ใช้ DDP ให้ทุกใบถือโมเดลครบชุดแล้วแบ่งข้อมูลกันเทรน</span></div><div class="stp"><span class="n">3</span><span><b>LAB 4.3 (<code>3_model_parallel/</code> และ <code>gpu4/</code>)</b> เช่า <b>1 เครื่อง (2 ใบ)</b> แล้วทำซ้ำด้วย <b>1 เครื่อง (4 ใบ)</b> · 6 ขั้น แบ่ง Layer ของโมเดลชุดเดียวลงหลายใบเพื่อเพิ่ม VRAM และ batch</span></div></div></div></div></section>
+<section class="slide " data-title="3 LAB ย่อยอยู่ที่โฟลเดอร์ไหน: เช่ากี่เครื่อง และเครื่องนั้นมี GPU กี่ใบ" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">3 LAB ย่อยอยู่ที่โฟลเดอร์ไหน: เช่ากี่เครื่อง และเครื่องนั้นมี GPU กี่ใบ</span><span class="tag">ตารางหลัก · โฟลเดอร์</span></h2></header><div class="body"><table class="c5"><thead><tr><th>LAB ย่อย</th><th>โฟลเดอร์</th><th>จำนวนเครื่อง</th><th>GPU ในเครื่อง</th><th>คำถามของการทดลอง</th></tr></thead><tbody><tr><td>LAB 4.1 · Single GPU</td><td><a href="1_single_gpu/README.md" target="_blank" rel="noopener">1_single_gpu</a></td><td><b>1 เครื่อง</b></td><td>RTX 3090 × <b>1 ใบ</b></td><td>เครื่องที่มี GPU 1 ใบ เทรนโมเดล 8 พันล้าน parameter ได้ batch ใหญ่แค่ไหน และเร็วเท่าไร (ใช้เป็นจุดตั้งต้น)</td></tr><tr><td>LAB 4.2 · Data Parallelism</td><td><a href="2_data_parallel/README.md" target="_blank" rel="noopener">2_data_parallel</a></td><td><b>1 เครื่อง</b> ต่อรอบ<br>(ทำ 2 รอบ)</td><td>รอบแรก: RTX 3090 × <b>2 ใบ</b><br>รอบสอง: RTX 3090 × <b>4 ใบ</b></td><td>ให้ GPU ทุกใบในเครื่องเดียวกันถือโมเดลคนละชุดแล้วแบ่งข้อมูลกันเทรน จะเร็วขึ้นกี่เท่า และเพิ่มจาก 2 เป็น 4 ใบในเครื่องเดียวแล้วเร็วขึ้นอีกเท่าไร</td></tr><tr><td>LAB 4.3 · Model Parallelism</td><td><a href="3_model_parallel/README.md" target="_blank" rel="noopener">3_model_parallel</a></td><td><b>1 เครื่อง</b> ต่อรอบ<br>(ทำ 2 รอบ)</td><td>รอบแรก: RTX 3090 × <b>2 ใบ</b><br>รอบสอง: RTX 3090 × <b>4 ใบ</b></td><td>แบ่งโมเดล 1 ชุดลง GPU หลายใบในเครื่องเดียวกัน จะขยาย batch ได้ใหญ่แค่ไหน และเพิ่มจาก 2 เป็น 4 ใบในเครื่องเดียวแล้วได้อะไรเพิ่ม</td></tr></tbody></table><div class="note info">บทนี้ใช้ <b>เครื่องเช่าเพียง 1 เครื่องต่อรอบ</b> (GPU ทุกใบเสียบอยู่ในเครื่องเดียวกัน ไม่ใช่คลัสเตอร์หลายเครื่อง) · ใน <code>2_data_parallel/</code> และ <code>3_model_parallel/</code> ผลรอบ 2 ใบอยู่ที่รากโฟลเดอร์ ส่วนรอบ 4 ใบแยกเก็บใน <code>gpu4/</code></div></div></section>
+<section class="slide " data-title="เมื่อในเครื่องเดียวมีหลาย GPU เลือกใช้ได้ 2 แบบ ซึ่งแก้ปัญหาคนละด้าน" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">เมื่อในเครื่องเดียวมีหลาย GPU เลือกใช้ได้ 2 แบบ ซึ่งแก้ปัญหาคนละด้าน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/r-choose.png" alt="เมื่อในเครื่องเดียวมีหลาย GPU เลือกใช้ได้ 2 แบบ ซึ่งแก้ปัญหาคนละด้าน" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Data Parallelism (<code>2_data_parallel/</code>)</b> ให้ GPU ทุกใบในเครื่องถือโมเดลครบชุด แล้วแบ่งข้อมูลกันเทรน เหมาะเมื่ออยากให้ <b>เสร็จเร็วขึ้น</b></span></div><div class="stp"><span class="n">2</span><span><b>Model Parallelism (<code>3_model_parallel/</code>)</b> แบ่ง Layer ของโมเดลชุดเดียวลงหลายใบในเครื่องเดียวกัน เหมาะเมื่อ <b>VRAM ไม่พอ</b> สำหรับโมเดลหรือ batch ที่ต้องการ</span></div><div class="stp"><span class="n">3</span><span><b>Single GPU (<code>1_single_gpu/</code>)</b> เป็นจุดตั้งต้น (1 เครื่อง × 1 ใบ) ไว้เทียบว่าเมื่อเพิ่มเป็น 2 ใบและ 4 ใบในเครื่องเดียว แต่ละแบบให้อะไรกลับมาจริง</span></div></div></div></div></section>
+<section class="slide " data-title="3 วิธีต่างกันอย่างไรในเชิงสถาปัตยกรรม: สิ่งที่ถูกแบ่ง และจังหวะการทำงานของ GPU" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">3 วิธีต่างกันอย่างไรในเชิงสถาปัตยกรรม: สิ่งที่ถูกแบ่ง และจังหวะการทำงานของ GPU</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c4"><thead><tr><th></th><th>Single GPU</th><th>Data Parallelism</th><th>Model Parallelism</th></tr></thead><tbody><tr><td>จำนวนเครื่องและ GPU</td><td>1 เครื่อง · 1 ใบ</td><td>1 เครื่อง · 2 หรือ 4 ใบ</td><td>1 เครื่อง · 2 หรือ 4 ใบ</td></tr><tr><td>โมเดลมีกี่ชุด</td><td>1 ชุด</td><td>ใบละ 1 ชุด (ทำซ้ำทุกใบ)</td><td>1 ชุด (แบ่งเป็นส่วน)</td></tr><tr><td>สิ่งที่ถูกแบ่ง</td><td>ไม่มี</td><td><b>ข้อมูล (Batch)</b></td><td><b>Layer ของโมเดล</b></td></tr><tr><td>จังหวะการทำงานของ GPU</td><td>ใบเดียวทำทุกอย่าง</td><td>ทุกใบทำ <b>พร้อมกัน</b></td><td>ทุกใบ <b>ผลัดกัน</b> ทำทีละช่วง</td></tr><tr><td>เพิ่ม GPU ในเครื่องแล้วได้อะไร</td><td>–</td><td><b>ความเร็ว</b></td><td><b>ที่ว่าง VRAM</b> (batch ใหญ่ขึ้น)</td></tr><tr><td>เปรียบเหมือน</td><td>พ่อครัวคนเดียว</td><td>พ่อครัวหลายคน ใช้สูตรเดียวกัน แบ่งออร์เดอร์กันทำ</td><td>สายพานหลายสถานี ทำต่อกันเป็นทอด</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ข้อต่างหัวใจ: Data Parallelism ให้ทุกใบทำงาน <b>พร้อมกัน</b> ส่วน Model Parallelism ให้แต่ละใบ <b>ผลัดกัน</b> ทำทีละช่วง</span></div></div></section>
+<section class="slide " data-title="ตัวแปรควบคุมที่ตรึงเหมือนกันทั้ง 3 LAB เพื่อให้เทียบผลกันได้ตรงไปตรงมา" data-group="เริ่มต้น · ภาพรวมและแผนที่โฟลเดอร์" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB 4</div><h2><span class="tt">ตัวแปรควบคุมที่ตรึงเหมือนกันทั้ง 3 LAB เพื่อให้เทียบผลกันได้ตรงไปตรงมา</span><span class="tag">ค่าที่ตรึง</span></h2></header><div class="body"><table class="c2"><thead><tr><th>หัวข้อ</th><th>ค่า</th></tr></thead><tbody><tr><td>โมเดล</td><td><a href="https://huggingface.co/Qwen/Qwen3-8B" target="_blank" rel="noopener">Qwen/Qwen3-8B</a> แบบ bf16 · เทรนด้วย LoRA r 8 alpha 16 ที่ <code>q_proj</code> กับ <code>v_proj</code></td></tr><tr><td>Dataset</td><td><a href="https://huggingface.co/datasets/b-mc2/sql-create-context" target="_blank" rel="noopener">b-mc2/sql-create-context</a> · แปลงคำถามเป็น SQL · Training Set 4,000 · Test Set 200 · สับด้วย seed 0</td></tr><tr><td>ค่าที่ตรึง</td><td>ปิด thinking · ไม่ใช้ Gradient Checkpointing · learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token · 3 Epoch</td></tr><tr><td>สิ่งที่วัด</td><td>batch ใหญ่สุดที่เทรนได้ · ความเร็ว (ตัวอย่างต่อวินาที) · VRAM และ GPU utilization ของแต่ละใบ · Exact Match บน Test Set ของ Base และหลังจบแต่ละ Epoch · เงินต่อ 1,000 ตัวอย่าง</td></tr></tbody></table><div class="note info">ทุกรอบแบ่งเป็น 3 ช่วงชัดเจน: <b>สร้างเครื่องบน Vast.ai → เทรนโมเดล 3 Epoch → สรุปผลและลบเครื่อง</b> (ห้ามลืมลบเครื่องในขั้นสุดท้าย)</div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s02-foundations.jpg)" data-title="พื้นฐานร่วม · Dataset · โมเดล Qwen3-8B · และ LoRA" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA"><div class="shade"></div><div class="inner"><div class="small">ใช้ร่วมกันทั้ง 3 LAB ย่อย</div><div class="big">พื้นฐานร่วม</div><h1>Dataset · โมเดล Qwen3-8B · และ LoRA</h1><div class="sub"><p>ของชุดเดียวกันที่ทุก LAB ย่อย (<code>1_single_gpu</code> · <code>2_data_parallel</code> · <code>3_model_parallel</code>) ใช้ก่อนเริ่มจัดวางบน GPU</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Dataset sql-create-context สอนโมเดลแปลงคำถามภาษาอังกฤษเป็น SQL" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · Dataset</div><h2><span class="tt">Dataset <code>sql-create-context</code> สอนโมเดลแปลงคำถามภาษาอังกฤษเป็น SQL</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/d-example.png" alt="Dataset sql-create-context สอนโมเดลแปลงคำถามภาษาอังกฤษเป็น SQL" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ข้อมูลมาจาก <b>WikiSQL และ Spider</b> รวมทั้งหมด <b>78,577 ตัวอย่าง</b> สัญญาอนุญาต CC BY 4.0</span></div><div class="stp"><span class="n">2</span><span>1 ตัวอย่างมี 3 ช่อง คือ คำถาม (<code>question</code>), โครงสร้างตาราง (<code>context</code>) และ SQL เฉลย (<code>answer</code>)</span></div><div class="stp"><span class="n">3</span><span>โมเดลรับ 2 ช่องแรกเป็น Input แล้วต้องสร้างคำสั่ง SQL ในช่องที่ 3 ให้ตรงเฉลย</span></div></div></div></div></section>
+<section class="slide " data-title="ตัวอย่างแถวที่ 1 ของ Training Set: แต่ละช่องทำหน้าที่ต่างกันอย่างไร" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.40"><header class="hd"><div class="kicker">พื้นฐานร่วม · Dataset</div><h2><span class="tt">ตัวอย่างแถวที่ 1 ของ Training Set: แต่ละช่องทำหน้าที่ต่างกันอย่างไร</span><span class="tag">ตัวอย่างจริง</span></h2></header><div class="body"><table class="c3"><thead><tr><th>ช่อง</th><th>หน้าที่</th><th>ในแถวนี้</th></tr></thead><tbody><tr><td><code>question</code></td><td>คำถามภาษาคน · Input ส่วนที่ 1</td><td>ถามหา unlock order ที่น้อยที่สุดของสนาม athens</td></tr><tr><td><code>context</code></td><td>โครงสร้างตาราง · Input ส่วนที่ 2 บอกว่ามีตารางและคอลัมน์อะไรให้ใช้</td><td>ตาราง <code>table_24463470_1</code> มีคอลัมน์ <code>unlock_order</code> (ตัวเลข) และ <code>circuit</code> (ข้อความ)</td></tr><tr><td><code>answer</code></td><td>SQL ที่ถูกต้อง · Output ที่โมเดลต้องเขียนให้ได้ และใช้เทียบ Exact Match</td><td>"lowest" → <code>MIN(unlock_order)</code> · "athens circuit" → <code>WHERE circuit = "Athens"</code></td></tr></tbody></table><div class="note info">ดูตัวอย่างจริงครบ 6 แถวแรกใน <a href="1_single_gpu/results/dataset_samples.md" target="_blank" rel="noopener">1_single_gpu/results/dataset_samples.md</a> ซึ่งทุก LAB ย่อยได้ชุดเดียวกันเพราะสับด้วย <code>seed 0</code></div></div></section>
+<section class="slide " data-title="สับ 78,577 ตัวอย่างด้วย seed 0 แบ่งเป็น Train 4,000 และ Test 200 ชุดเดียวกันทุก LAB" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.10"><header class="hd"><div class="kicker">พื้นฐานร่วม · Dataset</div><h2><span class="tt">สับ 78,577 ตัวอย่างด้วย seed 0 แบ่งเป็น Train 4,000 และ Test 200 ชุดเดียวกันทุก LAB</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/shared/d-split.png" alt="สับ 78,577 ตัวอย่างด้วย seed 0 แบ่งเป็น Train 4,000 และ Test 200 ชุดเดียวกันทุก LAB" width="1400" height="787"></div><p class="cap"><b>Test Set 200 ข้อ</b> ใช้สอบวัด Exact Match เท่านั้น ห้ามนำเข้าเทรน · 1 ข้อที่ตอบถูกเท่ากับ <b>0.5 จุดเปอร์เซ็นต์</b></p></div></section>
+<section class="slide " data-title="โมเดล Qwen3-8B มี 36 Layer และใช้ VRAM ราว 15.3 GiB ตั้งแต่ยังไม่เริ่มเทรน" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · โมเดลและ LoRA</div><h2><span class="tt">โมเดล <code>Qwen3-8B</code> มี 36 Layer และใช้ VRAM ราว 15.3 GiB ตั้งแต่ยังไม่เริ่มเทรน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/m-qwen3-8b.png" alt="โมเดล Qwen3-8B มี 36 Layer และใช้ VRAM ราว 15.3 GiB ตั้งแต่ยังไม่เริ่มเทรน" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ขนาด <b>8.19 พันล้าน parameter</b> (<code>bf16</code>) ใช้พื้นที่บน disk <b>16.4 GB</b> และกิน VRAM <b>15.27 GiB</b> บน GPU ใบเดียว</span></div><div class="stp"><span class="n">2</span><span>ในการทดลองนี้ <b>ปิดโหมด thinking</b> เพื่อให้ตอบเป็นคำสั่ง SQL โดยตรง และไม่ใช้ Gradient Checkpointing</span></div><div class="stp"><span class="n">3</span><span>วัดผลเทียบระหว่าง <b>Base</b> (โมเดลเดิมก่อนเทรน) กับ <b>Fine-tuned</b> หลังจบ Epoch 1, 2 และ 3</span></div></div></div></div></section>
+<section class="slide " data-title="กลไก Attention ในแต่ละ Layer แปลงทุกคำเป็น Query, Key และ Value" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · โมเดลและ LoRA</div><h2><span class="tt">กลไก Attention ในแต่ละ Layer แปลงทุกคำเป็น Query, Key และ Value</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/t-qkv.png" alt="กลไก Attention ในแต่ละ Layer แปลงทุกคำเป็น Query, Key และ Value" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Query (<code>q_proj</code>)</b> คือคำค้นที่ถือไว้ว่ากำลังต้องการข้อมูลอะไร</span></div><div class="stp"><span class="n">2</span><span><b>Key (<code>k_proj</code>)</b> คือป้ายกำกับที่บอกว่าคำนี้เกี่ยวกับอะไร ใช้เทียบกับ Query</span></div><div class="stp"><span class="n">3</span><span><b>Value (<code>v_proj</code>)</b> คือเนื้อหาที่จะหยิบไปใช้ต่อเมื่อเลือกได้แล้ว</span></div></div></div></div></section>
+<section class="slide " data-title="LoRA ล็อกน้ำหนักเดิมทั้งหมด แล้วเทรนเฉพาะตารางเล็ก 3.83 ล้านค่า (0.047%)" data-group="พื้นฐานร่วม · ข้อมูล โมเดล และ LoRA" data-max="1.25"><header class="hd"><div class="kicker">พื้นฐานร่วม · โมเดลและ LoRA</div><h2><span class="tt">LoRA ล็อกน้ำหนักเดิมทั้งหมด แล้วเทรนเฉพาะตารางเล็ก 3.83 ล้านค่า (0.047%)</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/t-lora-qv.png" alt="LoRA ล็อกน้ำหนักเดิมทั้งหมด แล้วเทรนเฉพาะตารางเล็ก 3.83 ล้านค่า (0.047%)" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>แปะ LoRA (<code>r=8</code>, <code>alpha=16</code>) เฉพาะที่ <b><code>q_proj</code> และ <code>v_proj</code></b> ใน 36 Layer รวม <b>72 จุด</b></span></div><div class="stp"><span class="n">2</span><span>เทรนเพียง <b>3,833,856 parameter</b> จาก 8.19 พันล้าน ทำให้ส่วน Optimizer และ Gradient มีขนาดเล็กมาก</span></div><div class="stp"><span class="n">3</span><span>Gradient ของ LoRA ขนาดเพียงราว <b>15 MB ต่อ step</b> จึงเหมาะกับการส่งข้าม GPU ใน Data Parallelism</span></div></div></div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s03-single.jpg)" data-title="LAB 4.1 · Single GPU · เทรนด้วย GPU ใบเดียวและหาขีดจำกัด" data-group="LAB 4.1 · Single GPU (1_single_gpu/)"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 1 จาก 3 ของภาค LAB · โฟลเดอร์ 1_single_gpu/</div><div class="big">LAB 4.1</div><h1>Single GPU · เทรนด้วย GPU ใบเดียวและหาขีดจำกัด</h1><div class="sub"><p>คำถาม: เครื่องที่มี GPU 1 ใบ เทรนโมเดล 8 พันล้าน parameter ได้ batch ใหญ่แค่ไหน และเร็วเท่าไร</p><p class="dim">โฟลเดอร์: <code>1_single_gpu/</code> · 1 เครื่อง (RTX 3090 24 GB × 1 ใบ) · 3 ขั้นตอน</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Single GPU: โมเดลทั้งชุดและ batch ทั้งก้อนอยู่บน GPU 0 ใบเดียว" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">Single GPU: โมเดลทั้งชุดและ batch ทั้งก้อนอยู่บน GPU 0 ใบเดียว</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/single_gpu/c-single.png" alt="Single GPU: โมเดลทั้งชุดและ batch ทั้งก้อนอยู่บน GPU 0 ใบเดียว" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>1 step ทำ <b>Forward → Backward → Update</b> ต่อเนื่องบนการ์ดใบเดียว ไม่มีการส่งข้อมูลข้าม GPU</span></div><div class="stp"><span class="n">2</span><span>เขียนโค้ดง่ายที่สุด แต่รับ batch ได้จำกัดเท่าที่ VRAM ของการ์ดใบนี้เหลืออยู่</span></div><div class="stp"><span class="n">3</span><span>ใช้เป็น <b>Baseline</b> เพื่อวัดว่าการเพิ่มเป็น 2 ใบและ 4 ใบในเครื่องเดียว (LAB 4.2 และ 4.3) ช่วยได้จริงแค่ไหน</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 1: เช่าเครื่อง RTX 3090 1 ใบ โหลด Qwen3-8B และแบ่ง Dataset" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">ขั้นที่ 1: เช่าเครื่อง RTX 3090 1 ใบ โหลด Qwen3-8B และแบ่ง Dataset</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/single_gpu/s1-one.png" alt="ขั้นที่ 1: เช่าเครื่อง RTX 3090 1 ใบ โหลด Qwen3-8B และแบ่ง Dataset" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่าเครื่อง 1 เครื่องผ่านเงื่อนไข (verified, PyTorch 2.8, CUDA 12.8, เน็ต ≥ 700 Mbps, disk 60 GB) ป้าย <code>vapp-lab4-single</code></span></div><div class="stp"><span class="n">2</span><span>โหลด <code>Qwen/Qwen3-8B</code> (16.4 GB) และ <code>b-mc2/sql-create-context</code> ลงเครื่องเช่า</span></div><div class="stp"><span class="n">3</span><span>แบ่ง Training Set 4,000 และ Test Set 200 ด้วย <code>seed 0</code> แล้วสรุปตัวอย่าง 6 แถวลง <code>results/dataset_samples.md</code></span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.1 ขั้นที่ 1 · เช่าเครื่อง 1 GPU และเตรียมของ" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">พรอมต์ · LAB 4.1 ขั้นที่ 1 · เช่าเครื่อง 1 GPU และเตรียมของ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 22 บรรทัด</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 1 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 1 ใบ · ราคาไม่เกิน $0.30 ต่อชั่วโมง · ป้าย vapp-lab4-single
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 1 GPU)" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 1 GPU)</span><span class="tag">ช่วงสร้างเครื่องเสร็จ</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 เครื่อง · RTX 3090 24 GB × 1 ใบ</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab4-single</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">ตำแหน่งเครื่อง</div><div class="vweb-v">Ontario, แคนาดา · สถานะ <b>RUNNING</b> (พร้อมในไม่ถึง 1 นาที)</div><div class="vweb-k">ระบบซอฟต์แวร์</div><div class="vweb-v">PyTorch 2.8.0+cu128 · CUDA 12.8 · disk 60 GB</div><div class="vweb-k">การเชื่อม GPU</div><div class="vweb-v">การ์ดใบเดียว (GPU 0) ไม่มีการส่งข้อมูลข้ามการ์ด</div><div class="vweb-k">ไฟล์ผลที่สร้าง</div><div class="vweb-v"><code>prepare_data.py</code> · <code>results/dataset_samples.md</code></div></div><div class="vweb-chk"><div class="vweb-chkh">ของที่เตรียมไว้บนเครื่องเสร็จแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหลดโมเดล <b>Qwen/Qwen3-8B (16.4 GB)</b> ลงเครื่องเช่าครบแล้ว</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>แบ่ง <b>Training Set 4,000</b> และ <b>Test Set 200</b> (seed 0) เรียบร้อย</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>ผูกกุญแจ SSH (<code>devtoolSSH</code>) และตรวจว่าเครื่องตอบสนองพร้อมรันโค้ด</span></div><div class="vweb-next">➜ ช่วงสร้างเครื่องเสร็จแล้ว · ขั้นถัดไปคือ <b>ช่วงเทรนโมเดล (ขั้นที่ 2)</b></div></div></div></div></div><div class="note info">รอให้หน้าเว็บ Vast.ai แสดงสถานะ <b>RUNNING</b> และโหลดโมเดลกับข้อมูลครบก่อน จึงค่อยวางพรอมต์ขั้นที่ 2 เพื่อเริ่มเทรน</div></div></section>
+<section class="slide " data-title="VRAM บนการ์ด 24 GB: Weights กินไป 15.3 GiB เหลือให้ Activation ราว 8.5 GiB" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงเทรนโมเดล (ขั้นที่ 2)</div><h2><span class="tt">VRAM บนการ์ด 24 GB: Weights กินไป 15.3 GiB เหลือให้ Activation ราว 8.5 GiB</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/single_gpu/vram-single.png" alt="VRAM บนการ์ด 24 GB: Weights กินไป 15.3 GiB เหลือให้ Activation ราว 8.5 GiB" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Weights คงที่ 15.27 GiB</b> (ราว 2 ใน 3 ของการ์ด) ส่วน LoRA + Optimizer ใช้เพียงราว 61 MB</span></div><div class="stp"><span class="n">2</span><span><b>Activation โตตามขนาด batch</b> เมื่อเพิ่ม batch เป็น 1 → 2 → 4 VRAM พุ่งเป็น 17.24 → 19.15 → <b>22.98 GiB</b></span></div><div class="stp"><span class="n">3</span><span>การ์ดใบนี้ใช้ได้จริง <b>23.80 GiB</b> ที่ batch 4 จึงเหลือที่ว่างไม่ถึง 1 GiB และ <b>batch 8 เกิด Out of Memory</b></span></div></div></div></div></section>
+<section class="slide " data-title="ทำไมต้องวัด VRAM (Probe) ด้วยตัวอย่างที่ยาวที่สุดก่อนเทรนจริง" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงเทรนโมเดล (ขั้นที่ 2)</div><h2><span class="tt">ทำไมต้องวัด VRAM (Probe) ด้วยตัวอย่างที่ยาวที่สุดก่อนเทรนจริง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/s-why-probe.png" alt="ทำไมต้องวัด VRAM (Probe) ด้วยตัวอย่างที่ยาวที่สุดก่อนเทรนจริง" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ลองรัน batch 1, 2, 4, 8 … อย่างละ <b>3 step</b> เพื่อหาเพดานก่อนเริ่มงานยาว แทนที่จะเดาแล้วล้มกลางทาง</span></div><div class="stp"><span class="n">2</span><span>ต้องใช้ <b>ตัวอย่างที่ยาวที่สุด (256 token)</b> เพราะ batch ที่ยาวผิดปกติเพียงครั้งเดียวกลางทางก็ทำให้งานหยุดได้</span></div><div class="stp"><span class="n">3</span><span>พรอมต์สั่งให้ AI ประมาณจากอัตราการเพิ่มของ VRAM แล้วลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้มเพื่อยืนยัน</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 2: หา batch ใหญ่สุด เทรน 3 Epoch และวัด Exact Match หลังทุก Epoch" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงเทรนโมเดล (ขั้นที่ 2)</div><h2><span class="tt">ขั้นที่ 2: หา batch ใหญ่สุด เทรน 3 Epoch และวัด Exact Match หลังทุก Epoch</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/s2-flow3.png" alt="ขั้นที่ 2: หา batch ใหญ่สุด เทรน 3 Epoch และวัด Exact Match หลังทุก Epoch" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>AI เขียน <code>train.py</code> และ <code>eval.py</code> แล้วรันต่อเนื่องใน <code>tmux</code> พร้อมระบบต่อจาก checkpoint เมื่อการเชื่อมต่อหลุด</span></div><div class="stp"><span class="n">2</span><span>วัดโมเดล <b>Base</b> ก่อนเทรน แล้วใช้ <b>batch ใหญ่สุดที่ผ่านจากขั้น probe</b> เทรน 3 Epoch</span></div><div class="stp"><span class="n">3</span><span>หลังจบทุก Epoch วัด test loss และ Exact Match บน Test Set 200 ข้อ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.1 ขั้นที่ 2 · เทรนด้วย GPU 1 ใบ" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงเทรนโมเดล (ขั้นที่ 2)</div><h2><span class="tt">พรอมต์ · LAB 4.1 ขั้นที่ 2 · เทรนด้วย GPU 1 ใบ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-single · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL ด้วย GPU 1 ใบ
+แนวคิด: โมเดลทั้งชุดและข้อมูลทั้ง batch อยู่บน GPU ใบเดียว
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 1 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุด · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังเทรน Single GPU ครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">หลังเทรน Single GPU ครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2</span><span class="tag">ช่วงเทรนเสร็จ</span></h2></header><div class="body"><div class="tdone"><div class="tdone-bar"><span>LAB 4.1 · Single GPU (1 เครื่อง × RTX 3090 1 ใบ · vapp-lab4-single)</span><span class="tdone-ok">✓ เทรนครบ 3 Epoch · เครื่องยังเปิดอยู่</span></div><div class="tdone-body"><div class="tdone-list"><div class="tdone-row"><span class="tdone-k">batch ใหญ่สุดที่เทรนได้</span><span class="tdone-v hi">4 (batch 8 เกิด Out of Memory)</span></div><div class="tdone-row"><span class="tdone-k">จำนวน step ต่อ Epoch</span><span class="tdone-v">1,000 step (รวม 3,000 step ใน 23.6 นาที)</span></div><div class="tdone-row"><span class="tdone-k">ความเร็วเฉลี่ย</span><span class="tdone-v hi">8.49 ตัวอย่างต่อวินาที (0.471 วินาทีต่อ step)</span></div><div class="tdone-row"><span class="tdone-k">GPU utilization เฉลี่ย</span><span class="tdone-v">97.0% (การ์ดใบเดียวทำงานเต็มที่)</span></div><div class="tdone-row"><span class="tdone-k">VRAM สูงสุดตอนเทรน</span><span class="tdone-v">22.98 GiB (เหลือไม่ถึง 1 GiB)</span></div></div><div><table class="tdone-tbl"><thead><tr><th>จุดวัด</th><th>train loss</th><th>test loss</th><th>Exact Match</th></tr></thead><tbody><tr><td>Base (ก่อนเทรน)</td><td>–</td><td>1.7298</td><td class="em">1.5%</td></tr><tr><td>หลัง Epoch 1</td><td>0.0713</td><td>0.0529</td><td class="em">77.0%</td></tr><tr><td>หลัง Epoch 2</td><td>0.0290</td><td>0.0502</td><td class="em">79.0%</td></tr><tr><td>หลัง Epoch 3</td><td>0.0198</td><td>0.0489</td><td class="em">77.5%</td></tr></tbody></table></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รอบแรกล้มด้วย Out of Memory หลัง step 740 เพราะ <code>attention_mask</code> หลัง AI แก้แล้วรันใหม่จึงเทรนจบครบ 3 Epoch — ดูรายละเอียดและกราฟในหน้าถัดไป</span></div></div></section>
+<section class="slide " data-title="ผลวัด VRAM บน GPU 1 ใบ: batch 4 ใช้ 22.98 GiB และ batch 8 เกิด Out of Memory" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">ผลวัด VRAM บน GPU 1 ใบ: batch 4 ใช้ 22.98 GiB และ batch 8 เกิด Out of Memory</span><span class="tag">1_single_gpu/results/probe.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_single_gpu/results/images/vram_vs_batch.png" alt="ผลวัด VRAM บน GPU 1 ใบ: batch 4 ใช้ 22.98 GiB และ batch 8 เกิด Out of Memory" width="1131" height="723"></div><p class="cap">วัดด้วยข้อความยาว 256 token อย่างละ 3 step · อัตราโตของ VRAM ราว <b>1.9 GiB ต่อ 1 ตัวอย่าง</b> ที่ batch 4 เหลือที่ว่างเพียง 0.82 GiB</p></div></section>
+<section class="slide " data-title="วัดผ่านที่ batch 4 แต่เทรนจริง Out of Memory ได้อย่างไร" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">วัดผ่านที่ batch 4 แต่เทรนจริง Out of Memory ได้อย่างไร</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n02-oom-padding.jpg" alt="วัดผ่านที่ batch 4 แต่เทรนจริง Out of Memory ได้อย่างไร" width="1376" height="768"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ตอนวัด (Probe)</b> ใช้ตัวอย่างที่ยาวที่สุดซ้ำกัน 4 แถว ทุกแถวยาวเท่ากัน จึงไม่มี padding และผ่านแบบเหลือที่ว่างไม่ถึง 1 GiB</span></div><div class="stp"><span class="n">2</span><span><b>ตอนเทรนจริง</b> แถวใน batch ยาวไม่เท่ากัน ต้องเติม padding ทางขวา และส่ง <code>attention_mask</code> ทำให้ส่วน attention กินหน่วยความจำเพิ่มจนเกิด Out of Memory</span></div><div class="stp"><span class="n">3</span><span><b>วิธีแก้</b> หยุดส่ง <code>attention_mask</code> ตอนเทรน เพราะ padding อยู่ด้านขวา attention มองย้อนหลังอย่างเดียว และตำแหน่ง padding มี label <code>-100</code> ผลจึงเท่าเดิม</span></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ในรอบจริง LAB 4.1 เกิด Out of Memory หลัง <b>step 740 จาก 1,000</b> ของ Epoch 1 ทั้งที่เปิด <code>expandable_segments</code> แล้ว พอหยุดส่ง <code>attention_mask</code> ก็เทรนจบครบ 3 Epoch ที่ VRAM สูงสุด 22.98 GiB เท่าตอนวัด</span></div></div></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h01-single.jpg)" data-title="ผล Single GPU: batch สูงสุด 4 · ความเร็ว 8.49 ตัวอย่างต่อวินาที · GPU utilization 97.0%" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">ผล Single GPU: batch สูงสุด 4 · ความเร็ว 8.49 ตัวอย่างต่อวินาที · GPU utilization 97.0%</span><span class="tag">1_single_gpu/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">4</div><div class="txt"><div class="k">batch ใหญ่สุดที่เทรนได้</div><div class="s">1,000 step ต่อ Epoch · batch 8 เกิด Out of Memory</div></div></div><div class="tile ok"><div class="num">8.49<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 3 Epoch</div><div class="s">0.471 วินาทีต่อ step · ใช้เวลาเทรน 23.6 นาที</div></div></div><div class="tile warn"><div class="num">97.0%</div><div class="txt"><div class="k">GPU utilization เฉลี่ย</div><div class="s">GPU ใบเดียวเป็นคอขวดเต็มที่แล้ว (VRAM 22.98 GiB)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ความเร็วตอนเทรนจริง (8.49 ตัวอย่างต่อวินาที) เร็วกว่าตอน probe เพราะข้อความเฉลี่ยยาว 112.2 token สั้นกว่า 256 token</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Loss ตลอด 3 Epoch: train loss ลดเร็วและ test loss ลดลงต่อเนื่อง ยังไม่ overfit" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">Loss ตลอด 3 Epoch: train loss ลดเร็วและ test loss ลดลงต่อเนื่อง ยังไม่ overfit</span><span class="tag">1_single_gpu/results/train_metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_single_gpu/results/images/loss_3_epochs.png" alt="Loss ตลอด 3 Epoch: train loss ลดเร็วและ test loss ลดลงต่อเนื่อง ยังไม่ overfit" width="1173" height="710"></div><p class="cap">train loss เฉลี่ยลดจาก <b>0.0713 → 0.0290 → 0.0198</b> · จุดสีส้มคือ test loss ท้ายแต่ละ Epoch ลดจาก <b>0.0529 → 0.0502 → 0.0489</b></p></div></section>
+<section class="slide " data-title="Exact Match บน Test Set 200 ข้อ: พุ่งจาก 1.5% เป็น 77.0% ตั้งแต่ Epoch แรก" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">Exact Match บน Test Set 200 ข้อ: พุ่งจาก 1.5% เป็น 77.0% ตั้งแต่ Epoch แรก</span><span class="tag">1_single_gpu/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="1_single_gpu/results/images/exact_match_per_epoch.png" alt="Exact Match บน Test Set 200 ข้อ: พุ่งจาก 1.5% เป็น 77.0% ตั้งแต่ Epoch แรก" width="1002" height="688"></div><p class="cap">หลัง Epoch 1 / 2 / 3 ได้ <b>77.0% · 79.0% · 77.5%</b> · Epoch 2 กับ 3 ต่างกันเพียง 3 ข้อจาก 200 จึงถือว่าทรงตัว</p></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h05-base-style.jpg)" data-title="ทำไม Base ได้ Exact Match แค่ 1.5%: ส่วนใหญ่ผิดที่สไตล์ ไม่ใช่ตรรกะ SQL" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ผลหลังเทรนเสร็จและบทเรียน</div><h2><span class="tt">ทำไม Base ได้ Exact Match แค่ 1.5%: ส่วนใหญ่ผิดที่สไตล์ ไม่ใช่ตรรกะ SQL</span><span class="tag">1_single_gpu/results/eval_base.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">1.5%</div><div class="txt"><div class="k">Base · แบบเข้มงวด</div><div class="s">ตรงเพียง 3/200 ข้อ เพราะตอบ <code>'Ray Allen (20)'</code> แทน <code>"ray allen (20)"</code></div></div></div><div class="tile warn"><div class="num">52.5%</div><div class="txt"><div class="k">Base · แบบผ่อนปรน</div><div class="s">ตรงถึง 105/200 ข้อ เมื่อไม่สนตัวพิมพ์เล็กใหญ่และชนิดเครื่องหมายคำพูด</div></div></div><div class="tile ok"><div class="num">77.5%</div><div class="txt"><div class="k">หลัง Fine-tune 3 Epoch</div><div class="s">แบบเข้มงวดพุ่งเป็น 155/200 ข้อ (ดีสุดที่ Epoch 2: 79.0%)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ตัวอย่างข้อแรก: เฉลยใช้ <code>"ray allen (20)"</code> · โมเดล Base ตอบ <code>'Ray Allen (20)'</code> · หลัง Epoch 3 ตอบตรงเฉลยทุกตัวอักษร</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.1 ขั้นที่ 3 · สรุปผลเป็นกราฟและลบเครื่อง (ห้ามข้าม)" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงลบเครื่อง (ขั้นที่ 3) และจุดเปลี่ยนสู่ Multi-GPU</div><h2><span class="tt">พรอมต์ · LAB 4.1 ขั้นที่ 3 · สรุปผลเป็นกราฟและลบเครื่อง (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt2">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-single · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของRTX 3090 1 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM เทียบ batch พร้อมเส้น 24 GB · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-single แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h11-single-limit.jpg)" data-title="ขีดจำกัดของ GPU ใบเดียว: ทำงานเต็ม 97% และ VRAM เหลือไม่ถึง 1 GiB พร้อมกัน" data-group="LAB 4.1 · Single GPU (1_single_gpu/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.1 (1_single_gpu/) · ช่วงลบเครื่อง (ขั้นที่ 3) และจุดเปลี่ยนสู่ Multi-GPU</div><h2><span class="tt">ขีดจำกัดของ GPU ใบเดียว: ทำงานเต็ม 97% และ VRAM เหลือไม่ถึง 1 GiB พร้อมกัน</span><span class="tag">สรุป LAB 4.1</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile warn"><div class="num">97.0%</div><div class="txt"><div class="k">เพดานด้านความเร็ว</div><div class="s">การ์ดใบนี้คำนวณเต็มกำลังแล้ว อยากเร็วกว่านี้ต้องไป <b>LAB 4.2 Data Parallelism</b></div></div></div><div class="tile bad"><div class="num">22.98 GiB</div><div class="txt"><div class="k">เพดานด้าน VRAM</div><div class="s">เหลือที่ว่างเพียง 0.82 GiB (batch 8 เกิด Out of Memory) อยากได้ batch ใหญ่ขึ้นต้องไป <b>LAB 4.3 Model Parallelism</b></div></div></div><div class="tile "><div class="num">8.49<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">Baseline ที่ได้</div><div class="s">batch 4 · Exact Match หลัง Epoch 3 = 77.5% · เตรียมเทียบกับเครื่องเดียว 2 และ 4 ใบ</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>GPU 1 ใบชนเพดานพร้อมกันทั้งสองด้าน จึงเป็นเหตุผลให้ LAB 4.2 และ LAB 4.3 ทดลองแก้ปัญหาคนละด้านด้วยหลาย GPU ในเครื่องเดียว</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s04-dp.jpg)" data-title="LAB 4.2 · Data Parallelism · ถือโมเดลคนละชุด แบ่งข้อมูลกันเทรน" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 2 จาก 3 ของภาค LAB · โฟลเดอร์ 2_data_parallel/</div><div class="big">LAB 4.2</div><h1>Data Parallelism · ถือโมเดลคนละชุด แบ่งข้อมูลกันเทรน</h1><div class="sub"><p>คำถาม: ให้ GPU 2 ใบและ 4 ใบในเครื่องเดียวกันถือโมเดลครบชุดแล้วแบ่งข้อมูลกันเทรน จะเร็วขึ้นกี่เท่า และ batch ต่อใบเปลี่ยนไหม</p><p class="dim">โฟลเดอร์: <code>2_data_parallel/</code> (ขั้น 1–3 · 1 เครื่อง × 2 ใบ) และ <code>2_data_parallel/gpu4/</code> (ขั้น 4–6 · 1 เครื่อง × 4 ใบ)</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Data Parallelism: GPU ทุกใบถือโมเดลครบชุด แล้วแบ่งข้อมูลกันทำคนละครึ่ง" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · แนวคิด Data Parallelism</div><h2><span class="tt">Data Parallelism: GPU ทุกใบถือโมเดลครบชุด แล้วแบ่งข้อมูลกันทำคนละครึ่ง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/data_parallel/c-dp.png" alt="Data Parallelism: GPU ทุกใบถือโมเดลครบชุด แล้วแบ่งข้อมูลกันทำคนละครึ่ง" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิดโปรแกรมเทรน 1 process ต่อ GPU โดยแต่ละใบถือสำเนาโมเดล (<b>replica</b>) ครบทั้ง 36 Layer</span></div><div class="stp"><span class="n">2</span><span>ข้อมูล 1 batch รวมถูกแบ่งให้แต่ละใบไม่ซ้ำกัน (2 ใบได้ใบละ 2,000 ตัวอย่างต่อ Epoch)</span></div><div class="stp"><span class="n">3</span><span>หลังคำนวณ Gradient เสร็จ นำมาเฉลี่ยให้เท่ากันแล้ว Update เหมือนกัน น้ำหนักทุกใบจึงตรงกันทุก step</span></div></div></div></div></section>
+<section class="slide " data-title="1 step ของ DistributedDataParallel: ทำ Forward + Backward พร้อมกัน รอกันแค่ช่วง All-reduce ราว 15 MB" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · แนวคิด Data Parallelism</div><h2><span class="tt">1 step ของ DistributedDataParallel: ทำ Forward + Backward พร้อมกัน รอกันแค่ช่วง All-reduce ราว 15 MB</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/data_parallel/c-dp-step.png" alt="1 step ของ DistributedDataParallel: ทำ Forward + Backward พร้อมกัน รอกันแค่ช่วง All-reduce ราว 15 MB" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Forward + Backward</b> ทุกใบคำนวณบนข้อมูลส่วนของตัวเองพร้อมกันโดยไม่ต้องรออีกใบ</span></div><div class="stp"><span class="n">2</span><span><b>All-reduce</b> เฉลี่ยเฉพาะ Gradient ของ LoRA (3.83 ล้านค่า × 4 byte ≈ <b>15 MB</b>) แล้วทุกใบ <b>Update</b> ด้วยค่าเดียวกัน</span></div><div class="stp"><span class="n">3</span><span>เพราะข้อมูลที่ส่งมีแค่ ~15 MB แม้เครื่อง 2 ใบไม่มี NVLink (ผ่าน PCIe ข้าม NUMA) ช่วงรอกันก็ยังสั้นมาก</span></div></div></div></div></section>
+<section class="slide " data-title="ข้อจำกัดของ Data Parallelism: เพิ่ม GPU ไม่ได้ที่ว่าง VRAM ต่อใบเพิ่ม" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · แนวคิด Data Parallelism</div><h2><span class="tt">ข้อจำกัดของ Data Parallelism: เพิ่ม GPU ไม่ได้ที่ว่าง VRAM ต่อใบเพิ่ม</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/data_parallel/vram-dp.png" alt="ข้อจำกัดของ Data Parallelism: เพิ่ม GPU ไม่ได้ที่ว่าง VRAM ต่อใบเพิ่ม" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ทุกใบยังต้องถือ <b>Weights 15.29 GiB</b> เหมือนตอนมี GPU ใบเดียว ที่ว่างสำหรับ Activation ต่อใบจึงเท่าเดิม</span></div><div class="stp"><span class="n">2</span><span>batch ใหญ่สุดต่อ GPU ยังเป็น <b>4</b> (batch 8 ต่อใบเกิด Out of Memory ทั้งสองใบ) แต่ <b>batch รวม</b> เพิ่มเป็น 8</span></div><div class="stp"><span class="n">3</span><span>สรุป: Data Parallelism แก้ปัญหาความเร็ว ไม่ได้แก้ปัญหาโมเดลใส่การ์ดใบเดียวไม่ลง</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 1: เช่าเครื่อง RTX 3090 2 ใบในเครื่องเดียว แล้วเตรียมโมเดลกับ Dataset" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">ขั้นที่ 1: เช่าเครื่อง RTX 3090 2 ใบในเครื่องเดียว แล้วเตรียมโมเดลกับ Dataset</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/shared/s1-two.png" alt="ขั้นที่ 1: เช่าเครื่อง RTX 3090 2 ใบในเครื่องเดียว แล้วเตรียมโมเดลกับ Dataset" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ระบุเงื่อนไข <b>RTX 3090 2 ใบในเครื่องเดียว</b> และ CPU ≥ 16 cores ป้าย <code>vapp-lab4-dp</code></span></div><div class="stp"><span class="n">2</span><span>ถ้าเครื่องดึง image เกิน 10 นาทีให้ลบและเปลี่ยนทันที (ในรอบจริงเครื่องแรกค้างเกิน 10 นาที AI จึงเปลี่ยนเครื่องเอง)</span></div><div class="stp"><span class="n">3</span><span>โหลด <code>Qwen3-8B</code> และแบ่ง Dataset ชุดเดิม (4,000 / 200 ด้วย <code>seed 0</code>) พร้อมตรวจการเชื่อมต่อระหว่าง GPU (<code>nvidia-smi topo</code>)</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 1 · เช่าเครื่อง 2 GPU และเตรียมของ" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 1 · เช่าเครื่อง 2 GPU และเตรียมของ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 22 บรรทัด</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab4-dp
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 2 GPU)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 2 GPU)</span><span class="tag">ช่วงสร้างเครื่องเสร็จ</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 เครื่อง · RTX 3090 24 GB × 2 ใบ</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab4-dp</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">ตำแหน่งเครื่อง</div><div class="vweb-v">Quebec, แคนาดา · สถานะ <b>RUNNING</b></div><div class="vweb-k">สเปก CPU / ระบบ</div><div class="vweb-v">AMD EPYC 7551P · PyTorch 2.8.0+cu128 · CUDA 12.8 · disk 60 GB</div><div class="vweb-k">การเชื่อมระหว่าง GPU</div><div class="vweb-v">PCIe ข้าม NUMA node (<code>SYS</code>) ไม่มี NVLink (GPU 0 x4 · GPU 1 x16)</div><div class="vweb-k">หมายเหตุรอบจริง</div><div class="vweb-v">เครื่องแรกดึง image เกิน 10 นาที AI ลบและเปลี่ยนเครื่องให้เอง</div></div><div class="vweb-chk"><div class="vweb-chkh">ของที่เตรียมไว้บนเครื่องเสร็จแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหลดโมเดล <b>Qwen/Qwen3-8B (16.4 GB)</b> ลงเครื่องเช่าครบแล้ว</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>แบ่ง <b>Training Set 4,000</b> และ <b>Test Set 200</b> (seed 0) เรียบร้อย</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>บันทึกโครงสร้างการเชื่อม GPU ลง <code>results/gpu_topology.txt</code></span></div><div class="vweb-next">➜ ช่วงสร้างเครื่องเสร็จแล้ว · ขั้นถัดไปคือ <b>ช่วงเทรน Data Parallelism 2 ใบ (ขั้นที่ 2)</b></div></div></div></div></div><div class="note info">สังเกตว่าเครื่องที่เช่ามีเพียง 1 เครื่องแต่เห็นการ์ด GPU 0 และ GPU 1 ครบทั้ง 2 ใบ เมื่อสถานะเป็น RUNNING แล้วจึงเริ่มขั้นที่ 2</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 2 · เทรนแบบ Data Parallelism (2 GPU)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 2 · เทรนแบบ Data Parallelism (2 GPU)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt4">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism
+แนวคิด: GPU 2 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละครึ่ง แล้วเฉลี่ย Gradient ให้เท่ากัน
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 2 ใบ ใช้ DDP ของ PyTorch
+2. หา batch ต่อ GPU ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ต่อ GPU ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน (ต่อ GPU และรวม) · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังเทรน Data Parallelism 2 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">หลังเทรน Data Parallelism 2 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2</span><span class="tag">ช่วงเทรนเสร็จ</span></h2></header><div class="body"><div class="tdone"><div class="tdone-bar"><span>LAB 4.2 · Data Parallelism (1 เครื่อง × RTX 3090 2 ใบ · vapp-lab4-dp)</span><span class="tdone-ok">✓ เทรนครบ 3 Epoch · เครื่องยังเปิดอยู่</span></div><div class="tdone-body"><div class="tdone-list"><div class="tdone-row"><span class="tdone-k">batch ต่อ GPU / batch รวม</span><span class="tdone-v hi">4 ต่อใบ / รวม 8 (batch 8 ต่อใบเกิด Out of Memory)</span></div><div class="tdone-row"><span class="tdone-k">จำนวน step ต่อ Epoch</span><span class="tdone-v">500 step (รวม 1,500 step ใน 10.5 นาที)</span></div><div class="tdone-row"><span class="tdone-k">ความเร็วเฉลี่ย</span><span class="tdone-v hi">19.08 ตัวอย่างต่อวินาที (0.419 วินาทีต่อ step)</span></div><div class="tdone-row"><span class="tdone-k">GPU utilization ต่อใบ</span><span class="tdone-v">97.8% / 98.6% (ทำงานพร้อมกันทั้งสองใบ)</span></div><div class="tdone-row"><span class="tdone-k">VRAM สูงสุดตอนเทรน</span><span class="tdone-v">22.71 / 22.71 GiB (PyTorch)</span></div></div><div><table class="tdone-tbl"><thead><tr><th>จุดวัด</th><th>train loss</th><th>test loss</th><th>Exact Match</th></tr></thead><tbody><tr><td>Base (ก่อนเทรน)</td><td>–</td><td>1.8453</td><td class="em">1.5%*</td></tr><tr><td>หลัง Epoch 1</td><td>0.0885</td><td>0.0581</td><td class="em">70.0%</td></tr><tr><td>หลัง Epoch 2</td><td>0.0322</td><td>0.0520</td><td class="em">77.5%</td></tr><tr><td>หลัง Epoch 3</td><td>0.0205</td><td>0.0578</td><td class="em">79.0%</td></tr></tbody></table></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รอบแรกล้มด้วย Out of Memory ที่ step 59 เพราะ <code>attention_mask</code> หลังแก้แล้วเทรนจบและตรวจยืนยันว่าน้ำหนัก LoRA สองใบเท่ากันทุก Epoch · <code>*</code> ไม่นับ <code>;</code> ท้ายคำสั่ง</span></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h02-dp2.jpg)" data-title="ผล Data Parallelism 2 ใบ: เร็ว 19.08 ตัวอย่างต่อวินาที · GPU utilization 97.8% / 98.6% แต่ batch ต่อใบยังเป็น 4" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">ผล Data Parallelism 2 ใบ: เร็ว 19.08 ตัวอย่างต่อวินาที · GPU utilization 97.8% / 98.6% แต่ batch ต่อใบยังเป็น 4</span><span class="tag">2_data_parallel/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">19.08<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 3 Epoch</div><div class="s">0.419 วินาทีต่อ step ละ 8 ตัวอย่าง · เทรนจบใน 10.5 นาที</div></div></div><div class="tile "><div class="num">4 / 8</div><div class="txt"><div class="k">batch ต่อใบ / รวม</div><div class="s">500 step ต่อ Epoch · batch 8 ต่อใบเกิด Out of Memory ทั้งสองใบ</div></div></div><div class="tile ok"><div class="num">97.8% / 98.6%</div><div class="txt"><div class="k">GPU utilization เฉลี่ย</div><div class="s">ทำงานพร้อมกันเกือบตลอด แม้ต่อผ่าน PCIe ข้าม NUMA (SYS)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ได้ความเร็วเพิ่มขึ้นชัดเจน แต่ไม่ได้พื้นที่ VRAM ต่อใบเพิ่มเพราะทั้งสองใบต้องถือ Weights 15.29 GiB ครบชุด</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Data Parallelism 2 ใบ · VRAM ของสองใบเท่ากันเป๊ะทุกขนาด batch และเกิด Out of Memory ที่ batch 8 ต่อใบทั้งคู่" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Data Parallelism 2 ใบ · VRAM ของสองใบเท่ากันเป๊ะทุกขนาด batch และเกิด Out of Memory ที่ batch 8 ต่อใบทั้งคู่</span><span class="tag">2_data_parallel/results/probe/</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/results/images/vram_vs_batch.png" alt="Data Parallelism 2 ใบ · VRAM ของสองใบเท่ากันเป๊ะทุกขนาด batch และเกิด Out of Memory ที่ batch 8 ต่อใบทั้งคู่" width="1344" height="800"></div><p class="cap">แท่งของ GPU 0 และ GPU 1 สูงเท่ากันทุกขนาด batch เพราะทั้งสองใบถือโมเดลครบชุด 15.29 GiB และรับข้อมูลเท่ากัน</p></div></section>
+<section class="slide " data-title="Data Parallelism 2 ใบ · GPU 0 และ GPU 1 ทำงานพร้อมกัน 97–99% ตลอด 3 Epoch" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Data Parallelism 2 ใบ · GPU 0 และ GPU 1 ทำงานพร้อมกัน 97–99% ตลอด 3 Epoch</span><span class="tag">2_data_parallel/results/train_summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/results/images/gpu_util.png" alt="Data Parallelism 2 ใบ · GPU 0 และ GPU 1 ทำงานพร้อมกัน 97–99% ตลอด 3 Epoch" width="1344" height="800"></div><p class="cap">GPU 0 เฉลี่ย <b>97.8%</b> และ GPU 1 เฉลี่ย <b>98.6%</b> · ช่วงรอ All-reduce ของ LoRA 15 MB สั้นจนแทบไม่ทำให้การ์ดว่าง</p></div></section>
+<section class="slide " data-title="Data Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0520) แล้วเริ่มขยับขึ้นที่ Epoch 3 (0.0578)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Data Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0520) แล้วเริ่มขยับขึ้นที่ Epoch 3 (0.0578)</span><span class="tag">2_data_parallel/results/train_summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/results/images/loss_3_epochs.png" alt="Data Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0520) แล้วเริ่มขยับขึ้นที่ Epoch 3 (0.0578)" width="1472" height="800"></div><p class="cap">train loss ลดต่อเนื่อง (<b>0.0885 → 0.0322 → 0.0205</b>) แต่ test loss เริ่มขยับขึ้นใน Epoch 3 ซึ่งเป็นสัญญาณเริ่มต้นของ overfitting</p></div></section>
+<section class="slide " data-title="Data Parallelism 2 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 79.0% หลัง Epoch 3" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Data Parallelism 2 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 79.0% หลัง Epoch 3</span><span class="tag">2_data_parallel/results/eval_summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/results/images/exact_match.png" alt="Data Parallelism 2 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 79.0% หลัง Epoch 3" width="1216" height="800"></div><p class="cap">Base 0.0% (1.5% เมื่อไม่นับ <code>;</code> ท้าย) → Epoch 1: <b>70.0%</b> → Epoch 2: <b>77.5%</b> → Epoch 3: <b>79.0%</b> (แบบผ่อนปรนสูงสุด 81.0%)</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 3 · สรุปผลและลบเครื่อง 2 GPU (ห้ามข้าม)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/) · รอบ 2 ใบ · ช่วงลบเครื่อง (ขั้นที่ 3)</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 3 · สรุปผลและลบเครื่อง 2 GPU (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt5">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 2 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-dp แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ขยาย Data Parallelism เป็น 4 ใบในเครื่องเดียว: คาดว่าเร็วขึ้นเกือบ 2 เท่า แต่ batch ต่อใบเท่าเดิม" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">ขยาย Data Parallelism เป็น 4 ใบในเครื่องเดียว: คาดว่าเร็วขึ้นเกือบ 2 เท่า แต่ batch ต่อใบเท่าเดิม</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/data_parallel/c-dp4.png" alt="ขยาย Data Parallelism เป็น 4 ใบในเครื่องเดียว: คาดว่าเร็วขึ้นเกือบ 2 เท่า แต่ batch ต่อใบเท่าเดิม" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>มีโมเดล 4 ชุดบน GPU 4 ใบในเครื่องเดียวกัน แต่ละใบได้ข้อมูลเพียง <b>1 ใน 4</b> (1,000 ตัวอย่างต่อ Epoch)</span></div><div class="stp"><span class="n">2</span><span>คาดว่า <b>batch ต่อใบเท่าเดิม (4)</b> แต่ batch รวมเพิ่มเป็น 16 ทำให้จำนวน step ต่อ Epoch ลดลงครึ่งหนึ่งเหลือ <b>250 step</b></span></div><div class="stp"><span class="n">3</span><span>ความเร็วควรใกล้ 2 เท่าของ 2 ใบ แต่ไม่ถึง 2 เท่าพอดี เพราะต้องรอกันตอน All-reduce ข้าม 4 ใบและรอใบที่ช้าที่สุด</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 4: เช่าเครื่อง RTX 3090 4 ใบในเครื่องเดียว เก็บงานใน 2_data_parallel/gpu4/" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">ขั้นที่ 4: เช่าเครื่อง RTX 3090 4 ใบในเครื่องเดียว เก็บงานใน <code>2_data_parallel/gpu4/</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/data_parallel/s1-four.png" alt="ขั้นที่ 4: เช่าเครื่อง RTX 3090 4 ใบในเครื่องเดียว เก็บงานใน 2_data_parallel/gpu4/" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่าเครื่องใหม่ 1 เครื่องที่มี <b>RTX 3090 4 ใบในเครื่องเดียว</b> ป้าย <code>vapp-lab4-dp4</code> และเก็บโค้ดกับผลแยกใน <code>2_data_parallel/gpu4/</code></span></div><div class="stp"><span class="n">2</span><span>ต้องตรวจให้ driver รองรับ CUDA 12.8 ด้วย ไม่ใช่ดูแค่รุ่น GPU (รอบจริงข้ามเครื่องที่รองรับแค่ CUDA 12.2)</span></div><div class="stp"><span class="n">3</span><span>ใช้ <code>seed 0</code> แบ่ง 4,000 / 200 เพื่อให้ได้ Dataset ชุดเดียวกับส่วน 2 ใบสำหรับเทียบผล</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 4 · เช่าเครื่อง 4 GPU และเตรียมของ" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 4 · เช่าเครื่อง 4 GPU และเตรียมของ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 22 บรรทัด</span><button class="copy big" data-full="prompt6">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 4 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 4 ใบในเครื่องเดียว · ราคาไม่เกิน $1.40 ต่อชั่วโมง · ป้าย vapp-lab4-dp4
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังรันขั้นที่ 4: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 4 GPU)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">หลังรันขั้นที่ 4: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 4 GPU)</span><span class="tag">ช่วงสร้างเครื่องเสร็จ</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 เครื่อง · RTX 3090 24 GB × 4 ใบ</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab4-dp4</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">ตำแหน่งเครื่อง</div><div class="vweb-v">ชิลี · สถานะ <b>RUNNING</b> (พร้อมใน 436 วินาที)</div><div class="vweb-k">สเปก CPU / ระบบ</div><div class="vweb-v">2× Xeon E5-2680 v4 (56 cores) · PyTorch 2.8.0+cu128 · CUDA 12.8</div><div class="vweb-k">การเชื่อมระหว่าง GPU</div><div class="vweb-v">PCIe 3.0 x16 ไม่มี NVLink (GPU 0–1 และ GPU 2–3 อยู่ใต้ CPU เดียวกัน)</div><div class="vweb-k">หมายเหตุรอบจริง</div><div class="vweb-v">เครื่องแรกค้าง loading เกิน 10 นาที AI ลบและเปลี่ยนเครื่องให้เอง</div></div><div class="vweb-chk"><div class="vweb-chkh">ของที่เตรียมไว้บนเครื่องเสร็จแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>มองเห็น <b>RTX 3090 ครบทั้ง 4 ใบในเครื่องเดียว</b> (GPU 0 ถึง GPU 3)</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหลดโมเดล <b>Qwen/Qwen3-8B (16.4 GB)</b> และแบ่งข้อมูล 4,000 / 200 เสร็จแล้ว</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>บันทึกข้อมูลเครื่องและ topology ลง <code>gpu4/results/gpu_topology.txt</code></span></div><div class="vweb-next">➜ ช่วงสร้างเครื่องเสร็จแล้ว · ขั้นถัดไปคือ <b>ช่วงเทรน Data Parallelism 4 ใบ (ขั้นที่ 5)</b></div></div></div></div></div><div class="note info">ตรวจให้แน่ใจว่าเครื่องป้าย <code>vapp-lab4-dp4</code> ขึ้นสถานะ <b>RUNNING</b> และโหลดของครบแล้ว จึงค่อยวางพรอมต์ขั้นที่ 5</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 5 · เทรนแบบ Data Parallelism (4 GPU)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 5 · เทรนแบบ Data Parallelism (4 GPU)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt7">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism
+แนวคิด: GPU 4 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 4 แล้วเฉลี่ย Gradient ให้เท่ากัน
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 4 ใบ ใช้ DDP ของ PyTorch
+2. หา batch ต่อ GPU ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ต่อ GPU ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน (ต่อ GPU และรวม) · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="แก้ Out of Memory ใน Data Parallelism 4 ใบ: คิดคะแนนเฉพาะคำตอบ" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">แก้ Out of Memory ใน Data Parallelism 4 ใบ: คิดคะแนนเฉพาะคำตอบ</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n03-answer-loss.jpg" alt="แก้ Out of Memory ใน Data Parallelism 4 ใบ: คิดคะแนนเฉพาะคำตอบ" width="1376" height="768"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ต้นเหตุที่ล้ม</b> ที่ batch 4 ต่อใบ ตารางคะแนนคำศัพท์ทุกตำแหน่งมีขนาด <code>4 × 256 × 151,936 × 4 byte = 594 MiB</code> จนเกิด Out of Memory</span></div><div class="stp"><span class="n">2</span><span><b><code>expandable_segments</code> ไม่ช่วย</b> เพราะปัญหาไม่ใช่หน่วยความจำแตกเป็นช่อง แต่ที่ว่างบนการ์ดไม่พอจริง</span></div><div class="stp"><span class="n">3</span><span><b>ทางแก้ (<code>AnswerLoss</code>)</b> ส่งเฉพาะตำแหน่งที่เป็นคำตอบเข้า <code>lm_head</code> เพื่อคิด loss ลด VRAM ที่ batch 4 จาก 22.71 เหลือ 21.25 GiB โดยได้ loss เท่าเดิม</span></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>Data Parallelism 4 ใบเกิด Out of Memory สองรอบแรกที่ step 20–25 แม้เปิด <code>expandable_segments</code> แล้ว เพราะขอเพิ่ม 594 MiB ไม่ได้ การแก้ด้วย <code>AnswerLoss</code> ลดจุดพีคลงกว่า 1.4 GiB</span></div></div></div></div></section>
+<section class="slide " data-title="หลังเทรน Data Parallelism 4 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 5" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">หลังเทรน Data Parallelism 4 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 5</span><span class="tag">ช่วงเทรนเสร็จ</span></h2></header><div class="body"><div class="tdone"><div class="tdone-bar"><span>LAB 4.2 · Data Parallelism (1 เครื่อง × RTX 3090 4 ใบ · vapp-lab4-dp4)</span><span class="tdone-ok">✓ เทรนครบ 3 Epoch · เครื่องยังเปิดอยู่</span></div><div class="tdone-body"><div class="tdone-list"><div class="tdone-row"><span class="tdone-k">batch ต่อ GPU / batch รวม</span><span class="tdone-v hi">4 ต่อใบ / รวม 16 (batch 8 ต่อใบเกิด Out of Memory ทั้ง 4 ใบ)</span></div><div class="tdone-row"><span class="tdone-k">จำนวน step ต่อ Epoch</span><span class="tdone-v">250 step (รวม 750 step ใน 5.6 นาที)</span></div><div class="tdone-row"><span class="tdone-k">ความเร็วเฉลี่ย</span><span class="tdone-v hi">35.64 ตัวอย่างต่อวินาที (เร็วกว่า 2 ใบ 1.87 เท่า)</span></div><div class="tdone-row"><span class="tdone-k">GPU utilization ทั้ง 4 ใบ</span><span class="tdone-v">96.9 / 97.3 / 97.3 / 97.4%</span></div><div class="tdone-row"><span class="tdone-k">VRAM สูงสุดตอนเทรน</span><span class="tdone-v">21.59 / 20.61 / 21.60 / 21.63 GiB (หลังแก้ด้วย AnswerLoss)</span></div></div><div><table class="tdone-tbl"><thead><tr><th>จุดวัด</th><th>train loss</th><th>test loss</th><th>Exact Match</th></tr></thead><tbody><tr><td>Base (ก่อนเทรน)</td><td>–</td><td>1.7702</td><td class="em">1.5%</td></tr><tr><td>หลัง Epoch 1</td><td>0.1167</td><td>0.0607</td><td class="em">70.5%</td></tr><tr><td>หลัง Epoch 2</td><td>0.0386</td><td>0.0553</td><td class="em">75.0%</td></tr><tr><td>หลัง Epoch 3</td><td>0.0248</td><td>0.0543</td><td class="em">76.5%</td></tr></tbody></table></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>เทรน 3 Epoch ใช้เวลาเพียง <b>5.6 นาที</b> (ลดลงจาก 10.5 นาทีในรอบ 2 ใบ) และ test loss ยังลดลงต่อเนื่องทุก Epoch</span></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h03-dp4.jpg)" data-title="ผล Data Parallelism 4 ใบ: เร็วขึ้น 35.64 ตัวอย่างต่อวินาที (1.87× ของ 2 ใบ) · GPU utilization 97% ทุกใบ" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">ผล Data Parallelism 4 ใบ: เร็วขึ้น 35.64 ตัวอย่างต่อวินาที (1.87× ของ 2 ใบ) · GPU utilization 97% ทุกใบ</span><span class="tag">2_data_parallel/gpu4/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">35.64<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 3 Epoch</div><div class="s">เร็วกว่า 2 ใบ 1.87 เท่า (ประสิทธิภาพต่อใบ 93.4%) · เทรน 3 Epoch ใน 5.6 นาที</div></div></div><div class="tile "><div class="num">4 / 16</div><div class="txt"><div class="k">batch ต่อใบ / รวม</div><div class="s">250 step ต่อ Epoch · batch 8 ต่อใบยังเกิด Out of Memory ทั้ง 4 ใบ</div></div></div><div class="tile ok"><div class="num">96.9–97.4%</div><div class="txt"><div class="k">GPU utilization ทั้ง 4 ใบ</div><div class="s">96.9 / 97.3 / 97.3 / 97.4% · ทุกใบเร็วพอ ๆ กัน</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>Exact Match เพิ่มขึ้นทุก Epoch (70.5% → 75.0% → 76.5%) และ test loss ยังลดลงต่อเนื่อง เพราะ batch รวม 16 ปรับน้ำหนักเพียง 250 ครั้งต่อ Epoch</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Data Parallelism 4 ใบ · หลังแก้ด้วย AnswerLoss VRAM ที่ batch 4 ลดลง แต่ batch 8 ยังเกิด Out of Memory ทั้ง 4 ใบ" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Data Parallelism 4 ใบ · หลังแก้ด้วย AnswerLoss VRAM ที่ batch 4 ลดลง แต่ batch 8 ยังเกิด Out of Memory ทั้ง 4 ใบ</span><span class="tag">2_data_parallel/gpu4/results/batch_probe.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/gpu4/results/images/vram_vs_batch.png" alt="Data Parallelism 4 ใบ · หลังแก้ด้วย AnswerLoss VRAM ที่ batch 4 ลดลง แต่ batch 8 ยังเกิด Out of Memory ทั้ง 4 ใบ" width="1760" height="960"></div><p class="cap">ตอน probe หลังแก้ batch 4 ใช้ <b>21.25 GiB</b> ต่อใบ (PyTorch) และตอนเทรนจริงสูงสุด <b>20.61–21.63 GiB</b> ส่วน batch 8 ล้มทั้ง 4 ใบ</p></div></section>
+<section class="slide " data-title="Data Parallelism 4 ใบ · GPU ทั้ง 4 ใบทำงานสม่ำเสมอ 96–98% ทุก Epoch" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Data Parallelism 4 ใบ · GPU ทั้ง 4 ใบทำงานสม่ำเสมอ 96–98% ทุก Epoch</span><span class="tag">2_data_parallel/gpu4/results/train_metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/gpu4/results/images/gpu_util.png" alt="Data Parallelism 4 ใบ · GPU ทั้ง 4 ใบทำงานสม่ำเสมอ 96–98% ทุก Epoch" width="1600" height="832"></div><p class="cap">แม้ GPU 0–1 และ GPU 2–3 อยู่คนละ CPU (เชื่อมข้ามคู่แบบ SYS ไม่มี NVLink) แต่ไม่มีใบใดช้ากว่าใบอื่นจนดึงทั้งระบบลง</p></div></section>
+<section class="slide " data-title="Data Parallelism 4 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 76.5% (test loss ยังลดลงต่อ)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Data Parallelism 4 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 76.5% (test loss ยังลดลงต่อ)</span><span class="tag">2_data_parallel/gpu4/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="2_data_parallel/gpu4/results/images/exact_match.png" alt="Data Parallelism 4 ใบ · Exact Match เพิ่มขึ้นทุก Epoch ถึง 76.5% (test loss ยังลดลงต่อ)" width="1600" height="832"></div><p class="cap">batch รวม 16 มีจำนวน Update น้อยกว่า 2 ใบครึ่งหนึ่งต่อ Epoch โมเดลจึงเรียนรู้ช้ากว่าต่อ Epoch แต่ยังไม่มีสัญญาณ overfit</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.2 ขั้นที่ 6 · สรุปผลและลบเครื่อง 4 GPU (ห้ามข้าม)" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงลบเครื่อง (ขั้นที่ 6) และสรุปเทียบ</div><h2><span class="tt">พรอมต์ · LAB 4.2 ขั้นที่ 6 · สรุปผลและลบเครื่อง 4 GPU (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt8">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 4 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-dp4 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="Data Parallelism 2 ใบเทียบ 4 ใบ (1 เครื่องต่อรอบ): เร็วขึ้น 1.87 เท่า และ batch ต่อใบยังเท่าเดิม" data-group="LAB 4.2 · Data Parallelism (2_data_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.2 (2_data_parallel/gpu4/) · รอบ 4 ใบ · ช่วงลบเครื่อง (ขั้นที่ 6) และสรุปเทียบ</div><h2><span class="tt">Data Parallelism 2 ใบเทียบ 4 ใบ (1 เครื่องต่อรอบ): เร็วขึ้น 1.87 เท่า และ batch ต่อใบยังเท่าเดิม</span><span class="tag">ตารางหลัก · LAB 4.2</span></h2></header><div class="body"><table class="c3"><thead><tr><th>สิ่งที่วัด</th><th>GPU 2 ใบ (แคนาดา)</th><th>GPU 4 ใบ (ชิลี)</th></tr></thead><tbody><tr><td>Weights ก่อนเทรน ต่อใบ</td><td>15.29 GiB</td><td>15.27 GiB</td></tr><tr><td>batch ต่อ GPU (ที่ใช้เทรน) / batch รวม</td><td>4 / 8 · batch 8 ต่อใบ ล้ม</td><td>4 / 16 · batch 8 ต่อใบ ล้ม</td></tr><tr><td>step ต่อ Epoch</td><td>500</td><td>250</td></tr><tr><td>วินาทีต่อ step</td><td>0.419 (8 ตัวอย่าง)</td><td>0.449 (16 ตัวอย่าง)</td></tr><tr><td>ตัวอย่างต่อวินาที</td><td><b>19.08</b></td><td><b>35.64</b></td></tr><tr><td>เร็วขึ้นเทียบ 2 ใบ</td><td>1.00 เท่า</td><td><b>1.87 เท่า</b></td></tr><tr><td>ตัวอย่างต่อวินาทีต่อใบ (ประสิทธิภาพต่อใบ)</td><td>9.54 (100%)</td><td>8.91 (<b>93.4%</b>)</td></tr><tr><td>GPU util ต่อใบ</td><td>97.8 / 98.6%</td><td>96.9 / 97.3 / 97.3 / 97.4%</td></tr><tr><td>Exact Match Base → Epoch 1 / 2 / 3</td><td>0.0% (1.5%*) → 70.0 / 77.5 / 79.0%</td><td>1.5% → 70.5 / 75.0 / 76.5%</td></tr><tr><td>เวลาเทรน 3 Epoch</td><td>10.5 นาที</td><td>5.6 นาที</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>สองส่วนเช่าเครื่องคนละโฮสต์และส่วน 4 ใบใช้ <code>AnswerLoss</code> ตัวเลข 1.87 เท่าจึงรวมความต่างของเครื่องไว้ด้วย · <code>*</code> 1.5% เมื่อตัด <code>;</code> ท้ายคำสั่งตามกติกาเดียวกับรอบ 4 ใบ</span></div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s05-mp.jpg)" data-title="LAB 4.3 · Model Parallelism · โมเดลชุดเดียว แบ่ง Layer ลงหลายใบ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 3 จาก 3 ของภาค LAB · โฟลเดอร์ 3_model_parallel/</div><div class="big">LAB 4.3</div><h1>Model Parallelism · โมเดลชุดเดียว แบ่ง Layer ลงหลายใบ</h1><div class="sub"><p>คำถาม: แบ่งโมเดล 1 ชุดลง GPU 2 ใบและ 4 ใบในเครื่องเดียวกัน จะรับ batch ได้ใหญ่แค่ไหน และความเร็วเปลี่ยนหรือไม่</p><p class="dim">โฟลเดอร์: <code>3_model_parallel/</code> (ขั้น 1–3 · 1 เครื่อง × 2 ใบ · 18+18 Layer) และ <code>3_model_parallel/gpu4/</code> (ขั้น 4–6 · 1 เครื่อง × 4 ใบ · ใบละ 9 Layer)</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Model Parallelism: โมเดลชุดเดียวแบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · แนวคิด Model Parallelism</div><h2><span class="tt">Model Parallelism: โมเดลชุดเดียวแบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/c-mp.png" alt="Model Parallelism: โมเดลชุดเดียวแบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>กำหนด <code>device_map</code> ให้ <b>GPU 0 ถือ embedding + Layer 0–17</b> และ <b>GPU 1 ถือ Layer 18–35 + norm + <code>lm_head</code></b></span></div><div class="stp"><span class="n">2</span><span>ข้อมูลทุก batch เข้าที่ GPU 0 ส่งผลกลางทางผ่าน PCIe ไป GPU 1 แล้วคำนวณ loss ที่ GPU 1</span></div><div class="stp"><span class="n">3</span><span>Weights ไม่ถูกทำซ้ำ แต่ละใบจึงถือแค่ครึ่งโมเดล (<b>7.64 GiB</b>) เหลือที่ว่าง VRAM มากขึ้น</span></div></div></div></div></section>
+<section class="slide " data-title="1 step ของ Model Parallelism: GPU ผลัดกันทำงาน มีเพียง 1 ใบที่คำนวณในแต่ละขณะ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · แนวคิด Model Parallelism</div><h2><span class="tt">1 step ของ Model Parallelism: GPU ผลัดกันทำงาน มีเพียง 1 ใบที่คำนวณในแต่ละขณะ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/c-mp-turns.png" alt="1 step ของ Model Parallelism: GPU ผลัดกันทำงาน มีเพียง 1 ใบที่คำนวณในแต่ละขณะ" width="1400" height="787"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Forward</b> GPU 0 ทำครึ่งแรก (GPU 1 รอ) → ส่งผลกลางทางให้ GPU 1 ทำครึ่งหลัง + loss (GPU 0 รอ)</span></div><div class="stp"><span class="n">2</span><span><b>Backward</b> GPU 1 หา Gradient ครึ่งหลัง (GPU 0 รอ) → ส่งกลับให้ GPU 0 หา Gradient ครึ่งแรกแล้ว Update</span></div><div class="stp"><span class="n">3</span><span>LAB นี้ไม่ได้ทำ Pipeline Parallelism จึงไม่มีการซ้อนงาน ความเร็วจะไม่เพิ่มขึ้นตามจำนวน GPU</span></div></div></div></div></section>
+<section class="slide " data-title="VRAM ของ Model Parallelism: Weights เท่ากันสองใบ แต่ GPU 1 ที่ถือ lm_head เต็มก่อน" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · แนวคิด Model Parallelism</div><h2><span class="tt">VRAM ของ Model Parallelism: Weights เท่ากันสองใบ แต่ GPU 1 ที่ถือ <code>lm_head</code> เต็มก่อน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/vram-mp.png" alt="VRAM ของ Model Parallelism: Weights เท่ากันสองใบ แต่ GPU 1 ที่ถือ lm_head เต็มก่อน" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>Weights ก่อนเทรนเท่ากันใบละ <b>7.64 GiB</b> แต่ Activation ของ GPU 1 สูงกว่า GPU 0 ทุกขนาด batch และห่างขึ้นเป็นเท่าตัว</span></div><div class="stp"><span class="n">2</span><span>เหตุผลคือ GPU 1 ถือ <b><code>lm_head</code></b> ที่ต้องสร้างตารางคะแนนของคำศัพท์ <b>151,936 คำ</b> สำหรับทุก token แล้วคิด loss</span></div><div class="stp"><span class="n">3</span><span>ที่ batch 16 GPU 1 ขอจองเพิ่ม <b>2.32 GiB</b> (<code>16 × 256 × 151,936 × 4 byte</code>) ไม่ได้จึงเกิด Out of Memory ขณะที่ GPU 0 ยังว่าง</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 1 · เช่าเครื่อง 2 GPU และเตรียมของ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 1 · เช่าเครื่อง 2 GPU และเตรียมของ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 22 บรรทัด</span><button class="copy big" data-full="prompt9">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab4-mp
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 2 GPU)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 1)</div><h2><span class="tt">หลังรันขั้นที่ 1: เครื่องบน Vast.ai ถูกสร้างและพร้อมใช้งานแล้ว (1 เครื่อง × 2 GPU)</span><span class="tag">ช่วงสร้างเครื่องเสร็จ</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 เครื่อง · RTX 3090 24 GB × 2 ใบ</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab4-mp</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">ตำแหน่งเครื่อง</div><div class="vweb-v">สหรัฐอเมริกา · สถานะ <b>RUNNING</b> (พร้อมใน 542 วินาที)</div><div class="vweb-k">สเปก CPU / ระบบ</div><div class="vweb-v">CPU Xeon (20 cores) · PyTorch 2.8.0+cu128 · CUDA 12.8 · disk 60 GB</div><div class="vweb-k">การเชื่อมระหว่าง GPU</div><div class="vweb-v">PCIe Gen3 x16 (<code>PHB</code> ใต้ CPU เดียวกัน) ไม่มี NVLink</div><div class="vweb-k">ไฟล์ผลที่สร้าง</div><div class="vweb-v"><code>rent.py</code> · <code>prepare.py</code> · <code>results/gpu_topology.txt</code></div></div><div class="vweb-chk"><div class="vweb-chkh">ของที่เตรียมไว้บนเครื่องเสร็จแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>มองเห็น <b>RTX 3090 ครบทั้ง 2 ใบในเครื่องเดียว</b> (GPU 0 และ GPU 1)</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหลดโมเดล <b>Qwen/Qwen3-8B (16.4 GB)</b> และแบ่งข้อมูล 4,000 / 200 เสร็จแล้ว</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>พร้อมวางแผนแบ่ง Layer 0–17 ลง GPU 0 และ Layer 18–35 ลง GPU 1</span></div><div class="vweb-next">➜ ช่วงสร้างเครื่องเสร็จแล้ว · ขั้นถัดไปคือ <b>ช่วงเทรน Model Parallelism 2 ใบ (ขั้นที่ 2)</b></div></div></div></div></div><div class="note info">รอให้สถานะบน Vast.ai เป็น <b>RUNNING</b> และโหลดโมเดลเสร็จก่อน จึงค่อยวางพรอมต์ขั้นที่ 2 เพื่อเริ่มแบ่ง Layer และเทรน</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 2 · เทรนแบบ Model Parallelism (2 GPU)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 2 · เทรนแบบ Model Parallelism (2 GPU)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt10">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism
+แนวคิด: โมเดลชุดเดียว แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA โดยแบ่งโมเดลชุดเดียวลง GPU 2 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · Layer ไหนอยู่ใบไหน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังเทรน Model Parallelism 2 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">หลังเทรน Model Parallelism 2 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 2</span><span class="tag">ช่วงเทรนเสร็จ</span></h2></header><div class="body"><div class="tdone"><div class="tdone-bar"><span>LAB 4.3 · Model Parallelism (1 เครื่อง × RTX 3090 2 ใบ · vapp-lab4-mp)</span><span class="tdone-ok">✓ เทรนครบ 3 Epoch · เครื่องยังเปิดอยู่</span></div><div class="tdone-body"><div class="tdone-list"><div class="tdone-row"><span class="tdone-k">batch ใหญ่สุดที่เทรนได้</span><span class="tdone-v hi">8 (batch 16 เกิด Out of Memory ที่ GPU 1)</span></div><div class="tdone-row"><span class="tdone-k">จำนวน step ต่อ Epoch</span><span class="tdone-v">500 step (รวม 1,500 step ใน 19.7 นาที)</span></div><div class="tdone-row"><span class="tdone-k">ความเร็วเฉลี่ย</span><span class="tdone-v hi">10.13 ตัวอย่างต่อวินาที (0.789 วินาทีต่อ step)</span></div><div class="tdone-row"><span class="tdone-k">GPU utilization ต่อใบ</span><span class="tdone-v">46.5% / 51.8% (รวม 98.3% · ผลัดกันทำงาน)</span></div><div class="tdone-row"><span class="tdone-k">VRAM สูงสุดตอนเทรน</span><span class="tdone-v">14.29 / 17.26 GiB (GPU 1 สูงกว่าเพราะ lm_head)</span></div></div><div><table class="tdone-tbl"><thead><tr><th>จุดวัด</th><th>train loss</th><th>test loss</th><th>Exact Match</th></tr></thead><tbody><tr><td>Base (ก่อนเทรน)</td><td>–</td><td>1.9137</td><td class="em">1.5%*</td></tr><tr><td>หลัง Epoch 1</td><td>0.0876</td><td>0.0580</td><td class="em">70.0%</td></tr><tr><td>หลัง Epoch 2</td><td>0.0305</td><td>0.0506</td><td class="em">77.5%</td></tr><tr><td>หลัง Epoch 3</td><td>0.0168</td><td>0.0529</td><td class="em">77.0%</td></tr></tbody></table></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รอบนี้ผ่าน batch 8 ได้ทันทีโดยไม่เกิด Out of Memory กลางทาง เพราะแต่ละใบถือ Weights เพียง 7.64 GiB · <code>*</code> ไม่นับ <code>;</code> ท้ายคำสั่ง</span></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h06-mp2.jpg)" data-title="ผล Model Parallelism 2 ใบ: batch เพิ่มเป็น 8 แต่ความเร็ว 10.13 ตัวอย่างต่อวินาที เพราะผลัดกันทำ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">ผล Model Parallelism 2 ใบ: batch เพิ่มเป็น 8 แต่ความเร็ว 10.13 ตัวอย่างต่อวินาที เพราะผลัดกันทำ</span><span class="tag">3_model_parallel/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">8</div><div class="txt"><div class="k">batch ใหญ่สุดที่เทรนได้</div><div class="s">2 เท่าของ Single GPU · batch 16 เกิด Out of Memory ที่ GPU 1 (ถือ <code>lm_head</code>)</div></div></div><div class="tile warn"><div class="num">10.13<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 3 Epoch</div><div class="s">0.789 วินาทีต่อ step ละ 8 ตัวอย่าง · เทรนรวม 19.7 นาที</div></div></div><div class="tile bad"><div class="num">46.5% / 51.8%</div><div class="txt"><div class="k">GPU utilization ต่อใบ</div><div class="s">รวมกัน 98.3% เท่ากับมี GPU ทำงาน 1 ใบตลอดเวลา · Exact Match สูงสุด 77.5%</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ได้พื้นที่ VRAM เพิ่มขึ้นจริง (Weights เหลือใบละ 7.64 GiB) แต่ความเร็วไม่เพิ่มขึ้นตามจำนวนการ์ด เพราะสองใบผลัดกันคำนวณ</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Model Parallelism 2 ใบ · GPU 1 ใช้ VRAM มากกว่า GPU 0 ทุกขนาด batch และเกิด Out of Memory ก่อนที่ batch 16" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Model Parallelism 2 ใบ · GPU 1 ใช้ VRAM มากกว่า GPU 0 ทุกขนาด batch และเกิด Out of Memory ก่อนที่ batch 16</span><span class="tag">3_model_parallel/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/results/images/vram_vs_batch.png" alt="Model Parallelism 2 ใบ · GPU 1 ใช้ VRAM มากกว่า GPU 0 ทุกขนาด batch และเกิด Out of Memory ก่อนที่ batch 16" width="1280" height="800"></div><p class="cap">แบ่ง Layer 18/18 เท่ากันไม่ได้แปลว่า VRAM เท่ากัน · ตอนเทรนจริงที่ batch 8 PyTorch ใช้ <b>14.29 / 17.26 GiB</b></p></div></section>
+<section class="slide " data-title="Model Parallelism 2 ใบ · GPU utilization เฉลี่ย 46.5% และ 51.8% ยืนยันว่าทั้งสองใบผลัดกันทำงาน" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Model Parallelism 2 ใบ · GPU utilization เฉลี่ย 46.5% และ 51.8% ยืนยันว่าทั้งสองใบผลัดกันทำงาน</span><span class="tag">3_model_parallel/results/train_summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/results/images/gpu_util.png" alt="Model Parallelism 2 ใบ · GPU utilization เฉลี่ย 46.5% และ 51.8% ยืนยันว่าทั้งสองใบผลัดกันทำงาน" width="1280" height="800"></div><p class="cap">ผลรวม GPU utilization ทั้งสองใบได้ <b>98.3%</b> ตลอด 3 Epoch · ใช้เวลาเทรนรวม 19.7 นาที (0.789 วินาทีต่อ step ละ 8 ตัวอย่าง)</p></div></section>
+<section class="slide " data-title="Model Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0506) และเริ่มขยับขึ้นที่ Epoch 3 (0.0529)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Model Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0506) และเริ่มขยับขึ้นที่ Epoch 3 (0.0529)</span><span class="tag">3_model_parallel/results/train_summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/results/images/loss.png" alt="Model Parallelism 2 ใบ · test loss ต่ำสุดที่ Epoch 2 (0.0506) และเริ่มขยับขึ้นที่ Epoch 3 (0.0529)" width="1280" height="800"></div><p class="cap">train loss ลดจาก <b>0.0876 → 0.0305 → 0.0168</b> ขณะที่ test loss นิ่งหลัง Epoch 2 แสดงว่าเริ่มอิ่มตัวแล้ว</p></div></section>
+<section class="slide " data-title="Model Parallelism 2 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) และทรงตัวที่ 77.0% ใน Epoch 3" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 2)</div><h2><span class="tt">Model Parallelism 2 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) และทรงตัวที่ 77.0% ใน Epoch 3</span><span class="tag">3_model_parallel/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/results/images/exact_match.png" alt="Model Parallelism 2 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) และทรงตัวที่ 77.0% ใน Epoch 3" width="1280" height="800"></div><p class="cap">Base 0.0% (1.5% เมื่อไม่นับ <code>;</code> ท้าย · แบบผ่อนปรน 54.5%) → หลัง Fine-tune ได้ <b>70.0% / 77.5% / 77.0%</b></p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 3 · สรุปผลและลบเครื่อง 2 GPU (ห้ามข้าม)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/) · รอบ 2 ใบ · ช่วงลบเครื่อง (ขั้นที่ 3)</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 3 · สรุปผลและลบเครื่อง 2 GPU (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt11">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 2 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-mp แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ขยาย Model Parallelism เป็น 4 ใบในเครื่องเดียว: แบ่ง 36 Layer เป็นใบละ 9 Layer เรียงจาก GPU 0 ถึง 3" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">ขยาย Model Parallelism เป็น 4 ใบในเครื่องเดียว: แบ่ง 36 Layer เป็นใบละ 9 Layer เรียงจาก GPU 0 ถึง 3</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/c-mp4.png" alt="ขยาย Model Parallelism เป็น 4 ใบในเครื่องเดียว: แบ่ง 36 Layer เป็นใบละ 9 Layer เรียงจาก GPU 0 ถึง 3" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>GPU 0 ถือ <code>embed</code> + Layer 0–8 · GPU 1 ถือ 9–17 · GPU 2 ถือ 18–26 · <b>GPU 3 ถือ 27–35 + norm + <code>lm_head</code></b></span></div><div class="stp"><span class="n">2</span><span>ข้อมูลส่งต่อเป็นสายพาน 4 สถานี (ข้าม PCIe 3 ครั้ง) ทำให้ยังมีเพียง <b>1 ใบ</b> ที่คำนวณในแต่ละขณะ</span></div><div class="stp"><span class="n">3</span><span>คาดว่า GPU utilization ต่อใบจะลดเหลือราว <b>25%</b> ความเร็วเท่าเดิมหรือช้าลงเล็กน้อย และใบที่ช้าที่สุดจะกำหนดความเร็วทั้งสาย</span></div></div></div></div></section>
+<section class="slide " data-title="VRAM แบบ 4 ใบ: Weights เหลือ 3.2–4.4 GiB ต่อใบ แต่ GPU 3 ที่ถือ lm_head ยังเต็มก่อน" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">VRAM แบบ 4 ใบ: Weights เหลือ 3.2–4.4 GiB ต่อใบ แต่ GPU 3 ที่ถือ <code>lm_head</code> ยังเต็มก่อน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/vram-mp4.png" alt="VRAM แบบ 4 ใบ: Weights เหลือ 3.2–4.4 GiB ต่อใบ แต่ GPU 3 ที่ถือ lm_head ยังเต็มก่อน" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>Weights ต่อใบลดลงเกือบครึ่ง ทำให้รับ <b>batch ใหญ่สุดเพิ่มเป็น 16</b> (2 เท่าของแบบ 2 ใบ)</span></div><div class="stp"><span class="n">2</span><span>GPU 1 และ GPU 2 ใช้ VRAM เพียง <b>9.7 GiB</b> ตอนเทรน batch 16 เหลือที่ว่างอีกราว 14 GiB</span></div><div class="stp"><span class="n">3</span><span>แต่ <b>GPU 3</b> พุ่งไป 17.5 GiB และที่ batch 32 ขอเพิ่ม <b>4.64 GiB</b> (<code>32 × 256 × 151,936 × 4 byte</code>) จนเกิด Out of Memory</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 4: เช่าเครื่อง 4 GPU ในเครื่องเดียว เก็บงานใน 3_model_parallel/gpu4/ และวัดความเร็วทีละใบ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">ขั้นที่ 4: เช่าเครื่อง 4 GPU ในเครื่องเดียว เก็บงานใน <code>3_model_parallel/gpu4/</code> และวัดความเร็วทีละใบ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/model_parallel/s1-four.png" alt="ขั้นที่ 4: เช่าเครื่อง 4 GPU ในเครื่องเดียว เก็บงานใน 3_model_parallel/gpu4/ และวัดความเร็วทีละใบ" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่าเครื่อง RTX 3090 4 ใบในเครื่องเดียว ป้าย <code>vapp-lab4-mp4</code> เก็บโค้ดและผลใน <code>3_model_parallel/gpu4/</code></span></div><div class="stp"><span class="n">2</span><span>เพิ่ม <b>ขั้นที่ 5 ในพรอมต์</b>: วัดความเร็ว GPU ทีละใบด้วยงานเดียวกัน เพราะใน Model Parallelism ใบที่ช้าสุดจะถ่วงทั้งสาย</span></div><div class="stp"><span class="n">3</span><span>ตั้งเกณฑ์ชัด: ถ้ามีใบไหนช้ากว่าใบที่เร็วที่สุด <b>เกิน 20%</b> ให้ลบและเปลี่ยนเครื่องทันที</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 4 · เช่าเครื่อง 4 GPU และวัดความเร็วทีละใบ" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 4 · เช่าเครื่อง 4 GPU และวัดความเร็วทีละใบ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 23 บรรทัด</span><button class="copy big" data-full="prompt12">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 4 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 4 ใบในเครื่องเดียว · ราคาไม่เกิน $1.40 ต่อชั่วโมง · ป้าย vapp-lab4-mp4
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดความเร็ว GPU ทีละใบด้วยงานเดียวกัน ถ้ามีใบที่ช้ากว่าใบอื่นเกิน 20% ให้ลบแล้วเช่าเครื่องอื่น
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · ความเร็วของ GPU แต่ละใบ · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังรันขั้นที่ 4: เครื่องบน Vast.ai ถูกสร้างและผ่านเกณฑ์ความเร็วแล้ว (1 เครื่อง × 4 GPU)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">หลังรันขั้นที่ 4: เครื่องบน Vast.ai ถูกสร้างและผ่านเกณฑ์ความเร็วแล้ว (1 เครื่อง × 4 GPU)</span><span class="tag">ช่วงสร้างเครื่องเสร็จ</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 เครื่อง · RTX 3090 24 GB × 4 ใบ</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab4-mp4</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">ตำแหน่งเครื่อง</div><div class="vweb-v">ชิลี · สถานะ <b>RUNNING</b></div><div class="vweb-k">สเปก CPU / ระบบ</div><div class="vweb-v">2× Xeon E5-2680 v4 (56 cores) · PyTorch 2.8.0+cu128 · CUDA 12.8</div><div class="vweb-k">การเชื่อมระหว่าง GPU</div><div class="vweb-v">PCIe Gen3 x16 ไม่มี NVLink (GPU 0–1 และ GPU 2–3 อยู่คนละ CPU)</div><div class="vweb-k">ผลเช็กความเร็ว GPU</div><div class="vweb-v">ใบช้าสุด (GPU 2) ช้ากว่าใบเร็วสุดเพียง <b>13.7%</b> (ผ่านเกณฑ์ ≤ 20%)</div></div><div class="vweb-chk"><div class="vweb-chkh">ของที่เตรียมไว้บนเครื่องเสร็จแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>มองเห็น <b>RTX 3090 ครบทั้ง 4 ใบในเครื่องเดียว</b> และผ่านการทดสอบความเร็วทีละใบ</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหลดโมเดล <b>Qwen/Qwen3-8B (16.4 GB)</b> และแบ่งข้อมูล 4,000 / 200 เสร็จแล้ว</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>บันทึกผลทดสอบความเร็วและ topology ลง <code>gpu4/results/gpu_bench.json</code></span></div><div class="vweb-next">➜ ช่วงสร้างเครื่องและตรวจความเร็วเสร็จแล้ว · ขั้นถัดไปคือ <b>ช่วงเทรน Model Parallelism 4 ใบ (ขั้นที่ 5)</b></div></div></div></div></div><div class="note info">ดูรายละเอียดคะแนนความเร็วของ GPU ทั้ง 4 ใบในหน้าถัดไป ก่อนเข้าสู่พรอมต์ขั้นที่ 5 เพื่อเริ่มเทรน</div></div></section>
+<section class="slide " data-title="ผลวัดความเร็ว GPU ทีละใบ: GPU 2 ช้ากว่า GPU 3 อยู่ 13.7% ผ่านเกณฑ์ไม่เกิน 20%" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงสร้างเครื่อง (ขั้นที่ 4)</div><h2><span class="tt">ผลวัดความเร็ว GPU ทีละใบ: GPU 2 ช้ากว่า GPU 3 อยู่ 13.7% ผ่านเกณฑ์ไม่เกิน 20%</span><span class="tag">3_model_parallel/gpu4/results/gpu_bench.json</span></h2></header><div class="body"><table class="c5"><thead><tr><th>GPU</th><th>คูณเมทริกซ์ FP16 8192×8192 (รอบ/วินาที)</th><th>ช้ากว่าใบที่เร็วที่สุด</th><th>train step ของ Transformer 1 ชั้น (รอบ/วินาที)</th><th>ช้ากว่าใบที่เร็วที่สุด</th></tr></thead><tbody><tr><td>0</td><td>56.42</td><td>8.8%</td><td>130.19</td><td>3.3%</td></tr><tr><td>1</td><td>57.99</td><td>6.3%</td><td>129.27</td><td>4.0%</td></tr><tr><td>2</td><td>53.41</td><td><b>13.7%</b> (ช้าสุด)</td><td>126.65</td><td>5.9%</td></tr><tr><td>3</td><td>61.88</td><td>เร็วสุด</td><td>134.62</td><td>เร็วสุด</td></tr></tbody></table><div class="note ok">ทดสอบทั้งการคูณเมทริกซ์ FP16 (8192×8192) และ train step ของ Transformer 1 ชั้น (ช้าสุดต่างเพียง 5.9%) จึงใช้เครื่องนี้เทรนต่อได้</div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 5 · เทรนแบบ Model Parallelism (4 GPU)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 5 · เทรนแบบ Model Parallelism (4 GPU)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt13">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism
+แนวคิด: โมเดลชุดเดียว แบ่ง Layer เป็น 4 ส่วนเท่ากัน ไว้ GPU ละ 1 ส่วน เรียงจาก GPU 0 ถึง GPU 3
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA โดยแบ่งโมเดลชุดเดียวลง GPU 4 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · Layer ไหนอยู่ใบไหน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="หลังเทรน Model Parallelism 4 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 5" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">หลังเทรน Model Parallelism 4 ใบครบ 3 Epoch: ค่าผลลัพธ์จริงที่แสดงเมื่อจบขั้นที่ 5</span><span class="tag">ช่วงเทรนเสร็จ</span></h2></header><div class="body"><div class="tdone"><div class="tdone-bar"><span>LAB 4.3 · Model Parallelism (1 เครื่อง × RTX 3090 4 ใบ · vapp-lab4-mp4)</span><span class="tdone-ok">✓ เทรนครบ 3 Epoch · เครื่องยังเปิดอยู่</span></div><div class="tdone-body"><div class="tdone-list"><div class="tdone-row"><span class="tdone-k">batch ใหญ่สุดที่เทรนได้</span><span class="tdone-v hi">16 (batch 32 เกิด Out of Memory ที่ GPU 3)</span></div><div class="tdone-row"><span class="tdone-k">จำนวน step ต่อ Epoch</span><span class="tdone-v">250 step (รวม 750 step ใน 20.2 นาที)</span></div><div class="tdone-row"><span class="tdone-k">ความเร็วเฉลี่ย</span><span class="tdone-v hi">9.91 ตัวอย่างต่อวินาที (1.615 วินาทีต่อ step)</span></div><div class="tdone-row"><span class="tdone-k">GPU utilization ทั้ง 4 ใบ</span><span class="tdone-v">24.9 / 21.8 / 23.1 / 30.3% (รวม 100.1%)</span></div><div class="tdone-row"><span class="tdone-k">VRAM สูงสุดตอนเทรน</span><span class="tdone-v">11.72 / 9.70 / 9.70 / 17.52 GiB (GPU 3 สูงสุด)</span></div></div><div><table class="tdone-tbl"><thead><tr><th>จุดวัด</th><th>train loss</th><th>test loss</th><th>Exact Match</th></tr></thead><tbody><tr><td>Base (ก่อนเทรน)</td><td>–</td><td>1.9176</td><td class="em">1.5%</td></tr><tr><td>หลัง Epoch 1</td><td>0.1233</td><td>0.0629</td><td class="em">69.0%</td></tr><tr><td>หลัง Epoch 2</td><td>0.0382</td><td>0.0536</td><td class="em">77.5%</td></tr><tr><td>หลัง Epoch 3</td><td>0.0252</td><td>0.0540</td><td class="em">74.5%</td></tr></tbody></table></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ขยาย batch ได้เป็น <b>16</b> (4 เท่าของ GPU ใบเดียว) แต่ความเร็วยังอยู่ที่ <b>9.91 ตัวอย่างต่อวินาที</b> เพราะทั้ง 4 ใบผลัดกันทำงานทีละใบ</span></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h04-mp4.jpg)" data-title="ผล Model Parallelism 4 ใบ: batch ใหญ่ขึ้นเป็น 16 แต่ความเร็วยังเท่าเดิมที่ 9.91 ตัวอย่างต่อวินาที" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.25"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">ผล Model Parallelism 4 ใบ: batch ใหญ่ขึ้นเป็น 16 แต่ความเร็วยังเท่าเดิมที่ 9.91 ตัวอย่างต่อวินาที</span><span class="tag">3_model_parallel/gpu4/results/summary.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">16</div><div class="txt"><div class="k">batch ใหญ่สุดที่เทรนได้</div><div class="s">2 เท่าของแบบ 2 ใบ · batch 32 เกิด Out of Memory ที่ GPU 3 (ขอเพิ่ม 4.64 GiB)</div></div></div><div class="tile warn"><div class="num">9.91<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">ความเร็วเฉลี่ย 3 Epoch</div><div class="s">0.98 เท่าของ 2 ใบ · 1.615 วินาทีต่อ step · เทรนรวม 20.2 นาที</div></div></div><div class="tile bad"><div class="num">21.8–30.3%</div><div class="txt"><div class="k">GPU utilization ต่อใบ</div><div class="s">24.9 / 21.8 / 23.1 / 30.3% · รวมกัน 100.1% (ทำงานทีละใบ)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ใช้ทรัพยากร GPU 4 ใบ แต่ได้ปริมาณงานต่อวินาทีเท่ากับ GPU 1 ใบ จึงควรใช้เมื่อจำเป็นต้องใช้พื้นที่ VRAM จริง ๆ เท่านั้น</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="Model Parallelism 4 ใบ · VRAM ไม่สมดุลชัด: GPU 3 สูงกว่าใบอื่นทุกขนาด batch และชนเพดาน 24 GB ที่ batch 32" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Model Parallelism 4 ใบ · VRAM ไม่สมดุลชัด: GPU 3 สูงกว่าใบอื่นทุกขนาด batch และชนเพดาน 24 GB ที่ batch 32</span><span class="tag">3_model_parallel/gpu4/results/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/gpu4/results/images/vram_vs_batch.png" alt="Model Parallelism 4 ใบ · VRAM ไม่สมดุลชัด: GPU 3 สูงกว่าใบอื่นทุกขนาด batch และชนเพดาน 24 GB ที่ batch 32" width="1510" height="782"></div><p class="cap">กราฟแสดง VRAM ที่ PyTorch จองตอน probe · ตอนเทรนจริงที่ batch 16 (allocated) GPU 0–3 ใช้ <b>11.72 / 9.70 / 9.70 / 17.52 GiB</b> โดย <code>lm_head</code> กองอยู่ที่ใบสุดท้าย</p></div></section>
+<section class="slide " data-title="Model Parallelism 4 ใบ · GPU utilization ลดเหลือ 22–30% ต่อใบ โดย GPU 3 หนักสุดเพราะ lm_head" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Model Parallelism 4 ใบ · GPU utilization ลดเหลือ 22–30% ต่อใบ โดย GPU 3 หนักสุดเพราะ <code>lm_head</code></span><span class="tag">3_model_parallel/gpu4/results/train.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/gpu4/results/images/gpu_util.png" alt="Model Parallelism 4 ใบ · GPU utilization ลดเหลือ 22–30% ต่อใบ โดย GPU 3 หนักสุดเพราะ lm_head" width="1420" height="1127"></div><p class="cap">ผลรวม GPU utilization ของทั้ง 4 ใบคือ <b>100.1%</b> ยืนยันตามทฤษฎีว่าข้อมูลไหลทีละสถานี ไม่ได้คำนวณพร้อมกัน</p></div></section>
+<section class="slide " data-title="Model Parallelism 4 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) แล้วลดลงเป็น 74.5% ใน Epoch 3" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.10"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงเทรนและผลหลังเทรนเสร็จ (ขั้นที่ 5)</div><h2><span class="tt">Model Parallelism 4 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) แล้วลดลงเป็น 74.5% ใน Epoch 3</span><span class="tag">3_model_parallel/gpu4/results/eval_all.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="3_model_parallel/gpu4/results/images/exact_match.png" alt="Model Parallelism 4 ใบ · Exact Match ดีที่สุดที่ Epoch 2 (77.5%) แล้วลดลงเป็น 74.5% ใน Epoch 3" width="1027" height="701"></div><p class="cap">Base 1.5% → Epoch 1: <b>69.0%</b> → Epoch 2: <b>77.5%</b> → Epoch 3: <b>74.5%</b> · test loss ต่ำสุดที่ Epoch 2 (0.0536 → 0.0540)</p></div></section>
+<section class="slide pslide" data-title="พรอมต์ · LAB 4.3 ขั้นที่ 6 · สรุปผลและลบเครื่อง 4 GPU (ห้ามข้าม)" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.45"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงลบเครื่อง (ขั้นที่ 6) และสรุปเทียบ</div><h2><span class="tt">พรอมต์ · LAB 4.3 ขั้นที่ 6 · สรุปผลและลบเครื่อง 4 GPU (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">คัดลอกแล้ววางใน Claude Code ที่โฟลเดอร์ 02_VastAi_Application</span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt14">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 4 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-mp4 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="Model Parallelism 2 ใบเทียบ 4 ใบ (1 เครื่องต่อรอบ): batch เพิ่ม 2 เท่า ความเร็วเท่าเดิม และใบสุดท้ายยังเต็มก่อน" data-group="LAB 4.3 · Model Parallelism (3_model_parallel/)" data-max="1.40"><header class="hd"><div class="kicker">LAB 4.3 (3_model_parallel/gpu4/) · รอบ 4 ใบ · ช่วงลบเครื่อง (ขั้นที่ 6) และสรุปเทียบ</div><h2><span class="tt">Model Parallelism 2 ใบเทียบ 4 ใบ (1 เครื่องต่อรอบ): batch เพิ่ม 2 เท่า ความเร็วเท่าเดิม และใบสุดท้ายยังเต็มก่อน</span><span class="tag">ตารางหลัก · LAB 4.3</span></h2></header><div class="body"><table class="c3"><thead><tr><th>สิ่งที่วัด</th><th>GPU 2 ใบ (สหรัฐฯ)</th><th>GPU 4 ใบ (ชิลี)</th></tr></thead><tbody><tr><td>Weights ก่อนเทรน ต่อใบ</td><td>7.64 / 7.64 GiB (วัด)</td><td>4.40 / 3.24 / 3.24 / 4.40 GiB (คำนวณ)</td></tr><tr><td>batch ใหญ่สุด (ที่ใช้เทรน)</td><td>8 · batch 16 ล้มที่ GPU 1 (lm_head)</td><td><b>16</b> · batch 32 ล้มที่ GPU 3 (lm_head)</td></tr><tr><td>วินาทีต่อ step</td><td>0.789 (8 ตัวอย่าง)</td><td>1.615 (16 ตัวอย่าง)</td></tr><tr><td>ตัวอย่างต่อวินาที</td><td><b>10.13</b></td><td><b>9.91</b></td></tr><tr><td>เร็วขึ้นเทียบ 2 ใบ</td><td>1.00 เท่า</td><td><b>0.98 เท่า</b></td></tr><tr><td>GPU util ต่อใบ</td><td>46.5 / 51.8%</td><td>24.9 / 21.8 / 23.1 / 30.3%</td></tr><tr><td>VRAM สูงสุดตอนเทรน (PyTorch)</td><td>14.29 / 17.26 GiB</td><td>11.72 / 9.70 / 9.70 / 17.52 GiB</td></tr><tr><td>Exact Match Base → Epoch 1 / 2 / 3</td><td>0.0% (1.5%*) → 70.0 / 77.5 / 77.0%</td><td>1.5% → 69.0 / 77.5 / 74.5%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>การส่งผลกลางทางข้ามใบเพิ่มจาก 1 เป็น 3 ครั้งแทบไม่ทำให้ช้าลง แต่ GPU ที่ว่างรอเพิ่มจาก 1 เป็น 3 ใบ · <code>*</code> 1.5% เมื่อตัด <code>;</code> ท้ายคำสั่งตามกติกาเดียวกับรอบ 4 ใบ</span></div></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s06-summary.jpg)" data-title="บทสรุป LAB 4 · ทั้ง 3 แล็บต่างกันอย่างไร และผลการทดลองจริงบอกอะไร" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง"><div class="shade"></div><div class="inner"><div class="small">บทสรุปของทั้ง 3 LAB ย่อย</div><div class="big">บทสรุป LAB 4</div><h1>ทั้ง 3 แล็บต่างกันอย่างไร และผลการทดลองจริงบอกอะไร</h1><div class="sub"><p>สรุปเทียบ LAB 4.1 Single GPU · LAB 4.2 Data Parallelism · LAB 4.3 Model Parallelism (ทั้งหมดรันบนเครื่องเดียว 1 / 2 / 4 GPU) แบบครบทุกมิติ</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h12-3labs-summary.jpg)" data-title="สรุปความต่างทั้ง 3 แล็บ: 4.1 จุดตั้งต้น · 4.2 ซื้อความเร็ว · 4.3 ซื้อที่ว่าง VRAM" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">สรุปความต่างทั้ง 3 แล็บ: 4.1 จุดตั้งต้น · 4.2 ซื้อความเร็ว · 4.3 ซื้อที่ว่าง VRAM</span><span class="tag">สรุป 3 LAB ย่อย</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">1 ใบ</div><div class="txt"><div class="k">LAB 4.1 · Single GPU (<code>1_single_gpu/</code>)</div><div class="s">1 เครื่อง × 1 ใบ · batch สูงสุด <b>4</b> · เร็ว <b>8.5 ตัวอย่างต่อวินาที</b> · GPU utilization 97% (ชนเพดานทั้งสองด้าน)</div></div></div><div class="tile ok"><div class="num">เร็ว 1.87×</div><div class="txt"><div class="k">LAB 4.2 · Data Parallelism (<code>2_data_parallel/</code>)</div><div class="s">1 เครื่อง × 2 และ 4 ใบ · แบ่งข้อมูลทำพร้อมกัน · เร็ว <b>19.1 → 35.6 ตัวอย่างต่อวินาที</b> (GPU utilization 97–99%) · batch ต่อใบยังเป็น 4</div></div></div><div class="tile warn"><div class="num">batch 4×</div><div class="txt"><div class="k">LAB 4.3 · Model Parallelism (<code>3_model_parallel/</code>)</div><div class="s">1 เครื่อง × 2 และ 4 ใบ · แบ่ง Layer ของโมเดลชุดเดียว · batch ขยาย <b>8 → 16</b> แต่ผลัดกันทำ ความเร็วคงที่ <b>10.1 / 9.9 ตัวอย่างต่อวินาที</b></div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ทั้ง 3 แล็บเช่า 1 เครื่องต่อรอบ ใช้โมเดล Dataset และค่าเทรนเดียวกันทุกประการ ความต่างของผลทั้งหมดเกิดจากวิธีจัดวางบน GPU</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ผลจริงทั้ง 5 กรณีในภาพเดียว: เพิ่มใบใน Data Parallelism ได้ความเร็ว · เพิ่มใบใน Model Parallelism ได้ขนาด batch" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.10"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ผลจริงทั้ง 5 กรณีในภาพเดียว: เพิ่มใบใน Data Parallelism ได้ความเร็ว · เพิ่มใบใน Model Parallelism ได้ขนาด batch</span><span class="tag">สรุปผลจริง 5 กรณี</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/shared/r-compare.png" alt="ผลจริงทั้ง 5 กรณีในภาพเดียว: เพิ่มใบใน Data Parallelism ได้ความเร็ว · เพิ่มใบใน Model Parallelism ได้ขนาด batch" width="1400" height="787"></div><p class="cap">เทียบ 1 เครื่อง × 1 ใบ (Single GPU) · 1 เครื่อง × 2 และ 4 ใบ (Data Parallelism) · 1 เครื่อง × 2 และ 4 ใบ (Model Parallelism)</p></div></section>
+<section class="slide " data-title="ตารางสรุปตัวเลขวัดจริงทั้ง 5 กรณี: เทียบ Weights, Batch, ความเร็ว, VRAM, GPU utilization และ Exact Match" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.40"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ตารางสรุปตัวเลขวัดจริงทั้ง 5 กรณี: เทียบ Weights, Batch, ความเร็ว, VRAM, GPU utilization และ Exact Match</span><span class="tag">ตารางหลัก · 5 แบบ</span></h2></header><div class="body"><table class="c6"><thead><tr><th>ค่าที่วัด</th><th><a href="1_single_gpu/README.md" target="_blank" rel="noopener">Single GPU</a><br>(1 เครื่อง × 1 ใบ)</th><th><a href="2_data_parallel/README.md" target="_blank" rel="noopener">Data Parallelism</a><br>(1 เครื่อง × 2 ใบ)</th><th>Data Parallelism<br>(1 เครื่อง × 4 ใบ)</th><th><a href="3_model_parallel/README.md" target="_blank" rel="noopener">Model Parallelism</a><br>(1 เครื่อง × 2 ใบ)</th><th>Model Parallelism<br>(1 เครื่อง × 4 ใบ)</th></tr></thead><tbody><tr><td>Weights ที่แต่ละใบต้องถือ</td><td>15.3 GiB</td><td>15.3 GiB ทุกใบ</td><td>15.3 GiB ทุกใบ</td><td>7.6 GiB ต่อใบ</td><td>3.2–4.4 GiB ต่อใบ (คำนวณ)</td></tr><tr><td><b>batch ใหญ่สุดที่เทรนได้</b></td><td>4</td><td>4 ต่อใบ (รวม 8)</td><td>4 ต่อใบ (รวม 16)</td><td><b>8</b></td><td><b>16</b></td></tr><tr><td>batch ถัดไปที่ Out of Memory</td><td>8</td><td>8 ต่อใบ</td><td>8 ต่อใบ</td><td>16</td><td>32</td></tr><tr><td>จำนวน step ใน 1 Epoch</td><td>1,000</td><td>500</td><td>250</td><td>500</td><td>250</td></tr><tr><td><b>ความเร็ว (ตัวอย่างต่อวินาที)</b></td><td>8.5</td><td><b>19.1</b></td><td><b>35.6</b></td><td>10.1</td><td>9.9</td></tr><tr><td>VRAM สูงสุดตอนเทรน (GiB ต่อใบ)</td><td>23.0</td><td>22.7 / 22.7</td><td>20.6–21.6</td><td>14.3 / 17.3</td><td>11.7 / 9.7 / 9.7 / 17.5</td></tr><tr><td>GPU utilization ต่อใบ</td><td>97.0%</td><td>97.8 / 98.6%</td><td>96.9 / 97.3 / 97.3 / 97.4%</td><td>46.5 / 51.8%</td><td>24.9 / 21.8 / 23.1 / 30.3%</td></tr><tr><td>Exact Match หลัง Epoch 1 / 2 / 3</td><td>77.0 / 79.0 / 77.5%</td><td>70.0 / 77.5 / 79.0%</td><td>70.5 / 75.0 / 76.5%</td><td>70.0 / 77.5 / 77.0%</td><td>69.0 / 77.5 / 74.5%</td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>Exact Match ปรับเป็นกติกาเดียวกันทุกแบบ (ไม่นับ <code>;</code> ท้ายคำสั่งเป็นข้อผิด) · Base ทุกแบบได้ 1.5% เท่ากัน</span></div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h07-speed-battle.jpg)" data-title="ผลด้านความเร็ว: Data Parallelism เร็วขึ้นถึง 35.6 ตัวอย่างต่อวินาที ส่วน Model Parallelism คงที่ราว 10" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ผลด้านความเร็ว: Data Parallelism เร็วขึ้นถึง 35.6 ตัวอย่างต่อวินาที ส่วน Model Parallelism คงที่ราว 10</span><span class="tag">สรุปด้านความเร็ว</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">8.5<small>ตัวอย่างต่อวินาที</small></div><div class="txt"><div class="k">Single GPU (1 เครื่อง × 1 ใบ)</div><div class="s">batch 4 · GPU utilization 97.0% · เทรน 3 Epoch ใช้ 23.6 นาที</div></div></div><div class="tile ok"><div class="num">19.1 → 35.6</div><div class="txt"><div class="k">Data Parallelism (1 เครื่อง × 2 → 4 ใบ)</div><div class="s">ตัวอย่างต่อวินาที · 4 ใบเร็วกว่า 2 ใบ <b>1.87 เท่า</b> (ประสิทธิภาพต่อใบ 93.4% · GPU utilization 97–99%)</div></div></div><div class="tile bad"><div class="num">10.1 → 9.9</div><div class="txt"><div class="k">Model Parallelism (1 เครื่อง × 2 → 4 ใบ)</div><div class="s">ตัวอย่างต่อวินาที · เพิ่มใบไม่เร็วขึ้น เพราะผลัดกันทำ (GPU utilization รวมทุกใบ ~100% เสมอ)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>เพราะ LoRA ส่ง Gradient แค่ ~15 MB/step Data Parallelism จึงขยายความเร็วได้เกือบเป็นเส้นตรงแม้ไม่มี NVLink</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h08-vram-battle.jpg)" data-title="ผลด้าน VRAM และ Batch: Model Parallelism ขยาย batch เป็น 4 → 8 → 16 แต่ lm_head เต็มก่อนเสมอ" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ผลด้าน VRAM และ Batch: Model Parallelism ขยาย batch เป็น 4 → 8 → 16 แต่ <code>lm_head</code> เต็มก่อนเสมอ</span><span class="tag">สรุปด้าน VRAM</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile warn"><div class="num">4 ต่อใบ</div><div class="txt"><div class="k">Single GPU &amp; Data Parallelism</div><div class="s">ทุกใบต้องถือ Weights 15.3 GiB ครบชุด · batch 8 ต่อใบเกิด Out of Memory เหมือนกัน (Data Parallelism ได้แค่ batch รวม 8 และ 16)</div></div></div><div class="tile ok"><div class="num">8 → 16</div><div class="txt"><div class="k">Model Parallelism (1 เครื่อง × 2 → 4 ใบ)</div><div class="s">Weights ต่อใบลดเหลือ 7.6 และ 3.2–4.4 GiB · รับ batch ใหญ่ขึ้น 2× และ 4× ของการ์ดใบเดียว</div></div></div><div class="tile bad"><div class="num">lm_head</div><div class="txt"><div class="k">คอขวดของใบสุดท้าย</div><div class="s">ตารางคะแนน 151,936 คำศัพท์กองอยู่ที่ใบสุดท้ายใบเดียว (ขอเพิ่ม 2.32 / 4.64 GiB ที่ batch 16 / 32)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>บทเรียนร่วม: แม้ probe จะผ่านแบบเฉียดขีด (&lt; 1 GiB) เทรนจริงยังเกิด Out of Memory ได้จาก <code>attention_mask</code> หรือ logits จึงต้องเผื่อที่ว่างหรือใช้ <code>AnswerLoss</code></span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h09-quality-epoch.jpg)" data-title="ผลด้านคุณภาพหลัง 3 Epoch: ทุกวิธีได้ Exact Match 74.5–79.0% ใกล้กันหมด" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ผลด้านคุณภาพหลัง 3 Epoch: ทุกวิธีได้ Exact Match 74.5–79.0% ใกล้กันหมด</span><span class="tag">สรุปด้านคุณภาพ</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">1.5%</div><div class="txt"><div class="k">ก่อนเทรน (Base)</div><div class="s">ต่ำเพราะสไตล์ quote และตัวพิมพ์ (แบบผ่อนปรนได้ 52.5–54.5%)</div></div></div><div class="tile ok"><div class="num">74.5–79.0%</div><div class="txt"><div class="k">หลังเทรน 3 Epoch (ทั้ง 5 แบบ)</div><div class="s">Single GPU 77.5% · Data Parallelism 79.0% / 76.5% · Model Parallelism 77.0% / 74.5%</div></div></div><div class="tile warn"><div class="num">Epoch 2</div><div class="txt"><div class="k">จังหวะที่คุ้มที่สุด</div><div class="s">3 จาก 5 แบบได้ค่าดีสุดที่ Epoch 2 · batch ใหญ่ (16) ปรับน้ำหนักแค่ 250 ครั้งต่อ Epoch จึงเริ่มช้ากว่าใน Epoch 1</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>การจัดวางบน GPU เปลี่ยนความเร็วและที่ว่าง VRAM ไม่ได้เปลี่ยนสิ่งที่โมเดลเรียนรู้ · Test Set 200 ข้อ (1 ข้อ = 0.5 จุด) ส่วนต่าง 1–2 จุดจึงยังสรุปไม่ได้ว่าแบบใดแม่นกว่า</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h10-choose-verdict.jpg)" data-title="แนวทางเลือกใช้งานจริง: ดูให้ชัดว่างานของคุณติดความเร็ว หรือติด VRAM" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">แนวทางเลือกใช้งานจริง: ดูให้ชัดว่างานของคุณติดความเร็ว หรือติด VRAM</span><span class="tag">แนวทางตัดสินใจ</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">Single GPU</div><div class="txt"><div class="k">ใส่ใบเดียวได้และไม่รีบ</div><div class="s">ง่ายที่สุดและคุ้มค่าต่อตัวอย่างที่สุด (<code>1_single_gpu/</code>)</div></div></div><div class="tile ok"><div class="num">Data Parallelism</div><div class="txt"><div class="k">ใส่ใบเดียวได้ แต่อยากเสร็จเร็ว</div><div class="s">เพิ่ม GPU ในเครื่องเดียวแล้วได้ความเร็วเพิ่มเกือบเท่าตัว (<code>2_data_parallel/</code>)</div></div></div><div class="tile warn"><div class="num">Model Parallelism</div><div class="txt"><div class="k">โมเดลหรือ batch ใส่ใบเดียวไม่ลง</div><div class="s">รวม VRAM หลายใบในเครื่องเดียวมาถือโมเดลเดียว · ถ้าอยากได้ทั้งสองอย่างให้ใช้ร่วมกันข้ามเครื่องใน LAB 5 (<code>3_model_parallel/</code>)</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ในเชิงทรัพยากร Data Parallelism คุ้มค่าเพราะการ์ดทำงานเต็มทุกใบ ส่วน Model Parallelism มีการ์ดว่างรอจึงควรใช้เมื่อจำเป็นต้องใช้พื้นที่ VRAM จริง ๆ</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ตารางตัดสินใจเลือกใช้ทั้ง 4 สถานการณ์ (รวมการใช้ร่วมกันข้ามเครื่องใน LAB 5)" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.40"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ตารางตัดสินใจเลือกใช้ทั้ง 4 สถานการณ์ (รวมการใช้ร่วมกันข้ามเครื่องใน LAB 5)</span><span class="tag">ตารางหลัก · การเลือกใช้</span></h2></header><div class="body"><table class="c3"><thead><tr><th>สถานการณ์</th><th>ใช้</th><th>เหตุผล</th></tr></thead><tbody><tr><td>โมเดลเทรนบน GPU ใบเดียวได้ และไม่รีบ</td><td><b>Single GPU</b></td><td>ถูกที่สุดต่อตัวอย่าง และเขียนโค้ดง่ายที่สุด</td></tr><tr><td>โมเดลเทรนบน GPU ใบเดียวได้ แต่อยากให้เสร็จเร็วขึ้น</td><td><b>Data Parallelism</b></td><td>GPU ทุกใบในเครื่องทำงานพร้อมกัน · 4 ใบเร็วกว่า 2 ใบ 1.87 เท่า</td></tr><tr><td>โมเดลหรือ batch ที่ต้องการ ใส่ GPU ใบเดียวไม่ลง</td><td><b>Model Parallelism</b></td><td>รวม VRAM ของหลายใบในเครื่องเดียวมาถือโมเดลชุดเดียว · ยิ่งเพิ่มใบ batch ยิ่งใหญ่ได้ แต่ไม่เร็วขึ้น</td></tr><tr><td>ต้องการทั้งสองอย่าง หรือมีหลายเครื่อง</td><td><b>ใช้ร่วมกัน (LAB 5)</b></td><td>แบ่งโมเดลภายในเครื่อง แล้วแบ่งข้อมูลข้ามเครื่อง ดู <a href="../lab5_cluster/README.md" target="_blank" rel="noopener">LAB 5</a></td></tr></tbody></table><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ใช้ตารางนี้เช็กก่อนเช่าเครื่องทุกครั้ง เพื่อไม่ให้เช่า GPU หลายใบผิดวิธี</span></div></div></section>
+<section class="slide " data-title="ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบกัน" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง" data-max="1.25"><header class="hd"><div class="kicker">บทสรุป · เทียบทั้ง 3 LAB</div><h2><span class="tt">ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบกัน</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n04-caveats.jpg" alt="ข้อจำกัดที่ต้องรู้เมื่ออ่านตัวเลขเทียบกัน" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ทั้ง 5 แบบรันบนเครื่องเช่าคนละเครื่อง</b> ตัวเลขความเร็วที่เทียบข้ามแบบจึงรวมความต่างของ CPU, PCIe และสภาพเครื่องไว้ด้วย</span></div><div class="stp"><span class="n">2</span><span><b>แต่ละแบบเทรนที่ batch ใหญ่สุดของตัวเอง</b> (4, 8 และ 16) จำนวนครั้งที่ปรับน้ำหนักต่อ Epoch จึงต่างกัน (1,000 · 500 · 250 ครั้ง)</span></div><div class="stp"><span class="n">3</span><span><b>การหา batch ในรอบตัวอย่างเพิ่มทีละเท่าตัว</b> (1, 2, 4, 8, 16, 32) แต่พรอมต์ปัจจุบันให้ AI ประมาณและลองค่าระหว่างกลางต่อได้</span></div></div></div></div></section>
+<section class="slide stmt" data-title="จบ LAB 4" data-group="บทสรุปทั้ง 3 LAB · ความต่างและผลการทดลอง"><img class="bg" src="images/slides/s06-summary.jpg" alt="จบ LAB 4"><div class="shade"></div><div class="inner"><div class="q">4.1 จุดตั้งต้น · 4.2 ซื้อความเร็ว · 4.3 ซื้อที่ว่าง VRAM</div><div class="sub2">ทุกการทดลองใน LAB 4 คือ <b>Multi-GPU ในเครื่องเดียว (1 เครื่อง · หลาย GPU)</b> — เลือกวิธีให้ตรงคอขวด วัด VRAM ด้วยตัวอย่างยาวสุดก่อนเทรนจริง และ <b>ลบเครื่องเช่าทุกครั้งที่จบงาน</b></div><div class="links"><a href="README.md" target="_blank">หน้ารวม LAB 4</a><a href="1_single_gpu/README.md" target="_blank">LAB 4.1 (1_single_gpu/)</a><a href="2_data_parallel/README.md" target="_blank">LAB 4.2 (2_data_parallel/)</a><a href="3_model_parallel/README.md" target="_blank">LAB 4.3 (3_model_parallel/)</a></div></div><div class="imgnote">ภาพจำลอง</div></section>
+</div></div>
+<pre class="full" id="prompt0">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 1 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 1 ใบ · ราคาไม่เกิน $0.30 ต่อชั่วโมง · ป้าย vapp-lab4-single
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt1">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-single · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL ด้วย GPU 1 ใบ
+แนวคิด: โมเดลทั้งชุดและข้อมูลทั้ง batch อยู่บน GPU ใบเดียว
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 1 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุด · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt2">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-single · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/1_single_gpu ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของRTX 3090 1 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM เทียบ batch พร้อมเส้น 24 GB · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-single แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt3">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab4-dp
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt4">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism
+แนวคิด: GPU 2 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละครึ่ง แล้วเฉลี่ย Gradient ให้เท่ากัน
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 2 ใบ ใช้ DDP ของ PyTorch
+2. หา batch ต่อ GPU ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ต่อ GPU ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน (ต่อ GPU และรวม) · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt5">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 2 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-dp แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt6">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 4 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 4 ใบในเครื่องเดียว · ราคาไม่เกิน $1.40 ต่อชั่วโมง · ป้าย vapp-lab4-dp4
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt7">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Data Parallelism
+แนวคิด: GPU 4 ใบถือโมเดลคนละชุด แบ่งข้อมูลใบละ 1 ใน 4 แล้วเฉลี่ย Gradient ให้เท่ากัน
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA บน GPU 4 ใบ ใช้ DDP ของ PyTorch
+2. หา batch ต่อ GPU ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ต่อ GPU ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน (ต่อ GPU และรวม) · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt8">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-dp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/2_data_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 4 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-dp4 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ต่อ GPU ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt9">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab4-mp
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt10">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism
+แนวคิด: โมเดลชุดเดียว แบ่ง Layer ครึ่งแรกไว้ GPU 0 ครึ่งหลังไว้ GPU 1
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA โดยแบ่งโมเดลชุดเดียวลง GPU 2 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · Layer ไหนอยู่ใบไหน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt11">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 2 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-mp แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt12">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 4 ใบ แล้วเตรียมโมเดลกับ Dataset
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 4 ใบในเครื่องเดียว · ราคาไม่เกิน $1.40 ต่อชั่วโมง · ป้าย vapp-lab4-mp4
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · เน็ตดาวน์โหลด 700 Mbps ขึ้นไป · ค่าดาวน์โหลดไม่เกิน $0.01 ต่อ GB · CPU 16 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 60 GB
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. โหลดโมเดล Qwen/Qwen3-8B และ Dataset b-mc2/sql-create-context ลงเครื่อง
+3. สับ Dataset ด้วย seed 0 แล้วแบ่ง Training Set 4,000 ตัวอย่าง และ Test Set 200 ตัวอย่าง
+4. ทำตารางตัวอย่าง 6 รายการ (คำถาม · โครงสร้างตาราง · SQL เฉลย) เก็บที่ results/dataset_samples.md
+5. วัดความเร็ว GPU ทีละใบด้วยงานเดียวกัน ถ้ามีใบที่ช้ากว่าใบอื่นเกิน 20% ให้ลบแล้วเช่าเครื่องอื่น
+
+[รายงาน]
+สรุปเป็นตาราง: เครื่องที่ได้ · ราคาต่อชั่วโมง · GPU ต่อถึงกันแบบไหน · ความเร็วของ GPU แต่ละใบ · จำนวนตัวอย่างของแต่ละชุด
+อธิบายตัวอย่าง 1 รายการว่าแต่ละช่องคืออะไร · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt13">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทรน Qwen3-8B ให้แปลงคำถามเป็น SQL แบบ Model Parallelism
+แนวคิด: โมเดลชุดเดียว แบ่ง Layer เป็น 4 ส่วนเท่ากัน ไว้ GPU ละ 1 ส่วน เรียงจาก GPU 0 ถึง GPU 3
+
+[ขั้นตอน]
+1. เขียน code/train.py เทรนด้วย LoRA โดยแบ่งโมเดลชุดเดียวลง GPU 4 ใบ
+2. หา batch ใหญ่สุด: ลอง 1, 2, 4, 8 … อย่างละ 3 step ด้วยตัวอย่างที่ยาวที่สุด จน Out of Memory
+   แล้วประมาณจาก VRAM ที่วัดได้ว่า batch เท่าไรจะพอดี และลองค่าระหว่างตัวที่ผ่านกับตัวที่ล้ม จนได้ batch ใหญ่สุดที่ผ่านจริง
+3. เทรน 3 Epoch ด้วย batch ใหญ่สุดที่หาได้ในข้อ 2
+4. เขียน code/eval.py วัด Exact Match บน Test Set ของโมเดลก่อนเทรน (Base) และหลังจบแต่ละ Epoch
+5. ให้งานรันต่อได้แม้การเชื่อมต่อหลุด และรายงานทุก 2–3 นาที
+
+[ค่าที่ตรึง]
+โมเดล: Qwen/Qwen3-8B แบบ bf16 · ปิด thinking · ไม่ใช้ Gradient Checkpointing
+LoRA: r 8 · alpha 16 · ที่ q_proj กับ v_proj
+การเทรน: learning rate 2e-4 · seed 0 · ข้อความยาวไม่เกิน 256 token
+
+[รายงาน]
+สรุปเป็นตาราง: batch เทียบ VRAM สูงสุดของแต่ละใบ · batch ที่ประมาณไว้ · batch ที่ใช้เทรน · Layer ไหนอยู่ใบไหน · วินาทีต่อ step · ตัวอย่างต่อวินาที · GPU util ของแต่ละใบ · loss และ Exact Match ของ Base และหลังจบแต่ละ Epoch
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt14">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab4-mp4 · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab4_multigpu/3_model_parallel/gpu4 ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. นำผลดิบกลับมาที่ results/raw
+2. ค้นราคาตลาดของเครื่อง RTX 3090 4 ใบที่ถูกที่สุด
+3. เขียน code/report.py รวมตัวเลขลง results/metrics.json พร้อมเงินต่อ 1,000 ตัวอย่าง
+4. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ): VRAM ของแต่ละใบเทียบ batch พร้อมเส้น 24 GB · GPU util ของแต่ละใบ · loss ตลอด 3 Epoch · Exact Match ของแต่ละ Epoch
+5. ลบเครื่องป้าย vapp-lab4-mp4 แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง: batch ใหญ่สุด · ตัวอย่างต่อวินาที · Exact Match · เงินต่อ 1,000 ตัวอย่าง
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<div id="bar"></div>
+<div id="hud"><button id="bo" title="สารบัญ (O)">☰</button><button id="bp" title="ก่อนหน้า (←)">‹</button><span id="count"></span><button id="bn" title="ถัดไป (→)">›</button><button id="bf" title="เต็มจอ (F)">⛶</button></div>
+<div id="ov"></div>
+<div id="lb"><img alt=""></div>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const N=slides.length; let cur=0;
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const n=document.createElement('div'); n.className='no'; n.textContent=(k+1)+' / '+N; s.appendChild(n);} });
+  function fit(){ deck.style.transform='scale('+Math.min(innerWidth/1600,innerHeight/900)+')'; }
+  /* ปรับขนาดตัวอักษรของแต่ละสไลด์ให้พอดีหน้า: เริ่มที่ค่าสูงสุด แล้วลดจนไม่ล้น */
+  function fitSlide(s){
+    const body=s.querySelector('.body'); if(!body) return;
+    const on=s.classList.contains('active'); if(!on) s.classList.add('measure');
+    body.classList.remove('scroll');
+    let fs=parseFloat(s.dataset.max||'1.4');
+    const boxes=[body,...body.querySelectorAll('.fitbox')];
+    const over=()=>boxes.some(b=>b.scrollHeight>b.clientHeight+3||b.scrollWidth>b.clientWidth+1);
+    s.style.setProperty('--fs',fs);
+    while(over()&&fs>0.62){ fs=Math.round((fs-0.03)*100)/100; s.style.setProperty('--fs',fs); }
+    s.dataset.fs=fs; s.dataset.over=over()?'1':'0';
+    if(over()) body.classList.add('scroll');
+    if(!on) s.classList.remove('measure');
+  }
+  function fitAll(){ slides.forEach(fitSlide); document.documentElement.dataset.fitted='1'; }
+  function go(i,push){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+N;
+    document.getElementById('bar').style.width=((cur+1)/N*100)+'%';
+    if(push!==false){ try{ history.replaceState(null,'','#'+(cur+1)); }catch(e){} }
+    document.querySelectorAll('#ov .th').forEach((t,k)=>t.classList.toggle('cur',k===cur));
+  }
+  const next=()=>go(cur+1), prev=()=>go(cur-1);
+  function fs(){ if(!document.fullscreenElement){ const r=document.documentElement; r.requestFullscreen&&r.requestFullscreen(); } else document.exitFullscreen&&document.exitFullscreen(); }
+  const ovEl=document.getElementById('ov'); let grid=null,last=null;
+  slides.forEach((s,k)=>{
+    if(s.dataset.group!==last){ last=s.dataset.group; const h=document.createElement('h4'); h.textContent=last; ovEl.appendChild(h); grid=document.createElement('div'); grid.className='grid'; ovEl.appendChild(grid); }
+    const d=document.createElement('div'); d.className='th';
+    const n=document.createElement('span'); n.textContent=k+1; d.appendChild(n); d.appendChild(document.createTextNode(s.dataset.title||''));
+    d.onclick=()=>{ go(k); ov(false); }; grid.appendChild(d);
+  });
+  function ov(on){ const v=on===undefined?!document.body.classList.contains('ov'):on; document.body.classList.toggle('ov',v);
+    if(v){ const c=ovEl.querySelector('.th.cur'); c&&c.scrollIntoView({block:'center'}); } }
+  const lb=document.getElementById('lb'), lbi=lb.querySelector('img');
+  deck.addEventListener('click',e=>{ const im=e.target.closest('.fig img'); if(im){ lbi.src=im.src; lbi.alt=im.alt; lb.classList.add('on'); lb.scrollTop=0; } });
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey) return;
+    const k=e.key;
+    if(lb.classList.contains('on')){ if(k==='Escape'||k==='Enter'||k===' '){ e.preventDefault(); lb.classList.remove('on'); } return; }
+    if(['ArrowRight','PageDown',' ','Enter'].includes(k)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(k)){ e.preventDefault(); prev(); }
+    else if(k==='Home') go(0); else if(k==='End') go(N-1);
+    else if(k==='f'||k==='F') fs(); else if(k==='o'||k==='O') ov();
+    else if(k==='Escape'&&document.body.classList.contains('ov')) ov(false);
+  });
+  document.getElementById('bn').onclick=next; document.getElementById('bp').onclick=prev;
+  document.getElementById('bf').onclick=fs; document.getElementById('bo').onclick=()=>ov();
+  let tx=null;
+  document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>60)(dx<0?next:prev)(); });
+  function copyText(text,btn,label){
+    const done=()=>{ btn.textContent='คัดลอกแล้ว ✓'; btn.classList.add('done'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('done'); },1600); };
+    const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); done(); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback();
+  }
+  window.promptText=id=>document.getElementById(id).textContent;
+  document.querySelectorAll('.copy').forEach(b=>{
+    const label=b.textContent;
+    b.addEventListener('click',ev=>{ ev.stopPropagation();
+      const text=b.dataset.full?window.promptText(b.dataset.full):b.parentElement.querySelector('.t').textContent;
+      copyText(text,b,label); });
+  });
+  document.querySelectorAll('.chk input').forEach(c=>{
+    const key='slides:'+location.pathname+':'+c.dataset.k;
+    try{ c.checked=localStorage.getItem(key)==='1'; }catch(e){}
+    c.addEventListener('change',()=>{ try{ localStorage.setItem(key,c.checked?'1':'0'); }catch(e){} });
+  });
+  addEventListener('resize',fit);
+  addEventListener('hashchange',()=>{ const n=parseInt(location.hash.slice(1)); if(n) go(n-1,false); });
+  fit(); const start=parseInt(location.hash.slice(1)); go(start?start-1:0,false);
+  fitAll();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
+  addEventListener('load',fitAll);
+})();
+</script>
+</body>
+</html>

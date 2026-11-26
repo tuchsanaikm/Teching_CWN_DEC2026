@@ -1,0 +1,5 @@
+[08:09:56] STAGE probe
+[08:10:38] STAGE eval base
+[08:11:35] STAGE train batch 16
+[08:32:04] STAGE eval epochs
+[08:34:48] STAGE ALL_DONE

@@ -1,0 +1,38 @@
+{
+ "fetched_at": 1795336826.1999056,
+ "instances": [
+  {
+   "id": "<id>",
+   "label": "vapp-lab4-mp4",
+   "actual_status": "running",
+   "gpu_name": "RTX 3090",
+   "num_gpus": 4,
+   "gpu_ram": 24576,
+   "gpu_lanes": 16,
+   "pci_gen": 3.0,
+   "pcie_bw": 11.3,
+   "bw_nvlink": 0.0,
+   "cpu_name": "Xeon® E5-2680 v4",
+   "cpu_cores": 56,
+   "cpu_cores_effective": 56.0,
+   "cpu_ram": 96433,
+   "disk_space": 60.0,
+   "dph_base": 0.8533333333333334,
+   "dph_total": 0.8700000000000001,
+   "geolocation": "Chile, CL",
+   "country_code": "CL",
+   "inet_down": 923.9,
+   "inet_up": 924.4,
+   "inet_down_cost": 0.0026041666666666665,
+   "inet_up_cost": 0.00390625,
+   "reliability2": 0.9958992,
+   "verification": "verified",
+   "cuda_max_good": 13.4,
+   "driver_version": "615.71.09",
+   "image_uuid": "pytorch/pytorch:2.8.0-cuda12.8-cudnn9-devel",
+   "start_date": 1795334068.6548655,
+   "duration": 2757.5069687366486,
+   "machine_id": 153725
+  }
+ ]
+}

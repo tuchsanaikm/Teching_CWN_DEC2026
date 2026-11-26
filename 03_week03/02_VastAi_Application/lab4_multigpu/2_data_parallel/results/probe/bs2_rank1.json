@@ -1,0 +1,16 @@
+{
+  "bs_per_gpu": 2,
+  "rank": 1,
+  "gpu": 1,
+  "status": "ok",
+  "steps_done": 3,
+  "seq_len": 256,
+  "model_only_alloc_mib": 15652,
+  "step_sec": [
+    0.746,
+    0.375,
+    0.38
+  ],
+  "peak_alloc_mib": 19479,
+  "peak_reserved_mib": 19668
+}

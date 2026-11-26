@@ -1,0 +1,15 @@
+[06:53:07] PROBE bs/gpu=1 start
+[06:53:31] PROBE bs/gpu=1 -> ok (exit 0)
+[06:53:31] PROBE bs/gpu=2 start
+[06:53:56] PROBE bs/gpu=2 -> ok (exit 0)
+[06:53:56] PROBE bs/gpu=4 start
+[06:54:21] PROBE bs/gpu=4 -> ok (exit 0)
+[06:54:21] PROBE bs/gpu=8 start
+[06:54:44] PROBE bs/gpu=8 -> oom (exit 1)
+[06:54:44] largest batch per GPU = 4
+[06:54:44] TRAIN start/resume bs/gpu=4
+[06:56:21] largest batch per GPU = 4
+[06:56:21] TRAIN start/resume bs/gpu=4
+[07:06:40] TRAIN finished
+[07:06:40] EVAL start
+[07:09:44] ALL DONE

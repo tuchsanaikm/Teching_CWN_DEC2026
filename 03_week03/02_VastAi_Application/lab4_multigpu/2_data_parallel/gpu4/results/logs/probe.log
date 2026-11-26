@@ -1,0 +1,5 @@
+batch_per_gpu=1: ok [18266, 18266, 18266, 18266] MiB
+batch_per_gpu=2: ok [19268, 19268, 19268, 19268] MiB
+batch_per_gpu=4: ok [22340, 22340, 22340, 22340] MiB
+batch_per_gpu=8: Out of Memory on ranks [0, 1, 2, 3]
+PROBE_DONE max_batch_per_gpu = 4

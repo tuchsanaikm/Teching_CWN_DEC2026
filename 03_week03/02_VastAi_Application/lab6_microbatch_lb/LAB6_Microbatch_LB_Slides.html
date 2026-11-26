@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAB 6 · Inference บน 1 โหนด หลาย GPU (Single-Node Multi-GPU) · Slides</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#12305e;--teal:#0f8f8c;--teal-soft:#e2f5f4;--orange:#e87f1c;--orange-soft:#fff1e3;--red:#c92a2a;--red-soft:#fdecec;
+--green:#15803d;--green-soft:#e7f7ec;--ink:#1c2533;--muted:#5b6b80;--line:#d8e0ec;--bg:#f5f7fb;--card:#fff;--code:#0e1a2b;
+--font:'IBM Plex Sans Thai','Leelawadee UI','Noto Sans Thai','Segoe UI',sans-serif;--mono:'JetBrains Mono','Cascadia Code',Consolas,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#070d18;overflow:hidden;font-family:var(--font);color:var(--ink)}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+.slide{position:absolute;inset:0;background:var(--bg);padding:40px 72px 44px;display:none;flex-direction:column;overflow:hidden}
+.slide.active,.slide.measure{display:flex}
+.slide.measure{visibility:hidden}
+.slide.active{animation:fade .25s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.hd{flex:none;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+.kicker{font-size:17px;font-weight:600;color:var(--teal);letter-spacing:.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kicker code{font-size:.9em;background:none;padding:0;color:inherit}
+h2{font-size:36px;line-height:1.22;margin:3px 0 0;color:var(--navy);font-weight:700;display:flex;align-items:center;gap:14px}
+h2 .tt{min-width:0}
+h2 code{font-size:.88em}
+.tag{flex:none;font-size:16px;font-weight:600;color:#b35c0a;white-space:nowrap;align-self:center}
+.tag::before{content:"● ";font-size:.7em;vertical-align:.15em}
+.pg{flex:none;margin-left:auto;font-size:16px;font-weight:500;color:var(--muted);white-space:nowrap}
+.slide .no{display:none;position:absolute;right:26px;bottom:12px;font-size:13px;color:#8796ab}
+.slide .dk{position:absolute;left:72px;bottom:12px;font-size:13px;color:#8796ab}
+.body{flex:1;min-height:0;display:flex;flex-direction:column;gap:.5em;font-size:calc(23px*var(--fs,1));overflow:hidden}
+.body.scroll{overflow:auto}
+.body>*{flex:none;margin:0}
+p{line-height:1.55}
+ul{padding-left:1.3em;margin:0}
+li{line-height:1.5;margin:.22em 0}
+b,strong{color:var(--navy)}
+a{color:#1d5fd0;text-decoration:none;border-bottom:1px solid rgba(29,95,208,.3)}
+.xref{color:var(--navy);font-weight:600}
+code{font-family:var(--mono);font-size:.84em;background:#e6edf7;color:#0b3b7a;padding:.08em .38em;border-radius:5px;overflow-wrap:break-word}
+pre,code{font-variant-ligatures:none}
+h3.lead{font-size:1.14em;color:var(--navy);font-weight:700;line-height:1.35;padding-left:.6em;border-left:5px solid var(--teal)}
+h3.lead span{font-weight:400;color:var(--muted);font-size:.86em}
+h3.lead span b{color:var(--muted)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.9em;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:.4em .62em;text-align:left;vertical-align:top;line-height:1.42;border-bottom:1px solid var(--line)}
+th{background:var(--navy);color:#fff;font-weight:600}
+th code{background:rgba(255,255,255,.16);color:#fff}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:#f6f9fd}
+td:first-child{font-weight:500}
+td.yes{color:#0f5132}td.no{color:#9b1c1c}
+.slide td.no{display:table-cell;position:static;font-size:inherit;color:#9b1c1c}
+table.c6,table.c7{font-size:.84em}
+.v{font-weight:700;font-size:.92em;padding:.05em .5em;border-radius:6px;white-space:nowrap}
+.v.accept{background:var(--green-soft);color:var(--green)}
+.v.reject{background:var(--red-soft);color:var(--red)}
+.note{border-left:3px solid var(--teal);padding:.15em 0 .15em .9em;line-height:1.5}
+.note>*{margin:0}
+.note>*+*{margin-top:.4em}
+.note.ok{border-color:var(--green)}
+.note.warn{border-color:var(--orange)}
+.note.bad{border-color:var(--red)}
+.note.result{border-color:var(--navy)}
+.note.eye{border-color:var(--orange);display:block}
+.note.eye>*+*{margin-top:0}
+.note .lbl{flex:none;font-weight:700;color:#b35c0a}
+.note .lbl{margin-right:.45em}
+.note .lbl::after{content:" —";font-weight:400;color:var(--muted)}
+pre.code{position:relative;background:var(--code);color:#dbe7ff;font-family:var(--mono);font-size:.74em;line-height:1.5;padding:.85em 1.1em;border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;tab-size:4}
+pre.code.term{border-left:6px solid var(--teal)}
+pre .copy{position:absolute;top:8px;right:8px;font-family:var(--font);font-size:14px;background:#26406a;color:#fff;border:0;border-radius:7px;padding:5px 12px;cursor:pointer;opacity:.85}
+pre .copy:hover,.copy.big:hover{background:var(--teal);opacity:1}
+pre .err{color:#ff9b9b}pre .ok{color:#86e3ae}pre .dim{color:#8ea3c4}pre .cmd{color:#ffd28a}
+.tk-c{color:#7f93b5;font-style:italic}.tk-s{color:#a5e8b5}.tk-k{color:#ffb86b}.tk-n{color:#8fd3ff}
+.fig{flex:1 1 0;min-height:var(--figmin,260px);display:flex;align-items:center;justify-content:center}
+.fig img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:10px;box-shadow:0 6px 22px rgba(18,48,94,.16);background:#fff;cursor:zoom-in}
+.fig.wide{flex:none;min-height:0;display:block}
+.fig.wide img{width:100%;max-height:none}
+.body>.fig.wide:only-child{margin:auto 0}
+.figrow{flex:1 1 0;min-height:0;display:flex;gap:24px;align-items:center}
+.figrow .fig{height:100%}
+.cols{display:flex;gap:26px;align-items:flex-start}
+.cols .col{flex:1;min-width:0;display:flex;flex-direction:column;gap:.5em}
+.cols .col>*{margin:0}
+.cmp pre.code{font-size:.72em}
+.fails{display:flex;flex-direction:column;gap:.45em}
+.fails .cardx{padding:.4em .8em}
+.slide.mid .body{justify-content:center;gap:.8em}
+.cardx h4 code{font-size:.9em}
+.fails .cardx p{font-size:.8em;font-family:var(--mono);line-height:1.45}
+/* พรอมต์ */
+.pbar{display:flex;align-items:center;gap:16px;background:var(--orange-soft);border:1px solid #f6d3ad;border-radius:10px;padding:.45em .8em;font-size:.86em}
+.pbar .how{flex:1;min-width:0}
+.pbar .plabel{flex:none;color:var(--muted);font-size:.9em}
+.copy.big{flex:none;font-family:var(--font);font-size:19px;font-weight:700;background:var(--orange);color:#fff;border:0;border-radius:9px;padding:9px 20px;cursor:pointer;box-shadow:0 3px 10px rgba(232,127,28,.35)}
+.copy.done{background:var(--green)!important}
+pre.code.prompt{font-size:.76em;line-height:1.52;border:2px solid #f08a24}
+.full{display:none}
+/* checklist */
+.checks{display:flex;flex-direction:column;gap:.45em}
+.chk{display:flex;gap:.7em;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:.5em .8em;cursor:pointer;line-height:1.45}
+.chk input{width:1.15em;height:1.15em;margin-top:.2em;flex:none;accent-color:var(--teal)}
+.chk:has(input:checked){background:var(--green-soft);border-color:#a7dcb8}
+/* ภาพ + ขั้นตอน */
+.fitbox{overflow:hidden}
+.ex{flex:1 1 0;min-height:0;display:flex;gap:30px;align-items:stretch}
+.ex .fig{flex:1.5 1 0;min-height:0;min-width:0}
+.ex .side{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.5em}
+.ex .side>*{flex:none;margin:0}
+.stp{display:flex;gap:.75em;align-items:baseline;padding:.42em 0;line-height:1.45;border-top:1px solid var(--line)}
+.side .stp:first-child{border-top:0}
+.stp .n{flex:none;min-width:1.1em;font-size:1.25em;font-weight:700;color:var(--teal);line-height:1;font-variant-numeric:tabular-nums}
+.cap{color:var(--muted);line-height:1.5;text-align:center}
+.cap b{color:var(--navy)}
+/* ตัวเลขใหญ่ */
+.tiles{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border-top:3px solid var(--navy)}
+.tile{min-width:0;padding:.55em 1.1em .2em;border-left:1px solid var(--line)}
+.tile:first-child{border-left:0;padding-left:0}
+.tile .k{font-size:.86em;font-weight:700;color:var(--ink);margin-top:.35em}
+.tile .num{font-size:2.25em;font-weight:700;color:var(--navy);line-height:1.1;white-space:nowrap;letter-spacing:-.01em}
+.tiles.tl{border-top:0;position:relative;padding-top:34px}
+.tiles.tl::before{content:"";position:absolute;left:0;right:0;top:11px;height:3px;background:var(--navy)}
+.tiles.tl .tile{border-left:0;padding-left:0;position:relative}
+.tiles.tl .tile::before{content:"";position:absolute;top:-31px;left:0;width:16px;height:16px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 5px var(--bg)}
+.tile .num small{font-size:.5em;font-weight:600;color:var(--muted)}
+.tile .s{font-size:.8em;color:var(--muted);line-height:1.4}
+.tile.ok{}.tile.ok .num{color:var(--green)}
+.tile.bad{}.tile.bad .num{color:var(--red)}
+.tile.warn .num{color:#b35c0a}
+/* การ์ด */
+.cards{display:grid;gap:18px;grid-template-columns:repeat(var(--cols,3),minmax(0,1fr))}
+.cardx{border-top:3px solid var(--teal);padding:.5em 0 0;display:flex;flex-direction:column;gap:.3em}
+.cardx>*{margin:0}
+.cardx h4{font-size:1.02em;color:var(--navy);line-height:1.35}
+.cardx p,.cardx li{font-size:.88em;line-height:1.48;color:#2b3648}
+.cardx .n{color:var(--teal);font-weight:700;margin-right:.45em}
+.cardx.ok{border-top-color:var(--green)}.cardx.bad{border-top-color:var(--red)}.cardx.warn{border-top-color:var(--orange)}.cardx.navy{border-top-color:var(--navy)}
+.cardx .chips{display:flex;flex-direction:column;gap:.3em}
+.cardx .chips div{font-size:.86em;line-height:1.45}
+/* สมการ (KaTeX) */
+.katex{font-size:1.1em;font-family:KaTeX_Main,'IBM Plex Sans Thai','Leelawadee UI','Times New Roman',serif}
+.katex-display{margin:0}
+.eqbox{background:#fff;border:2px solid var(--line);border-radius:18px;padding:.3em .6em;text-align:center;box-shadow:0 4px 14px rgba(18,48,94,.06);font-size:2.2em;color:var(--ink);display:flex;flex-direction:column;gap:.12em}
+.eqbox .row+.row{border-top:1px dashed var(--line);padding-top:.12em}
+.eqbox .sub{font-size:.36em;color:var(--muted);line-height:1.4;padding-bottom:.3em}
+.eqlead{color:var(--muted);font-size:.95em;line-height:1.45}
+.parts{display:grid;gap:16px;grid-template-columns:repeat(var(--cols,4),minmax(0,1fr))}
+.part{background:#fff;border:1px solid var(--line);border-top:9px solid var(--c);border-radius:14px;padding:.55em .8em .65em;display:flex;flex-direction:column;gap:.22em;box-shadow:0 3px 10px rgba(18,48,94,.05)}
+.part>*{margin:0}
+.part .role{font-size:.64em;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.part .top{display:flex;align-items:center;gap:.5em;min-height:2.3em}
+.part .n{flex:none;display:inline-flex;width:1.7em;height:1.7em;border-radius:50%;background:var(--c);color:#fff;align-items:center;justify-content:center;font-size:.8em;font-weight:700}
+.part .sym{font-size:1.3em;color:var(--c)}
+.part h4{font-size:1em;color:var(--navy);line-height:1.3}
+.part p{font-size:.86em;line-height:1.45;color:#2b3648}
+.part .lab{align-self:flex-start;font-family:var(--mono);font-size:.74em;color:#0b6b69;background:var(--teal-soft);border-radius:6px;padding:.12em .5em;margin-top:.15em}
+/* เทียบ 2 ฝั่ง */
+.vs{display:flex;gap:26px;align-items:stretch}
+.vs .sidebox{flex:1;min-width:0;border-radius:16px;padding:.8em 1em;border:2px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:.4em}
+.vs .sidebox>*{margin:0}
+.vs .bad{border-color:#f0b4b4;background:#fff8f8}.vs .good{border-color:#a7dcb8;background:#f5fcf7}
+.vs .hd2{font-size:.8em;font-weight:700;letter-spacing:.03em}
+.vs .bad .hd2{color:var(--red)}.vs .good .hd2{color:var(--green)}
+.vs .bigv{font-family:var(--mono);font-size:2.6em;font-weight:700;line-height:1.15}
+.vs .bad .bigv{color:var(--red)}.vs .good .bigv{color:var(--green)}
+.vs .calc{font-family:var(--mono);font-size:.95em;color:#2b3648}
+.callbox{background:var(--code);color:#dbe7ff;font-family:var(--mono);border-radius:12px;padding:.6em 1em;font-size:1.05em;text-align:center}
+.formula{background:#fff;border:2px solid var(--navy);border-radius:16px;padding:.7em 1em;text-align:center;font-size:1.25em;font-weight:700;color:var(--navy);line-height:1.5}
+.bigq{font-size:1.9em;font-weight:700;color:var(--navy);line-height:1.35;margin:auto 0 .2em!important}
+.bigq em{font-style:normal;color:var(--orange)}
+.bigsub{font-size:1.05em;color:var(--muted);line-height:1.6;margin-bottom:auto!important}
+/* แท่ง */
+.bars{display:flex;flex-direction:column;gap:.5em}
+.bar{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) 7.5em;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45em .85em}
+.bar .lb{line-height:1.4}
+.bar .lb small{display:block;color:var(--muted);font-size:.8em}
+.bar .tr{height:1.15em;background:#e7edf5;border-radius:999px;overflow:hidden}
+.bar .fl{height:100%;border-radius:999px;background:var(--green);min-width:6px}
+.bar .fl.mid{background:var(--orange)}.bar .fl.low{background:var(--red)}
+.bar .vl{font-family:var(--mono);font-weight:700;color:var(--navy);text-align:right;font-size:.92em}
+/* ตารางสี 18 Trial */
+.heat{display:grid;grid-template-columns:auto repeat(6,1fr);gap:8px;align-items:stretch}
+.heat .hh{font-family:var(--mono);font-size:.74em;font-weight:600;color:var(--navy);text-align:center;padding:.2em 0}
+.heat .hr{font-size:.82em;color:var(--muted);display:flex;align-items:center;padding-right:.4em;white-space:nowrap}
+.heat .hc{border-radius:10px;text-align:center;font-family:var(--mono);font-weight:700;font-size:1.15em;padding:.55em 0;color:#12305e}
+.heat .grp{grid-column:span 4;text-align:center;font-size:.8em;font-weight:700;color:#fff;background:var(--teal);border-radius:8px;padding:.15em}
+.heat .grp.val{grid-column:span 2;background:var(--orange)}
+/* Input -> LAB -> Output */
+.ff{display:flex;gap:22px;align-items:center}
+.ffcol{flex:1;min-width:0;display:flex;flex-direction:column;gap:.42em}
+.ffh{font-size:.78em;font-weight:700;letter-spacing:.04em;color:var(--muted)}
+.file{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:10px;padding:.42em .7em;font-size:.9em;line-height:1.42}
+.ffcol.out .file{border-left-color:var(--orange)}
+.ffmid{flex:none;width:8em;text-align:center;background:var(--navy);color:#fff;border-radius:18px;padding:1.1em .5em;font-weight:700;font-size:1.1em;line-height:1.3;position:relative}
+.ffmid small{display:block;font-weight:500;font-size:.62em;color:#b9d2f5;margin-top:.3em}
+.ffar{flex:none;font-size:2em;color:var(--orange);font-weight:700}
+/* กลุ่มข้อตรวจ */
+.ck{display:flex;gap:.55em;align-items:baseline;font-size:.86em;line-height:1.45}
+.ck code{flex:none}
+/* แผนของบท */
+.road{display:flex;gap:26px;align-items:stretch}
+.road .partbox{flex:1;border-radius:18px;padding:.8em 1em 1em;background:#fff;border:2px solid var(--line);display:flex;flex-direction:column;gap:.55em}
+.road .partbox>*{margin:0}
+.road .ph{font-size:1.25em;font-weight:700;color:var(--navy)}
+.road .ph small{font-size:.6em;font-weight:600;color:var(--teal);margin-left:.6em}
+.road .secbox{border-left:7px solid var(--teal);background:var(--bg);border-radius:10px;padding:.5em .8em}
+.road .secbox b{display:block;font-size:1.02em}
+.road .secbox span{font-size:.86em;color:#2b3648;line-height:1.45;display:block}
+.road .partbox.lab .secbox{border-left-color:var(--orange)}
+/* hero: ภาพเต็มหน้า + ตัวเลขสีขาว */
+.slide.hero{background-color:#081222;background-size:cover;background-position:center right;color:#eef3fb}
+.slide.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,11,22,.97) 0%,rgba(5,11,22,.93) 44%,rgba(5,11,22,.55) 64%,rgba(5,11,22,.08) 88%),linear-gradient(180deg,rgba(5,11,22,.55) 0%,rgba(5,11,22,0) 22%)}
+.slide.hero>*{position:relative;z-index:1}
+.slide.hero .hd{border-bottom-color:rgba(255,255,255,.18)}
+.slide.hero h2{color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.slide.hero .kicker{color:#7fe3dc}
+.slide.hero .body{justify-content:center}
+.herobox{max-width:62%;display:flex;flex-direction:column;gap:.7em}
+.tiles.hl{display:grid;grid-auto-flow:row;grid-auto-columns:auto;grid-template-columns:auto 1fr;column-gap:1.1em;border-top:0}
+.tiles.hl .tile{display:contents}
+.tiles.hl .num,.tiles.hl .txt{border-top:1px solid rgba(255,255,255,.16);padding:.4em 0}
+.tiles.hl .tile:first-child .num,.tiles.hl .tile:first-child .txt{border-top:0}
+.tiles.hl .num{font-size:2.35em;line-height:1.05;color:#fff;text-shadow:0 2px 18px rgba(34,184,207,.35)}
+.tiles.hl .num small{display:block;font-size:.36em;font-weight:600;color:#b9c8e2;margin-top:.15em}
+.tiles.hl .txt{min-width:0;align-self:center}
+.tiles.hl .k{color:#fff;margin-top:0}
+.tiles.hl .s{color:#b9c8e2}
+.tiles.hl .tile.ok .num{color:#7ee2a8}.tiles.hl .tile.warn .num{color:#ffb661}.tiles.hl .tile.bad .num{color:#ff8a8a}
+.slide.hero .note{border-left-color:#ffb661;color:#e6eefc}
+.slide.hero .note .lbl{color:#ffb661}
+.slide.hero .note b,.slide.hero b{color:#fff}
+.slide.hero .imgnote{position:absolute;right:22px;bottom:60px;z-index:2}
+/* ปก และหน้าคั่น */
+.cover,.divider{padding:0;background:linear-gradient(135deg,#0d2447 0%,#163f7a 62%,#0f8f8c 140%);background-size:cover;background-position:center;color:#fff}
+.cover .shade,.divider.photo .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.96) 0%,rgba(6,13,26,.86) 46%,rgba(6,13,26,.25) 80%)}
+.inner{position:relative;height:100%;padding:90px 96px 70px;display:flex;flex-direction:column;max-width:1120px;font-size:25px}
+.divider:not(.photo) .inner{max-width:1400px}
+.divider.photo .inner{max-width:940px}
+.inner .small{font-size:21px;font-weight:600;color:#8fe0dc;letter-spacing:.03em;min-height:28px}
+.inner .big{font-size:120px;font-weight:700;line-height:1.05;color:#fff;margin-top:8px}
+.inner h1{font-size:54px;line-height:1.2;margin:10px 0 0;color:#fff}
+.cover .inner h1{font-size:68px;margin-top:120px}
+.inner .sub{margin-top:26px;color:#d6e4fb;line-height:1.55;display:flex;flex-direction:column;gap:.55em}
+.cover .inner .sub{font-size:34px;color:#cfe0ff}
+.inner .sub p,.inner .sub ul{margin:0}
+.inner b{color:#fff}
+.inner code{background:rgba(255,255,255,.14);color:#fff}
+.inner a{color:#9fd8ff;border-bottom-color:rgba(159,216,255,.4)}
+.inner .xref{color:#fff}
+.inner .hint{margin-top:auto;font-size:19px;color:#9fb6dd}
+.inner .v.accept{background:rgba(134,227,174,.2);color:#9af0bf}.inner .v.reject{background:rgba(255,155,155,.2);color:#ffb3b3}
+.imgnote{position:absolute;right:22px;bottom:14px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);padding:2px 10px;border-radius:7px}
+.facts{display:flex;flex-wrap:wrap;row-gap:.3em;gap:0;margin-top:14px;font-size:24px;color:#fff;font-weight:600}
+.facts div{white-space:nowrap}
+.facts div:nth-child(3){flex-basis:100%;white-space:normal}
+.facts div:nth-child(3)::before{content:none}
+.facts div+div::before{content:"·";margin:0 .7em;color:#8fb3e6}
+.facts .fl{color:#9fd8ff;font-weight:500;margin-right:.4em}
+.kbd{display:inline-block;border:1px solid #9fb6dd;border-bottom-width:3px;border-radius:7px;padding:0 9px;font-family:var(--mono);font-size:.8em;margin:0 2px;background:rgba(255,255,255,.06)}
+.body .kbd{border-color:#9aa9bf;background:#fff}
+/* ส่วนควบคุม */
+#bar{position:fixed;left:0;bottom:0;height:4px;background:var(--orange);transition:width .25s;z-index:5}
+#hud{position:fixed;right:14px;bottom:12px;display:flex;gap:6px;align-items:center;z-index:6;font-family:var(--font);opacity:.35;transition:opacity .2s}
+#hud:hover{opacity:1}
+#hud button{background:rgba(18,48,94,.85);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:9px;height:36px;min-width:38px;font-size:16px;cursor:pointer;padding:0 10px}
+#hud button:hover{background:var(--teal)}
+#count{color:#fff;background:rgba(18,48,94,.85);border-radius:9px;padding:7px 10px;font-size:15px;min-width:80px;text-align:center}
+body.ov #stage{display:none}
+#ov{display:none;position:fixed;inset:0;overflow:auto;padding:26px 32px 60px;z-index:10;background:#0b1424;color:#dbe7ff}
+body.ov #ov{display:block}
+#ov h4{margin:22px 0 10px;font-size:19px;color:#8fe0dc;font-weight:600;border-bottom:1px solid #22324d;padding-bottom:6px}
+#ov .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+#ov .th{background:#16233a;border:2px solid transparent;border-radius:9px;padding:9px 12px;cursor:pointer;font-size:15px;line-height:1.4}
+#ov .th:hover,#ov .th.cur{border-color:var(--orange)}
+#ov .th span{color:var(--orange);font-weight:700;margin-right:6px}
+#lb{display:none;position:fixed;inset:0;z-index:20;background:rgba(4,8,16,.95);overflow:auto;padding:18px;text-align:center;cursor:zoom-out}
+#lb.on{display:block}
+#lb img{width:min(100%,2000px);height:auto;border-radius:8px;background:#fff}
+@media print{html,body{overflow:visible;height:auto;background:#fff}#hud,#bar,#ov,#lb,.copy{display:none!important}.slide .no{display:block}
+#stage{position:static;display:block}#deck{transform:none!important;height:auto}
+.slide{display:flex!important;position:relative;width:1600px;height:900px;page-break-after:always;break-after:page;animation:none}}
+@page{size:1600px 900px;margin:0}
+
+.ex.big .fig{flex:2.3 1 0}
+.ex.mid2 .fig{flex:1.9 1 0}
+.slide.stmt{padding:0;color:#fff}
+.stmt img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stmt .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,13,26,.94) 0%,rgba(6,13,26,.8) 50%,rgba(6,13,26,.15) 85%)}
+.stmt .inner{justify-content:center;max-width:1040px}
+.stmt .q{font-size:54px;font-weight:700;line-height:1.3;color:#fff}
+.stmt .sub2{margin-top:30px;font-size:26px;line-height:1.55;color:#d6e4fb}
+.stmt .sub2 b{color:#ffd28a}
+.prog{display:flex;gap:9px;margin-top:30px;align-items:center}
+.prog span{width:44px;height:10px;border-radius:5px;background:rgba(255,255,255,.2)}
+.prog span.done{background:#8fe0dc}
+.prog span.cur{background:var(--orange);height:14px}
+.prog em{font-style:normal;font-size:19px;color:#9fb6dd;margin-left:10px}
+.inner .dim{color:#9fb6dd;font-size:.9em}
+.gap{height:.7em;flex:none}
+.tiles+.note,.vs+.note,.bars+.note,.cards+.note,.tiles+.bars{margin-top:.9em}
+.divider .inner .small{margin-bottom:26px}
+.tile .num .sm{font-size:.72em}
+.shotw{flex:1 1 0;min-height:0;display:flex;flex-direction:column;gap:.5em}
+.shotw .fig{flex:1 1 0;min-height:200px}
+.shotw .fig img{width:100%;max-height:100%}
+.shotw .cap{font-size:.8em}
+.pts{display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));gap:.5em 18px}
+.pts .stp{font-size:.9em}
+.slide th a{color:#fff}
+.slide.hero .tag{color:#ffd28a;text-shadow:0 1px 6px rgba(0,0,0,.95),0 0 3px #000}
+.inner h1{line-height:1.42}
+
+/* Vast.ai Web Console Status Card (หลังขั้นที่ 1 สร้างเครื่องพร้อมใช้งาน) */
+.vweb{background:#0f172a;color:#e2e8f0;border-radius:14px;overflow:hidden;border:1px solid #1e293b;margin-top:6px;box-shadow:0 10px 28px rgba(15,23,42,.18)}
+.vweb-bar{display:flex;align-items:center;justify-content:space-between;background:#1e293b;padding:11px 20px;border-bottom:1px solid #334155;font-family:ui-monospace,Consolas,monospace;font-size:.82em;color:#94a3b8}
+.vweb-dots{display:flex;gap:7px;align-items:center}
+.vweb-dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.vweb-url{background:#0f172a;padding:4px 16px;border-radius:6px;color:#cbd5e1;border:1px solid #334155}
+.vweb-status{display:inline-flex;align-items:center;gap:7px;background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(52,211,153,.45);padding:3px 13px;border-radius:999px;font-weight:700;font-size:.86em}
+.vweb-body{padding:20px 26px}
+.vweb-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid #334155;margin-bottom:16px;flex-wrap:wrap}
+.vweb-gpu{font-size:1.3em;font-weight:700;color:#38bdf8}
+.vweb-lbl{font-family:ui-monospace,Consolas,monospace;background:#1e293b;color:#fde68a;padding:4px 12px;border-radius:6px;border:1px solid #475569;font-size:.88em}
+.vweb-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:22px}
+.vweb-kv{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.9em;line-height:1.45}
+.vweb-k{color:#94a3b8;font-weight:600;white-space:nowrap}
+.vweb-v{color:#f8fafc}
+.vweb-chk{border-left:1px solid #334155;padding-left:22px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.vweb-chkh{color:#94a3b8;font-size:.82em;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.vweb-item{display:flex;gap:10px;align-items:flex-start;font-size:.9em;line-height:1.45;color:#e2e8f0}
+.vweb-ok{color:#34d399;font-weight:700;flex-shrink:0}
+.vweb-next{margin-top:4px;padding-top:10px;border-top:1px dashed #334155;color:#7dd3fc;font-weight:700;font-size:.92em}
+.vweb b{color:#7dd3fc}
+.vweb .vweb-next b{color:#fde68a}
+.vweb code{background:#1e293b;color:#fde68a;border:1px solid #334155}
+</style>
+</head>
+<body>
+<!-- สร้างจาก README.md ด้วย tools/build_slides.py · ห้ามแก้ไฟล์นี้ด้วยมือ ให้แก้ README.md แล้วสร้างใหม่ -->
+<div id="stage"><div id="deck">
+<section class="slide cover" style="background-image:url(images/slides/s01-cover.jpg)" data-title="ปก" data-group="เริ่มต้น"><div class="shade"></div><div class="inner"><div class="small">สัปดาห์ที่ 3 · VastAi Application · API ตรวจภาพ (Inference / Serving ไม่ใช่คลัสเตอร์หลายโหนด)</div><h1>LAB 6 · Inference บน 1 โหนด หลาย GPU</h1><div class="sub">Single-Node Multi-GPU (1 เครื่อง × 2 GPU) · Load Test · Micro-batching · NGINX Load Balancer</div><div class="hint">กด <span class="kbd">→</span> หรือ <span class="kbd">Space</span> เพื่อไปต่อ · <span class="kbd">O</span> สารบัญ · <span class="kbd">F</span> เต็มจอ · คลิกภาพเพื่อขยาย</div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="คำถามของ LAB: API ตรวจภาพ (Inference) บน 1 โหนดรับผู้ใช้พร้อมกันได้กี่คน" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">คำถามของ LAB: API ตรวจภาพ (Inference) บน 1 โหนดรับผู้ใช้พร้อมกันได้กี่คน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-overview.png" alt="คำถามของ LAB: API ตรวจภาพ (Inference) บน 1 โหนดรับผู้ใช้พร้อมกันได้กี่คน" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>LAB 1 ได้โมเดลตรวจอุปกรณ์ความปลอดภัยมาแล้ว LAB นี้เปิดโมเดลนั้นเป็น <b>API สำหรับ Inference / Serving</b></span></div><div class="stp"><span class="n">2</span><span>คำถามมี 2 ส่วน คือ GPU 1 ใบรับผู้ใช้พร้อมกันได้กี่คน และทำอย่างไรให้รับได้มากขึ้นในโหนดเดียวกัน</span></div><div class="stp"><span class="n">3</span><span>เราไม่เดา แต่ <b>สร้างระบบ 4 แบบบน 1 โหนดเดียว (RTX 3090 × 2 ใบ) แล้ววัดด้วยวิธีเดียวกัน</b></span></div></div></div></div></section>
+<section class="slide " data-title="ขอบเขตของ LAB 6 เทียบกับ LAB 4, LAB 5 และ LAB 7" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">ขอบเขตของ LAB 6 เทียบกับ LAB 4, LAB 5 และ LAB 7</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n06-1node-vs-multinode.jpg" alt="ขอบเขตของ LAB 6 เทียบกับ LAB 4, LAB 5 และ LAB 7" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>LAB 4 และ LAB 5</b> เป็นงาน <b>Training</b> (เทรนโมเดล): LAB 4 ใช้ 1 โหนดหลาย GPU ส่วน LAB 5 ใช้ 2–3 โหนดต่อข้ามอินเทอร์เน็ต</span></div><div class="stp"><span class="n">2</span><span><b>LAB 6 (บทนี้)</b> เปลี่ยนเป็นงาน <b>Inference / API Serving</b> แต่ใช้เพียง <b>1 โหนด (RTX 3090 × 2 ใบ)</b> เพื่อให้วัดผล Micro-batching และ Load Balancer โดยไม่มีความช้าของเน็ตข้ามเครื่องปน</span></div><div class="stp"><span class="n">3</span><span><b>LAB 7 (บทถัดไป)</b> นำ NGINX รูปแบบเดียวกันไปขยายเป็น <b>Multi-Node (2 โหนด × 2 GPU)</b> ข้ามอินเทอร์เน็ตจริง</span></div></div></div></div></section>
+<section class="slide " data-title="ขอบเขตของ LAB 6: งาน Inference บน 1 โหนด หลาย GPU (ไม่ใช่ Multi-Node)" data-group="เริ่มต้น" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">ขอบเขตของ LAB 6: งาน Inference บน 1 โหนด หลาย GPU (ไม่ใช่ Multi-Node)</span><span class="tag">ตารางหลัก · ขอบเขตของบท</span></h2></header><div class="body"><table class="c5"><thead><tr><th>LAB</th><th>งานหลัก</th><th>จำนวนโหนด (เครื่อง)</th><th>GPU ในแต่ละโหนด</th><th>สิ่งที่ทดลอง</th></tr></thead><tbody><tr><td><a href="../lab4_multigpu/README.md" target="_blank" rel="noopener">LAB 4</a></td><td>Training (เทรน LLM)</td><td><b>1 โหนด</b> (Single-Node)</td><td>1, 2 หรือ 4 ใบ</td><td>Data Parallelism และ Model Parallelism ในเครื่องเดียว</td></tr><tr><td><a href="../lab5_cluster/README.md" target="_blank" rel="noopener">LAB 5</a></td><td>Training (เทรน LLM)</td><td><b>2–3 โหนด</b> (Multi-Node)</td><td>โหนดละ 2 ใบ</td><td>คลัสเตอร์เทรนข้ามอินเทอร์เน็ต เพิ่มเครื่องแล้วเร็วขึ้นไหม</td></tr><tr><td><b>LAB 6 (บทนี้)</b></td><td><b>Inference / API Serving</b></td><td><b>1 โหนด</b> (Single-Node)</td><td><b>RTX 3090 × 2 ใบ</b></td><td><b>Micro-batching · multi-process · NGINX Load Balancer</b></td></tr><tr><td><a href="../lab7_llm_serving_lb/README.md" target="_blank" rel="noopener">LAB 7</a></td><td>Inference / LLM Serving</td><td><b>2 โหนด</b> (Multi-Node)</td><td>โหนดละ 2 ใบ (รวม 4)</td><td>ขยาย NGINX แจกงานข้าม 2 โหนดผ่านอินเทอร์เน็ต</td></tr></tbody></table><div class="note info">LAB 6 ใช้ <b>1 โหนด (Single-Node Multi-GPU)</b> เพื่อวัดผล Micro-batching และ Load Balancer โดยไม่มีความช้าของเครือข่ายข้ามเครื่องปน · การกระจาย Inference ข้ามหลายโหนดจริงอยู่ใน <b>LAB 7</b></div></div></section>
+<section class="slide " data-title="4 การทดลองใน LAB 6: ทั้งหมดรันอยู่ใน 1 โหนด (เครื่องเช่า 1 เครื่อง)" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">4 การทดลองใน LAB 6: ทั้งหมดรันอยู่ใน 1 โหนด (เครื่องเช่า 1 เครื่อง)</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n02-4designs-1node.jpg" alt="4 การทดลองใน LAB 6: ทั้งหมดรันอยู่ใน 1 โหนด (เครื่องเช่า 1 เครื่อง)" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>แบบที่ 1 (<code>base</code>)</b> เปิดโปรแกรม API เพียง <b>1 ตัว</b> (<code>:8101</code>) บน <b>GPU 0</b> ตรวจทีละ 1 รูป (Baseline)</span></div><div class="stp"><span class="n">2</span><span><b>แบบที่ 2 (<code>batch</code>)</b> ยังเปิดโปรแกรม API <b>1 ตัว</b> บน <b>GPU 0</b> แต่เปิด <b>Micro-batching</b> รวมหลายรูปเข้าโมเดลครั้งเดียว</span></div><div class="stp"><span class="n">3</span><span><b>แบบที่ 3 (<code>multi</code>)</b> เปิดโปรแกรม API พร้อมกัน <b>4 ตัว</b> (<code>:8101–:8104</code>) ใช้ <b>GPU 0 ใบเดียวกัน</b> ให้ NGINX แจกงานเพื่อกระจายงาน CPU ไป 4 core</span></div><div class="stp"><span class="n">4</span><span><b>แบบที่ 4 (<code>gpu2</code>)</b> เปิดใช้ <b>GPU ใบที่ 2 ในโหนดเดิม</b> เพิ่ม API อีก 4 ตัวบน GPU 1 (<code>:8201–:8204</code>) รวมเป็น <b>8 โปรแกรม</b> ให้ NGINX แจกงานข้าม 2 GPU</span></div></div></div></div></section>
+<section class="slide " data-title="4 แบบที่วัดใน LAB 6: ทุกแบบใช้ 1 โหนดเดียว ต่างกันที่ GPU และจำนวนโปรแกรม API" data-group="เริ่มต้น" data-max="1.40"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">4 แบบที่วัดใน LAB 6: ทุกแบบใช้ 1 โหนดเดียว ต่างกันที่ GPU และจำนวนโปรแกรม API</span><span class="tag">ตารางหลัก · 4 แบบที่วัด</span></h2></header><div class="body"><table class="c5"><thead><tr><th>แบบ</th><th>จำนวนโหนด</th><th>GPU ที่ใช้ (ในโหนดเดียว)</th><th>โปรแกรม API ที่เปิด (process)</th><th>วิธีเรียกโมเดล</th></tr></thead><tbody><tr><td>1 (<code>base</code>)</td><td><b>1 โหนด</b></td><td>1 ใบ (GPU 0)</td><td><b>1 ตัว</b> (<code>:8101</code>)</td><td>ตรวจทีละ 1 รูป (Baseline)</td></tr><tr><td>2 (<code>batch</code>)</td><td><b>1 โหนด</b></td><td>1 ใบ (GPU 0)</td><td><b>1 ตัว</b> (<code>:8101</code>)</td><td>Micro-batching (รวมสูงสุด 32 รูป · รอไม่เกิน 5 ms)</td></tr><tr><td>3 (<code>multi</code>)</td><td><b>1 โหนด</b></td><td>1 ใบ (GPU 0)</td><td><b>4 ตัว</b> (<code>:8101–:8104</code>) ใช้ GPU 0 ร่วมกัน</td><td>Micro-batching · NGINX แจกงานให้ 4 โปรแกรม</td></tr><tr><td>4 (<code>gpu2</code>)</td><td><b>1 โหนด</b></td><td><b>2 ใบ (GPU 0 + GPU 1)</b></td><td><b>8 ตัว</b> (GPU 0 4 ตัว + GPU 1 4 ตัว)</td><td>Micro-batching · NGINX แจกงานข้าม 2 GPU ในโหนดเดียว</td></tr></tbody></table><div class="note info">ทุกแบบรัน Inference บนโหนดป้าย <code>vapp-lab6-nginx</code> เครื่องเดิม (server 1 ตัว = โปรแกรม FastAPI 1 ตัว ไม่ใช่คนละโหนด) · เกณฑ์ผ่านคือ <b>p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%</b></div></div></section>
+<section class="slide " data-title="ระบบของ LAB 6: ทุกส่วนอยู่ใน 1 โหนดเดียว (RTX 3090 จำนวน 2 ใบ สำหรับ Inference)" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">ระบบของ LAB 6: ทุกส่วนอยู่ใน 1 โหนดเดียว (RTX 3090 จำนวน 2 ใบ สำหรับ Inference)</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-architecture.png" alt="ระบบของ LAB 6: ทุกส่วนอยู่ใน 1 โหนดเดียว (RTX 3090 จำนวน 2 ใบ สำหรับ Inference)" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>1 โหนด หลาย GPU (Single-Node Multi-GPU)</b> มี RTX 3090 จำนวน 2 ใบในเครื่องเดียวกัน ไม่ใช่คลัสเตอร์หลายโหนดแบบ LAB 5</span></div><div class="stp"><span class="n">2</span><span><b>Load Balancer</b> (NGINX container) เป็นประตูเดียวที่พอร์ต 8080 แจกงาน Inference ไปยัง server ในโหนดเดียวกัน</span></div><div class="stp"><span class="n">3</span><span><b>server 8 ตัว</b> คือโปรแกรม FastAPI 8 ตัว (8 process บน <code>127.0.0.1</code> ใบละ 4 ตัว) ไม่ใช่คอมพิวเตอร์ 8 เครื่อง</span></div><div class="stp"><span class="n">4</span><span><b>ตัวยิงโหลด</b> (<code>loadgen.py</code>) อยู่ในโหนดเดียวกัน ยิงเข้า <code>127.0.0.1:8080</code> เพื่อไม่ให้ความช้าของอินเทอร์เน็ตปน</span></div></div></div></div></section>
+<section class="slide " data-title="12 ขั้นของ LAB 6 แบ่งเป็น 5 ส่วน" data-group="เริ่มต้น" data-max="1.25"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">12 ขั้นของ LAB 6 แบ่งเป็น 5 ส่วน</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n01-lab-map.jpg" alt="12 ขั้นของ LAB 6 แบ่งเป็น 5 ส่วน" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ส่วน A (ขั้นที่ 1–3)</b> เช่า 1 โหนดที่มี 2 GPU ให้ AI เขียน API ตรวจภาพ และตั้ง NGINX Load Balancer แบบ container</span></div><div class="stp"><span class="n">2</span><span><b>ส่วน B (ขั้นที่ 4–5)</b> ให้ AI เขียนตัวยิงโหลด แล้วพิสูจน์ว่าตัวยิงโหลดวัดถูกด้วย 5 ทดสอบ</span></div><div class="stp"><span class="n">3</span><span><b>ส่วน C (ขั้นที่ 6–8)</b> วัดแบบที่ 1, 2 และ 3 บน GPU 1 ใบในโหนดเดียว</span></div><div class="stp"><span class="n">4</span><span><b>ส่วน D (ขั้นที่ 9–11)</b> เปิดใช้ GPU ใบที่ 2 ในโหนดเดิม วัดแบบที่ 4 เทียบวิธีแจกงาน 3 วิธี และทดสอบ GPU ล่มกลางทาง</span></div><div class="stp"><span class="n">5</span><span><b>ส่วน E (ขั้นที่ 12)</b> ทำกราฟ สรุปผล และลบเครื่อง</span></div></div></div></div></section>
+<section class="slide " data-title="ทั้ง LAB ในภาพเดียว: โหนดเดิม 1 GPU รับได้ 29 → 90 คน และเปิดใช้ 2 GPU รับได้ 180 คน" data-group="เริ่มต้น" data-max="1.10"><header class="hd"><div class="kicker">ภาพรวมของ LAB</div><h2><span class="tt">ทั้ง LAB ในภาพเดียว: โหนดเดิม 1 GPU รับได้ 29 → 90 คน และเปิดใช้ 2 GPU รับได้ 180 คน</span><span class="tag">NGINX · 1 โหนด × 2 GPU</span></h2></header><div class="body"><div class="fig" style="--figmin:463px"><img src="images/lab/result-4designs.png" alt="ทั้ง LAB ในภาพเดียว: โหนดเดิม 1 GPU รับได้ 29 → 90 คน และเปิดใช้ 2 GPU รับได้ 180 คน" width="1400" height="636"></div><p class="cap">ผลวัดจริงของงาน <b>Inference บน 1 โหนด (RTX 3090 จำนวน 2 ใบ)</b> ทุกแบบใช้เกณฑ์เดียวกัน คือ <b>p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%</b></p></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s02-theory.jpg)" data-title="วัดอย่างไร · ตัวเลข 3 ตัว ความจุ และ Load Test" data-group="วัดอย่างไร"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 1 ของสไลด์</div><div class="big">วัดอย่างไร</div><h1>ตัวเลข 3 ตัว ความจุ และ Load Test</h1><div class="sub"><p>ก่อนลงมือ ต้องตกลงกันก่อนว่าคำว่า "รับได้" วัดด้วยอะไร และรู้ได้อย่างไรว่าวัดถูก</p><p class="dim">เนื้อหาเต็มอยู่ใน <a href="README.md#ภาคทฤษฎี--แนวคิดพื้นฐาน-10-เรื่อง" target="_blank">README.md (ภาคทฤษฎี)</a></p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="เมื่อระบบเต็ม เพิ่ม N แล้ว Throughput ไม่เพิ่ม แต่ Latency เพิ่มแทน" data-group="วัดอย่างไร" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · ตัวเลข 3 ตัว และความจุ</div><h2><span class="tt">เมื่อระบบเต็ม เพิ่ม N แล้ว Throughput ไม่เพิ่ม แต่ Latency เพิ่มแทน</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-three-numbers.png" alt="เมื่อระบบเต็ม เพิ่ม N แล้ว Throughput ไม่เพิ่ม แต่ Latency เพิ่มแทน" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>N</b> คือผู้ใช้ที่กำลังส่งรูปหรือรอคำตอบพร้อมกัน หน่วยเป็นคน</span></div><div class="stp"><span class="n">2</span><span><b>Throughput</b> คือคำขอที่ระบบตอบสำเร็จ หน่วยเป็นคำขอต่อวินาที</span></div><div class="stp"><span class="n">3</span><span><b>Latency</b> คือเวลาที่ผู้ใช้ 1 คนรอคำตอบ 1 รูป หน่วยเป็น ms</span></div><div class="stp"><span class="n">4</span><span>สามค่านี้ผูกกันด้วย <b>Little's Law</b>: <code>Latency เฉลี่ย (วินาที) ≈ N ÷ Throughput</code></span></div></div></div></div></section>
+<section class="slide " data-title="p95 ของ 1 ระดับ N คือ 1 จุดบนกราฟความจุ" data-group="วัดอย่างไร" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · ตัวเลข 3 ตัว และความจุ</div><h2><span class="tt">p95 ของ 1 ระดับ N คือ 1 จุดบนกราฟความจุ</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/th-p95.png" alt="p95 ของ 1 ระดับ N คือ 1 จุดบนกราฟความจุ" width="1672" height="941"></div><p class="cap">ผลจริงของแบบที่ 1 ที่ N = 29: 939 คำขอ คำขอลำดับที่ 892 ใช้ 494.4 ms จึงได้ <b>p95 = 494.4 ms</b> · ค่านี้คือจุด (29, 494.4 ms) บนกราฟความจุ</p></div></section>
+<section class="slide " data-title="ความจุคือ N สูงสุดที่ p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%" data-group="วัดอย่างไร" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · ตัวเลข 3 ตัว และความจุ</div><h2><span class="tt">ความจุคือ N สูงสุดที่ p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-capacity.png" alt="ความจุคือ N สูงสุดที่ p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>แกน X</b> คือ N ผู้ใช้พร้อมกัน (คน) · <b>แกน Y</b> คือ p95 ของ Latency (ms) · 1 จุด = วัด 1 ระดับ N</span></div><div class="stp"><span class="n">2</span><span><b>ผ่านเกณฑ์ (SLO)</b> หมายถึง p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%</span></div><div class="stp"><span class="n">3</span><span><b>ความจุ</b> คือ N สูงสุดที่ยังผ่านเกณฑ์ · ผลจริง N = 29 ได้ 494.4 ms ผ่าน N = 30 ได้ 521.5 ms ไม่ผ่าน จึงได้ 29 คน</span></div><div class="stp"><span class="n">4</span><span>เปลี่ยนเกณฑ์ ตัวเลขความจุก็เปลี่ยน จึงต้องบอกเกณฑ์คู่กับตัวเลขเสมอ</span></div></div></div></div></section>
+<section class="slide " data-title="ผู้ใช้จำลองส่งรูป รอคำตอบ แล้วส่งรูปถัดไปทันที จำนวนคนในระบบจึงเท่ากับ N พอดี" data-group="วัดอย่างไร" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · Load Test</div><h2><span class="tt">ผู้ใช้จำลองส่งรูป รอคำตอบ แล้วส่งรูปถัดไปทันที จำนวนคนในระบบจึงเท่ากับ N พอดี</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-loadtest-loop.png" alt="ผู้ใช้จำลองส่งรูป รอคำตอบ แล้วส่งรูปถัดไปทันที จำนวนคนในระบบจึงเท่ากับ N พอดี" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>การวนแบบนี้เรียกว่า <b>closed-loop</b> และไม่มีเวลาหยุดคิดระหว่างรูป จึงเป็นภาระหนักที่สุดต่อคน</span></div><div class="stp"><span class="n">2</span><span>วัด 1 ระดับ 20 วินาที โดย <b>5 วินาทีแรกไม่นับ</b> เพราะระบบยังไม่นิ่ง</span></div><div class="stp"><span class="n">3</span><span>ตัวยิงโหลดอยู่บนเครื่องเดียวกับ server จึงไม่มีเวลาของอินเทอร์เน็ตปน</span></div><div class="stp"><span class="n">4</span><span>คำขอที่รอเกิน 10 วินาทีนับเป็น error</span></div></div></div></div></section>
+<section class="slide " data-title="หาความจุด้วย 3 จังหวะ: หาช่วง ประมาณ แล้วปรับ" data-group="วัดอย่างไร" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · Load Test</div><h2><span class="tt">หาความจุด้วย 3 จังหวะ: หาช่วง ประมาณ แล้วปรับ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-loadtest-ladder.png" alt="หาความจุด้วย 3 จังหวะ: หาช่วง ประมาณ แล้วปรับ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>หาช่วง</b> ไล่ N = 1, 2, 4, 8, … จนไม่ผ่าน 2 ระดับติดกัน</span></div><div class="stp"><span class="n">2</span><span><b>ประมาณ</b> ใช้ p95 ของระดับสุดท้ายที่ผ่านกับระดับแรกที่ไม่ผ่าน ลากเส้นตรงหา N ที่ p95 ถึง 500 ms แล้ววัดที่ N นั้น</span></div><div class="stp"><span class="n">3</span><span><b>ปรับ</b> ประมาณซ้ำจนระดับที่ผ่านกับระดับที่ไม่ผ่านห่างกันไม่เกิน 2 คน (N เกิน 100 ใช้ 4 คน)</span></div><div class="stp"><span class="n">4</span><span>ระดับที่ไม่ผ่าน <b>วัดซ้ำอีก 1 ครั้ง</b> ก่อนตัดสิน</span></div></div></div></div></section>
+<section class="slide " data-title="ตัวยิงโหลดเป็นโค้ดที่ AI เขียน จึงต้องพิสูจน์กับ server จำลองที่รู้คำตอบล่วงหน้า" data-group="วัดอย่างไร" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · Load Test</div><h2><span class="tt">ตัวยิงโหลดเป็นโค้ดที่ AI เขียน จึงต้องพิสูจน์กับ server จำลองที่รู้คำตอบล่วงหน้า</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/th-loadtest-check.png" alt="ตัวยิงโหลดเป็นโค้ดที่ AI เขียน จึงต้องพิสูจน์กับ server จำลองที่รู้คำตอบล่วงหน้า" width="1672" height="941"></div><p class="cap">ถ้าตัวยิงโหลดวัดผิด ตัวเลขทุกตัวของ LAB ก็ผิด <b>เครื่องมือวัดต้องถูกก่อน ผลวัดจึงเชื่อได้</b></p></div></section>
+<section class="slide " data-title="ส่วนที่เต็มก่อนคือตัวถ่วง ถ้าตัวถ่วงไม่ใช่ GPU การเช่า GPU เพิ่มก็ไม่ช่วย" data-group="วัดอย่างไร" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · Load Test</div><h2><span class="tt">ส่วนที่เต็มก่อนคือตัวถ่วง ถ้าตัวถ่วงไม่ใช่ GPU การเช่า GPU เพิ่มก็ไม่ช่วย</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/th-bottleneck.png" alt="ส่วนที่เต็มก่อนคือตัวถ่วง ถ้าตัวถ่วงไม่ใช่ GPU การเช่า GPU เพิ่มก็ไม่ช่วย" width="1672" height="941"></div><p class="cap">ทุกระดับ N ตัวยิงโหลดบันทึก <b>4 ค่า</b> คู่กับ Latency คือ GPU ทำงานกี่ %, CPU ของ server, CPU ของ Load Balancer และ CPU ของตัวยิงโหลด</p></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s03-lab.jpg)" data-title="ภาค LAB · Load Balancer ด้วย NGINX บน 1 โหนด" data-group="ส่วน A · เตรียมระบบ"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 2 ของสไลด์</div><div class="big">ภาค LAB</div><h1>Load Balancer ด้วย NGINX บน 1 โหนด</h1><div class="sub"><p>12 ขั้น ทุกขั้นคือ 1 พรอมต์ โค้ดทุกไฟล์ AI เขียนให้จากพรอมต์ โดยเริ่มจากโฟลเดอร์ว่าง</p><p class="dim">ทุกขั้นเรียงเหมือนกัน: แนวคิดที่ใช้ → ภาพของขั้น → พรอมต์ → ผลจริง</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ก่อนเริ่ม: ทำ LAB 0 ให้เสร็จ และเปิด Claude Code ที่โฟลเดอร์ของบท" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ก่อนเริ่ม</div><h2><span class="tt">ก่อนเริ่ม: ทำ LAB 0 ให้เสร็จ และเปิด Claude Code ที่โฟลเดอร์ของบท</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n05-before-start.png" alt="ก่อนเริ่ม: ทำ LAB 0 ให้เสร็จ และเปิด Claude Code ที่โฟลเดอร์ของบท" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ทำ <a href="../README.md" target="_blank" rel="noopener">LAB 0</a> เตรียม key ให้เสร็จก่อน</span></div><div class="stp"><span class="n">2</span><span>เปิด Claude Code ที่โฟลเดอร์ <code>02_VastAi_Application</code></span></div><div class="stp"><span class="n">3</span><span>วางพรอมต์ทีละขั้นตามลำดับ AI เขียนโค้ดให้ทุกไฟล์ลง <code>lab6_microbatch_lb/code/</code></span></div><div class="stp"><span class="n">4</span><span>ถ้าหยุดกลางทาง ให้ทำ <b>ขั้นที่ 12</b> เพื่อลบเครื่องก่อนเลิก</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 1: เช่าเพียง 1 โหนด ที่มี RTX 3090 จำนวน 2 ใบในเครื่องเดียว แล้วตรวจ GPU กับ CPU" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 1 จาก 12</div><h2><span class="tt">ขั้นที่ 1: เช่าเพียง 1 โหนด ที่มี RTX 3090 จำนวน 2 ใบในเครื่องเดียว แล้วตรวจ GPU กับ CPU</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/slides/s01-step1.png" alt="ขั้นที่ 1: เช่าเพียง 1 โหนด ที่มี RTX 3090 จำนวน 2 ใบในเครื่องเดียว แล้วตรวจ GPU กับ CPU" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เช่า <b>1 โหนดเดียว (Single-Node Multi-GPU)</b> ที่มี RTX 3090 จำนวน 2 ใบ ติดป้าย <code>vapp-lab6-nginx</code> ไม่ใช่คลัสเตอร์หลายโหนด</span></div><div class="stp"><span class="n">2</span><span>เงื่อนไขสำคัญคือ <b>CPU ที่ได้ใช้จริง 24 cores ขึ้นไป</b> เพราะโปรแกรม API หลายตัวและตัวยิงโหลดอยู่ในโหนดเดียวกัน</span></div><div class="stp"><span class="n">3</span><span>เข้าไปตรวจว่าเห็น GPU ครบ 2 ใบ (<code>GPU 0</code>, <code>GPU 1</code>) และนับ CPU ที่ใช้ได้จริง</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 1 · เช่าเครื่อง 2 GPU" data-group="ส่วน A · เตรียมระบบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 1 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 1 · เช่าเครื่อง 2 GPU</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 20 บรรทัด</span><button class="copy big" data-full="prompt0">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ ไว้ทดลองว่า API ตรวจภาพรับผู้ใช้พร้อมกันได้กี่คน
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab6-nginx
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · CPU ที่ได้ใช้จริง 24 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 40 GB · เปิดพอร์ต 8080 ให้เรียก API จากนอกเครื่อง
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. เข้าไปตรวจว่าเห็น GPU ครบ 2 ใบ และนับ CPU ที่ใช้ได้จริง
+
+[รายงาน]
+สรุปเป็นตาราง: GPU · ราคาต่อชั่วโมง · ที่ตั้ง · CPU ที่ใช้ได้จริง · เวลาที่รอจนเครื่องพร้อม
+ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 1: โหนดเดียว (1 เครื่อง × RTX 3090 จำนวน 2 ใบ) พร้อมใช้งานแล้ว" data-group="ส่วน A · เตรียมระบบ" data-max="1.40"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 1 จาก 12</div><h2><span class="tt">ผลขั้นที่ 1: โหนดเดียว (1 เครื่อง × RTX 3090 จำนวน 2 ใบ) พร้อมใช้งานแล้ว</span><span class="tag">results/machine_verify.txt</span></h2></header><div class="body"><div class="vweb"><div class="vweb-bar"><div class="vweb-dots"><span class="vweb-dot" style="background:#f87171"></span><span class="vweb-dot" style="background:#fbbf24"></span><span class="vweb-dot" style="background:#34d399"></span></div><div class="vweb-url">cloud.vast.ai/instances/</div><div class="vweb-status">● RUNNING</div></div><div class="vweb-body"><div class="vweb-head"><div class="vweb-gpu">1 โหนด (Single-Node Multi-GPU) · RTX 3090 × 2 ใบ (24 GB ต่อใบ)</div><div class="vweb-lbl">ป้ายเครื่อง: vapp-lab6-nginx</div></div><div class="vweb-grid"><div class="vweb-kv"><div class="vweb-k">จำนวนโหนด (เครื่อง)</div><div class="vweb-v"><b>1 โหนด (1 เครื่อง)</b> ไม่ใช่คลัสเตอร์หลายโหนด</div><div class="vweb-k">GPU ภายในโหนด</div><div class="vweb-v"><b>RTX 3090 × 2 ใบ</b> (<code>GPU 0</code> และ <code>GPU 1</code>)</div><div class="vweb-k">ที่ตั้งเครื่อง</div><div class="vweb-v">Quebec, CA</div><div class="vweb-k">CPU ที่ใช้ได้จริง</div><div class="vweb-v"><b>ราว 24.6 cores</b> (โควตา container · เครื่องแสดง 64 threads)</div><div class="vweb-k">ระบบและพอร์ต</div><div class="vweb-v"><code>pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime</code> · Disk 40 GB · เปิดพอร์ต <code>8080</code></div><div class="vweb-k">เวลารอพร้อม</div><div class="vweb-v">56 วินาที</div></div><div class="vweb-chk"><div class="vweb-chkh">ผลการตรวจเครื่องที่พร้อมใช้งานแล้ว</div><div class="vweb-item"><span class="vweb-ok">✓</span><span>ตรวจเห็น GPU ครบ <b>2 ใบในโหนดเดียวกัน</b> (<code>GPU 0</code> และ <code>GPU 1</code>)</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>CPU ที่ใช้ได้จริงราว <b>24.6 cores</b> ผ่านเกณฑ์ 24 cores ขึ้นไป (พอสำหรับโปรแกรม API 8 ตัวและตัวยิงโหลด)</span></div><div class="vweb-item"><span class="vweb-ok">✓</span><span>โหนดนี้เปิดใช้งานต่อเนื่องตลอดขั้นที่ 1–12 สำหรับงาน Inference (ยังไม่ลบเครื่องจนกว่าจะจบขั้นที่ 12)</span></div><div class="vweb-next">➜ พร้อมเข้าสู่ <b>ขั้นที่ 2</b>: ให้ AI เขียน <code>server.py</code> และเปิดทดสอบ Inference บน <code>GPU 0</code> ของโหนดนี้</div></div></div></div></div><div class="note info">ตลอดการทดลองหลักใช้ <b>1 โหนดเดิม</b> สลับจำนวน GPU (1 หรือ 2 ใบ) และจำนวนโปรแกรม API ด้วย <code>cluster.sh</code></div></div></section>
+<section class="slide " data-title="โมเดลหลัง API คือ YOLO11s ขนาดเล็ก งานส่วนใหญ่ของ 1 คำขอจึงอยู่ที่ CPU" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · โจทย์และระบบที่จะสร้าง</div><h2><span class="tt">โมเดลหลัง API คือ YOLO11s ขนาดเล็ก งานส่วนใหญ่ของ 1 คำขอจึงอยู่ที่ CPU</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/model-yolo11s.png" alt="โมเดลหลัง API คือ YOLO11s ขนาดเล็ก งานส่วนใหญ่ของ 1 คำขอจึงอยู่ที่ CPU" width="1400" height="788"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Input และ Output</b> ภาพ 1 รูป (ย่อเป็น 640 × 640) → รายการกรอบ คลาส และ Confidence</span></div><div class="stp"><span class="n">2</span><span><b>ขนาด</b> 9.4 ล้าน parameter ไฟล์ราว 19 MB และใช้ตอบอย่างเดียว (Inference) ไม่เทรนเพิ่ม</span></div><div class="stp"><span class="n">3</span><span>GPU ตรวจ 1 รูปเสร็จในเวลาสั้นมาก งานที่เหลือคือ <b>รับรูป ถอดไฟล์ JPEG เตรียมรูป และแปลงผล</b> ซึ่งใช้ CPU</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 2: AI เขียน server.py ที่มี 2 โหมดในตัว แล้วเปิด 1 ตัวบน GPU ใบแรก" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 2 จาก 12</div><h2><span class="tt">ขั้นที่ 2: AI เขียน <code>server.py</code> ที่มี 2 โหมดในตัว แล้วเปิด 1 ตัวบน GPU ใบแรก</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s02.png" alt="ขั้นที่ 2: AI เขียน server.py ที่มี 2 โหมดในตัว แล้วเปิด 1 ตัวบน GPU ใบแรก" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><code>code/server.py</code> เขียนด้วย FastAPI รับรูป 1 รูปที่ <code>POST /v1/detect</code> แล้วตอบเป็น JSON</span></div><div class="stp"><span class="n">2</span><span>server 1 ตัว (= โปรแกรม API 1 ตัว) เรียกโมเดลได้ทีละครั้ง ตั้งได้ 2 โหมด คือ <b>ทีละรูป</b> กับ <b>Micro-batching</b></span></div><div class="stp"><span class="n">3</span><span>ทดสอบด้วยรูป 6 รูปพร้อม API key และส่งแบบไม่มี key ซึ่งต้องถูกปฏิเสธ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 2 · เขียน API ตรวจภาพ" data-group="ส่วน A · เตรียมระบบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 2 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 2 · เขียน API ตรวจภาพ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">ส่วนที่ 1/2 · บรรทัด 1–19 จาก 28</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เขียน API ตรวจภาพ แล้วเปิดบน GPU ใบแรกของเครื่องที่เช่า
+
+[ขั้นตอน]
+1. เขียน code/server.py ด้วย FastAPI: รับรูป 1 รูป แล้วตอบเป็น JSON ว่าเจอวัตถุอะไรบ้าง (ชื่อคลาส · ความมั่นใจ · กรอบ)
+2. server 1 ตัวเรียกโมเดลได้ทีละครั้ง รูปที่มาระหว่างนั้นเข้าคิวรอ และมีตัวหยิบงานตัวเดียวที่ทำงานบน thread เดียวตลอด ตั้งค่าได้ 2 โหมด
+   - ทีละรูป: หยิบจากคิวครั้งละ 1 รูป
+   - Micro-batching: หยิบทุกรูปที่รออยู่ในคิว (ไม่เกิน 32 รูป) เข้าโมเดลพร้อมกันในครั้งเดียว ถ้ายังไม่ครบ 32 รูป รอรูปเพิ่มได้ไม่เกิน 5 ms
+3. ในคำตอบให้บอกด้วย: server ตัวไหนตอบ · รูปนี้เข้าโมเดลพร้อมกันกี่รูป · เวลารอคิว และเวลาที่โมเดลใช้ (ms)
+4. ตอนเปิด server ให้ลองเรียกโมเดลล่วงหน้าทุกขนาด ตั้งแต่ 1 รูปถึงจำนวนสูงสุดของโหมดนั้น แล้วจึงตอบว่าพร้อม
+5. นำโค้ด โมเดล และรูปทดสอบขึ้นเครื่อง ติดตั้งสิ่งที่ต้องใช้ แล้วเปิด server 1 ตัวบน GPU ใบแรก โหมดทีละรูป
+6. ทดสอบบนเครื่อง: ส่งรูปทั้ง 6 รูปพร้อม API key · ส่งแบบไม่มี key ต้องถูกปฏิเสธ
+7. ทำภาพตาราง 6 รูป วาดกรอบและชื่อคลาสที่โมเดลตรวจได้ กำกับขนาดไฟล์ใต้รูป เก็บที่ results/dataset_samples.jpg</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 2 · เขียน API ตรวจภาพ" data-group="ส่วน A · เตรียมระบบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 2 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 2 · เขียน API ตรวจภาพ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">ส่วนที่ 2/2 · บรรทัด 20–28 จาก 28</span><button class="copy big" data-full="prompt1">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ค่าที่ตรึง]
+โมเดล: lab6_microbatch_lb/best.pt (YOLO11s ที่เทรนใน LAB 1) · ขนาดภาพ 640 · ความมั่นใจขั้นต่ำ 0.35
+รูปทดสอบ: lab6_microbatch_lb/samples (6 รูป)
+ทางเข้า: POST /v1/detect (ช่องชื่อ file) · API key แบบ Bearer ไม่มีหรือผิดตอบ 401 · GET /health
+
+[รายงาน]
+อธิบายโค้ด 3–5 บรรทัด · ยก JSON จริง 1 ตัวอย่างแล้วอธิบายแต่ละช่อง
+สรุปเป็นตาราง: รูป · ขนาดไฟล์ · จำนวนวัตถุของแต่ละคลาส · เวลาที่โมเดลใช้
+ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 2: โมเดลตรวจรูปทดสอบได้ครบ 6 รูป และใช้ 15.9–19.0 ms ต่อรูป" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 2 จาก 12</div><h2><span class="tt">ผลขั้นที่ 2: โมเดลตรวจรูปทดสอบได้ครบ 6 รูป และใช้ 15.9–19.0 ms ต่อรูป</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="results/dataset_samples.jpg" alt="ผลขั้นที่ 2: โมเดลตรวจรูปทดสอบได้ครบ 6 รูป และใช้ 15.9–19.0 ms ต่อรูป" width="1968" height="1080"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>ส่ง 6 รูปพร้อม key</b> ได้ HTTP 200 ทุกรูป โมเดลใช้ 15.9–19.0 ms ต่อรูป รอคิว 0.06–0.10 ms</span></div><div class="stp"><span class="n">2</span><span><b>ไม่มี key, key ผิด หรือไม่ใช่ Bearer</b> ได้ HTTP 401 ทั้งสามกรณี</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 3: ใน 1 โหนด NGINX พอร์ต 8080 แจกงานให้โปรแกรม API 8 ตัวบน 127.0.0.1" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 3 จาก 12</div><h2><span class="tt">ขั้นที่ 3: ใน 1 โหนด NGINX พอร์ต 8080 แจกงานให้โปรแกรม API 8 ตัวบน <code>127.0.0.1</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/arch-nginx.png" alt="ขั้นที่ 3: ใน 1 โหนด NGINX พอร์ต 8080 แจกงานให้โปรแกรม API 8 ตัวบน 127.0.0.1" width="1400" height="832"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ทุกส่วนอยู่ใน <b>1 โหนด (เครื่องเช่า Vast.ai เครื่องเดียว)</b>: NGINX container, API ของ GPU 0 (<code>8101–8104</code>), API ของ GPU 1 (<code>8201–8204</code>) และ <code>loadgen.py</code></span></div><div class="stp"><span class="n">2</span><span>ผู้ใช้ภายนอกเห็นประตูเดียวคือ <b>พอร์ต 8080</b> ส่วนโปรแกรม API ทั้ง 8 ตัวฟังเฉพาะ <code>127.0.0.1</code> ภายในเครื่อง</span></div><div class="stp"><span class="n">3</span><span>แม้สคริปต์ชื่อ <code>cluster.sh</code> แต่เป็นการจัดการ <b>หลายโปรแกรม (process) ในโหนดเดียว</b> (ไม่ใช่คลัสเตอร์หลายโหนดแบบ LAB 5)</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 3: NGINX เป็นประตูเดียวที่พอร์ต 8080 และ server รับเฉพาะคำขอจากในเครื่อง" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 3 จาก 12</div><h2><span class="tt">ขั้นที่ 3: NGINX เป็นประตูเดียวที่พอร์ต 8080 และ server รับเฉพาะคำขอจากในเครื่อง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/slides/s03a-gateway.png" alt="ขั้นที่ 3: NGINX เป็นประตูเดียวที่พอร์ต 8080 และ server รับเฉพาะคำขอจากในเครื่อง" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>NGINX รันเป็น <b>container</b> จาก image <code>nginx:1.27</code> ด้วย udocker และการตั้งค่าอยู่ใน <code>code/nginx.conf</code></span></div><div class="stp"><span class="n">2</span><span>คำขอที่ <b>ไม่มี API key</b> NGINX ตอบ 401 เอง ไม่ถึง server ส่วนค่าของ key ตรวจที่ server</span></div><div class="stp"><span class="n">3</span><span>server ฟังเฉพาะ <code>127.0.0.1</code> จึงเข้าพอร์ต 8101 ตรงจากนอกเครื่องไม่ได้</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 3: cluster.sh เปิดระบบทั้ง 4 แบบภายในโหนดเดียวจากค่า 3 ค่า" data-group="ส่วน A · เตรียมระบบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 3 จาก 12</div><h2><span class="tt">ขั้นที่ 3: <code>cluster.sh</code> เปิดระบบทั้ง 4 แบบภายในโหนดเดียวจากค่า 3 ค่า</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/slides/s03b-cluster.png" alt="ขั้นที่ 3: cluster.sh เปิดระบบทั้ง 4 แบบภายในโหนดเดียวจากค่า 3 ค่า" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เลือก 3 ค่า คือ <b>จำนวน GPU</b> (1 หรือ 2 ใบในเครื่อง) <b>จำนวนโปรแกรม API ต่อ GPU</b> และ <b>โหมด</b> ทีละรูปหรือ Micro-batching</span></div><div class="stp"><span class="n">2</span><span><code>cluster.sh</code> เขียนรายชื่อ server ลง <code>nginx.conf</code> ตามจำนวนที่สั่ง</span></div><div class="stp"><span class="n">3</span><span>คำสั่งเปิดรอจน server ทุกตัวพร้อม และมีคำสั่งดูสถานะกับปิดทั้งระบบ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 3 · ตั้ง NGINX เป็น Load Balancer แบบ container" data-group="ส่วน A · เตรียมระบบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 3 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 3 · ตั้ง NGINX เป็น Load Balancer แบบ container</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 20 บรรทัด</span><button class="copy big" data-full="prompt2">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+ตั้ง NGINX เป็นประตูเดียวของระบบ (Load Balancer) โดยรันเป็น container ไม่ติดตั้งลงเครื่อง
+
+[ขั้นตอน]
+1. รัน NGINX จาก image ทางการ nginx:1.27 เป็น container ด้วย udocker (เครื่องเช่าเป็น container อยู่แล้ว จึงใช้ Docker ซ้อนไม่ได้)
+2. การตั้งค่าทั้งหมดอยู่ในไฟล์ code/nginx.conf แล้วเชื่อมไฟล์เข้า container
+3. ผู้ใช้เข้าที่พอร์ต 8080 แล้ว NGINX ส่งต่อให้ server · วิธีแจกงานเริ่มต้นคือ Round Robin (แจกวนทีละตัว) · server รับเฉพาะคำขอจากภายในเครื่อง
+4. เขียน code/cluster.sh ไว้เปิดระบบใหม่ในคำสั่งเดียว เลือกได้ 3 อย่าง: ใช้ GPU กี่ใบ (1 หรือ 2) · server กี่ตัวต่อ GPU · โหมดทีละรูปหรือ Micro-batching
+   มีคำสั่งดูสถานะและปิดทั้งระบบ · คำสั่งเปิดต้องรอจน server ทุกตัวพร้อมก่อนจึงบอกว่าเสร็จ
+5. API key สุ่มครั้งแรก แล้วใช้ค่าเดิมทุกครั้งที่เปิดใหม่
+6. เปิดระบบแบบที่ 1 (GPU 1 ใบ · server 1 ตัว · โหมดทีละรูป) แล้วทดสอบจากนอกเครื่องผ่านพอร์ต 8080: ส่งรูป 1 รูปพร้อม key · ส่งแบบไม่มี key ต้องถูกปฏิเสธ
+
+[รายงาน]
+อธิบายไฟล์ตั้งค่าของ NGINX ทีละส่วน · วาดแผนภาพข้อความว่าคำขอ 1 รายการเดินทางผ่านอะไรบ้าง
+สรุปผลทดสอบเป็นตาราง · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 3: ใน nginx.conf ไม่ใส่คำสั่งเลือกวิธีแจกงาน NGINX จึงใช้ Round Robin" data-group="ส่วน A · เตรียมระบบ" data-max="1.20"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 3 จาก 12</div><h2><span class="tt">ผลขั้นที่ 3: ใน <code>nginx.conf</code> ไม่ใส่คำสั่งเลือกวิธีแจกงาน NGINX จึงใช้ Round Robin</span></h2></header><div class="body"><pre class="code "><button class="copy">คัดลอก</button><span class="t">worker_processes 4;                      # ไม่ใช้ auto เพราะเครื่องแสดง 64 threads แต่โควตามีราว 25 cores
+
+upstream detect_servers {
+    zone detect_servers 64k;             # worker ทั้ง 4 ใช้ลำดับวนชุดเดียวกัน
+    # BEGIN LB (written by cluster.sh)
+    # (no directive)                     # ไม่ใส่คำสั่ง = Round Robin
+    # END LB
+    # BEGIN SERVERS (written by cluster.sh)
+    server 127.0.0.1:8101;               # gpu0 server 1
+    server 127.0.0.1:8201;               # gpu1 server 1
+    # ... ถึง 8104 และ 8204
+    # END SERVERS
+    keepalive 64;                        # เก็บ connection ไปยัง server ไว้ใช้ซ้ำ
+}
+
+server {
+    listen 8080 backlog=4096;
+    location /v1/ {
+        if ($http_authorization = "") { return 401 '{"detail":"missing API key"}\n'; }
+        proxy_pass http://detect_servers;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_next_upstream error timeout;   # ต่อ server ไม่ติด ให้ลองตัวถัดไป
+        add_header X-Upstream $upstream_addr always;
+    }
+}</span></pre></div></section>
+<section class="slide " data-title="ขั้นที่ 4: ตัวยิงโหลดเก็บตัวเลขจาก 3 แหล่งในทุกระดับ N" data-group="ส่วน B · Load Test" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 4 จาก 12</div><h2><span class="tt">ขั้นที่ 4: ตัวยิงโหลดเก็บตัวเลขจาก 3 แหล่งในทุกระดับ N</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/slides/s04a-sources.png" alt="ขั้นที่ 4: ตัวยิงโหลดเก็บตัวเลขจาก 3 แหล่งในทุกระดับ N" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><code>code/loadgen.py</code> จำลองผู้ใช้ N คน ยิงเข้า <b>พอร์ต 8080</b> จากในเครื่องเดียวกับ server</span></div><div class="stp"><span class="n">2</span><span><b>จากคำตอบ</b> ได้ Throughput เวลารอ p50 p95 p99 และ error</span></div><div class="stp"><span class="n">3</span><span><b>จาก server</b> ได้เวลารอคิว เวลาของโมเดล และจำนวนรูปที่เข้าโมเดลพร้อมกัน</span></div><div class="stp"><span class="n">4</span><span><b>จากเครื่อง</b> ได้ GPU ทำงานกี่ % และ CPU ของ server, NGINX และตัวยิงโหลด</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 4: ตัวยิงโหลดมี 2 โหมด คือหาความจุ และระดับเดียว" data-group="ส่วน B · Load Test" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 4 จาก 12</div><h2><span class="tt">ขั้นที่ 4: ตัวยิงโหลดมี 2 โหมด คือหาความจุ และระดับเดียว</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/slides/s04b-modes.png" alt="ขั้นที่ 4: ตัวยิงโหลดมี 2 โหมด คือหาความจุ และระดับเดียว" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>โหมดหาความจุ</b> ไล่ระดับ N แบบ 3 จังหวะ คือหาช่วง ประมาณ และปรับ จบแล้วพิมพ์ความจุกับคำว่า DONE</span></div><div class="stp"><span class="n">2</span><span><b>โหมดระดับเดียว</b> ยิงด้วย N ค่าเดียวตามเวลาที่กำหนด และบันทึกผลรายวินาที</span></div><div class="stp"><span class="n">3</span><span>วัด 1 ระดับ 20 วินาที ไม่นับ 5 วินาทีแรก และเกณฑ์ผ่านคือ p95 ไม่เกิน 500 ms กับ error ต่ำกว่า 1%</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 4 · เขียนตัวยิงโหลด" data-group="ส่วน B · Load Test" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 4 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 4 · เขียนตัวยิงโหลด</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">ส่วนที่ 1/2 · บรรทัด 1–15 จาก 30</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เขียนตัวยิงโหลด (Load Test) ไว้วัดว่าระบบรับผู้ใช้พร้อมกันได้กี่คน
+
+[ขั้นตอน]
+1. เขียน code/loadgen.py รันบนเครื่องเดียวกับ server ยิงเข้าที่พอร์ต 8080
+2. จำลองผู้ใช้ N คน: แต่ละคนส่งรูป รอคำตอบ แล้วส่งรูปถัดไปทันที วนรูปทดสอบ 6 รูป · รอเกิน 10 วินาทีนับเป็น error
+3. วัด 1 ระดับ = ยิง 20 วินาที โดย 5 วินาทีแรกเป็นช่วงอุ่นเครื่อง ไม่นับ
+4. ต่อ 1 ระดับให้บันทึก: Throughput (คำขอที่สำเร็จต่อวินาที) · เวลารอ p50 p95 p99 · error · GPU ทำงานกี่ % ของแต่ละใบ · CPU ที่ server, NGINX และตัวยิงโหลดใช้
+   คำขอที่ server แต่ละตัวตอบ · เวลารอคิวและเวลาของโมเดล · จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน
+5. โหมดหาความจุ ทำ 3 จังหวะ</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 4 · เขียนตัวยิงโหลด" data-group="ส่วน B · Load Test" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 4 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 4 · เขียนตัวยิงโหลด</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">ส่วนที่ 2/2 · บรรทัด 16–30 จาก 30</span><button class="copy big" data-full="prompt3">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">   - หาช่วง: ไล่ N = 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 จนไม่ผ่าน 2 ระดับติดกัน (ระดับที่ไม่ผ่านให้วัดซ้ำอีก 1 ครั้งก่อนตัดสิน)
+   - ประมาณ: ใช้ p95 ของระดับสุดท้ายที่ผ่านกับระดับแรกที่ไม่ผ่าน ลากเส้นตรงหาว่า p95 จะถึง 500 ms ที่ N เท่าไร แล้ววัดที่ N นั้น
+   - ปรับ: ประมาณซ้ำจากจุดที่วัดเพิ่ม จนระดับที่ผ่านกับระดับที่ไม่ผ่านห่างกันไม่เกิน 2 คน (N เกิน 100 ใช้ 4 คน)
+   และพิมพ์ค่าประมาณอีกแบบไว้เทียบ: N ≈ Throughput สูงสุด × 0.5 วินาที
+6. โหมดระดับเดียว: ยิงด้วย N ค่าเดียวตามเวลาที่กำหนด และบันทึกผลรายวินาที
+7. ตั้งชื่อผลได้ บันทึกเป็น JSON ชื่อละไฟล์ (รวมค่าที่ประมาณไว้ทุกรอบ) พิมพ์ผลทีละระดับ จบแล้วพิมพ์ความจุกับคำว่า DONE
+8. ลองยิงระบบแบบที่ 1 ด้วย N = 4 สั้น ๆ ให้เห็นว่าใช้งานได้
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+อธิบายโค้ด 3–5 บรรทัด · วาดแผนภาพข้อความของผู้ใช้จำลอง 1 คน · ผลของการลองยิง N = 4
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ขั้นที่ 5: ยิงตัวยิงโหลดใส่ server จำลองที่รู้คำตอบล่วงหน้า 5 ทดสอบ" data-group="ส่วน B · Load Test" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 5 จาก 12</div><h2><span class="tt">ขั้นที่ 5: ยิงตัวยิงโหลดใส่ server จำลองที่รู้คำตอบล่วงหน้า 5 ทดสอบ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s05.png" alt="ขั้นที่ 5: ยิงตัวยิงโหลดใส่ server จำลองที่รู้คำตอบล่วงหน้า 5 ทดสอบ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>AI เขียน <code>code/fake_server.py</code> ซึ่งไม่ใช้โมเดล รอตามเวลาที่ตั้งไว้แล้วตอบ และนับคำขอที่ได้รับ</span></div><div class="stp"><span class="n">2</span><span>ยิง <b>ทดสอบ A ถึง E</b> แล้วเทียบค่าที่วัดได้กับค่าที่ควรได้</span></div><div class="stp"><span class="n">3</span><span>ข้อที่ไม่ผ่านให้หาสาเหตุ แก้ แล้วทดสอบข้อนั้นซ้ำ ผ่านครบจึงนำไปวัดระบบจริง</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 5 · พิสูจน์ว่าตัวยิงโหลดวัดถูก" data-group="ส่วน B · Load Test" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 5 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 5 · พิสูจน์ว่าตัวยิงโหลดวัดถูก</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 25 บรรทัด</span><button class="copy big" data-full="prompt4">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+พิสูจน์ว่าตัวยิงโหลดวัดถูก ก่อนนำไปวัดระบบจริง โดยยิงใส่ server จำลองที่รู้คำตอบล่วงหน้า
+
+[ขั้นตอน]
+1. เขียน code/fake_server.py: server จำลองที่ไม่ใช้โมเดล รับรูปแบบเดียวกับ API จริง รอตามเวลาที่ตั้งไว้แล้วตอบ รับได้พร้อมกันไม่จำกัด และนับจำนวนคำขอที่ได้รับ
+2. ทดสอบ A ตัวเลขตรงกับที่คำนวณไหม: ตั้งให้รอ 50 ms แล้วยิงตรงที่ server จำลองด้วย N = 1, 10, 50, 100 · ที่ควรได้คือ p50 ราว 50 ms และ Throughput ราว N ÷ 0.05
+3. ทดสอบ B นับครบไหม: เทียบจำนวนคำขอที่ตัวยิงโหลดส่ง (รวมช่วงอุ่นเครื่อง) กับจำนวนที่ server จำลองนับได้ในรอบเดียวกัน
+4. ทดสอบ C ตัวยิงโหลดเร็วพอไหม: ตั้งให้ server จำลองตอบทันที แล้วยิงด้วย N = 200 ดูว่าส่งได้สูงสุดกี่คำขอต่อวินาที
+5. ทดสอบ D NGINX ถ่วงไหม: ให้ NGINX ส่งต่อไปที่ server จำลอง (รอ 50 ms) แล้วยิงผ่านพอร์ต 8080 ด้วย N = 50 เทียบกับยิงตรง
+6. ทดสอบ E วัดซ้ำได้ผลเดิมไหม: เปิดระบบแบบที่ 1 กลับมา แล้วยิง API จริงที่ N = 8 ซ้ำ 3 ครั้ง
+7. บันทึกผลที่ results/loadtest_check.json และวาดกราฟ results/loadtest_check.png (ข้อความอังกฤษ): Throughput ที่วัดได้เทียบกับที่คำนวณของทดสอบ A
+8. ข้อไหนไม่ผ่าน ให้หาสาเหตุ แก้ แล้วทดสอบข้อนั้นซ้ำ
+
+[เกณฑ์ผ่าน]
+A ต่างจากที่คำนวณไม่เกิน 10% · B ต่างกันไม่เกิน 1% · C มากกว่า 2,000 คำขอต่อวินาที
+D p50 ช้ากว่ายิงตรงไม่เกิน 10 ms · E ทั้ง 3 ครั้งต่างกันไม่เกิน 10%
+
+[รายงาน]
+สรุปเป็นตาราง: ทดสอบ · ค่าที่ควรได้ · ค่าที่วัดได้ · ผ่านหรือไม่
+บอกสิ่งที่ต้องแก้ระหว่างทาง (ถ้ามี) และบอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 5 ทดสอบ A: จุดที่วัดได้ทั้ง 4 จุดอยู่บนเส้นที่คำนวณ ต่างมากสุด 1.4%" data-group="ส่วน B · Load Test" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 5 จาก 12</div><h2><span class="tt">ผลขั้นที่ 5 ทดสอบ A: จุดที่วัดได้ทั้ง 4 จุดอยู่บนเส้นที่คำนวณ ต่างมากสุด 1.4%</span><span class="tag">results/loadtest_check.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/loadtest_check.png" alt="ผลขั้นที่ 5 ทดสอบ A: จุดที่วัดได้ทั้ง 4 จุดอยู่บนเส้นที่คำนวณ ต่างมากสุด 1.4%" width="1350" height="840"></div><p class="cap">เส้นคือค่าที่คำนวณ <b>N ÷ 0.05 วินาที</b> แถบสีเทาคือช่วงผ่าน ±10% และจุดคือค่าที่ตัวยิงโหลดวัดได้</p></div></section>
+<section class="slide " data-title="แบบที่ 1 ทำทีละรูป: ผู้ใช้ต่อคิวกัน ทั้งที่ GPU ยังทำงานไม่ถึงครึ่ง" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 1 ทำทีละรูป</div><h2><span class="tt">แบบที่ 1 ทำทีละรูป: ผู้ใช้ต่อคิวกัน ทั้งที่ GPU ยังทำงานไม่ถึงครึ่ง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-one-by-one.png" alt="แบบที่ 1 ทำทีละรูป: ผู้ใช้ต่อคิวกัน ทั้งที่ GPU ยังทำงานไม่ถึงครึ่ง" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>server 1 ตัวหยิบรูปจากคิวครั้งละ 1 รูป เรียกโมเดล 1 ครั้ง แล้วหยิบรูปถัดไป</span></div><div class="stp"><span class="n">2</span><span>ผู้ใช้ 1 คนได้คำตอบเร็วที่สุด เพราะไม่ต้องรอใคร</span></div><div class="stp"><span class="n">3</span><span>ผู้ใช้หลายคนต้องต่อคิวหลังคนก่อนหน้า แบบนี้เป็น <b>Baseline</b> ที่ใช้เทียบกับแบบอื่น</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 6: วัดความจุของแบบที่ 1 เป็น Baseline ชื่อผล base" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 6 จาก 12</div><h2><span class="tt">ขั้นที่ 6: วัดความจุของแบบที่ 1 เป็น Baseline ชื่อผล <code>base</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s06.png" alt="ขั้นที่ 6: วัดความจุของแบบที่ 1 เป็น Baseline ชื่อผล base" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิดระบบแบบที่ 1 คือ <b>GPU 1 ใบ โปรแกรม API 1 ตัว โหมดทีละรูป</b> (บนโหนดเช่า 1 โหนดเดิม)</span></div><div class="stp"><span class="n">2</span><span>หาความจุด้วยตัวยิงโหลดเป็นงานเบื้องหลัง แล้วเช็กจนเห็นคำว่า DONE</span></div><div class="stp"><span class="n">3</span><span>ผล <code>base</code> ใช้เป็นตัวเทียบของทุกแบบ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 6 · แบบที่ 1: ทำทีละรูป" data-group="ส่วน C · GPU 1 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 6 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 6 · แบบที่ 1: ทำทีละรูป</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 21 บรรทัด</span><button class="copy big" data-full="prompt5">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 1: GPU 1 ใบ · server 1 ตัว · ทำทีละรูป
+
+[ขั้นตอน]
+1. เปิดระบบแบบที่ 1 (GPU 1 ใบ · server 1 ตัว · โหมดทีละรูป)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า base · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางทุกระดับ N: Throughput · p50 · p95 · GPU ทำงานกี่ % · CPU ของ server · เวลารอคิว · เวลาของโมเดล · ผ่านหรือไม่
+ประโยค "แบบที่ 1 รับผู้ใช้พร้อมกันได้ N คน" · ตอนเต็มความจุ GPU ทำงานกี่ % และส่วนไหนเป็นตัวถ่วง
+ตารางการประมาณ: ค่าที่ประมาณไว้แต่ละรอบ เทียบกับผลที่วัดได้ และค่าจากสูตร N ≈ Throughput สูงสุด × 0.5 วินาที ห่างจากความจุจริงเท่าไร
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h01-base.jpg)" data-title="ผลขั้นที่ 6: แบบที่ 1 รับได้ 29 คน ทั้งที่ GPU ทำงานเพียง 22%" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 6 จาก 12</div><h2><span class="tt">ผลขั้นที่ 6: แบบที่ 1 รับได้ 29 คน ทั้งที่ GPU ทำงานเพียง 22%</span><span class="tag">results/base.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile "><div class="num">29 คน</div><div class="txt"><div class="k">ความจุของแบบที่ 1</div><div class="s">p95 494.4 ms ที่ N = 29</div></div></div><div class="tile warn"><div class="num">62.6</div><div class="txt"><div class="k">Throughput</div><div class="s">คำขอต่อวินาที และไม่เพิ่มอีกตั้งแต่ N = 2</div></div></div><div class="tile bad"><div class="num">22%</div><div class="txt"><div class="k">GPU ทำงาน</div><div class="s">ตัวถ่วงคือการเรียกโมเดลทีละรูป</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ความจุ 29 อยู่ชิดเส้นเกณฑ์: ที่ N = 29 วัดครั้งแรกได้ 507.4 ms (ไม่ผ่าน) และวัดซ้ำได้ 494.4 ms (ผ่าน) ตัวยิงโหลดตัดสินว่าไม่ผ่านเฉพาะเมื่อไม่ผ่านทั้งสองครั้ง</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="แบบที่ 2 Micro-batching: server รวมรูปที่รออยู่ แล้วเรียกโมเดลครั้งเดียว" data-group="ส่วน C · GPU 1 ใบ" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 2 Micro-batching</div><h2><span class="tt">แบบที่ 2 Micro-batching: server รวมรูปที่รออยู่ แล้วเรียกโมเดลครั้งเดียว</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/mb-how.png" alt="แบบที่ 2 Micro-batching: server รวมรูปที่รออยู่ แล้วเรียกโมเดลครั้งเดียว" width="1400" height="788"></div><p class="cap">GPU ตรวจหลายรูปพร้อมกันได้ในเวลาใกล้เคียงกับรูปเดียว คำว่า <b>batch</b> คือชุดรูปที่เข้าโมเดลพร้อมกัน 1 รอบ</p></div></section>
+<section class="slide " data-title="Micro-batching มีปุ่มปรับ 2 ปุ่ม และผู้ใช้คนเดียวจะช้าลงเล็กน้อย" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 2 Micro-batching</div><h2><span class="tt">Micro-batching มีปุ่มปรับ 2 ปุ่ม และผู้ใช้คนเดียวจะช้าลงเล็กน้อย</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-mb-knobs.png" alt="Micro-batching มีปุ่มปรับ 2 ปุ่ม และผู้ใช้คนเดียวจะช้าลงเล็กน้อย" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>จำนวนรูปสูงสุดต่อรอบ 32 รูป</b> ถ้าตั้งมากไป รอบหนึ่งนานขึ้นและใช้ VRAM มาก</span></div><div class="stp"><span class="n">2</span><span><b>รอรูปเพิ่มได้นานสุด 5 ms</b> ถ้าตั้งมากไป ผู้ใช้คนเดียวก็ต้องรอนาน</span></div><div class="stp"><span class="n">3</span><span>จำนวนรูปต่อรอบปรับเองตามคิว ผู้ใช้น้อยได้รอบละ 1–2 รูป ผู้ใช้มากได้รอบละหลายสิบรูป</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 7: เปิด server ตัวเดิมในโหมด Micro-batching แล้ววัดความจุ ชื่อผล batch" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 7 จาก 12</div><h2><span class="tt">ขั้นที่ 7: เปิด server ตัวเดิมในโหมด Micro-batching แล้ววัดความจุ ชื่อผล <code>batch</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s07.png" alt="ขั้นที่ 7: เปิด server ตัวเดิมในโหมด Micro-batching แล้ววัดความจุ ชื่อผล batch" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิดระบบใหม่เป็น <b>GPU 1 ใบ โปรแกรม API 1 ตัว โหมด Micro-batching</b> รวมไม่เกิน 32 รูป และรอไม่เกิน 5 ms</span></div><div class="stp"><span class="n">2</span><span>หาความจุด้วยตัวยิงโหลดตัวเดิมและเกณฑ์เดิม</span></div><div class="stp"><span class="n">3</span><span>ถ้าผลแย่กว่าแบบที่ 1 แปลว่าโค้ดมีปัญหา ให้แก้แล้ววัด <code>base</code> ซ้ำด้วยโค้ดฉบับแก้</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 7 · แบบที่ 2: Micro-batching" data-group="ส่วน C · GPU 1 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 7 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 7 · แบบที่ 2: Micro-batching</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 22 บรรทัด</span><button class="copy big" data-full="prompt6">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 2: GPU ใบเดิม · server 1 ตัว · Micro-batching (รวมรูปที่รออยู่เข้าโมเดลพร้อมกัน)
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 1 ใบ · server 1 ตัว · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า batch · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+3. ถ้าผลแย่กว่าแบบที่ 1 แปลว่าโค้ดมีปัญหา ให้หาสาเหตุและแก้ แล้ววัดแบบที่ 1 (base) ซ้ำด้วยโค้ดฉบับแก้
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางเทียบแบบที่ 1 กับแบบที่ 2: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · GPU ทำงานกี่ % · CPU ของ server · เป็นกี่เท่าของแบบที่ 1
+ตารางของแบบที่ 2 ทุกระดับ N: จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน · เวลาของโมเดลต่อครั้ง · p50 · p95
+บอกว่าตอนมีผู้ใช้คนเดียว แบบที่ 2 ช้ากว่าแบบที่ 1 กี่ ms และส่วนไหนเป็นตัวถ่วงของแบบที่ 2
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h02-batch.jpg)" data-title="ผลขั้นที่ 7: Micro-batching ทำให้ GPU ใบเดิมรับได้ 52 คน จากเดิม 29 คน" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 7 จาก 12</div><h2><span class="tt">ผลขั้นที่ 7: Micro-batching ทำให้ GPU ใบเดิมรับได้ 52 คน จากเดิม 29 คน</span><span class="tag">results/batch.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">29 → 52 คน</div><div class="txt"><div class="k">ความจุ</div><div class="s">1.79 เท่าของแบบที่ 1</div></div></div><div class="tile "><div class="num">62.6 → 142.9</div><div class="txt"><div class="k">Throughput สูงสุด (คำขอ/วินาที)</div><div class="s">2.28 เท่า วัดที่ N = 64 ซึ่งไม่ผ่านเกณฑ์</div></div></div><div class="tile warn"><div class="num">ช้าลง 5.1 ms</div><div class="txt"><div class="k">ผู้ใช้คนเดียว</div><div class="s">p50 30.0 ms เทียบกับ 24.9 ms</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>GPU ยังทำงานเพียง 31% ตัวถ่วงจึงน่าจะย้ายมาที่งานฝั่ง CPU ของ server ตัวเดียว ซึ่งรอบนี้ยังไม่ได้วัดยืนยัน</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="server ตัวเดียวยังไม่พอ เพราะตัวถ่วงน่าจะย้ายไปอยู่ที่ CPU ของ server ตัวเดียว" data-group="ส่วน C · GPU 1 ใบ" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 3 server หลายตัว</div><h2><span class="tt">server ตัวเดียวยังไม่พอ เพราะตัวถ่วงน่าจะย้ายไปอยู่ที่ CPU ของ server ตัวเดียว</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/th-mp-why.png" alt="server ตัวเดียวยังไม่พอ เพราะตัวถ่วงน่าจะย้ายไปอยู่ที่ CPU ของ server ตัวเดียว" width="1680" height="945"></div><p class="cap">โค้ด Python ส่วนใหญ่ใน process เดียวรันได้ทีละ 1 core (ข้อจำกัดชื่อ <b>GIL</b>) งานรับรูป ถอดไฟล์ JPEG เตรียมรูป และแปลงผลจึงต่อคิวกัน ขณะที่ GPU ยังว่าง · ผลวัด: งานส่วนนี้กิน 56% ของรอบที่ 32 รูป และ GPU ทำงานแค่ 31%</p></div></section>
+<section class="slide " data-title="แบบที่ 3 เปิดโปรแกรม API 4 ตัวบน GPU ใบเดิม งาน CPU จึงกระจายไป 4 core" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 3 server หลายตัว</div><h2><span class="tt">แบบที่ 3 เปิดโปรแกรม API 4 ตัวบน GPU ใบเดิม งาน CPU จึงกระจายไป 4 core</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-mp-how.png" alt="แบบที่ 3 เปิดโปรแกรม API 4 ตัวบน GPU ใบเดิม งาน CPU จึงกระจายไป 4 core" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิด 4 process ในโหนดเดียวกัน แต่ละตัวมีคิวและ Micro-batching ของตัวเอง โดยมี NGINX แจกงานให้ทั้ง 4 ตัว</span></div><div class="stp"><span class="n">2</span><span><b>สิ่งที่ได้</b> งานที่ใช้ CPU กระจายไป 4 core และ GPU ได้งานถี่ขึ้นจนใกล้เต็ม</span></div><div class="stp"><span class="n">3</span><span><b>ราคาที่จ่าย</b> ใช้ VRAM เพิ่มตามจำนวนตัว และรอบหนึ่งรวมได้น้อยรูปลง</span></div><div class="stp"><span class="n">4</span><span>แบบที่ 2 และ 3 ใช้ GPU ใบเดิม โดย <b>ค่าเช่าเท่าเดิม</b></span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 8: เปิดโปรแกรม API 4 ตัว (4 process) บน GPU ใบเดิม แล้ววัดความจุ ชื่อผล multi" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 8 จาก 12</div><h2><span class="tt">ขั้นที่ 8: เปิดโปรแกรม API 4 ตัว (4 process) บน GPU ใบเดิม แล้ววัดความจุ ชื่อผล <code>multi</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s08.png" alt="ขั้นที่ 8: เปิดโปรแกรม API 4 ตัว (4 process) บน GPU ใบเดิม แล้ววัดความจุ ชื่อผล multi" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิดระบบใหม่เป็น <b>GPU 1 ใบ โปรแกรม API 4 ตัว (<code>:8101–:8104</code> บน <code>127.0.0.1</code>) โหมด Micro-batching</b> ในโหนดเดียวกัน</span></div><div class="stp"><span class="n">2</span><span>NGINX แจกงานให้ทั้ง 4 ตัวแบบ Round Robin และแต่ละตัวมีคิวกับชุดรูปของตัวเอง ใช้ GPU 0 ร่วมกัน</span></div><div class="stp"><span class="n">3</span><span>รายงานต้องบอกว่าคำขอกระจายไป server 4 ตัวเท่ากันหรือไม่ และส่วนใดเป็นตัวถ่วงของแต่ละแบบ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 8 · แบบที่ 3: Micro-batching + server 4 ตัว" data-group="ส่วน C · GPU 1 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 8 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 8 · แบบที่ 3: Micro-batching + server 4 ตัว</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 21 บรรทัด</span><button class="copy big" data-full="prompt7">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 3: GPU ใบเดิม · server 4 ตัวใช้ GPU ใบเดียวกัน · Micro-batching
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 1 ใบ · server 4 ตัว · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms) · NGINX แจกงานให้ทั้ง 4 ตัวแบบ Round Robin
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า multi · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางเทียบ 3 แบบ (ทีละรูป · Micro-batching · Micro-batching + server 4 ตัว)
+หัวตาราง: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน · GPU ทำงานกี่ % · CPU ของ server · VRAM ที่ใช้ · เป็นกี่เท่าของแบบที่ 1
+บอกว่าคำขอกระจายไป server 4 ตัวเท่ากันไหม และส่วนไหนเป็นตัวถ่วงของแต่ละแบบ
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h03-multi.jpg)" data-title="ผลขั้นที่ 8: server 4 ตัวทำให้ GPU ใบเดิมรับได้ 90 คน และ GPU ทำงานถึง 82%" data-group="ส่วน C · GPU 1 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 8 จาก 12</div><h2><span class="tt">ผลขั้นที่ 8: server 4 ตัวทำให้ GPU ใบเดิมรับได้ 90 คน และ GPU ทำงานถึง 82%</span><span class="tag">results/multi.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">90 คน</div><div class="txt"><div class="k">ความจุ</div><div class="s">3.10 เท่าของแบบที่ 1</div></div></div><div class="tile ok"><div class="num">82%</div><div class="txt"><div class="k">GPU ทำงาน</div><div class="s">จาก 31% ของแบบที่ 2</div></div></div><div class="tile "><div class="num">5.35 cores</div><div class="txt"><div class="k">CPU ของ server</div><div class="s">รวม 4 ตัว จาก 1.81 cores ของแบบที่ 2</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>รูปถูกแบ่งไป 4 คิว รอบหนึ่งจึงรวมได้ 11.0 รูป ไม่ใช่ 26.0 รูป และ VRAM ที่ใช้ทั้งใบคือ 14,001–14,017 MiB</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="แบบที่ 4 เปิดใช้ GPU ใบที่ 2 ในโหนดเดียวกัน แล้วให้ Load Balancer แจกงานข้าม 2 ใบ" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · แบบที่ 4 Load Balancer กับ GPU 2 ใบ</div><h2><span class="tt">แบบที่ 4 เปิดใช้ GPU ใบที่ 2 ในโหนดเดียวกัน แล้วให้ Load Balancer แจกงานข้าม 2 ใบ</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-lb-what.png" alt="แบบที่ 4 เปิดใช้ GPU ใบที่ 2 ในโหนดเดียวกัน แล้วให้ Load Balancer แจกงานข้าม 2 ใบ" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>GPU 1 ใบมีเพดาน จึงเปิดใช้ <b>GPU ใบที่ 2 ในโหนดเดิม</b> (รวม API 8 ตัว ใบละ 4 ตัว) แล้วให้ NGINX แจกงาน เพื่อจำลองหลักการ <b>Horizontal Scaling</b> โดยไม่มีความช้าของอินเทอร์เน็ตปน</span></div><div class="stp"><span class="n">2</span><span>ทำได้เพราะ server แต่ละตัวไม่เก็บข้อมูลของผู้ใช้ไว้ในตัว (<b>stateless</b>) ส่งรูปให้ตัวไหนก็ได้คำตอบเหมือนกัน</span></div><div class="stp"><span class="n">3</span><span>ผู้ใช้ยังเรียกที่อยู่เดิม (พอร์ต 8080) ไม่รู้ว่าข้างหลังมีกี่ GPU และแนวคิดเดียวกันนี้นำไปต่อขยายข้ามหลายโหนด (Multi-Node) ใน <b>LAB 7</b></span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 9: เปิดใช้ GPU ทั้ง 2 ใบในโหนดเดียวกัน (ใบละ 4 โปรแกรม) แล้ววัดความจุ ชื่อผล gpu2" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 9 จาก 12</div><h2><span class="tt">ขั้นที่ 9: เปิดใช้ GPU ทั้ง 2 ใบในโหนดเดียวกัน (ใบละ 4 โปรแกรม) แล้ววัดความจุ ชื่อผล <code>gpu2</code></span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s09.png" alt="ขั้นที่ 9: เปิดใช้ GPU ทั้ง 2 ใบในโหนดเดียวกัน (ใบละ 4 โปรแกรม) แล้ววัดความจุ ชื่อผล gpu2" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>เปิดระบบใหม่เป็น <b>GPU 2 ใบในโหนดเดิม (โปรแกรม API ใบละ 4 ตัว รวม 8 ตัว) โหมด Micro-batching</b></span></div><div class="stp"><span class="n">2</span><span>NGINX แจกงานแบบ Round Robin ให้ครบทั้ง 8 โปรแกรมบน <code>127.0.0.1:8101–8104</code> และ <code>8201–8204</code></span></div><div class="stp"><span class="n">3</span><span>รายงานเทียบกับแบบที่ 3 ว่าได้กี่เท่า และ Efficiency เท่าไร</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 9 · แบบที่ 4: GPU 2 ใบ" data-group="ส่วน D · GPU 2 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 9 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 9 · แบบที่ 4: GPU 2 ใบ</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 20 บรรทัด</span><button class="copy big" data-full="prompt8">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 4: GPU 2 ใบ · ใบละ 4 server · Micro-batching · NGINX แจกงานแบบ Round Robin
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 2 ใบ · server 4 ตัวต่อ GPU · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า gpu2 · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตาราง 4 แบบ: จำนวน GPU · แบบ · ความจุ · Throughput สูงสุด · p95 ที่ความจุ · เป็นกี่เท่าของแบบที่ 3 · Efficiency (กี่เท่าของแบบที่ 3 ÷ จำนวน GPU)
+ประโยค "GPU 1 ใบ N1 คน → 2 ใบ N2 คน (x เท่า)" · คำขอกระจายไป GPU 2 ใบเท่ากันไหม · ถ้าได้ไม่ถึง 2 เท่า ส่วนไหนเป็นตัวถ่วง
+บอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h04-gpu2.jpg)" data-title="ผลขั้นที่ 9: GPU ใบที่ 2 ทำให้รับได้ 180 คน จาก 90 คน หรือประมาณ 2 เท่า" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 9 จาก 12</div><h2><span class="tt">ผลขั้นที่ 9: GPU ใบที่ 2 ทำให้รับได้ 180 คน จาก 90 คน หรือประมาณ 2 เท่า</span><span class="tag">results/gpu2.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile ok"><div class="num">90 → 180 คน</div><div class="txt"><div class="k">ความจุ</div><div class="s">2.00 เท่าของแบบที่ 3</div></div></div><div class="tile ok"><div class="num">ราว 100%</div><div class="txt"><div class="k">Efficiency</div><div class="s">Speedup ÷ จำนวน GPU</div></div></div><div class="tile "><div class="num"><span class="sm">50.0% / 50.0%</span></div><div class="txt"><div class="k">คำขอ GPU 0 / GPU 1</div><div class="s">GPU ทำงาน 85% / 83%</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ค่า 2.00 เท่าอ่านว่าประมาณ 2 เท่า: ยิง Round Robin ซ้ำที่ N = 180 อีก 3 ครั้ง ได้ p95 392.2 และ 468.7 ms (ผ่าน) กับ 640.6 ms (ไม่ผ่าน)</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ผลขั้นที่ 9: p95 ของทุกแบบเริ่มต่ำแล้วหักขึ้น และความจุคือจุดสุดท้ายใต้เส้น 500 ms" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 9 จาก 12</div><h2><span class="tt">ผลขั้นที่ 9: p95 ของทุกแบบเริ่มต่ำแล้วหักขึ้น และความจุคือจุดสุดท้ายใต้เส้น 500 ms</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/images/1_p95_vs_users.png" alt="ผลขั้นที่ 9: p95 ของทุกแบบเริ่มต่ำแล้วหักขึ้น และความจุคือจุดสุดท้ายใต้เส้น 500 ms" width="1356" height="825"></div><p class="cap">ดูเส้นของแบบที่ 4: จุด N = 128 สูงกว่าจุด N = 142 เพราะ NGINX พัก server ตัวหนึ่ง 10 วินาที ค่าประมาณของจังหวะที่ 2 (142.1) จึง <b>ต่ำกว่าความจุจริง 38 คน</b></p></div></section>
+<section class="slide " data-title="Round Robin แจกวนทีละตัวและไม่ดูงานค้าง ถ้ามีตัวช้า งานจะไปกองที่ตัวนั้น" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">Round Robin แจกวนทีละตัวและไม่ดูงานค้าง ถ้ามีตัวช้า งานจะไปกองที่ตัวนั้น</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-rr.png" alt="Round Robin แจกวนทีละตัวและไม่ดูงานค้าง ถ้ามีตัวช้า งานจะไปกองที่ตัวนั้น" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>แจกตามลำดับ A → B → C → A ทุกตัวได้ <b>จำนวนคำขอเท่ากัน</b></span></div><div class="stp"><span class="n">2</span><span><b>ไม่ดู</b> ว่าตอนนี้ใครยังมีงานค้างอยู่เท่าไร</span></div><div class="stp"><span class="n">3</span><span>ได้ผลดีเมื่อทุกตัวเร็วเท่ากัน</span></div></div></div></div></section>
+<section class="slide " data-title="Least Connections ส่งคำขอใหม่ให้ server ที่งานค้างน้อยที่สุดในตอนนั้น" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">Least Connections ส่งคำขอใหม่ให้ server ที่งานค้างน้อยที่สุดในตอนนั้น</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-lc.png" alt="Least Connections ส่งคำขอใหม่ให้ server ที่งานค้างน้อยที่สุดในตอนนั้น" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>จำว่าส่งคำขอไปให้ server แต่ละตัวกี่รายการแล้ว <b>ที่ยังไม่ได้คำตอบกลับ</b> (งานค้าง)</span></div><div class="stp"><span class="n">2</span><span>คำขอใหม่เข้ามา ส่งให้ตัวที่งานค้างน้อยที่สุดในตอนนั้น</span></div><div class="stp"><span class="n">3</span><span>เมื่อ server ตอบกลับ งานค้างของตัวนั้นลดลง 1</span></div><div class="stp"><span class="n">4</span><span>Load Balancer ไม่ต้องรู้ว่าตัวไหนช้า ตัวที่ช้าคืนงานช้า งานค้างจึงสูง แล้วได้งานใหม่น้อยลงเอง</span></div></div></div></div></section>
+<section class="slide " data-title="เมื่อมี GPU ช้า 1 ใบ Round Robin ให้ใบช้าครึ่งหนึ่ง ส่วน Least Connections ให้งานไหลไปใบเร็ว" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">เมื่อมี GPU ช้า 1 ใบ Round Robin ให้ใบช้าครึ่งหนึ่ง ส่วน Least Connections ให้งานไหลไปใบเร็ว</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/theory/th-rr-vs-lc.png" alt="เมื่อมี GPU ช้า 1 ใบ Round Robin ให้ใบช้าครึ่งหนึ่ง ส่วน Least Connections ให้งานไหลไปใบเร็ว" width="1672" height="941"></div><p class="cap">ใน LAB จำลอง GPU ช้าโดยให้ server ของ GPU ใบที่ 2 <b>เรียกโมเดลช้าลง 3 เท่า</b></p></div></section>
+<section class="slide " data-title="Power of Two Choices สุ่ม server มา 2 ตัว แล้วส่งคำขอให้ตัวที่งานค้างน้อยกว่า" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">Power of Two Choices สุ่ม server มา 2 ตัว แล้วส่งคำขอให้ตัวที่งานค้างน้อยกว่า</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-p2c.png" alt="Power of Two Choices สุ่ม server มา 2 ตัว แล้วส่งคำขอให้ตัวที่งานค้างน้อยกว่า" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>สุ่ม server มา 2 ตัว</span></div><div class="stp"><span class="n">2</span><span>เทียบงานค้างของ 2 ตัวนั้น</span></div><div class="stp"><span class="n">3</span><span>ส่งคำขอให้ตัวที่งานค้างน้อยกว่า</span></div><div class="stp"><span class="n">4</span><span>Power of Two Choices (เรียกย่อว่า p2c) เป็น <b>อีกวิธีหนึ่ง</b> ไม่ใช่ชื่ออื่นของ Least Connections ใช้จำนวนงานค้างเหมือนกัน แต่ไม่เทียบทุกตัว</span></div></div></div></div></section>
+<section class="slide " data-title="Least Connections ดู server ทุกตัว ส่วน Power of Two Choices สุ่มมา 2 ตัว" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">Least Connections ดู server ทุกตัว ส่วน Power of Two Choices สุ่มมา 2 ตัว</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/summary-lc-vs-p2c.png" alt="Least Connections ดู server ทุกตัว ส่วน Power of Two Choices สุ่มมา 2 ตัว" width="1672" height="941"></div><p class="cap">server 8 ตัวชุดเดียวกัน: Least Connections ได้ <b>S4</b> ที่งานค้าง 0 ส่วน Power of Two Choices สุ่มได้ S3 กับ S6 จึงได้ <b>S6</b> ที่งานค้าง 2</p></div></section>
+<section class="slide " data-title="Least Connections กับ Power of Two Choices ต่างกันที่จำนวน server ที่นำมาเทียบ" data-group="ส่วน D · GPU 2 ใบ" data-max="1.40"><header class="hd"><div class="kicker">แนวคิด · วิธีแจกงาน</div><h2><span class="tt">Least Connections กับ Power of Two Choices ต่างกันที่จำนวน server ที่นำมาเทียบ</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c3"><thead><tr><th></th><th>Least Connections</th><th>Power of Two Choices (p2c)</th></tr></thead><tbody><tr><td>ข้อมูลที่ใช้ตัดสิน</td><td>จำนวนงานค้าง</td><td>จำนวนงานค้าง</td></tr><tr><td>ดู server กี่ตัว</td><td><b>ทุกตัว</b></td><td><b>สุ่มมา 2 ตัว</b></td></tr><tr><td>server ที่ได้งาน</td><td>ตัวที่งานค้างน้อยที่สุดเสมอ</td><td>ตัวที่น้อยกว่าใน 2 ตัวที่สุ่มได้ (อาจไม่ใช่ตัวที่น้อยที่สุด)</td></tr><tr><td>งานของ Load Balancer ต่อ 1 คำขอ</td><td>เพิ่มตามจำนวน server</td><td>คงที่ ไม่ขึ้นกับจำนวน server</td></tr><tr><td>เมื่อมี Load Balancer หลายตัว</td><td>ทุกตัวเห็นตัวที่ว่างตัวเดียวกัน แล้วส่งงานไปกองพร้อมกันได้</td><td>การสุ่มช่วยกระจาย ไม่ไปกองที่ตัวเดียว</td></tr><tr><td>เหมาะกับ</td><td>Load Balancer 1 ตัว · server ไม่กี่สิบตัว</td><td>server หลายร้อยตัว หรือ Load Balancer หลายตัว</td></tr></tbody></table><div class="note info">ใน NGINX เขียน <code>least_conn;</code> (Least Connections) หรือ <code>random two least_conn;</code> (Power of Two Choices) ในบล็อก <code>upstream</code></div></div></section>
+<section class="slide " data-title="ขั้นที่ 10: เทียบวิธีแจกงาน 3 วิธี ใน 2 ตอน (ทุกตอนวัดบนโหนดเดี่ยว 1 โหนด × 2 GPU)" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ขั้นที่ 10: เทียบวิธีแจกงาน 3 วิธี ใน 2 ตอน (ทุกตอนวัดบนโหนดเดี่ยว 1 โหนด × 2 GPU)</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s10-plan.png" alt="ขั้นที่ 10: เทียบวิธีแจกงาน 3 วิธี ใน 2 ตอน (ทุกตอนวัดบนโหนดเดี่ยว 1 โหนด × 2 GPU)" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>10.1 เครื่องหลัก</b> Round Robin เทียบ Least Connections ชื่อผล <code>lc_equal</code> <code>rr_slow</code> <code>lc_slow</code> (ตัวเทียบกรณีเท่ากันคือ <code>gpu2</code>)</span></div><div class="stp"><span class="n">2</span><span><b>10.2 เช่าเครื่องใหม่แยกกัน 2 เครื่อง (เครื่อง A และเครื่อง B)</b> แต่ละเครื่องเป็น <b>1 โหนด × 2 GPU</b> (ไม่ได้ต่อเป็นคลัสเตอร์) วัดครบทั้ง 3 วิธีในเครื่องเดียวกัน</span></div><div class="stp"><span class="n">3</span><span>ทั้งสองตอนวัด 2 กรณี คือ GPU เร็วเท่ากัน และ GPU ใบที่ 2 ช้าลง 3 เท่า โดยเปลี่ยนเฉพาะบรรทัดเลือกวิธีแจกงาน</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 10.1 · Round Robin เทียบ Least Connections" data-group="ส่วน D · GPU 2 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 10.1 · Round Robin เทียบ Least Connections</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 24 บรรทัด</span><button class="copy big" data-full="prompt9">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทียบวิธีแจกงานของ NGINX 2 วิธี บนระบบแบบที่ 4 (GPU 2 ใบ · ใบละ 4 server · Micro-batching)
+Round Robin: แจกวนทีละตัว ไม่ดูว่าใครงานค้างมาก
+Least Connections: ส่งให้ server ที่มีงานค้างน้อยที่สุดในตอนนั้น
+
+[ขั้นตอน]
+1. เพิ่มให้ code/cluster.sh เลือกวิธีแจกงานได้ 2 วิธีข้างบน และสั่งให้ server ของ GPU ใบที่เลือกเรียกโมเดลช้าลงกี่เท่าได้ (จำลอง GPU ที่ช้ากว่า)
+2. ทั้งสองวิธีต้องใช้การตั้งค่าของ NGINX เหมือนกันทุกอย่าง ต่างกันแค่วิธีแจกงาน
+3. กรณี GPU เร็วเท่ากัน: หาความจุของ Least Connections ตั้งชื่อผลว่า lc_equal (ตัวเทียบคือ gpu2 ที่เป็น Round Robin)
+4. กรณี GPU ใบที่ 2 ช้าลง 3 เท่า: หาความจุ 2 รอบ · Round Robin ตั้งชื่อผลว่า rr_slow · Least Connections ตั้งชื่อผลว่า lc_slow
+5. เสร็จแล้วเอาการหน่วงออก และเปิดระบบแบบที่ 4 กลับมาแบบ Round Robin
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็น 2 ตาราง (GPU เร็วเท่ากัน · GPU ใบที่ 2 ช้า) เทียบ 2 วิธี: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · สัดส่วนคำขอที่ GPU แต่ละใบได้ · GPU แต่ละใบทำงานกี่ %
+อธิบาย 3–4 บรรทัดว่าทำไมผลต่างกัน แล้วบอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 10.1: เมื่อ GPU ใบที่ 2 ช้าลง 3 เท่า Least Connections รับได้ 103 คน เทียบกับ 52 คนของ Round Robin" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ผลขั้นที่ 10.1: เมื่อ GPU ใบที่ 2 ช้าลง 3 เท่า Least Connections รับได้ 103 คน เทียบกับ 52 คนของ Round Robin</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:394px"><img src="results/images/6_round_robin_vs_least_conn.png" alt="ผลขั้นที่ 10.1: เมื่อ GPU ใบที่ 2 ช้าลง 3 เท่า Least Connections รับได้ 103 คน เทียบกับ 52 คนของ Round Robin" width="2077" height="804"></div><p class="cap">ซ้ายคือความจุของ 2 กรณี ขวาคือสัดส่วนคำขอที่ความจุ: ทุกแท่งแบ่งราว 50 ต่อ 50 ยกเว้น <b>Least Connections กรณี GPU ช้า</b> ส่วนต่าง 180 กับ 250 คนของกรณี GPU เร็วเท่ากันมาจากการวัดวิธีละ 1 รอบ จึงอ่านได้แค่ทิศทาง</p></div></section>
+<section class="slide hero" style="background-image:url(images/slides/h05-slow.jpg)" data-title="ผลขั้นที่ 10.1 กรณี GPU ช้า: Least Connections ส่งคำขอ 70.8% ไป GPU ใบเร็วเอง" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ผลขั้นที่ 10.1 กรณี GPU ช้า: Least Connections ส่งคำขอ 70.8% ไป GPU ใบเร็วเอง</span><span class="tag">results/rr_slow.json · lc_slow.json</span></h2></header><div class="body"><div class="herobox"><div class="tiles hl"><div class="tile bad"><div class="num">52 คน</div><div class="txt"><div class="k">Round Robin · rr_slow</div><div class="s">คำขอ GPU 0 / GPU 1 = 50.0% / 50.0% · GPU ทำงาน 55% / 95% ใบช้าเป็นตัวกำหนด p95 ของทั้งระบบ</div></div></div><div class="tile ok"><div class="num">103 คน</div><div class="txt"><div class="k">Least Connections · lc_slow</div><div class="s">คำขอ GPU 0 / GPU 1 = 70.8% / 29.2% · GPU ทำงาน 82% / 93% ใบช้างานค้างสูง จึงได้งานใหม่น้อยลงเอง</div></div></div></div><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ช่องว่าง 52 กับ 103 คนกว้างกว่าความแกว่งระหว่างรอบมาก และสัดส่วนคำขอเปลี่ยนจริง ข้อสรุปของกรณีนี้จึงเชื่อได้ แม้วัดอย่างละรอบ</span></div></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="ขั้นที่ 10.2: Round Robin ได้ 180, 128 และ 203 คนบน 3 เครื่อง จึงต้องเทียบในเครื่องเดียว" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ขั้นที่ 10.2: Round Robin ได้ 180, 128 และ 203 คนบน 3 เครื่อง จึงต้องเทียบในเครื่องเดียว</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/why-same-machine.png" alt="ขั้นที่ 10.2: Round Robin ได้ 180, 128 และ 203 คนบน 3 เครื่อง จึงต้องเทียบในเครื่องเดียว" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ตัวเลขข้ามเครื่องใช้เทียบวิธีแจกงานไม่ได้ เพราะเครื่องเช่าแต่ละเครื่องให้กำลังไม่เท่ากัน</span></div><div class="stp"><span class="n">2</span><span>10.2 เช่าเครื่องใหม่ <b>แยกกัน 2 เครื่อง (เครื่อง A และเครื่อง B)</b> โดย <b>ไม่ได้ต่อเป็นคลัสเตอร์</b> แต่ละเครื่องเป็น <b>1 โหนด × 2 GPU</b> ที่วัดครบทั้ง 3 วิธีในเครื่องเดียว</span></div><div class="stp"><span class="n">3</span><span>เครื่อง B วัดกลับลำดับ (Power of Two Choices → Least Connections → Round Robin) เพื่อไม่ให้ลำดับการวัดเอนเอียง</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 10.2: ไฟล์ตั้งค่าของ 3 วิธีต่างกันเพียงบรรทัดเดียว" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ขั้นที่ 10.2: ไฟล์ตั้งค่าของ 3 วิธีต่างกันเพียงบรรทัดเดียว</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/nginx-3lines.png" alt="ขั้นที่ 10.2: ไฟล์ตั้งค่าของ 3 วิธีต่างกันเพียงบรรทัดเดียว" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>Round Robin ไม่ใส่คำสั่ง · Least Connections <code>least_conn;</code> · Power of Two Choices <code>random two least_conn;</code></span></div><div class="stp"><span class="n">2</span><span>Least Connections ดูงานค้างของ server <b>ทุกตัว</b> ส่วน Power of Two Choices <b>สุ่มมา 2 ตัว</b> แล้วเลือกตัวที่งานค้างน้อยกว่า</span></div><div class="stp"><span class="n">3</span><span>การตั้งค่าอื่นของ NGINX เหมือนกันทุกบรรทัด</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 10.2 · 3 วิธีบนเครื่องเดียวกัน" data-group="ส่วน D · GPU 2 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 10.2 · 3 วิธีบนเครื่องเดียวกัน</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">พรอมต์นี้เช่าเครื่องใหม่ป้าย <code>vapp-lab6-p2c</code> (1 โหนด × 2 GPU) และลบเองเมื่อจบ วางต่อจาก 10.1 ได้ทันที</span><span class="plabel">ส่วนที่ 1/2 · บรรทัด 1–19 จาก 36</span><button class="copy big" data-full="prompt10">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb/same_machine ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+โค้ดตั้งต้น: คัดลอกโค้ดจาก lab6_microbatch_lb/code มาไว้ที่ lab6_microbatch_lb/same_machine/code
+โมเดล: lab6_microbatch_lb/best.pt · รูปทดสอบ: lab6_microbatch_lb/samples (6 รูป)
+
+[งาน]
+เทียบวิธีแจกงานของ NGINX 3 วิธีบนเครื่องเดียวกัน ว่าวิธีใดรับผู้ใช้พร้อมกันได้มากกว่า
+Round Robin: แจกวนทีละตัว
+Least Connections: ส่งให้ server ที่มีงานค้างน้อยที่สุด
+Power of Two Choices (p2c): สุ่ม server มา 2 ตัว แล้วส่งให้ตัวที่มีงานค้างน้อยกว่า
+
+[ขั้นตอน]
+1. เช่าเครื่อง RTX 3090 2 ใบในเครื่องเดียว ราคาไม่เกิน $0.60 ต่อชั่วโมง ป้าย vapp-lab6-p2c
+   (verified · reliability 0.95 ขึ้นไป · CPU ที่ใช้ได้จริง 24 cores ขึ้นไป · ไม่อยู่ในจีน · PyTorch 2.8 ที่มี CUDA 12.8 · disk 40 GB)
+2. นำโค้ดตั้งต้น โมเดล และรูปทดสอบขึ้นเครื่อง ติดตั้งสิ่งที่ต้องใช้ และรัน NGINX เป็น container ด้วย udocker (image nginx:1.27)
+3. เพิ่มให้ code/cluster.sh เลือกวิธีแจกงานแบบ p2c ได้ โดยไฟล์ตั้งค่าของ 3 วิธีต้องต่างกันเฉพาะบรรทัดเลือกวิธีแจกงาน
+   แล้วตรวจจากไฟล์ตั้งค่าที่ NGINX ใช้จริงว่าแต่ละวิธีถูกเปิดตามที่สั่ง</span></pre></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 10.2 · 3 วิธีบนเครื่องเดียวกัน" data-group="ส่วน D · GPU 2 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 10.2 · 3 วิธีบนเครื่องเดียวกัน</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">พรอมต์นี้เช่าเครื่องใหม่ป้าย <code>vapp-lab6-p2c</code> (1 โหนด × 2 GPU) และลบเองเมื่อจบ วางต่อจาก 10.1 ได้ทันที</span><span class="plabel">ส่วนที่ 2/2 · บรรทัด 20–36 จาก 36</span><button class="copy big" data-full="prompt10">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">4. เปิดระบบ GPU 2 ใบ ใบละ 4 server โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+5. กรณี GPU เร็วเท่ากัน: หาความจุด้วยตัวยิงโหลดของทั้ง 3 วิธี วิธีละ 1 รอบ ตามลำดับ Round Robin → Least Connections → p2c
+6. กรณี GPU ใบที่ 2 ช้าลง 3 เท่า: ทำแบบเดียวกับข้อ 5 ด้วยลำดับเดียวกัน
+7. ตั้งชื่อผลเป็น &lt;วิธี&gt;_&lt;กรณี&gt; คือ rr_equal lc_equal p2c_equal rr_slow lc_slow p2c_slow และเก็บไฟล์ตั้งค่าที่ใช้จริงของทุกผลไว้ใน results
+8. เขียน code/report3.py รวมผลลง results/metrics.json และวาดกราฟที่ results/images (ข้อความอังกฤษ):
+   ความจุของ 3 วิธีทั้ง 2 กรณี · สัดส่วนคำขอที่ GPU แต่ละใบได้ · p95 เทียบ N ของ 3 วิธีในแต่ละกรณี
+9. นำผลและโค้ดทั้งหมดกลับมา ตรวจว่ามาครบ แล้วลบเครื่องป้าย vapp-lab6-p2c และตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็น 2 ตาราง (GPU เร็วเท่ากัน · GPU ใบที่ 2 ช้า): วิธี · ความจุ · ระดับแรกที่ไม่ผ่าน · Throughput สูงสุด · p95 ที่ความจุ · สัดส่วนคำขอ GPU 0 / GPU 1 · GPU ทำงานกี่ %
+บรรทัดตั้งค่าของ NGINX ที่ต่างกันของ 3 วิธี · สิ่งผิดปกติระหว่างวัด (เช่น server ถูกพัก error หรือระดับที่ต้องวัดซ้ำ)
+เครื่องที่เช่า: ที่ตั้ง · ราคาต่อชั่วโมง · CPU ที่ใช้ได้จริง · อายุเครื่อง · ยอดที่ถูกคิด
+ไม่ต้อง commit · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 10.2 (GPU ช้า): Least Connections ได้ 96 และ 111 คน สูงกว่า Power of Two Choices" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ผลขั้นที่ 10.2 (GPU ช้า): Least Connections ได้ 96 และ 111 คน สูงกว่า Power of Two Choices</span><span class="tag">same_machine/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:407px"><img src="images/lab/result-3methods.png" alt="ผลขั้นที่ 10.2 (GPU ช้า): Least Connections ได้ 96 และ 111 คน สูงกว่า Power of Two Choices" width="1820" height="728"></div><p class="cap">สองโหนดเดี่ยว (เครื่องละ 1 โหนด × 2 GPU) วัดกลับลำดับกัน ขวาคือกรณี GPU ช้า: <b>Least Connections &gt; Power of Two Choices (72 และ 81 คน) &gt; Round Robin ทั้งสองเครื่อง</b></p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 10.2: ผู้ใช้ 64 คนเท่ากัน เมื่อ GPU ช้า 1 ใบ Round Robin เกินเกณฑ์ ส่วน Least Connections มี p95 ต่ำที่สุด" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ผลขั้นที่ 10.2: ผู้ใช้ 64 คนเท่ากัน เมื่อ GPU ช้า 1 ใบ Round Robin เกินเกณฑ์ ส่วน Least Connections มี p95 ต่ำที่สุด</span><span class="tag">same_machine/summary.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/result-p95-n64.png" alt="ผลขั้นที่ 10.2: ผู้ใช้ 64 คนเท่ากัน เมื่อ GPU ช้า 1 ใบ Round Robin เกินเกณฑ์ ส่วน Least Connections มี p95 ต่ำที่สุด" width="1064" height="672"></div><p class="cap">p95 ของ Least Connections คือ <b>328 และ 299 ms</b> ของ Power of Two Choices คือ 448 และ 399 ms และของ Round Robin คือ 658 และ 578 ms ซึ่งเกินเส้น 500 ms</p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 10.2: เชื่อได้เมื่อ server เร็วไม่เท่ากัน และยังสรุปไม่ได้เมื่อ server เร็วเท่ากัน" data-group="ส่วน D · GPU 2 ใบ" data-max="1.40"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">ผลขั้นที่ 10.2: เชื่อได้เมื่อ server เร็วไม่เท่ากัน และยังสรุปไม่ได้เมื่อ server เร็วเท่ากัน</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c3"><thead><tr><th>ข้อสรุป</th><th>หลักฐาน</th><th>เชื่อได้แค่ไหน</th></tr></thead><tbody><tr><td>server เร็วไม่เท่ากัน: Least Connections ดีกว่า p2c</td><td>96 กับ 72 · 111 กับ 81</td><td><b>เชื่อได้</b> ลำดับเดียวกันทั้งสองเครื่อง ทั้งที่วัดกลับลำดับกัน และส่วนต่างกว้างกว่าความแกว่งใกล้เส้นเกณฑ์</td></tr><tr><td>server เร็วไม่เท่ากัน: p2c ดีกว่า Round Robin</td><td>72 กับ 49 · 81 กับ 54</td><td><b>เชื่อได้</b> ด้วยเหตุผลเดียวกัน</td></tr><tr><td>server เร็วเท่ากัน: ทั้งสองวิธีดีกว่า Round Robin</td><td>221 และ 196 กับ 128 · 230 และ 238 กับ 203</td><td>ทิศทางตรงกันทั้งสองเครื่อง แต่ขนาดของส่วนต่างต่างกันมาก (1.13–1.73 เท่า)</td></tr><tr><td>server เร็วเท่ากัน: Least Connections กับ p2c วิธีใดดีกว่า</td><td>221 กับ 196 · 230 กับ 238</td><td><b>ยังสรุปไม่ได้</b> ลำดับสลับกันระหว่างสองเครื่อง</td></tr></tbody></table></div></section>
+<section class="slide " data-title="สรุปขั้นที่ 10: ระบบขนาดนี้เลือก Least Connections" data-group="ส่วน D · GPU 2 ใบ" data-max="1.40"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 10 จาก 12</div><h2><span class="tt">สรุปขั้นที่ 10: ระบบขนาดนี้เลือก Least Connections</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c5"><thead><tr><th>กรณี</th><th>วิธี</th><th>เครื่องหลัก (10.1)</th><th>เครื่อง A (10.2)</th><th>เครื่อง B (10.2)</th></tr></thead><tbody><tr><td>GPU ใบที่ 2 ช้าลง 3 เท่า</td><td>Round Robin</td><td>52</td><td>49</td><td>54</td></tr><tr><td>GPU ใบที่ 2 ช้าลง 3 เท่า</td><td>Power of Two Choices</td><td>–</td><td>72</td><td>81</td></tr><tr><td>GPU ใบที่ 2 ช้าลง 3 เท่า</td><td>Least Connections</td><td><b>103</b></td><td><b>96</b></td><td><b>111</b></td></tr><tr><td>GPU เร็วเท่ากัน</td><td>Round Robin</td><td>180</td><td>128</td><td>203</td></tr><tr><td>GPU เร็วเท่ากัน</td><td>Power of Two Choices</td><td>–</td><td>196</td><td><b>238</b></td></tr><tr><td>GPU เร็วเท่ากัน</td><td>Least Connections</td><td><b>250</b></td><td><b>221</b></td><td>230</td></tr></tbody></table><div class="note info">เครื่องหลัก · เครื่อง A · เครื่อง B ต่างเป็น <b>โหนดเดี่ยว (1 โหนด × 2 GPU)</b> ที่วัดแยกกันคนละรอบ ไม่ใช่คลัสเตอร์ จึงเทียบกันได้เฉพาะภายในคอลัมน์เดียวกัน</div></div></section>
+<section class="slide " data-title="เมื่อ GPU ล่ม Retry ส่งคำขอต่อให้ตัวอื่น และ Health Check เลิกส่งงานให้ตัวที่ล่ม" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">แนวคิด · เมื่อ GPU ล่มกลางทาง</div><h2><span class="tt">เมื่อ GPU ล่ม Retry ส่งคำขอต่อให้ตัวอื่น และ Health Check เลิกส่งงานให้ตัวที่ล่ม</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/theory/th-failover.png" alt="เมื่อ GPU ล่ม Retry ส่งคำขอต่อให้ตัวอื่น และ Health Check เลิกส่งงานให้ตัวที่ล่ม" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><b>Retry</b> คำขอที่ส่งไปแล้วล้ม ถูกส่งต่อให้ server ตัวอื่นทันที ผู้ใช้ไม่เห็น error</span></div><div class="stp"><span class="n">2</span><span><b>Health Check</b> เลิกส่งงานให้ตัวที่ล่ม จนกว่าจะกลับมาปกติ · NGINX ใช้แบบ <b>Passive</b> คือดูจากคำขอจริงที่ล้ม</span></div><div class="stp"><span class="n">3</span><span>ส่งซ้ำได้อย่างปลอดภัยเพราะการตรวจรูปเดิมซ้ำได้ผลเดิม (<b>idempotent</b>)</span></div><div class="stp"><span class="n">4</span><span>หลังล่มระบบเหลือ GPU ใบเดียว จึงต้องเผื่อกำลังไว้</span></div></div></div></div></section>
+<section class="slide " data-title="ขั้นที่ 11: ปิด server ของ GPU ใบที่ 2 ที่วินาทีที่ 20 ของการยิงโหลด 60 วินาที" data-group="ส่วน D · GPU 2 ใบ" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 11 จาก 12</div><h2><span class="tt">ขั้นที่ 11: ปิด server ของ GPU ใบที่ 2 ที่วินาทีที่ 20 ของการยิงโหลด 60 วินาที</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s11.png" alt="ขั้นที่ 11: ปิด server ของ GPU ใบที่ 2 ที่วินาทีที่ 20 ของการยิงโหลด 60 วินาที" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>ยิงด้วยผู้ใช้เท่ากับ <b>หนึ่งในสามของความจุแบบที่ 4</b> แล้วปิดโปรแกรม API ทั้ง 4 ตัวของ GPU ใบที่ 2 แบบกะทันหัน</span></div><div class="stp"><span class="n">2</span><span>รอบ <code>fail_off</code> NGINX ไม่ป้องกัน และรอบ <code>fail_on</code> NGINX ป้องกัน</span></div><div class="stp"><span class="n">3</span><span>ป้องกันหมายถึง ส่งคำขอที่ล้มต่อให้ server ตัวอื่น และเลิกส่งงานให้ตัวที่ล่ม</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 11 · server ล่มกลางทาง" data-group="ส่วน D · GPU 2 ใบ" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 11 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 11 · server ล่มกลางทาง</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 18 บรรทัด</span><button class="copy big" data-full="prompt11">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+ดูว่าเมื่อ GPU 1 ใบล่มกลางทาง ผู้ใช้เจอ error หรือไม่ บนระบบแบบที่ 4 (GPU 2 ใบ · ใบละ 4 server · Round Robin)
+
+[ขั้นตอน]
+1. เพิ่มให้ code/cluster.sh ปิด server ทั้งหมดของ GPU ใบที่เลือกแบบกะทันหันได้
+   และเลือกได้ว่า NGINX จะป้องกันหรือไม่ · ป้องกัน = ส่งคำขอที่ล้มต่อให้ server ตัวอื่น และเลิกส่งงานให้ตัวที่ล่ม
+2. ยิงโหมดระดับเดียว 60 วินาที ด้วยผู้ใช้เท่ากับหนึ่งในสามของความจุแบบที่ 4 (ผล gpu2) · วินาทีที่ 20 ปิด server ของ GPU ใบที่ 2
+3. ทำ 2 รอบ: ไม่ป้องกัน ตั้งชื่อผลว่า fail_off · ป้องกัน ตั้งชื่อผลว่า fail_on
+4. เสร็จแล้วเปิดระบบแบบที่ 4 กลับมา
+
+[รายงาน]
+สรุปเป็นตารางเทียบ 2 รอบ: error จากคำขอทั้งหมด · Throughput ที่สำเร็จก่อนล่มและหลังล่ม · p95 หลังล่ม · หลังล่มยังผ่านเกณฑ์ p95 ไม่เกิน 500 ms ไหม
+อธิบายการตั้งค่าของ NGINX ที่ใช้ป้องกัน 2–3 บรรทัด แล้วบอกว่าเครื่องยังเปิดอยู่</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 11: ไม่ป้องกัน error 34.2% ของคำขอทั้งหมด ส่วนรอบที่ป้องกัน error 0" data-group="ส่วน D · GPU 2 ใบ" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 11 จาก 12</div><h2><span class="tt">ผลขั้นที่ 11: ไม่ป้องกัน error 34.2% ของคำขอทั้งหมด ส่วนรอบที่ป้องกัน error 0</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/images/7_gpu_failure.png" alt="ผลขั้นที่ 11: ไม่ป้องกัน error 34.2% ของคำขอทั้งหมด ส่วนรอบที่ป้องกัน error 0" width="1864" height="1269"></div><p class="cap">บนคือรอบ <code>fail_off</code> ล่างคือรอบ <code>fail_on</code> เส้นประคือวินาทีที่ 20 ที่ปิด GPU ใบที่ 2 และ <b>แถบสีแดงคือ error</b></p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 11: การป้องกันของ NGINX คือ Retry และการพัก server ที่ล้ม 10 วินาที" data-group="ส่วน D · GPU 2 ใบ" data-max="1.30"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 11 จาก 12</div><h2><span class="tt">ผลขั้นที่ 11: การป้องกันของ NGINX คือ Retry และการพัก server ที่ล้ม 10 วินาที</span></h2></header><div class="body"><pre class="code "><button class="copy">คัดลอก</button><span class="t">upstream detect_servers {
+    server 127.0.0.1:8101 max_fails=1 fail_timeout=10s;   # ล้ม 1 ครั้ง พักไม่รับงาน 10 วินาที
+    server 127.0.0.1:8201 max_fails=1 fail_timeout=10s;
+    # ... ครบ 8 ตัว
+}
+    location /v1/ {
+        proxy_next_upstream error timeout non_idempotent;   # คำขอที่ล้มส่งต่อให้ตัวถัดไป แม้เป็น POST ที่ส่งออกไปแล้ว
+    }</span></pre><div class="note eye"><span class="lbl">ข้อสังเกต</span><span>ต้องมี <code>non_idempotent</code> เพราะ <code>/v1/detect</code> เป็น POST การส่งซ้ำใช้ได้เมื่อไม่ก่อผลซ้ำ เช่น การตรวจรูป</span></div></div></section>
+<section class="slide " data-title="ขั้นที่ 12: รวมตัวเลขเป็นกราฟ นำผลกลับมา แล้วลบเครื่อง" data-group="ส่วน E · สรุปของ LAB" data-max="1.25"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">ขั้นที่ 12: รวมตัวเลขเป็นกราฟ นำผลกลับมา แล้วลบเครื่อง</span></h2></header><div class="body"><div class="ex big"><div class="fig"><img src="images/lab/s12.png" alt="ขั้นที่ 12: รวมตัวเลขเป็นกราฟ นำผลกลับมา แล้วลบเครื่อง" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span>AI เขียน <code>code/report.py</code></span></div><div class="stp"><span class="n">2</span><span>รวมตัวเลขของทุกผลลง <code>results/metrics.json</code> และวาดกราฟ 7 ภาพ</span></div><div class="stp"><span class="n">3</span><span>นำผลทั้งหมดกลับมาที่ <code>results</code> และโค้ดทุกไฟล์ที่ <code>code</code> แล้วตรวจว่ามาครบ</span></div><div class="stp"><span class="n">4</span><span><b>ลบเครื่องป้าย <code>vapp-lab6-nginx</code></b> แล้วตรวจว่าไม่เหลือ</span></div></div></div></div></section>
+<section class="slide pslide" data-title="พรอมต์ · ขั้นที่ 12 · กราฟ สรุป และลบเครื่อง (ห้ามข้าม)" data-group="ส่วน E · สรุปของ LAB" data-max="1.45"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">พรอมต์ · ขั้นที่ 12 · กราฟ สรุป และลบเครื่อง (ห้ามข้าม)</span><span class="tag">Copy &amp; Paste</span></h2></header><div class="body"><div class="pbar"><span class="how">วางพรอมต์นี้ใน Claude Code ที่เปิดอยู่ที่โฟลเดอร์ <code>02_VastAi_Application</code></span><span class="plabel">พรอมต์ทั้งหมด 24 บรรทัด</span><button class="copy big" data-full="prompt12">คัดลอกพรอมต์ทั้งหมด</button></div><pre class="code prompt"><span class="t">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ เก็บผลกลับ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. เขียน code/report.py รวมตัวเลขของทุกผล (base batch multi gpu2 lc_equal rr_slow lc_slow fail_off fail_on) ลง results/metrics.json
+2. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ)
+   - p95 เทียบ N ของ 4 แบบ พร้อมเส้นเกณฑ์ 500 ms และจุดความจุ
+   - Throughput เทียบ N ของ 4 แบบ
+   - แท่งความจุของ 4 แบบ
+   - จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน เทียบ N
+   - GPU ทำงานกี่ % และ CPU ของ server ที่ความจุของ 4 แบบ
+   - Round Robin เทียบ Least Connections: ความจุและสัดส่วนคำขอ ทั้ง 2 กรณี
+   - คำขอต่อวินาทีตอน GPU ล่ม แยกสีตาม GPU และ error ทั้ง 2 รอบ
+3. นำผลทั้งหมดกลับมาที่ results และโค้ดทุกไฟล์ที่ code ตรวจว่ามาครบ และเปิดดูกราฟว่าอ่านออก
+4. ลบเครื่องป้าย vapp-lab6-nginx แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง 4 แบบ: จำนวน GPU · แบบ · ความจุ · Throughput สูงสุด · p95 ที่ความจุ · เป็นกี่เท่าของแบบที่ 1
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ราคาต่อชั่วโมง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</span></pre></div></section>
+<section class="slide " data-title="ผลขั้นที่ 12: ความจุของ 4 แบบคือ 29, 52, 90 และ 180 คน" data-group="ส่วน E · สรุปของ LAB" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">ผลขั้นที่ 12: ความจุของ 4 แบบคือ 29, 52, 90 และ 180 คน</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/images/3_capacity_bar.png" alt="ผลขั้นที่ 12: ความจุของ 4 แบบคือ 29, 52, 90 และ 180 คน" width="1247" height="795"></div><p class="cap">แบบที่ 2 และ 3 ใช้ GPU ใบเดิมโดยค่าเช่าเท่าเดิม แบบที่ 2 ได้ 1.79 เท่า และแบบที่ 3 ได้ <b>3.10 เท่าของแบบที่ 1</b> ก่อนเพิ่ม GPU ใบที่ 2</p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 12: Throughput ของทุกแบบเพิ่มแล้วแบนเมื่อระบบเต็ม" data-group="ส่วน E · สรุปของ LAB" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">ผลขั้นที่ 12: Throughput ของทุกแบบเพิ่มแล้วแบนเมื่อระบบเต็ม</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/images/2_throughput_vs_users.png" alt="ผลขั้นที่ 12: Throughput ของทุกแบบเพิ่มแล้วแบนเมื่อระบบเต็ม" width="1341" height="825"></div><p class="cap">Throughput สูงสุดของ 4 แบบคือ 62.6, 142.9, 278.7 และ 566.5 คำขอต่อวินาที ของแบบที่ 2 ถึง 4 <b>เกิดที่ระดับที่ไม่ผ่านเกณฑ์</b></p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 12: จำนวนรูปต่อรอบปรับเองตามคิว จาก 3.3 รูปที่ N = 4 เป็น 26.0 รูปที่ N = 52" data-group="ส่วน E · สรุปของ LAB" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">ผลขั้นที่ 12: จำนวนรูปต่อรอบปรับเองตามคิว จาก 3.3 รูปที่ N = 4 เป็น 26.0 รูปที่ N = 52</span><span class="tag">results/batch.json</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="results/images/4_images_per_call_vs_users.png" alt="ผลขั้นที่ 7: จำนวนรูปต่อรอบปรับเองตามคิว จาก 3.3 รูปที่ N = 4 เป็น 26.0 รูปที่ N = 52" width="1326" height="825"></div><p class="cap">ดูเส้น <code>2 batch</code> ของแบบที่ 2 ซึ่งเป็นเส้นสีส้มแดงที่อยู่บนสุด: จำนวนรูปเฉลี่ยต่อการเรียกโมเดล 1 ครั้งเพิ่มตาม N และ <b>ชนเพดาน 32 รูปที่ N = 64</b></p></div></section>
+<section class="slide " data-title="ผลขั้นที่ 12: GPU ทำงาน 22% ในแบบที่ 1, 31% ในแบบที่ 2 และ 82% ในแบบที่ 3" data-group="ส่วน E · สรุปของ LAB" data-max="1.10"><header class="hd"><div class="kicker">LAB 6 · ขั้นที่ 12 จาก 12</div><h2><span class="tt">ผลขั้นที่ 12: GPU ทำงาน 22% ในแบบที่ 1, 31% ในแบบที่ 2 และ 82% ในแบบที่ 3</span><span class="tag">results/metrics.json</span></h2></header><div class="body"><div class="fig" style="--figmin:428px"><img src="results/images/5_gpu_cpu_at_capacity.png" alt="ผลขั้นที่ 8: GPU ทำงาน 22% ในแบบที่ 1, 31% ในแบบที่ 2 และ 82% ในแบบที่ 3" width="1935" height="813"></div><p class="cap">ซ้ายคือ GPU ทำงานกี่ % ที่ความจุ ขวาคือ CPU ของ server รวม (100% = 1 core) ตัวถ่วงของแบบที่ 3 <b>น่าจะเป็น GPU</b> ซึ่งรอบนี้ยังไม่ได้วัดแยกยืนยัน</p></div></section>
+<section class="slide " data-title="สรุป 4 แบบ: แต่ละแบบแก้ตัวถ่วงคนละตัว และมีราคาที่ต้องจ่ายต่างกัน" data-group="ส่วน E · สรุปของ LAB" data-max="1.40"><header class="hd"><div class="kicker">แนวคิด · สรุป</div><h2><span class="tt">สรุป 4 แบบ: แต่ละแบบแก้ตัวถ่วงคนละตัว และมีราคาที่ต้องจ่ายต่างกัน</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c4"><thead><tr><th>แบบ</th><th>เปลี่ยนอะไร</th><th>แก้ตัวถ่วงไหน</th><th>จ่ายเพิ่ม</th></tr></thead><tbody><tr><td>1 ทำทีละรูป</td><td>–</td><td>–</td><td>–</td></tr><tr><td>2 Micro-batching</td><td>รวมรูปที่รออยู่เข้าโมเดลครั้งเดียว</td><td>การเรียกโมเดลทีละรูป</td><td>ผู้ใช้คนเดียวช้าลงเล็กน้อย</td></tr><tr><td>3 + server 4 ตัว</td><td>เปิด server หลายตัวบน GPU ใบเดิม</td><td>CPU ของ server ตัวเดียว</td><td>VRAM และ CPU</td></tr><tr><td>4 GPU 2 ใบ + Load Balancer</td><td>เพิ่ม GPU แล้วแจกงาน</td><td>GPU</td><td>ค่าเช่า GPU ใบที่ 2</td></tr></tbody></table></div></section>
+<section class="slide divider photo" style="background-image:url(images/slides/s05-summary.jpg)" data-title="สรุป · สิ่งที่ได้จาก LAB 6" data-group="สรุป"><div class="shade"></div><div class="inner"><div class="small">ส่วนที่ 3 ของสไลด์</div><div class="big">สรุป</div><h1>สิ่งที่ได้จาก LAB 6</h1><div class="sub"><p>ลำดับที่คุ้ม บทเรียนจากการวัด และข้อที่ต้องอ่านคู่กับตัวเลข</p></div><div class="imgnote">ภาพจำลอง</div></div></section>
+<section class="slide " data-title="สรุปผล LAB 6: เพิ่ม Capacity ได้ทีละขั้น โดย 2 ขั้นแรกไม่เสียค่าเช่าเพิ่ม" data-group="สรุป" data-max="1.10"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">สรุปผล LAB 6: เพิ่ม Capacity ได้ทีละขั้น โดย 2 ขั้นแรกไม่เสียค่าเช่าเพิ่ม</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/lab/summary-results.png" alt="สรุปผล LAB 6: เพิ่ม Capacity ได้ทีละขั้น โดย 2 ขั้นแรกไม่เสียค่าเช่าเพิ่ม" width="1672" height="941"></div><p class="cap">ขั้นที่ 1–2 คือกี่เท่าของแบบที่ 1 ขั้นที่ 3 คือกี่เท่าของแบบที่ 3 และขั้นที่ 4 คือ <b>Least Connections เทียบ Round Robin เมื่อ GPU ใบที่ 2 ช้าลง 3 เท่า</b> บน 3 เครื่อง</p></div></section>
+<section class="slide " data-title="ถ้าต้องเลือกใช้จริง ให้ทำตามลำดับ 5 ขั้น เพราะขั้นบนถูกกว่าขั้นล่าง" data-group="สรุป" data-max="1.40"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">ถ้าต้องเลือกใช้จริง ให้ทำตามลำดับ 5 ขั้น เพราะขั้นบนถูกกว่าขั้นล่าง</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c3"><thead><tr><th>ลำดับ</th><th>เลือก</th><th>เหตุผลจากผลวัด</th></tr></thead><tbody><tr><td>1</td><td>เปิด <b>Micro-batching</b></td><td>รับได้ 1.79 เท่า ไม่เสียเงินเพิ่ม · ผู้ใช้คนเดียวช้าลง 5.1 ms</td></tr><tr><td>2</td><td>เปิด <b>server หลายตัวต่อ GPU</b> จน GPU ทำงานเกิน 80%</td><td>รวมสองข้อแรกได้ 3.10 เท่าบน GPU ใบเดิม</td></tr><tr><td>3</td><td><b>เพิ่ม GPU</b> เมื่อใบเดิมเต็มแล้วเท่านั้น</td><td>ได้ประมาณ 2 เท่า แต่จ่ายค่าเช่า 2 เท่า</td></tr><tr><td>4</td><td>ใช้ <b>Least Connections</b> เป็นค่าตั้งต้น</td><td>ไม่แย่กว่า Round Robin ในทุกรอบที่วัด และดีกว่าราว 2 เท่าเมื่อ server เร็วไม่เท่ากัน</td></tr><tr><td>5</td><td>เปิด <b>Retry + Health Check</b> เสมอ</td><td>error 34.2% เหลือ 0 · ใช้ได้กับงานที่ส่งซ้ำแล้วได้ผลเดิม</td></tr></tbody></table><div class="note info">LAB 6 พิสูจน์ครบ 5 ขั้นสำหรับงาน <b>Inference บน 1 โหนด หลาย GPU (Single-Node Multi-GPU)</b> · เมื่อ GPU ในโหนดเดียวเต็มแล้ว จึงนำ NGINX ชุดเดียวกันขยายข้ามหลายโหนด (<b>Multi-Node</b>) ใน <b>LAB 7</b></div></div></section>
+<section class="slide " data-title="เลือกวิธีแจกงาน: ระบบขนาดนี้เลือก Least Connections ระบบใหญ่ใช้ Power of Two Choices" data-group="สรุป" data-max="1.40"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">เลือกวิธีแจกงาน: ระบบขนาดนี้เลือก Least Connections ระบบใหญ่ใช้ Power of Two Choices</span><span class="tag">ตารางหลัก</span></h2></header><div class="body"><table class="c3"><thead><tr><th>สถานการณ์</th><th>เลือก</th><th>เหตุผล</th></tr></thead><tbody><tr><td>Load Balancer 1 ตัว · server ไม่กี่สิบตัว (ระบบของ LAB นี้)</td><td><b>Least Connections</b></td><td>เห็นทุกตัว จึงเลือกได้ดีที่สุด · วัดได้ 1.33–1.37 เท่าของ p2c เมื่อ server เร็วไม่เท่ากัน</td></tr><tr><td>server หลายร้อยตัว หรือมี Load Balancer หลายตัวแจกงานพร้อมกัน</td><td><b>p2c</b></td><td>งานต่อคำขอคงที่ และไม่ส่งงานไปกองที่ server ตัวเดียว (เหตุผลตามทฤษฎี LAB นี้ไม่ได้วัด)</td></tr><tr><td>server เร็วเท่ากันทุกตัว และงานแต่ละคำขอใช้เวลาใกล้กัน</td><td>Round Robin ก็พอ</td><td>ไม่มีตัวช้าให้หลบ</td></tr></tbody></table><div class="note info">ทั้งสองวิธีดีกว่า Round Robin ชัดเจนเมื่อ server เร็วไม่เท่ากัน</div></div></section>
+<section class="slide " data-title="บทเรียน 4 ข้อจากการวัด: พิสูจน์เครื่องมือ บอกเกณฑ์ ดู error และวัดซ้ำ" data-group="สรุป" data-max="1.10"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">บทเรียน 4 ข้อจากการวัด: พิสูจน์เครื่องมือ บอกเกณฑ์ ดู error และวัดซ้ำ</span></h2></header><div class="body"><div class="fig" style="--figmin:482px"><img src="images/slides/n04-lessons.png" alt="บทเรียน 4 ข้อจากการวัด: พิสูจน์เครื่องมือ บอกเกณฑ์ ดู error และวัดซ้ำ" width="1672" height="941"></div><p class="cap">รอบที่ไม่ป้องกัน GPU ล่มมี p95 ดูดี ทั้งที่ error หลังล่มราวครึ่งหนึ่ง จึงต้อง <b>ดู error คู่กับ p95 เสมอ</b></p></div></section>
+<section class="slide " data-title="อ่านต่อ: เนื้อหา พรอมต์ โค้ด และผลวัดจริงทั้งหมดรวมอยู่ในโฟลเดอร์เดียว" data-group="สรุป" data-max="1.25"><header class="hd"><div class="kicker">สรุป</div><h2><span class="tt">อ่านต่อ: เนื้อหา พรอมต์ โค้ด และผลวัดจริงทั้งหมดรวมอยู่ในโฟลเดอร์เดียว</span></h2></header><div class="body"><div class="ex mid2"><div class="fig"><img src="images/slides/n01-lab-map.jpg" alt="อ่านต่อ: เนื้อหา พรอมต์ โค้ด และผลวัดจริงทั้งหมดรวมอยู่ในโฟลเดอร์เดียว" width="1672" height="941"></div><div class="side fitbox"><div class="stp"><span class="n">1</span><span><a href="README.md" target="_blank" rel="noopener">README.md</a> รวมทฤษฎี 10 เรื่อง, LAB 12 ขั้นด้วย NGINX และสรุปผลการทดลองไว้ในหน้าเดียว</span></div><div class="stp"><span class="n">2</span><span><a href="PROMPTS.md" target="_blank" rel="noopener">PROMPTS.md</a> รวมพรอมต์ Copy &amp; Paste ครบทั้ง 12 ขั้น (13 พรอมต์)</span></div><div class="stp"><span class="n">3</span><span><a href="code_reference" target="_blank" rel="noopener">code_reference/</a> และ <a href="results" target="_blank" rel="noopener">results/</a> เก็บโค้ดอ้างอิง กราฟ และผลวัดจริงของทุกรอบ</span></div></div></div></div></section>
+</div></div>
+<pre class="full" id="prompt0">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เช่าเครื่อง GPU 2 ใบ ไว้ทดลองว่า API ตรวจภาพรับผู้ใช้พร้อมกันได้กี่คน
+
+[เครื่องที่ต้องการ]
+GPU: RTX 3090 2 ใบในเครื่องเดียว · ราคาไม่เกิน $0.60 ต่อชั่วโมง · ป้าย vapp-lab6-nginx
+เงื่อนไข: verified · reliability 0.95 ขึ้นไป · CPU ที่ได้ใช้จริง 24 cores ขึ้นไป · ไม่อยู่ในจีน
+ระบบ: PyTorch 2.8 ที่มี CUDA 12.8 · disk 40 GB · เปิดพอร์ต 8080 ให้เรียก API จากนอกเครื่อง
+
+[ขั้นตอน]
+1. เช่าเครื่องที่ถูกที่สุดตามเงื่อนไข ถ้าเกิน 10 นาทียังไม่พร้อม ให้ลบแล้วเช่าเครื่องอื่น
+2. เข้าไปตรวจว่าเห็น GPU ครบ 2 ใบ และนับ CPU ที่ใช้ได้จริง
+
+[รายงาน]
+สรุปเป็นตาราง: GPU · ราคาต่อชั่วโมง · ที่ตั้ง · CPU ที่ใช้ได้จริง · เวลาที่รอจนเครื่องพร้อม
+ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt1">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เขียน API ตรวจภาพ แล้วเปิดบน GPU ใบแรกของเครื่องที่เช่า
+
+[ขั้นตอน]
+1. เขียน code/server.py ด้วย FastAPI: รับรูป 1 รูป แล้วตอบเป็น JSON ว่าเจอวัตถุอะไรบ้าง (ชื่อคลาส · ความมั่นใจ · กรอบ)
+2. server 1 ตัวเรียกโมเดลได้ทีละครั้ง รูปที่มาระหว่างนั้นเข้าคิวรอ และมีตัวหยิบงานตัวเดียวที่ทำงานบน thread เดียวตลอด ตั้งค่าได้ 2 โหมด
+   - ทีละรูป: หยิบจากคิวครั้งละ 1 รูป
+   - Micro-batching: หยิบทุกรูปที่รออยู่ในคิว (ไม่เกิน 32 รูป) เข้าโมเดลพร้อมกันในครั้งเดียว ถ้ายังไม่ครบ 32 รูป รอรูปเพิ่มได้ไม่เกิน 5 ms
+3. ในคำตอบให้บอกด้วย: server ตัวไหนตอบ · รูปนี้เข้าโมเดลพร้อมกันกี่รูป · เวลารอคิว และเวลาที่โมเดลใช้ (ms)
+4. ตอนเปิด server ให้ลองเรียกโมเดลล่วงหน้าทุกขนาด ตั้งแต่ 1 รูปถึงจำนวนสูงสุดของโหมดนั้น แล้วจึงตอบว่าพร้อม
+5. นำโค้ด โมเดล และรูปทดสอบขึ้นเครื่อง ติดตั้งสิ่งที่ต้องใช้ แล้วเปิด server 1 ตัวบน GPU ใบแรก โหมดทีละรูป
+6. ทดสอบบนเครื่อง: ส่งรูปทั้ง 6 รูปพร้อม API key · ส่งแบบไม่มี key ต้องถูกปฏิเสธ
+7. ทำภาพตาราง 6 รูป วาดกรอบและชื่อคลาสที่โมเดลตรวจได้ กำกับขนาดไฟล์ใต้รูป เก็บที่ results/dataset_samples.jpg
+
+[ค่าที่ตรึง]
+โมเดล: lab6_microbatch_lb/best.pt (YOLO11s ที่เทรนใน LAB 1) · ขนาดภาพ 640 · ความมั่นใจขั้นต่ำ 0.35
+รูปทดสอบ: lab6_microbatch_lb/samples (6 รูป)
+ทางเข้า: POST /v1/detect (ช่องชื่อ file) · API key แบบ Bearer ไม่มีหรือผิดตอบ 401 · GET /health
+
+[รายงาน]
+อธิบายโค้ด 3–5 บรรทัด · ยก JSON จริง 1 ตัวอย่างแล้วอธิบายแต่ละช่อง
+สรุปเป็นตาราง: รูป · ขนาดไฟล์ · จำนวนวัตถุของแต่ละคลาส · เวลาที่โมเดลใช้
+ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt2">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+ตั้ง NGINX เป็นประตูเดียวของระบบ (Load Balancer) โดยรันเป็น container ไม่ติดตั้งลงเครื่อง
+
+[ขั้นตอน]
+1. รัน NGINX จาก image ทางการ nginx:1.27 เป็น container ด้วย udocker (เครื่องเช่าเป็น container อยู่แล้ว จึงใช้ Docker ซ้อนไม่ได้)
+2. การตั้งค่าทั้งหมดอยู่ในไฟล์ code/nginx.conf แล้วเชื่อมไฟล์เข้า container
+3. ผู้ใช้เข้าที่พอร์ต 8080 แล้ว NGINX ส่งต่อให้ server · วิธีแจกงานเริ่มต้นคือ Round Robin (แจกวนทีละตัว) · server รับเฉพาะคำขอจากภายในเครื่อง
+4. เขียน code/cluster.sh ไว้เปิดระบบใหม่ในคำสั่งเดียว เลือกได้ 3 อย่าง: ใช้ GPU กี่ใบ (1 หรือ 2) · server กี่ตัวต่อ GPU · โหมดทีละรูปหรือ Micro-batching
+   มีคำสั่งดูสถานะและปิดทั้งระบบ · คำสั่งเปิดต้องรอจน server ทุกตัวพร้อมก่อนจึงบอกว่าเสร็จ
+5. API key สุ่มครั้งแรก แล้วใช้ค่าเดิมทุกครั้งที่เปิดใหม่
+6. เปิดระบบแบบที่ 1 (GPU 1 ใบ · server 1 ตัว · โหมดทีละรูป) แล้วทดสอบจากนอกเครื่องผ่านพอร์ต 8080: ส่งรูป 1 รูปพร้อม key · ส่งแบบไม่มี key ต้องถูกปฏิเสธ
+
+[รายงาน]
+อธิบายไฟล์ตั้งค่าของ NGINX ทีละส่วน · วาดแผนภาพข้อความว่าคำขอ 1 รายการเดินทางผ่านอะไรบ้าง
+สรุปผลทดสอบเป็นตาราง · ห้ามแสดงค่า key · บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt3">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เขียนตัวยิงโหลด (Load Test) ไว้วัดว่าระบบรับผู้ใช้พร้อมกันได้กี่คน
+
+[ขั้นตอน]
+1. เขียน code/loadgen.py รันบนเครื่องเดียวกับ server ยิงเข้าที่พอร์ต 8080
+2. จำลองผู้ใช้ N คน: แต่ละคนส่งรูป รอคำตอบ แล้วส่งรูปถัดไปทันที วนรูปทดสอบ 6 รูป · รอเกิน 10 วินาทีนับเป็น error
+3. วัด 1 ระดับ = ยิง 20 วินาที โดย 5 วินาทีแรกเป็นช่วงอุ่นเครื่อง ไม่นับ
+4. ต่อ 1 ระดับให้บันทึก: Throughput (คำขอที่สำเร็จต่อวินาที) · เวลารอ p50 p95 p99 · error · GPU ทำงานกี่ % ของแต่ละใบ · CPU ที่ server, NGINX และตัวยิงโหลดใช้
+   คำขอที่ server แต่ละตัวตอบ · เวลารอคิวและเวลาของโมเดล · จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน
+5. โหมดหาความจุ ทำ 3 จังหวะ
+   - หาช่วง: ไล่ N = 1, 2, 4, 8, 16, 32, 64, 128, 256, 512 จนไม่ผ่าน 2 ระดับติดกัน (ระดับที่ไม่ผ่านให้วัดซ้ำอีก 1 ครั้งก่อนตัดสิน)
+   - ประมาณ: ใช้ p95 ของระดับสุดท้ายที่ผ่านกับระดับแรกที่ไม่ผ่าน ลากเส้นตรงหาว่า p95 จะถึง 500 ms ที่ N เท่าไร แล้ววัดที่ N นั้น
+   - ปรับ: ประมาณซ้ำจากจุดที่วัดเพิ่ม จนระดับที่ผ่านกับระดับที่ไม่ผ่านห่างกันไม่เกิน 2 คน (N เกิน 100 ใช้ 4 คน)
+   และพิมพ์ค่าประมาณอีกแบบไว้เทียบ: N ≈ Throughput สูงสุด × 0.5 วินาที
+6. โหมดระดับเดียว: ยิงด้วย N ค่าเดียวตามเวลาที่กำหนด และบันทึกผลรายวินาที
+7. ตั้งชื่อผลได้ บันทึกเป็น JSON ชื่อละไฟล์ (รวมค่าที่ประมาณไว้ทุกรอบ) พิมพ์ผลทีละระดับ จบแล้วพิมพ์ความจุกับคำว่า DONE
+8. ลองยิงระบบแบบที่ 1 ด้วย N = 4 สั้น ๆ ให้เห็นว่าใช้งานได้
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+อธิบายโค้ด 3–5 บรรทัด · วาดแผนภาพข้อความของผู้ใช้จำลอง 1 คน · ผลของการลองยิง N = 4
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt4">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+พิสูจน์ว่าตัวยิงโหลดวัดถูก ก่อนนำไปวัดระบบจริง โดยยิงใส่ server จำลองที่รู้คำตอบล่วงหน้า
+
+[ขั้นตอน]
+1. เขียน code/fake_server.py: server จำลองที่ไม่ใช้โมเดล รับรูปแบบเดียวกับ API จริง รอตามเวลาที่ตั้งไว้แล้วตอบ รับได้พร้อมกันไม่จำกัด และนับจำนวนคำขอที่ได้รับ
+2. ทดสอบ A ตัวเลขตรงกับที่คำนวณไหม: ตั้งให้รอ 50 ms แล้วยิงตรงที่ server จำลองด้วย N = 1, 10, 50, 100 · ที่ควรได้คือ p50 ราว 50 ms และ Throughput ราว N ÷ 0.05
+3. ทดสอบ B นับครบไหม: เทียบจำนวนคำขอที่ตัวยิงโหลดส่ง (รวมช่วงอุ่นเครื่อง) กับจำนวนที่ server จำลองนับได้ในรอบเดียวกัน
+4. ทดสอบ C ตัวยิงโหลดเร็วพอไหม: ตั้งให้ server จำลองตอบทันที แล้วยิงด้วย N = 200 ดูว่าส่งได้สูงสุดกี่คำขอต่อวินาที
+5. ทดสอบ D NGINX ถ่วงไหม: ให้ NGINX ส่งต่อไปที่ server จำลอง (รอ 50 ms) แล้วยิงผ่านพอร์ต 8080 ด้วย N = 50 เทียบกับยิงตรง
+6. ทดสอบ E วัดซ้ำได้ผลเดิมไหม: เปิดระบบแบบที่ 1 กลับมา แล้วยิง API จริงที่ N = 8 ซ้ำ 3 ครั้ง
+7. บันทึกผลที่ results/loadtest_check.json และวาดกราฟ results/loadtest_check.png (ข้อความอังกฤษ): Throughput ที่วัดได้เทียบกับที่คำนวณของทดสอบ A
+8. ข้อไหนไม่ผ่าน ให้หาสาเหตุ แก้ แล้วทดสอบข้อนั้นซ้ำ
+
+[เกณฑ์ผ่าน]
+A ต่างจากที่คำนวณไม่เกิน 10% · B ต่างกันไม่เกิน 1% · C มากกว่า 2,000 คำขอต่อวินาที
+D p50 ช้ากว่ายิงตรงไม่เกิน 10 ms · E ทั้ง 3 ครั้งต่างกันไม่เกิน 10%
+
+[รายงาน]
+สรุปเป็นตาราง: ทดสอบ · ค่าที่ควรได้ · ค่าที่วัดได้ · ผ่านหรือไม่
+บอกสิ่งที่ต้องแก้ระหว่างทาง (ถ้ามี) และบอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt5">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 1: GPU 1 ใบ · server 1 ตัว · ทำทีละรูป
+
+[ขั้นตอน]
+1. เปิดระบบแบบที่ 1 (GPU 1 ใบ · server 1 ตัว · โหมดทีละรูป)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า base · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางทุกระดับ N: Throughput · p50 · p95 · GPU ทำงานกี่ % · CPU ของ server · เวลารอคิว · เวลาของโมเดล · ผ่านหรือไม่
+ประโยค "แบบที่ 1 รับผู้ใช้พร้อมกันได้ N คน" · ตอนเต็มความจุ GPU ทำงานกี่ % และส่วนไหนเป็นตัวถ่วง
+ตารางการประมาณ: ค่าที่ประมาณไว้แต่ละรอบ เทียบกับผลที่วัดได้ และค่าจากสูตร N ≈ Throughput สูงสุด × 0.5 วินาที ห่างจากความจุจริงเท่าไร
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt6">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 2: GPU ใบเดิม · server 1 ตัว · Micro-batching (รวมรูปที่รออยู่เข้าโมเดลพร้อมกัน)
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 1 ใบ · server 1 ตัว · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า batch · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+3. ถ้าผลแย่กว่าแบบที่ 1 แปลว่าโค้ดมีปัญหา ให้หาสาเหตุและแก้ แล้ววัดแบบที่ 1 (base) ซ้ำด้วยโค้ดฉบับแก้
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางเทียบแบบที่ 1 กับแบบที่ 2: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · GPU ทำงานกี่ % · CPU ของ server · เป็นกี่เท่าของแบบที่ 1
+ตารางของแบบที่ 2 ทุกระดับ N: จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน · เวลาของโมเดลต่อครั้ง · p50 · p95
+บอกว่าตอนมีผู้ใช้คนเดียว แบบที่ 2 ช้ากว่าแบบที่ 1 กี่ ms และส่วนไหนเป็นตัวถ่วงของแบบที่ 2
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt7">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 3: GPU ใบเดิม · server 4 ตัวใช้ GPU ใบเดียวกัน · Micro-batching
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 1 ใบ · server 4 ตัว · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms) · NGINX แจกงานให้ทั้ง 4 ตัวแบบ Round Robin
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า multi · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตารางเทียบ 3 แบบ (ทีละรูป · Micro-batching · Micro-batching + server 4 ตัว)
+หัวตาราง: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน · GPU ทำงานกี่ % · CPU ของ server · VRAM ที่ใช้ · เป็นกี่เท่าของแบบที่ 1
+บอกว่าคำขอกระจายไป server 4 ตัวเท่ากันไหม และส่วนไหนเป็นตัวถ่วงของแต่ละแบบ
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt8">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+วัดความจุของแบบที่ 4: GPU 2 ใบ · ใบละ 4 server · Micro-batching · NGINX แจกงานแบบ Round Robin
+
+[ขั้นตอน]
+1. เปิดระบบใหม่: GPU 2 ใบ · server 4 ตัวต่อ GPU · โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+2. หาความจุด้วยตัวยิงโหลด ตั้งชื่อผลว่า gpu2 · รันเป็นงานเบื้องหลัง แล้วเช็กจนเห็น DONE
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็นตาราง 4 แบบ: จำนวน GPU · แบบ · ความจุ · Throughput สูงสุด · p95 ที่ความจุ · เป็นกี่เท่าของแบบที่ 3 · Efficiency (กี่เท่าของแบบที่ 3 ÷ จำนวน GPU)
+ประโยค "GPU 1 ใบ N1 คน → 2 ใบ N2 คน (x เท่า)" · คำขอกระจายไป GPU 2 ใบเท่ากันไหม · ถ้าได้ไม่ถึง 2 เท่า ส่วนไหนเป็นตัวถ่วง
+บอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt9">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+เทียบวิธีแจกงานของ NGINX 2 วิธี บนระบบแบบที่ 4 (GPU 2 ใบ · ใบละ 4 server · Micro-batching)
+Round Robin: แจกวนทีละตัว ไม่ดูว่าใครงานค้างมาก
+Least Connections: ส่งให้ server ที่มีงานค้างน้อยที่สุดในตอนนั้น
+
+[ขั้นตอน]
+1. เพิ่มให้ code/cluster.sh เลือกวิธีแจกงานได้ 2 วิธีข้างบน และสั่งให้ server ของ GPU ใบที่เลือกเรียกโมเดลช้าลงกี่เท่าได้ (จำลอง GPU ที่ช้ากว่า)
+2. ทั้งสองวิธีต้องใช้การตั้งค่าของ NGINX เหมือนกันทุกอย่าง ต่างกันแค่วิธีแจกงาน
+3. กรณี GPU เร็วเท่ากัน: หาความจุของ Least Connections ตั้งชื่อผลว่า lc_equal (ตัวเทียบคือ gpu2 ที่เป็น Round Robin)
+4. กรณี GPU ใบที่ 2 ช้าลง 3 เท่า: หาความจุ 2 รอบ · Round Robin ตั้งชื่อผลว่า rr_slow · Least Connections ตั้งชื่อผลว่า lc_slow
+5. เสร็จแล้วเอาการหน่วงออก และเปิดระบบแบบที่ 4 กลับมาแบบ Round Robin
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็น 2 ตาราง (GPU เร็วเท่ากัน · GPU ใบที่ 2 ช้า) เทียบ 2 วิธี: ความจุ · Throughput สูงสุด · p95 ที่ความจุ · สัดส่วนคำขอที่ GPU แต่ละใบได้ · GPU แต่ละใบทำงานกี่ %
+อธิบาย 3–4 บรรทัดว่าทำไมผลต่างกัน แล้วบอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt10">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb/same_machine ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+โค้ดตั้งต้น: คัดลอกโค้ดจาก lab6_microbatch_lb/code มาไว้ที่ lab6_microbatch_lb/same_machine/code
+โมเดล: lab6_microbatch_lb/best.pt · รูปทดสอบ: lab6_microbatch_lb/samples (6 รูป)
+
+[งาน]
+เทียบวิธีแจกงานของ NGINX 3 วิธีบนเครื่องเดียวกัน ว่าวิธีใดรับผู้ใช้พร้อมกันได้มากกว่า
+Round Robin: แจกวนทีละตัว
+Least Connections: ส่งให้ server ที่มีงานค้างน้อยที่สุด
+Power of Two Choices (p2c): สุ่ม server มา 2 ตัว แล้วส่งให้ตัวที่มีงานค้างน้อยกว่า
+
+[ขั้นตอน]
+1. เช่าเครื่อง RTX 3090 2 ใบในเครื่องเดียว ราคาไม่เกิน $0.60 ต่อชั่วโมง ป้าย vapp-lab6-p2c
+   (verified · reliability 0.95 ขึ้นไป · CPU ที่ใช้ได้จริง 24 cores ขึ้นไป · ไม่อยู่ในจีน · PyTorch 2.8 ที่มี CUDA 12.8 · disk 40 GB)
+2. นำโค้ดตั้งต้น โมเดล และรูปทดสอบขึ้นเครื่อง ติดตั้งสิ่งที่ต้องใช้ และรัน NGINX เป็น container ด้วย udocker (image nginx:1.27)
+3. เพิ่มให้ code/cluster.sh เลือกวิธีแจกงานแบบ p2c ได้ โดยไฟล์ตั้งค่าของ 3 วิธีต้องต่างกันเฉพาะบรรทัดเลือกวิธีแจกงาน
+   แล้วตรวจจากไฟล์ตั้งค่าที่ NGINX ใช้จริงว่าแต่ละวิธีถูกเปิดตามที่สั่ง
+4. เปิดระบบ GPU 2 ใบ ใบละ 4 server โหมด Micro-batching (ไม่เกิน 32 รูป รอไม่เกิน 5 ms)
+5. กรณี GPU เร็วเท่ากัน: หาความจุด้วยตัวยิงโหลดของทั้ง 3 วิธี วิธีละ 1 รอบ ตามลำดับ Round Robin → Least Connections → p2c
+6. กรณี GPU ใบที่ 2 ช้าลง 3 เท่า: ทำแบบเดียวกับข้อ 5 ด้วยลำดับเดียวกัน
+7. ตั้งชื่อผลเป็น &lt;วิธี&gt;_&lt;กรณี&gt; คือ rr_equal lc_equal p2c_equal rr_slow lc_slow p2c_slow และเก็บไฟล์ตั้งค่าที่ใช้จริงของทุกผลไว้ใน results
+8. เขียน code/report3.py รวมผลลง results/metrics.json และวาดกราฟที่ results/images (ข้อความอังกฤษ):
+   ความจุของ 3 วิธีทั้ง 2 กรณี · สัดส่วนคำขอที่ GPU แต่ละใบได้ · p95 เทียบ N ของ 3 วิธีในแต่ละกรณี
+9. นำผลและโค้ดทั้งหมดกลับมา ตรวจว่ามาครบ แล้วลบเครื่องป้าย vapp-lab6-p2c และตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[เกณฑ์]
+ผ่าน = p95 ไม่เกิน 500 ms และ error ต่ำกว่า 1%
+ความจุ = จำนวนผู้ใช้พร้อมกัน (N) สูงสุดที่ผ่าน
+
+[รายงาน]
+สรุปเป็น 2 ตาราง (GPU เร็วเท่ากัน · GPU ใบที่ 2 ช้า): วิธี · ความจุ · ระดับแรกที่ไม่ผ่าน · Throughput สูงสุด · p95 ที่ความจุ · สัดส่วนคำขอ GPU 0 / GPU 1 · GPU ทำงานกี่ %
+บรรทัดตั้งค่าของ NGINX ที่ต่างกันของ 3 วิธี · สิ่งผิดปกติระหว่างวัด (เช่น server ถูกพัก error หรือระดับที่ต้องวัดซ้ำ)
+เครื่องที่เช่า: ที่ตั้ง · ราคาต่อชั่วโมง · CPU ที่ใช้ได้จริง · อายุเครื่อง · ยอดที่ถูกคิด
+ไม่ต้อง commit · ห้ามแสดงค่า key</pre>
+<pre class="full" id="prompt11">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+ดูว่าเมื่อ GPU 1 ใบล่มกลางทาง ผู้ใช้เจอ error หรือไม่ บนระบบแบบที่ 4 (GPU 2 ใบ · ใบละ 4 server · Round Robin)
+
+[ขั้นตอน]
+1. เพิ่มให้ code/cluster.sh ปิด server ทั้งหมดของ GPU ใบที่เลือกแบบกะทันหันได้
+   และเลือกได้ว่า NGINX จะป้องกันหรือไม่ · ป้องกัน = ส่งคำขอที่ล้มต่อให้ server ตัวอื่น และเลิกส่งงานให้ตัวที่ล่ม
+2. ยิงโหมดระดับเดียว 60 วินาที ด้วยผู้ใช้เท่ากับหนึ่งในสามของความจุแบบที่ 4 (ผล gpu2) · วินาทีที่ 20 ปิด server ของ GPU ใบที่ 2
+3. ทำ 2 รอบ: ไม่ป้องกัน ตั้งชื่อผลว่า fail_off · ป้องกัน ตั้งชื่อผลว่า fail_on
+4. เสร็จแล้วเปิดระบบแบบที่ 4 กลับมา
+
+[รายงาน]
+สรุปเป็นตารางเทียบ 2 รอบ: error จากคำขอทั้งหมด · Throughput ที่สำเร็จก่อนล่มและหลังล่ม · p95 หลังล่ม · หลังล่มยังผ่านเกณฑ์ p95 ไม่เกิน 500 ms ไหม
+อธิบายการตั้งค่าของ NGINX ที่ใช้ป้องกัน 2–3 บรรทัด แล้วบอกว่าเครื่องยังเปิดอยู่</pre>
+<pre class="full" id="prompt12">[ที่ทำงาน]
+container `multi-account` · โฟลเดอร์ /workspace/vastapp_lab · สกิล vastai
+เครื่อง: ป้าย vapp-lab6-nginx · กุญแจ SSH: /workspace/vastai_lab/Devtool_SSH/devtoolSSH
+เก็บโค้ดและผลที่: lab6_microbatch_lb ของโฟลเดอร์ที่เปิด Claude Code อยู่ (ไม่ใช่ใน container)
+
+[งาน]
+สรุปผลเป็นกราฟ เก็บผลกลับ แล้วลบเครื่อง
+
+[ขั้นตอน]
+1. เขียน code/report.py รวมตัวเลขของทุกผล (base batch multi gpu2 lc_equal rr_slow lc_slow fail_off fail_on) ลง results/metrics.json
+2. ให้สคริปต์วาดกราฟที่ results/images (ข้อความอังกฤษ)
+   - p95 เทียบ N ของ 4 แบบ พร้อมเส้นเกณฑ์ 500 ms และจุดความจุ
+   - Throughput เทียบ N ของ 4 แบบ
+   - แท่งความจุของ 4 แบบ
+   - จำนวนรูปเฉลี่ยที่เข้าโมเดลพร้อมกัน เทียบ N
+   - GPU ทำงานกี่ % และ CPU ของ server ที่ความจุของ 4 แบบ
+   - Round Robin เทียบ Least Connections: ความจุและสัดส่วนคำขอ ทั้ง 2 กรณี
+   - คำขอต่อวินาทีตอน GPU ล่ม แยกสีตาม GPU และ error ทั้ง 2 รอบ
+3. นำผลทั้งหมดกลับมาที่ results และโค้ดทุกไฟล์ที่ code ตรวจว่ามาครบ และเปิดดูกราฟว่าอ่านออก
+4. ลบเครื่องป้าย vapp-lab6-nginx แล้วตรวจว่าไม่เหลือ (ห้ามแตะเครื่องป้ายอื่น)
+
+[รายงาน]
+สรุปเป็นตาราง 4 แบบ: จำนวน GPU · แบบ · ความจุ · Throughput สูงสุด · p95 ที่ความจุ · เป็นกี่เท่าของแบบที่ 1
+ค่าใช้จ่ายจริงของเครื่อง: อายุเครื่อง · ราคาต่อชั่วโมง · ยอดที่ถูกคิด · ห้ามแสดงค่า key</pre>
+<div id="bar"></div>
+<div id="hud"><button id="bo" title="สารบัญ (O)">☰</button><button id="bp" title="ก่อนหน้า (←)">‹</button><span id="count"></span><button id="bn" title="ถัดไป (→)">›</button><button id="bf" title="เต็มจอ (F)">⛶</button></div>
+<div id="ov"></div>
+<div id="lb"><img alt=""></div>
+<script>
+(function(){
+  const deck=document.getElementById('deck');
+  const slides=[...deck.querySelectorAll('.slide')];
+  const N=slides.length; let cur=0;
+  slides.forEach((s,k)=>{ if(!s.classList.contains('cover')){ const n=document.createElement('div'); n.className='no'; n.textContent=(k+1)+' / '+N; s.appendChild(n);} });
+  function fit(){ deck.style.transform='scale('+Math.min(innerWidth/1600,innerHeight/900)+')'; }
+  /* ปรับขนาดตัวอักษรของแต่ละสไลด์ให้พอดีหน้า: เริ่มที่ค่าสูงสุด แล้วลดจนไม่ล้น */
+  function fitSlide(s){
+    const body=s.querySelector('.body'); if(!body) return;
+    const on=s.classList.contains('active'); if(!on) s.classList.add('measure');
+    body.classList.remove('scroll');
+    let fs=parseFloat(s.dataset.max||'1.4');
+    const boxes=[body,...body.querySelectorAll('.fitbox')];
+    const over=()=>boxes.some(b=>b.scrollHeight>b.clientHeight+3||b.scrollWidth>b.clientWidth+1);
+    s.style.setProperty('--fs',fs);
+    while(over()&&fs>0.62){ fs=Math.round((fs-0.03)*100)/100; s.style.setProperty('--fs',fs); }
+    s.dataset.fs=fs; s.dataset.over=over()?'1':'0';
+    if(over()) body.classList.add('scroll');
+    if(!on) s.classList.remove('measure');
+  }
+  function fitAll(){ slides.forEach(fitSlide); document.documentElement.dataset.fitted='1'; }
+  function go(i,push){
+    cur=Math.max(0,Math.min(N-1,i));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===cur));
+    document.getElementById('count').textContent=(cur+1)+' / '+N;
+    document.getElementById('bar').style.width=((cur+1)/N*100)+'%';
+    if(push!==false){ try{ history.replaceState(null,'','#'+(cur+1)); }catch(e){} }
+    document.querySelectorAll('#ov .th').forEach((t,k)=>t.classList.toggle('cur',k===cur));
+  }
+  const next=()=>go(cur+1), prev=()=>go(cur-1);
+  function fs(){ if(!document.fullscreenElement){ const r=document.documentElement; r.requestFullscreen&&r.requestFullscreen(); } else document.exitFullscreen&&document.exitFullscreen(); }
+  const ovEl=document.getElementById('ov'); let grid=null,last=null;
+  slides.forEach((s,k)=>{
+    if(s.dataset.group!==last){ last=s.dataset.group; const h=document.createElement('h4'); h.textContent=last; ovEl.appendChild(h); grid=document.createElement('div'); grid.className='grid'; ovEl.appendChild(grid); }
+    const d=document.createElement('div'); d.className='th';
+    const n=document.createElement('span'); n.textContent=k+1; d.appendChild(n); d.appendChild(document.createTextNode(s.dataset.title||''));
+    d.onclick=()=>{ go(k); ov(false); }; grid.appendChild(d);
+  });
+  function ov(on){ const v=on===undefined?!document.body.classList.contains('ov'):on; document.body.classList.toggle('ov',v);
+    if(v){ const c=ovEl.querySelector('.th.cur'); c&&c.scrollIntoView({block:'center'}); } }
+  const lb=document.getElementById('lb'), lbi=lb.querySelector('img');
+  deck.addEventListener('click',e=>{ const im=e.target.closest('.fig img'); if(im){ lbi.src=im.src; lbi.alt=im.alt; lb.classList.add('on'); lb.scrollTop=0; } });
+  lb.addEventListener('click',()=>lb.classList.remove('on'));
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey) return;
+    const k=e.key;
+    if(lb.classList.contains('on')){ if(k==='Escape'||k==='Enter'||k===' '){ e.preventDefault(); lb.classList.remove('on'); } return; }
+    if(['ArrowRight','PageDown',' ','Enter'].includes(k)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(k)){ e.preventDefault(); prev(); }
+    else if(k==='Home') go(0); else if(k==='End') go(N-1);
+    else if(k==='f'||k==='F') fs(); else if(k==='o'||k==='O') ov();
+    else if(k==='Escape'&&document.body.classList.contains('ov')) ov(false);
+  });
+  document.getElementById('bn').onclick=next; document.getElementById('bp').onclick=prev;
+  document.getElementById('bf').onclick=fs; document.getElementById('bo').onclick=()=>ov();
+  let tx=null;
+  document.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null; if(Math.abs(dx)>60)(dx<0?next:prev)(); });
+  function copyText(text,btn,label){
+    const done=()=>{ btn.textContent='คัดลอกแล้ว ✓'; btn.classList.add('done'); setTimeout(()=>{ btn.textContent=label; btn.classList.remove('done'); },1600); };
+    const fallback=()=>{ const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(e){} ta.remove(); done(); };
+    if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(text).then(done,fallback); else fallback();
+  }
+  window.promptText=id=>document.getElementById(id).textContent;
+  document.querySelectorAll('.copy').forEach(b=>{
+    const label=b.textContent;
+    b.addEventListener('click',ev=>{ ev.stopPropagation();
+      const text=b.dataset.full?window.promptText(b.dataset.full):b.parentElement.querySelector('.t').textContent;
+      copyText(text,b,label); });
+  });
+  document.querySelectorAll('.chk input').forEach(c=>{
+    const key='slides:'+location.pathname+':'+c.dataset.k;
+    try{ c.checked=localStorage.getItem(key)==='1'; }catch(e){}
+    c.addEventListener('change',()=>{ try{ localStorage.setItem(key,c.checked?'1':'0'); }catch(e){} });
+  });
+  addEventListener('resize',fit);
+  addEventListener('hashchange',()=>{ const n=parseInt(location.hash.slice(1)); if(n) go(n-1,false); });
+  fit(); const start=parseInt(location.hash.slice(1)); go(start?start-1:0,false);
+  fitAll();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(fitAll);
+  addEventListener('load',fitAll);
+})();
+</script>
+</body>
+</html>

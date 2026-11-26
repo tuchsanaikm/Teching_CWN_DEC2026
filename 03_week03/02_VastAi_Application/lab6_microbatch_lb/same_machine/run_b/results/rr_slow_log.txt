@@ -1,0 +1,36 @@
+[loadgen] name=rr_slow mode=capacity target=http://127.0.0.1:8080  servers=8 (gpu0-8101, gpu0-8102, gpu0-8103, gpu0-8104, gpu1-8201, gpu1-8202, gpu1-8203, gpu1-8204)  mode=micro
+[loadgen] level=20s (warm-up 5s)  images=6  timeout=10s  pass: p95<=500ms and errors<1%
+[range] N=1    PASS  thr=20.4/s  p50=36.8 p95=70.4 p99=71.2 ms  err=0/306 (0.00%)  gpu0=4% gpu1=11%  cpu% server=90.4 nginx=0.6 loadgen=0.9
+       queue=5.2 ms  model=35.44 ms  images/call=1.0  answered by: gpu0-8101=38  gpu0-8102=38  gpu0-8103=39  gpu0-8104=38  gpu1-8201=38  gpu1-8202=38  gpu1-8203=39  gpu1-8204=38
+[range] N=2    PASS  thr=41.7/s  p50=38.4 p95=70.3 p99=72.8 ms  err=0/626 (0.00%)  gpu0=8% gpu1=31%  cpu% server=178.7 nginx=1.2 loadgen=1.6
+       queue=5.19 ms  model=34.14 ms  images/call=1.0  answered by: gpu0-8101=78  gpu0-8102=79  gpu0-8103=78  gpu0-8104=78  gpu1-8201=79  gpu1-8202=78  gpu1-8203=78  gpu1-8204=78
+[range] N=4    PASS  thr=96.8/s  p50=38.7 p95=55.1 p99=60.5 ms  err=0/1452 (0.00%)  gpu0=24% gpu1=77%  cpu% server=350.9 nginx=2.8 loadgen=3.8
+       queue=5.14 ms  model=27.56 ms  images/call=1.0  answered by: gpu0-8101=182  gpu0-8102=181  gpu0-8103=181  gpu0-8104=182  gpu1-8201=181  gpu1-8202=181  gpu1-8203=182  gpu1-8204=182
+[range] N=8    PASS  thr=163.0/s  p50=40.8 p95=79.3 p99=87.6 ms  err=0/2445 (0.00%)  gpu0=51% gpu1=96%  cpu% server=614.9 nginx=4.1 loadgen=6.0
+       queue=10.34 ms  model=29.61 ms  images/call=1.0  answered by: gpu0-8101=306  gpu0-8102=306  gpu0-8103=305  gpu0-8104=306  gpu1-8201=306  gpu1-8202=305  gpu1-8203=305  gpu1-8204=306
+[range] N=16   PASS  thr=198.1/s  p50=58.3 p95=155.2 p99=176.1 ms  err=0/2972 (0.00%)  gpu0=64% gpu1=95%  cpu% server=709.2 nginx=5.3 loadgen=7.1
+       queue=26.26 ms  model=42.97 ms  images/call=1.3  answered by: gpu0-8101=371  gpu0-8102=372  gpu0-8103=372  gpu0-8104=371  gpu1-8201=371  gpu1-8202=372  gpu1-8203=372  gpu1-8204=371
+[range] N=32   PASS  thr=222.8/s  p50=110.0 p95=289.5 p99=324.5 ms  err=0/3342 (0.00%)  gpu0=58% gpu1=94%  cpu% server=743.1 nginx=5.9 loadgen=7.5
+       queue=52.7 ms  model=74.9 ms  images/call=1.74  answered by: gpu0-8101=418  gpu0-8102=418  gpu0-8103=417  gpu0-8104=418  gpu1-8201=418  gpu1-8202=417  gpu1-8203=418  gpu1-8204=418
+[range] N=64   FAIL  thr=232.3/s  p50=198.2 p95=577.5 p99=590.4 ms  err=0/3484 (0.00%)  gpu0=52% gpu1=94%  cpu% server=730.1 nginx=6.2 loadgen=7.9
+       queue=107.97 ms  model=145.77 ms  images/call=2.36  answered by: gpu0-8101=435  gpu0-8102=436  gpu0-8103=436  gpu0-8104=435  gpu1-8201=435  gpu1-8202=436  gpu1-8203=436  gpu1-8204=435
+[range again] N=64   FAIL  thr=224.7/s  p50=102.4 p95=577.7 p99=592.3 ms  err=0/3371 (0.00%)  gpu0=48% gpu1=92%  cpu% server=715.1 nginx=6.1 loadgen=7.7
+       queue=114.31 ms  model=146.92 ms  images/call=2.52  answered by: gpu0-8101=422  gpu0-8102=421  gpu0-8103=421  gpu0-8104=422  gpu1-8201=421  gpu1-8202=421  gpu1-8203=421  gpu1-8204=422
+[range] N=128  FAIL  thr=224.4/s  p50=449.7 p95=1157.9 p99=1252.5 ms  err=0/3366 (0.00%)  gpu0=36% gpu1=89%  cpu% server=696.9 nginx=6.0 loadgen=8.4
+       queue=227.26 ms  model=293.55 ms  images/call=3.71  answered by: gpu0-8101=421  gpu0-8102=421  gpu0-8103=420  gpu0-8104=421  gpu1-8201=421  gpu1-8202=420  gpu1-8203=421  gpu1-8204=421
+[range again] N=128  FAIL  thr=228.9/s  p50=345.4 p95=1171.0 p99=1245.9 ms  err=0/3434 (0.00%)  gpu0=40% gpu1=91%  cpu% server=698.3 nginx=6.0 loadgen=8.3
+       queue=213.37 ms  model=298.11 ms  images/call=3.64  answered by: gpu0-8101=430  gpu0-8102=429  gpu0-8103=429  gpu0-8104=429  gpu1-8201=430  gpu1-8202=429  gpu1-8203=429  gpu1-8204=429
+[estimate] next N = 55
+[estimate] N=55   FAIL  thr=220.7/s  p50=220.5 p95=508.5 p99=520.1 ms  err=0/3311 (0.00%)  gpu0=73% gpu1=85%  cpu% server=721.1 nginx=5.9 loadgen=7.6
+       queue=99.76 ms  model=129.1 ms  images/call=2.26  answered by: gpu0-8101=414  gpu0-8102=414  gpu0-8103=414  gpu0-8104=413  gpu1-8201=414  gpu1-8202=414  gpu1-8203=414  gpu1-8204=414
+[estimate again] N=55   FAIL  thr=220.0/s  p50=95.0 p95=510.4 p99=531.5 ms  err=0/3301 (0.00%)  gpu0=72% gpu1=86%  cpu% server=720.1 nginx=5.9 loadgen=7.7
+       queue=98.95 ms  model=129.51 ms  images/call=2.26  answered by: gpu0-8101=412  gpu0-8102=413  gpu0-8103=413  gpu0-8104=413  gpu1-8201=412  gpu1-8202=413  gpu1-8203=413  gpu1-8204=412
+[refine] next N = 54
+[refine] N=54   PASS  thr=220.1/s  p50=177.0 p95=499.0 p99=509.9 ms  err=0/3302 (0.00%)  gpu0=52% gpu1=91%  cpu% server=721.9 nginx=5.9 loadgen=7.7
+       queue=97.92 ms  model=127.13 ms  images/call=2.26  answered by: gpu0-8101=413  gpu0-8102=413  gpu0-8103=412  gpu0-8104=413  gpu1-8201=413  gpu1-8202=412  gpu1-8203=413  gpu1-8204=413
+[loadgen] saved /workspace/lab6/results/rr_slow.json  (13 runs)
+  estimate 1: pass N=32 (p95 289.5) / fail N=64 (p95 577.5) -> line -> N~55.39 -> measured N=55: p95 508.5 FAIL
+  estimate 2: pass N=32 (p95 289.5) / fail N=55 (p95 508.5) -> line -> N~54.11 -> measured N=54: p95 499.0 PASS
+OTHER ESTIMATE: max throughput 232.3 req/s (at N=64) x 0.5 s = N ~ 116.1
+CAPACITY: 54 users  (N=54 passes, N=55 fails)
+DONE

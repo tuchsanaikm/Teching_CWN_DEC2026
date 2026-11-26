@@ -1,0 +1,7 @@
+[cluster] layout: gpus=1 per-gpu=1 mode=micro started=2026-11-23T01:27:38Z
+  server 127.0.0.1:8101 pid=6827 health=200 gpu0-8101 micro cuda:0 max_batch=32 queue=0
+  nginx  0.0.0.0:8080 pid=6964 processes=5 health=200 upstreams=1
+  listening: 0.0.0.0:8080 127.0.0.1:8101
+  gpu 0, 13812 MiB, 0 %
+  gpu 1, 11 MiB, 0 %
+[cluster] status: OK

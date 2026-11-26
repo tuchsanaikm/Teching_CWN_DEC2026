@@ -1,0 +1,337 @@
+{
+ "lab": "Lab 4 - Data Parallelism (DDP), 4x RTX 3090",
+ "model": "Qwen/Qwen3-8B + LoRA (bf16 base, gradient checkpointing)",
+ "dataset": "b-mc2/sql-create-context",
+ "train_samples": 4000,
+ "test_samples": 200,
+ "max_len_tokens": 256,
+ "machine": {
+  "id": "<id>",
+  "label": "vapp-lab4-dp4",
+  "gpu_name": "RTX 3090",
+  "num_gpus": 4,
+  "dph_total": 0.8700000000000001,
+  "geolocation": "Chile, CL",
+  "cpu_name": "Xeon® E5-2680 v4 ",
+  "cpu_cores": 56,
+  "cpu_ram": 96433,
+  "pci_gen": 3.0,
+  "gpu_lanes": 16,
+  "image_uuid": "pytorch/pytorch:2.8.0-cuda12.8-cudnn9-runtime"
+ },
+ "batch_probe": {
+  "max_batch_per_gpu": 4,
+  "max_global_batch": 16,
+  "gpu_total_mib": 24576,
+  "rows": [
+   {
+    "batch_per_gpu": 1,
+    "global_batch": 4,
+    "status": "ok",
+    "vram_peak_mib_per_gpu": [
+     18266,
+     18266,
+     18266,
+     18266
+    ],
+    "torch_allocated_mib_per_gpu": [
+     17220,
+     17220,
+     17220,
+     17220
+    ],
+    "sec_per_step": 0.2765
+   },
+   {
+    "batch_per_gpu": 2,
+    "global_batch": 8,
+    "status": "ok",
+    "vram_peak_mib_per_gpu": [
+     19268,
+     19268,
+     19268,
+     19268
+    ],
+    "torch_allocated_mib_per_gpu": [
+     18735,
+     18735,
+     18735,
+     18735
+    ],
+    "sec_per_step": 0.381
+   },
+   {
+    "batch_per_gpu": 4,
+    "global_batch": 16,
+    "status": "ok",
+    "vram_peak_mib_per_gpu": [
+     22340,
+     22340,
+     22340,
+     22340
+    ],
+    "torch_allocated_mib_per_gpu": [
+     21764,
+     21764,
+     21764,
+     21764
+    ],
+    "sec_per_step": 0.688
+   },
+   {
+    "batch_per_gpu": 8,
+    "global_batch": 32,
+    "status": "oom",
+    "vram_peak_mib_per_gpu": null,
+    "torch_allocated_mib_per_gpu": null,
+    "sec_per_step": null
+   }
+  ]
+ },
+ "training": {
+  "batch_per_gpu": 4,
+  "global_batch": 16,
+  "lr": 0.0002,
+  "steps_per_epoch": 250,
+  "epochs": 3,
+  "total_steps": 750,
+  "total_samples": 12000,
+  "total_sec": 336.7,
+  "samples_per_sec": 35.64,
+  "samples_per_sec_per_gpu": 8.91,
+  "sec_per_step": 0.4489,
+  "gpu_util_mean_pct_per_gpu": [
+   96.9,
+   97.3,
+   97.3,
+   97.4
+  ],
+  "vram_peak_mib_per_gpu": [
+   22680,
+   21692,
+   22700,
+   22720
+  ],
+  "per_epoch": [
+   {
+    "epoch": 1,
+    "train_loss_mean": 0.1167,
+    "train_loss_last10": 0.0585,
+    "epoch_sec": 117.6,
+    "samples_per_sec": 34.02,
+    "gpu_util_mean_pct_per_gpu": [
+     96.3,
+     97.5,
+     96.2,
+     97.8
+    ],
+    "vram_peak_mib_per_gpu": [
+     21532,
+     21692,
+     22700,
+     21292
+    ],
+    "test_loss": 0.0607,
+    "exact_match": 0.705,
+    "exact_match_loose": 0.725
+   },
+   {
+    "epoch": 2,
+    "train_loss_mean": 0.0386,
+    "train_loss_last10": 0.0295,
+    "epoch_sec": 109.2,
+    "samples_per_sec": 36.64,
+    "gpu_util_mean_pct_per_gpu": [
+     97.4,
+     97.2,
+     97.8,
+     97.1
+    ],
+    "vram_peak_mib_per_gpu": [
+     21532,
+     21692,
+     22700,
+     22720
+    ],
+    "test_loss": 0.0553,
+    "exact_match": 0.75,
+    "exact_match_loose": 0.775
+   },
+   {
+    "epoch": 3,
+    "train_loss_mean": 0.0248,
+    "train_loss_last10": 0.0133,
+    "epoch_sec": 109.9,
+    "samples_per_sec": 36.4,
+    "gpu_util_mean_pct_per_gpu": [
+     97.1,
+     97.2,
+     98.1,
+     97.3
+    ],
+    "vram_peak_mib_per_gpu": [
+     22680,
+     21692,
+     22700,
+     22720
+    ],
+    "test_loss": 0.0543,
+    "exact_match": 0.765,
+    "exact_match_loose": 0.785
+   }
+  ]
+ },
+ "eval": {
+  "base": {
+   "n": 200,
+   "test_loss": 1.7702,
+   "exact_match": 0.015,
+   "em_correct": 3,
+   "exact_match_loose": 0.545
+  },
+  "epoch1": {
+   "n": 200,
+   "test_loss": 0.0607,
+   "exact_match": 0.705,
+   "em_correct": 141,
+   "exact_match_loose": 0.725
+  },
+  "epoch2": {
+   "n": 200,
+   "test_loss": 0.0553,
+   "exact_match": 0.75,
+   "em_correct": 150,
+   "exact_match_loose": 0.775
+  },
+  "epoch3": {
+   "n": 200,
+   "test_loss": 0.0543,
+   "exact_match": 0.765,
+   "em_correct": 153,
+   "exact_match_loose": 0.785
+  }
+ },
+ "market": {
+  "searched_at_utc": "2026-11-22T08:27:55Z",
+  "query": "gpu_name=RTX_3090 num_gpus=4 rentable=true, 60 GB disk included in the price, sorted by dph_total",
+  "cheapest_on_demand_any": {
+   "usd_per_hour": 0.6033,
+   "offer_id": 50071798,
+   "machine_id": 54625,
+   "verification": "deverified",
+   "reliability": 0.9872,
+   "geolocation": "United States, US",
+   "inet_down_mbps": 374.2,
+   "offers_found": 35
+  },
+  "cheapest_on_demand_verified": {
+   "usd_per_hour": 0.6056,
+   "offer_id": "<id>",
+   "machine_id": 156744,
+   "verification": "verified",
+   "reliability": 0.9715,
+   "geolocation": "California, US",
+   "inet_down_mbps": 569.9,
+   "offers_found": 20
+  },
+  "cheapest_interruptible_verified_min_bid": {
+   "usd_per_hour": 0.4853,
+   "offer_id": 58395188,
+   "machine_id": 33061,
+   "verification": "verified",
+   "reliability": 0.9913,
+   "geolocation": "Taiwan, TW",
+   "inet_down_mbps": 921.0,
+   "offers_found": 16
+  }
+ },
+ "cost": {
+  "rented_machine": {
+   "usd_per_hour": 0.87,
+   "usd_per_1000_samples": 0.006781,
+   "usd_for_3_epochs_12000_samples": 0.0814
+  },
+  "market_cheapest_on_demand_any": {
+   "usd_per_hour": 0.6033,
+   "usd_per_1000_samples": 0.004702,
+   "usd_for_3_epochs_12000_samples": 0.0564
+  },
+  "market_cheapest_on_demand_verified": {
+   "usd_per_hour": 0.6056,
+   "usd_per_1000_samples": 0.00472,
+   "usd_for_3_epochs_12000_samples": 0.0566
+  },
+  "market_cheapest_interruptible_verified_min_bid": {
+   "usd_per_hour": 0.4853,
+   "usd_per_1000_samples": 0.003782,
+   "usd_for_3_epochs_12000_samples": 0.0454
+  }
+ },
+ "headline": {
+  "max_batch_per_gpu": 4,
+  "samples_per_sec": 35.64,
+  "exact_match_final": 0.765,
+  "usd_per_1000_samples_rented": 0.006781,
+  "usd_per_1000_samples_market_cheapest": 0.004702
+ },
+ "actual_bill": {
+  "instance_id": "<id>",
+  "label": "vapp-lab4-dp4",
+  "usd_per_hour": 0.8700000000000001,
+  "start_utc": 1795333291.630805,
+  "destroy_utc": 1795336263.0,
+  "age_sec": 2971.4,
+  "age_min": 49.52,
+  "age_hours": 0.8254,
+  "estimate_usd_age_x_price": 0.7181,
+  "destroyed_and_verified_gone": true,
+  "charged_usd_this_instance": 0.665,
+  "charge_rows": [
+   {
+    "source": "instance-<id>",
+    "amount": 0.006,
+    "items": {
+     "gpu": [
+      0.0,
+      "GPU"
+     ],
+     "disk": [
+      0.006,
+      "0.185 hours at $0.033/hour"
+     ],
+     "bwd": [
+      0.0,
+      "Bandwidth (download)"
+     ],
+     "bwu": [
+      0.0,
+      "Bandwidth (upload)"
+     ]
+    }
+   },
+   {
+    "source": "instance-<id>",
+    "amount": 0.665,
+    "items": {
+     "gpu": [
+      0.61,
+      "0.715 hours at $0.853/hour"
+     ],
+     "disk": [
+      0.014,
+      "0.828 hours at $0.017/hour"
+     ],
+     "bwd": [
+      0.039,
+      "15.1 GB Downloaded at $0.003/GB"
+     ],
+     "bwu": [
+      0.002,
+      "0.4 GB Uploaded at $0.005/GB"
+     ]
+    }
+   }
+  ],
+  "charges_fetched_at_utc": 1795336324.1330733
+ }
+}
